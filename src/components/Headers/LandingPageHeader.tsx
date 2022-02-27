@@ -39,12 +39,12 @@ const DesktopLinks = () => {
 }
 
 const MobileLinks = () => {
-    const [open, setOpen] = useState(true)
+    const [open, setOpen] = useState(false)
     return (
         <>
             <div
                 className={classNames(
-                    open ? '' : 'translate-x-full',
+                    !open && 'translate-x-full',
                     'absolute top-0 right-0 block h-screen w-10/12 bg-white py-8 px-6 transition duration-500 ease-in-out sm:w-8/12 sm:p-10 md:hidden'
                 )}
             >
@@ -62,10 +62,12 @@ const MobileLinks = () => {
 
 export const LandingPageHeader = () => {
     return (
-        <div className="fixed flex w-screen items-center justify-between bg-white py-6 px-6 sm:px-10 lg:px-24 xl:px-36">
-            <Logo labelled={{ labelPosition: 'right' }} />
-            <DesktopLinks />
-            <MobileLinks />
+        <div className="mb-1 h-20 w-full">
+            <div className="fixed z-10 flex w-screen items-center justify-between bg-white py-6 px-6 sm:px-10 lg:px-24 xl:px-36">
+                <Logo labelled={{ labelPosition: 'right' }} />
+                <DesktopLinks />
+                <MobileLinks />
+            </div>
         </div>
     )
 }
