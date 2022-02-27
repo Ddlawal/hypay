@@ -1,6 +1,7 @@
 import { IconProps } from '../../interfaces/icons'
+import { COLORS } from '../../lib/constants/colors'
 
-export const LogoIcon = ({ size = 50, color = '#000000' }: IconProps): JSX.Element => {
+export const LogoIcon = ({ size = 18, color = COLORS.WHITE }: IconProps): JSX.Element => {
     return (
         <svg width={size} height={size} viewBox="0 0 53 50" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
