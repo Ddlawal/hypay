@@ -1,11 +1,10 @@
 import type { NextPage } from 'next'
-import { LogoIcon } from '../components/Icons'
+import { LandingPageHeader } from '../components/Headers/LandingPageHeader'
 
 const Home: NextPage = () => {
     return (
         <>
-            <LogoIcon color="#36076B" />
-            <h1 className="text-3xl font-bold">Hypay</h1>
+            <LandingPageHeader />
         </>
     )
 }
