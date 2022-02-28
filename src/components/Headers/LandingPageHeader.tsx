@@ -63,7 +63,7 @@ const MobileLinks = () => {
 export const LandingPageHeader = () => {
     return (
         <div className="mb-1 h-20 w-full">
-            <div className="fixed z-20 flex w-screen items-center justify-between bg-white py-6 px-3 sm:px-10 lg:px-24 xl:px-40">
+            <div className="fixed z-20 flex w-screen items-center justify-between bg-white py-6 px-6 sm:px-10 lg:px-24 xl:px-40">
                 <Logo labelled={{ labelPosition: 'right' }} />
                 <DesktopLinks />
                 <MobileLinks />
