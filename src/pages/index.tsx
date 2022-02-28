@@ -24,7 +24,7 @@ const Home: NextPage = () => {
                         </div>
                     </div>
                 </Banner>
-                <div className="flex justify-between px-6 sm:px-10 lg:px-24 xl:px-40">
+                <div className="flex justify-between px-3 pb-10 sm:px-10 lg:px-24 xl:px-40">
                     <div className="w-96 pr-10 pt-28 text-hypay-primary">
                         <p className="mb-4 text-2xl font-semibold tracking-wide">Engagement</p>
                         <p className="mb-7 text-base tracking-wide">
