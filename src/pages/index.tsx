@@ -9,29 +9,33 @@ const Home: NextPage = () => {
         <>
             <LandingPageHeader />
             <div className="bg-white">
-                <Banner src="/images/landing-banner.png" alt="Landing page banner">
-                    <div className="absolute right-56 w-80 py-16 text-white">
-                        <p className="mb-4 text-2xl font-semibold tracking-wide">
+                <Banner
+                    src="/images/landing-banner.png"
+                    srcMobile="/images/landing-banner-mobile.png"
+                    alt="Landing page banner"
+                >
+                    <div className="absolute w-full px-8 py-16 text-white md:right-56 md:w-80 md:px-0">
+                        <p className="mb-2 text-2xl font-semibold tracking-wide md:mb-4">
                             Start your online store quickly and easily.
                         </p>
-                        <p className="mb-9 text-base">
+                        <p className="mb-9 text-sm md:text-base">
                             With Hypay you pay and receive securely through instagram and Facebook.
                         </p>
                         <div className="flex justify-center pr-10">
-                            <Button primary size="lg" className="py-2.5 px-8">
+                            <Button primary size="lg" className="py-3 px-7">
                                 Create your store
                             </Button>
                         </div>
                     </div>
                 </Banner>
-                <div className="flex justify-between px-3 pb-10 sm:px-10 lg:px-24 xl:px-40">
-                    <div className="w-96 pr-10 pt-28 text-hypay-primary">
-                        <p className="mb-4 text-2xl font-semibold tracking-wide">Engagement</p>
-                        <p className="mb-7 text-base tracking-wide">
+                <div className="flex flex-col-reverse py-8 px-2 pb-10 sm:px-10 md:flex-row md:justify-between lg:px-24 xl:px-40">
+                    <div className="w-full px-1 text-hypay-primary md:w-96 md:pt-28 md:pr-10">
+                        <p className="mb-3 text-2xl font-semibold tracking-wide md:mb-4">Engagement</p>
+                        <p className="mb-3 text-base tracking-wide md:mb-7">
                             Gain more engagement in your store with a reliable way to sell, and with a super practical
                             platform.
                         </p>
-                        <Button primary size="lg" className="py-2.5 px-8">
+                        <Button primary size="lg" className="py-3 px-7">
                             Create your store
                         </Button>
                     </div>
