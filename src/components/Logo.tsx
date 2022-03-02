@@ -6,9 +6,11 @@ type LogoProps = {
     className?: string
     labelled?: { labelPosition: 'right' | 'bottom' }
     size?: number
+    color?: string
+    labelColor?: string
 }
 
-export const Logo = ({ className, labelled, size }: LogoProps) => {
+export const Logo = ({ className, labelled, size, color = COLORS.PRIMARY, labelColor = COLORS.PRIMARY }: LogoProps) => {
     return (
         <div
             className={classNames(
@@ -17,11 +19,14 @@ export const Logo = ({ className, labelled, size }: LogoProps) => {
                 'inline-flex items-center justify-center gap-1'
             )}
         >
-            <LogoIcon color={COLORS.PRIMARY} size={size ? size * 1.5 : 32} />
+            <LogoIcon color={color} size={size ? size * 1.5 : 32} />
             {!!labelled && (
                 <div
                     style={{ fontSize: size ? `${size}px` : '22px' }}
-                    className="hidden text-lg font-bold leading-7 tracking-wider text-hypay-primary md:block"
+                    className={classNames(
+                        labelColor ? labelColor : 'text-hypay-primary',
+                        'hidden text-lg font-bold leading-7 tracking-wider  md:block'
+                    )}
                 >
                     hypay
                 </div>

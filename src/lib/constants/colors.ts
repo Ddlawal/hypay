@@ -1,4 +1,6 @@
 export const COLORS = {
     PRIMARY: '#36076B',
-    WHITE: '#000000',
+    BLACK: '#242424',
+    WHITE: '#FFFFFF',
+    PINK: '#D95F76',
 } as const
