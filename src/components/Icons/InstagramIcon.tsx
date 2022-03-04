@@ -2,7 +2,6 @@ import { IconProps } from '../../interfaces/icons'
 import { COLORS } from '../../lib/constants/colors'
 
 export const InstagramIcon = ({ size = 43, color = COLORS.WHITE }: IconProps): JSX.Element => {
-    console.log(color, 'hello world')
     return (
         <svg width={size} height={size} viewBox="0 0 82 83" fill="none" xmlns="http://www.w3.org/2000/svg">
             <circle cx="40.7725" cy="41.5001" r="40.7725" fill={'white'} />
