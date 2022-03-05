@@ -8,14 +8,15 @@ import { CircularArrowUpIcon, InstagramIcon, FacebookIcon } from '../components/
 import { Logo } from '../components/Logo'
 import { COLORS } from '../lib/constants/colors'
 
-type contentProps = {
+type ContentProps = {
     title: string
     body: string
     className?: string
     titleClassName?: string
     dotDivider?: boolean
 }
-const Content = ({ title, body, className, titleClassName, dotDivider = false }: contentProps) => (
+
+const Content = ({ title, body, className, titleClassName, dotDivider = false }: ContentProps) => (
     <div>
         <p
             className={classNames(
