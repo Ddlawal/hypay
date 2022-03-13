@@ -148,7 +148,7 @@ const Home: NextPage = () => {
                         >
                             <TimelineEvent
                                 label="Create you own account"
-                                labelFontSize={isHorizontal ? undefined : 16}
+                                labelFontSize={isHorizontal ? undefined : 15}
                                 bgColor="white"
                                 border={`3px solid ${COLORS.PINK}`}
                                 labelTextHeight={30}
@@ -161,11 +161,11 @@ const Home: NextPage = () => {
                             </TimelineEvent>
                             <TimelineEvent
                                 label="Conect your Facebook and Instagram"
-                                labelFontSize={isHorizontal ? undefined : 16}
+                                labelFontSize={isHorizontal ? undefined : 15}
                                 bgColor="white"
                                 border={`3px solid ${COLORS.PINK}`}
                                 labelTextHeight={30}
-                                labelTextWidth={isHorizontal ? 130 : 300}
+                                labelTextWidth={isHorizontal ? 130 : 250}
                                 eventSize={60}
                                 color={COLORS.PRIMARY}
                                 isHorizontal={isHorizontal}
@@ -174,7 +174,7 @@ const Home: NextPage = () => {
                             </TimelineEvent>
                             <TimelineEvent
                                 label="Share your store to buyers."
-                                labelFontSize={isHorizontal ? undefined : 16}
+                                labelFontSize={isHorizontal ? undefined : 15}
                                 bgColor="white"
                                 border={`3px solid ${COLORS.PINK}`}
                                 labelTextHeight={30}
@@ -187,7 +187,7 @@ const Home: NextPage = () => {
                             </TimelineEvent>
                             <TimelineEvent
                                 label="Delivery confirmed."
-                                labelFontSize={isHorizontal ? undefined : 16}
+                                labelFontSize={isHorizontal ? undefined : 15}
                                 bgColor="white"
                                 border={`3px solid ${COLORS.PINK}`}
                                 labelTextHeight={30}
@@ -200,7 +200,7 @@ const Home: NextPage = () => {
                             </TimelineEvent>
                             <TimelineEvent
                                 label="That's it. You receive the payment"
-                                labelFontSize={isHorizontal ? undefined : 16}
+                                labelFontSize={isHorizontal ? undefined : 15}
                                 bgColor="white"
                                 border={`3px solid ${COLORS.PINK}`}
                                 labelTextHeight={30}
