@@ -134,16 +134,25 @@ const Home: NextPage = () => {
                 </section>
 
                 {/* todo: in-progress */}
-                <section className="flex flex-col items-center px-7 sm:px-10 md:pb-12 md:pt-24 lg:px-24 xl:px-40">
-                    <div className="text-3xl font-bold tracking-wide text-hypay-primary">It works like this</div>
+                <section className="flex flex-col px-7 pb-8 pt-16 sm:px-10 md:items-center md:pb-12 md:pt-24 lg:px-24 xl:px-40">
+                    <div className="text-center text-3xl font-bold tracking-wide text-hypay-primary">
+                        It works like this
+                    </div>
 
-                    <div className="mt-16 mb-8">
-                        <Timeline orientation={orientation} thickness={5} gap={80} progressBarBackground={COLORS.PINK}>
+                    <div className="my-8 md:mt-16">
+                        <Timeline
+                            orientation={orientation}
+                            thickness={5}
+                            gap={isHorizontal ? 80 : 40}
+                            progressBarBackground={COLORS.PINK}
+                        >
                             <TimelineEvent
                                 label="Create you own account"
+                                labelFontSize={isHorizontal ? undefined : 16}
                                 bgColor="white"
                                 border={`3px solid ${COLORS.PINK}`}
                                 labelTextHeight={30}
+                                labelTextWidth={isHorizontal ? undefined : 250}
                                 eventSize={60}
                                 color={COLORS.PRIMARY}
                                 isHorizontal={isHorizontal}
@@ -152,10 +161,11 @@ const Home: NextPage = () => {
                             </TimelineEvent>
                             <TimelineEvent
                                 label="Conect your Facebook and Instagram"
+                                labelFontSize={isHorizontal ? undefined : 16}
                                 bgColor="white"
                                 border={`3px solid ${COLORS.PINK}`}
                                 labelTextHeight={30}
-                                labelTextWidth={130}
+                                labelTextWidth={isHorizontal ? 130 : 300}
                                 eventSize={60}
                                 color={COLORS.PRIMARY}
                                 isHorizontal={isHorizontal}
@@ -164,9 +174,11 @@ const Home: NextPage = () => {
                             </TimelineEvent>
                             <TimelineEvent
                                 label="Share your store to buyers."
+                                labelFontSize={isHorizontal ? undefined : 16}
                                 bgColor="white"
                                 border={`3px solid ${COLORS.PINK}`}
                                 labelTextHeight={30}
+                                labelTextWidth={isHorizontal ? undefined : 250}
                                 eventSize={60}
                                 color={COLORS.PRIMARY}
                                 isHorizontal={isHorizontal}
@@ -175,9 +187,11 @@ const Home: NextPage = () => {
                             </TimelineEvent>
                             <TimelineEvent
                                 label="Delivery confirmed."
+                                labelFontSize={isHorizontal ? undefined : 16}
                                 bgColor="white"
                                 border={`3px solid ${COLORS.PINK}`}
                                 labelTextHeight={30}
+                                labelTextWidth={isHorizontal ? undefined : 250}
                                 eventSize={60}
                                 color={COLORS.PRIMARY}
                                 isHorizontal={isHorizontal}
@@ -186,10 +200,11 @@ const Home: NextPage = () => {
                             </TimelineEvent>
                             <TimelineEvent
                                 label="That's it. You receive the payment"
+                                labelFontSize={isHorizontal ? undefined : 16}
                                 bgColor="white"
                                 border={`3px solid ${COLORS.PINK}`}
                                 labelTextHeight={30}
-                                labelTextWidth={130}
+                                labelTextWidth={isHorizontal ? 130 : 250}
                                 eventSize={60}
                                 color={COLORS.PRIMARY}
                                 isHorizontal={isHorizontal}
@@ -199,7 +214,7 @@ const Home: NextPage = () => {
                         </Timeline>
                     </div>
 
-                    <Button primary size="lg" className="py-4 px-9 md:py-3 md:px-7">
+                    <Button primary size="lg" className="mr-24 py-4 px-9 md:mr-0 md:py-3 md:px-7">
                         Create your store
                     </Button>
                 </section>
