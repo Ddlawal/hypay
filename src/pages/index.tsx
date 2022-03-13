@@ -1,11 +1,23 @@
 import classNames from 'classnames'
 import type { NextPage } from 'next'
 import Image from 'next/image'
+import { useEffect, useState } from 'react'
 import { Banner } from '../components/Banner'
 import { Button } from '../components/Button'
 import { LandingPageHeader } from '../components/Headers/LandingPageHeader'
-import { CircularArrowUpIcon, InstagramIcon, FacebookIcon } from '../components/Icons'
+import {
+    CircularArrowUpIcon,
+    InstagramIcon,
+    FacebookIcon,
+    CreateAccountIcon,
+    ConnectIcon,
+    ShareIcon,
+    DeliveryIcon,
+    ReceivePaymentIcon,
+} from '../components/Icons'
 import { Logo } from '../components/Logo'
+import { Timeline, TimelineEvent } from '../components/Timeline'
+import { useMediaQuery } from '../hooks/useMediaQuery'
 import { COLORS } from '../lib/constants/colors'
 
 type ContentProps = {
@@ -39,6 +51,20 @@ const Content = ({ title, body, className, titleClassName, dotDivider = false }:
 )
 
 const Home: NextPage = () => {
+    const isLargeScreen = useMediaQuery('md')
+    const [orientation, setOrientation] = useState<'horizontal' | 'vertical'>('horizontal')
+    const [isHorizontal, setIsHorizontal] = useState(false)
+
+    useEffect(() => {
+        if (isLargeScreen) {
+            setOrientation('horizontal')
+            setIsHorizontal(true)
+        } else {
+            setOrientation('vertical')
+            setIsHorizontal(false)
+        }
+    }, [isLargeScreen])
+
     return (
         <>
             <LandingPageHeader />
@@ -108,8 +134,71 @@ const Home: NextPage = () => {
                 </section>
 
                 {/* todo: in-progress */}
-                <section className="py-10 px-7 sm:px-10 md:py-4 lg:px-24 xl:px-40">
-                    <div>It works like this</div>
+                <section className="flex flex-col items-center px-7 sm:px-10 md:pb-12 md:pt-24 lg:px-24 xl:px-40">
+                    <div className="text-3xl font-bold tracking-wide text-hypay-primary">It works like this</div>
+
+                    <div className="mt-16 mb-8">
+                        <Timeline orientation={orientation} thickness={5} gap={80} progressBarBackground={COLORS.PINK}>
+                            <TimelineEvent
+                                label="Create you own account"
+                                bgColor="white"
+                                border={`3px solid ${COLORS.PINK}`}
+                                labelTextHeight={30}
+                                eventSize={60}
+                                color={COLORS.PRIMARY}
+                                isHorizontal={isHorizontal}
+                            >
+                                <CreateAccountIcon color={COLORS.PRIMARY} />
+                            </TimelineEvent>
+                            <TimelineEvent
+                                label="Conect your Facebook and Instagram"
+                                bgColor="white"
+                                border={`3px solid ${COLORS.PINK}`}
+                                labelTextHeight={30}
+                                labelTextWidth={130}
+                                eventSize={60}
+                                color={COLORS.PRIMARY}
+                                isHorizontal={isHorizontal}
+                            >
+                                <ConnectIcon color={COLORS.PRIMARY} />
+                            </TimelineEvent>
+                            <TimelineEvent
+                                label="Share your store to buyers."
+                                bgColor="white"
+                                border={`3px solid ${COLORS.PINK}`}
+                                labelTextHeight={30}
+                                eventSize={60}
+                                color={COLORS.PRIMARY}
+                                isHorizontal={isHorizontal}
+                            >
+                                <ShareIcon color={COLORS.PRIMARY} />
+                            </TimelineEvent>
+                            <TimelineEvent
+                                label="Delivery confirmed."
+                                bgColor="white"
+                                border={`3px solid ${COLORS.PINK}`}
+                                labelTextHeight={30}
+                                eventSize={60}
+                                color={COLORS.PRIMARY}
+                                isHorizontal={isHorizontal}
+                            >
+                                <DeliveryIcon color={COLORS.PRIMARY} />
+                            </TimelineEvent>
+                            <TimelineEvent
+                                label="That's it. You receive the payment"
+                                bgColor="white"
+                                border={`3px solid ${COLORS.PINK}`}
+                                labelTextHeight={30}
+                                labelTextWidth={130}
+                                eventSize={60}
+                                color={COLORS.PRIMARY}
+                                isHorizontal={isHorizontal}
+                            >
+                                <ReceivePaymentIcon color={COLORS.PRIMARY} />
+                            </TimelineEvent>
+                        </Timeline>
+                    </div>
+
                     <Button primary size="lg" className="py-4 px-9 md:py-3 md:px-7">
                         Create your store
                     </Button>

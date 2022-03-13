@@ -1,9 +1,10 @@
 import classNames from 'classnames'
 import Image from 'next/image'
-import { FC } from 'react'
+import { FC, ReactNode } from 'react'
 
 type BannerProps = {
     src: string
+    children?: ReactNode
     className?: string
     srcMobile?: string
     height?: number

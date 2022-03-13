@@ -1,7 +1,8 @@
 import classNames from 'classnames'
-import { FC } from 'react'
+import { FC, ReactNode } from 'react'
 
 type ButtonProps = {
+    children?: ReactNode
     className?: string
     size?: 'sm' | 'base' | 'lg'
     disabled?: string

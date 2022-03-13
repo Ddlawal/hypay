@@ -3,6 +3,7 @@ import { COLORS } from '../lib/constants/colors'
 import { LogoIcon } from './Icons'
 
 type LogoProps = {
+    children?: never
     className?: string
     labelled?: { labelPosition: 'right' | 'bottom' }
     size?: number
