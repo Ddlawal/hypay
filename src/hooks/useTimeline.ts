@@ -4,7 +4,7 @@ const DEFAULT_EVENT_SIZE = 30
 const DEFAULT_LABEL_TEXT_HEIGHT = 20
 const DEFAULT_LABEL_TEXT_WIDTH = 100
 
-export const useTimeline = ({
+export const useTimeline = ({ 
     children,
     gap = 50,
     clipped = true,
