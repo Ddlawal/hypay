@@ -24,9 +24,10 @@ export const Logo = ({ className, labelled, size, color = COLORS.PRIMARY, labelC
             {!!labelled && (
                 <div
                     style={{ fontSize: size ? `${size}px` : '22px' }}
+                    // I removed the hidden class on the hypay text for mobile which we might make dynamic later for reusability
                     className={classNames(
                         labelColor ? labelColor : 'text-hypay-primary',
-                        'hidden text-lg font-bold leading-7 tracking-wider  md:block'
+                        ' text-lg font-bold leading-7 tracking-wider  md:block'
                     )}
                 >
                     hypay

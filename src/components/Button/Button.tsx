@@ -7,11 +7,13 @@ type ButtonProps = {
     size?: 'sm' | 'base' | 'lg'
     disabled?: string
     primary?: boolean
+    onClick?: () => void
 }
 
-export const Button: FC<ButtonProps> = ({ children, className, primary, size = 'sm' }) => {
+export const Button: FC<ButtonProps> = ({ children, className, primary, size = 'sm', onClick }) => {
     return (
         <button
+            onClick={onClick}
             className={classNames(
                 className,
                 primary && 'bg-hypay-pink text-white',

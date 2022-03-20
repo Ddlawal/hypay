@@ -72,3 +72,8 @@ export const MenuItemList: Array<{
         rightIcon: RightArrowIcon({ color: COLORS.YELLOW }),
     },
 ]
+
+// Random Image Generator FUnction
+export const generateRandomImage: (width: number, height: number) => void = (width = 200, height = 300) => {
+    return `https://picsum.photos/${width}/${height}`
+}
