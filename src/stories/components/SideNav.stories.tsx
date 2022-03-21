@@ -1,10 +1,8 @@
 import { useState } from 'react'
-import { SideNav } from '../../components/SideNav'
+import { SideNav } from '../../components/Layout'
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 import { COLORS } from '../../lib/constants/colors'
 import { Logo } from '../../components/Logo'
-import { SettingsIcon } from '../../components/Icons/SettingsIcon'
-import { RightArrowIcon } from '../../components/Icons/RightArrowIcon'
 import { MenuItemList } from '../../lib/data'
 import classNames from 'classnames'
 
@@ -64,14 +62,6 @@ const Template: ComponentStory<typeof SideNav> = (args) => {
 }
 
 export const Basic = Template.bind({})
-Basic.args = {
-    clipped: true,
-    orientation: 'horizontal',
-    activeIndex: 2,
-    gap: 50,
-    progressBarBackground: 'gray',
-    progressBarForeground: 'green',
-}
 
 export const MenuItem = (props: any) => {
     const { parentIndex, text, leftIcon, rightIcon, isActive, setActive, isDropDown } = props

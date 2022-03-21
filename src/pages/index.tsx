@@ -50,7 +50,7 @@ const Content = ({ title, body, className, titleClassName, dotDivider = false }:
     </div>
 )
 
-const Home: NextPage = () => {
+const Index: NextPage = () => {
     const isLargeScreen = useMediaQuery('md')
     const [orientation, setOrientation] = useState<'horizontal' | 'vertical'>('horizontal')
     const [isHorizontal, setIsHorizontal] = useState(false)
@@ -321,4 +321,4 @@ const Home: NextPage = () => {
     )
 }
 
-export default Home
+export default Index
