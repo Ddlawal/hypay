@@ -1,5 +1,6 @@
 export { AnalysisIcon } from './AnalysisIcon'
 export { BagIcon } from './BagIcon'
+export { CameraIcon } from './CameraIcon'
 export { CircularArrowUpIcon } from './CircularArrowUp'
 export { CloseIcon } from './CloseIcon'
 export { CommentIcon } from './CommentIcon'
