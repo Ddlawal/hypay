@@ -4,4 +4,5 @@ export const COLORS = {
     WHITE: '#FFFFFF',
     PINK: '#D95F76',
     YELLOW: '#FFB119',
+    PLACEHOLDER: '#4B506D',
 } as const

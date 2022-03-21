@@ -4,7 +4,7 @@ import { COLORS } from '../../lib/constants/colors'
 export const AnalysisIcon = ({ size = 18, color = COLORS.YELLOW }: IconProps): JSX.Element => {
     return (
         <svg width={size} height={size} viewBox="0 0 20 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <g clip-path="url(#clip0_636_2833)">
+            <g clipPath="url(#clip0_636_2833)">
                 <path
                     d="M13.9093 11.9914C13.8437 11.9914 13.777 11.9781 13.7139 11.95C13.4886 11.8495 13.3936 11.5984 13.5016 11.389L18.0966 2.48774C18.2047 2.27836 18.475 2.19004 18.7003 2.29049C18.9256 2.39093 19.0206 2.64209 18.9125 2.85147L14.3176 11.7527C14.2398 11.9034 14.0779 11.9914 13.9093 11.9914Z"
                     fill={color}

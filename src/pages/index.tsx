@@ -50,7 +50,7 @@ const Content = ({ title, body, className, titleClassName, dotDivider = false }:
     </div>
 )
 
-const Home: NextPage = () => {
+const Index: NextPage = () => {
     const isLargeScreen = useMediaQuery('md')
     const [orientation, setOrientation] = useState<'horizontal' | 'vertical'>('horizontal')
     const [isHorizontal, setIsHorizontal] = useState(false)
@@ -270,10 +270,14 @@ const Home: NextPage = () => {
                     </section>
                 </div>
                 <div className="mt-10 mb-5 mr-10 flex justify-end">
-                    <div className="flex h-full cursor-pointer flex-col items-center justify-end md:w-[20%] ">
+                    <a
+                        href="#"
+                        onClick={() => window.scrollTo(0, 0)}
+                        className="flex h-full cursor-pointer flex-col items-center justify-end md:w-[20%] "
+                    >
                         <CircularArrowUpIcon color={COLORS.PINK} size={40} />
                         <p className="font-semibold text-hypay-pink">Return to the top</p>
-                    </div>
+                    </a>
                 </div>
                 <footer className="grid h-[412px] place-items-center bg-hypay-primary py-3 px-6 ">
                     <div className="h-[80%] w-[100%]  md:w-[58%]">
@@ -317,4 +321,4 @@ const Home: NextPage = () => {
     )
 }
 
-export default Home
+export default Index

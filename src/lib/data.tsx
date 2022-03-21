@@ -32,6 +32,7 @@ export const headerLinks: Array<{
 
 export const MenuItemList: Array<{
     text: string
+    href: string
     leftIcon?: JSX.Element | (() => JSX.Element)
     isDropDown?: string[]
     hasRightIcon?: boolean
@@ -39,35 +40,43 @@ export const MenuItemList: Array<{
 }> = [
     {
         text: 'Home',
+        href: '/dashboard/home',
         leftIcon: HomeIcon({ color: COLORS.YELLOW }),
     },
     {
         text: 'Products',
+        href: '/dashboard/products',
         leftIcon: TagIcon({ color: COLORS.YELLOW }),
     },
     {
         text: 'Request',
+        href: '/dashboard/request',
         leftIcon: BagIcon({ color: COLORS.YELLOW }),
     },
     {
         text: 'Analysis',
+        href: '/dashboard/analysis',
         leftIcon: AnalysisIcon({ color: COLORS.YELLOW }),
     },
     {
         text: 'Online Store',
+        href: '/dashboard/online-store',
         leftIcon: ShelterIcon({ color: COLORS.YELLOW }),
     },
     {
         text: 'Marketing',
+        href: '/dashboard/marketing',
         leftIcon: MarketingIcon({ color: COLORS.YELLOW }),
         isDropDown: ['Discount', 'Indicate'],
     },
     {
         text: 'Coupons',
+        href: '/dashboard/coupons',
         leftIcon: FireIcon({ color: COLORS.YELLOW }),
     },
     {
         text: 'Settings',
+        href: '/dashboard/settings',
         leftIcon: SettingsIcon({ color: COLORS.YELLOW }),
         rightIcon: RightArrowIcon({ color: COLORS.YELLOW }),
     },

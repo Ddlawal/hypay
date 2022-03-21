@@ -16,6 +16,7 @@ module.exports = {
                     gray: '#9FA2B4',
                     'light-gray': '#EEEEEE', // background
                     'light-blue': '#20A3EF',
+                    placeholder: '#4B506D',
                     cyan: '#00B5DD',
                     orange: '#FFB119',
                     green: '#1B9B65',
