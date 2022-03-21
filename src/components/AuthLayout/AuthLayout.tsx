@@ -13,8 +13,9 @@ interface layoutProps {
 }
 
 const AuthLayout: FC<layoutProps> = ({ children, title, subtitle, changeIndex, index, btnText }) => {
+    const [selectedTab, setSelectedTab] = useState(0)
     return (
-        <main className="flex min-h-screen w-screen overflow-hidden">
+        <main className="flex min-h-screen w-screen overflow-hidden bg-white">
             {/* Image section */}
             <div className="fixed hidden h-screen bg-login-cloth bg-cover bg-center  md:block md:w-6/12">
                 <section className="mx-auto mt-[5rem] w-8/12">
@@ -91,7 +92,7 @@ const AuthLayout: FC<layoutProps> = ({ children, title, subtitle, changeIndex, i
                             </TimelineEvent>
                         </Timeline>
                     </div>
-                    <div>{children}</div>
+                    <div className="">{children}</div>
                     {btnText && (
                         <div className="mt-2 flex items-center  justify-center font-semibold">
                             <Button className={`${COLORS.PINK} `} primary onClick={changeIndex}>

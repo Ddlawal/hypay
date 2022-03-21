@@ -1,7 +1,8 @@
 import { COLORS } from '../../lib/constants/colors'
 import { Button } from '../Button'
 
-export const CreateStore = () => {
+export const CreateStore = (props: any) => {
+    console.log(props, 'props')
     return (
         <div className="mx-auto w-10/12 ">
             <header className="mx-auto mt-10 w-full">
@@ -9,7 +10,7 @@ export const CreateStore = () => {
                 <div>
                     <p className="text-md mt-5 text-left font-bold text-black md:mt-3">
                         The store will be connected to cardoso.rafael@anymail.com and will remain connected for the next
-                        14 days{' '}
+                        14 days
                     </p>
                 </div>
             </header>
@@ -18,7 +19,7 @@ export const CreateStore = () => {
                     <label htmlFor="fullname" className="mb-2 font-semibold">
                         Store Name
                     </label>
-                    <div id="fullname" className="mt-1 rounded-md border-[1px] px-2 py-1">
+                    <div id="fullname" className="mt-1 rounded-md border-[1px] border-hypay-gray px-2 py-1">
                         <input
                             type="text"
                             className="w-full border-none bg-transparent outline-none"
@@ -27,8 +28,8 @@ export const CreateStore = () => {
                     </div>
                 </div>
 
-                <div className="mt-16 flex items-center  justify-center font-semibold">
-                    <Button className={`${COLORS.PINK} w-[60%]`} primary>
+                <div className="mt-16 flex w-full items-center justify-center   font-semibold md:pl-16">
+                    <Button className={`${COLORS.PINK} w-[70%]`} primary>
                         Create Store
                     </Button>
                 </div>

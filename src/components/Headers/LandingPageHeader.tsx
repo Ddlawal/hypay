@@ -6,8 +6,10 @@ import { Button } from '../Button'
 import { CloseIcon, MenuIcon, RightArrowIcon } from '../Icons'
 import { NextLink } from '../Links'
 import { Logo } from '../Logo'
+import { useRouter } from 'next/router'
 
 const HeaderLinks = () => {
+    const { push } = useRouter()
     return (
         <ul className="flex flex-col justify-between gap-6 sm:gap-7 md:flex-row md:gap-10">
             {headerLinks.map(({ id, title, href }) => {
@@ -23,7 +25,7 @@ const HeaderLinks = () => {
                     </li>
                 )
             })}
-            <Button primary className="md:ml-5">
+            <Button primary onClick={() => push('/createstore')} className="md:ml-5">
                 Create your store
             </Button>
         </ul>
