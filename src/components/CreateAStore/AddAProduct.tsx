@@ -1,8 +1,10 @@
 import { COLORS } from '../../lib/constants/colors'
 import { Button } from '../Button'
 import { BagIcon, CameraIcon } from '../Icons'
+import { useRouter } from 'next/router'
 
 export const AddAProduct = () => {
+    const { push } = useRouter()
     return (
         <div className="mx-auto w-10/12 ">
             <header className="mx-auto mt-10 w-full">
@@ -13,7 +15,7 @@ export const AddAProduct = () => {
                     </p>
                 </div>
             </header>
-            <form className="mt-4 w-10/12">
+            <form onSubmit={(e) => e.preventDefault()} className="mt-4 w-10/12">
                 <h3 className="my-3 font-semibold">Name and description</h3>
                 <div className="my-2">
                     <label htmlFor="name" className="mb-2 font-semibold">
@@ -63,23 +65,25 @@ export const AddAProduct = () => {
                         Copy Link
                     </Button>
 
-                    <h4 className="my-3 text-xl font-bold">Videos</h4>
-                    <p className="text-md mt-5 text-left font-normal text-black md:mt-3">
-                        Link of your product's video on Youtube or Vimeo
-                    </p>
-                    <div className="my-2">
-                        <div id="description" className="mt-1 rounded-md border-[1px] border-hypay-gray px-2 py-1">
-                            <input
-                                type="text"
-                                className="w-full border-none bg-transparent outline-none"
-                                placeholder=""
-                            />
+                    <div className="mt-10">
+                        <h4 className="text-xl font-bold">Videos</h4>
+                        <p className="text-md  text-left font-normal text-black md:mt-3">
+                            Link of your product's video on Youtube or Vimeo
+                        </p>
+                        <div className="my-2">
+                            <div id="description" className="mt-1 rounded-md border-[1px] border-hypay-gray px-2 py-1">
+                                <input
+                                    type="text"
+                                    className="w-full border-none bg-transparent outline-none"
+                                    placeholder=""
+                                />
+                            </div>
                         </div>
                     </div>
 
                     {/* Stock section */}
-                    <div>
-                        <h4 className="my-3 text-xl font-bold">Stock</h4>
+                    <div className="mt-10">
+                        <h4 className="text-xl font-bold">Stock</h4>
                         <div className=" flex ">
                             <div className="my-2">
                                 <label htmlFor="quantity" className="mb-2 font-semibold">
@@ -132,8 +136,8 @@ export const AddAProduct = () => {
                         </div>
                     </div>
                     {/* Product Type */}
-                    <div>
-                        <h4 className="my-3 text-xl font-bold">Product Type</h4>
+                    <div className="mt-10">
+                        <h4 className=" text-xl font-bold">Product Type</h4>
                         <div className=" flex flex-col ">
                             <div className="my-2 flex items-center">
                                 <div
@@ -170,8 +174,8 @@ export const AddAProduct = () => {
                         </div>
                     </div>
                     {/* Weight and dimension */}
-                    <div>
-                        <h4 className="my-3 text-xl font-bold">Weight and dimensions</h4>
+                    <div className="mt-10">
+                        <h4 className="mt-3 text-xl font-bold">Weight and dimensions</h4>
                         <div className=" flex ">
                             <div className="my-2">
                                 <label htmlFor="weight" className="mb-2 font-semibold">
@@ -241,8 +245,8 @@ export const AddAProduct = () => {
                     </div>
 
                     {/* Free shipping */}
-                    <h4 className="my-3 text-xl font-bold">Free Shipping</h4>
-                    <div className="my-2 flex items-center">
+                    <h4 className="mt-6 text-xl font-bold">Free Shipping</h4>
+                    <div className=" flex items-center">
                         <div
                             id="quantity"
                             className="mt-1 flex h-7 w-7 items-center justify-center rounded-md border-[1px] border-hypay-gray p-2"
@@ -260,8 +264,8 @@ export const AddAProduct = () => {
                     </div>
 
                     {/* Advanced shipping */}
-                    <h4 className="my-3 text-xl font-bold">Advanced Options</h4>
-                    <div className="my-2 flex items-center justify-between rounded-sm  p-2 shadow-md">
+                    <h4 className="mt-10 text-xl font-bold">Advanced Options</h4>
+                    <div className="my-3 flex items-center justify-between rounded-sm  p-2 shadow-md">
                         <div className="flex items-center gap-x-2">
                             <div className="">
                                 <BagIcon color={COLORS.PINK} />
@@ -277,7 +281,7 @@ export const AddAProduct = () => {
                             </Button>
                         </div>
                     </div>
-                    <div className="my-2 flex items-center justify-between rounded-sm p-2 shadow-md">
+                    <div className="my-3 flex items-center justify-between rounded-sm p-2 shadow-md">
                         <div className="flex items-center gap-x-2">
                             <div>
                                 <BagIcon color={COLORS.PINK} />
@@ -296,7 +300,11 @@ export const AddAProduct = () => {
                     {/* Publish or discrad buttons */}
                     <div className="mt-7 flex items-center justify-around">
                         <button className="text-md font-bold text-hypay-primary">Discard</button>
-                        <Button primary className="rounded-md border-[1px]   px-3 text-white outline-none">
+                        <Button
+                            onClick={() => push('/dashboard/products')}
+                            primary
+                            className="rounded-md border-[1px]   px-3 text-white outline-none"
+                        >
                             Publish product
                         </Button>
                     </div>

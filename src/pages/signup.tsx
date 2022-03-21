@@ -3,9 +3,11 @@ import { useState } from 'react'
 import AuthLayout from '../components/AuthLayout/AuthLayout'
 import { Button } from '../components/Button'
 import { COLORS } from '../lib/constants/colors'
+import { useRouter } from 'next/router'
 
 function SignUp() {
     const [index, setIndex] = useState(0)
+    const { push } = useRouter()
     return (
         <AuthLayout
             title="Be part of our community"
@@ -19,7 +21,7 @@ function SignUp() {
                 }
             }}
         >
-            <div className="mx-auto w-7/12 ">
+            <div className="min-h-auto mx-auto h-auto w-7/12 max-w-[100%] overflow-x-hidden ">
                 <header className="mx-auto mt-10 w-8/12">
                     <h1 className="text-center text-[32px] font-bold text-black">Create Account</h1>
                     <div>
@@ -42,12 +44,12 @@ function SignUp() {
                         </div>
                     </div>
                 </header>
-                <form>
+                <form onSubmit={(e) => e.preventDefault()}>
                     <div className="">
                         <label htmlFor="fullname" className="mb-2 font-semibold">
                             Full Name
                         </label>
-                        <div id="fullname" className="mt-1 rounded-md border-[1px] px-2 py-1">
+                        <div id="fullname" className="mt-1 rounded-md border-[1px] border-hypay-gray px-2 py-1">
                             <input
                                 type="text"
                                 className="w-full border-none bg-transparent outline-none"
@@ -59,7 +61,7 @@ function SignUp() {
                         <label htmlFor="email" className="mb-2 font-semibold">
                             Email
                         </label>
-                        <div id="email" className="mt-1  rounded-md border-[1px] px-2 py-1">
+                        <div id="email" className="mt-1  rounded-md border-[1px] border-hypay-gray px-2 py-1">
                             <input
                                 type="email"
                                 className="w-full border-none bg-transparent outline-none"
@@ -75,7 +77,7 @@ function SignUp() {
                                 <p className="text-xs text-hypay-gray">Forgotten your password?</p>
                             </div>
                         </label>
-                        <div className="mt-1 rounded-md border-[1px] px-2 py-1">
+                        <div className="bord mt-1 rounded-md border-[1px] border-hypay-gray px-2 py-1">
                             <input
                                 type="password"
                                 className="w-full border-none bg-transparent outline-none"
@@ -91,7 +93,7 @@ function SignUp() {
                         <span className="cursor-pointer pl-1 text-blue-500">Terms and conditions</span>
                     </p>
                     <div className="mt-2 flex items-center  justify-center font-semibold">
-                        <Button className={`${COLORS.PINK} w-[80%] `} primary>
+                        <Button className={`${COLORS.PINK} w-[80%] `} onClick={() => push('/createstore')} primary>
                             Register
                         </Button>
                     </div>

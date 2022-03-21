@@ -2,9 +2,8 @@ import { COLORS } from '../../lib/constants/colors'
 import { Button } from '../Button'
 
 export const CreateStore = (props: any) => {
-    console.log(props, 'props')
     return (
-        <div className="mx-auto w-10/12 ">
+        <div className="mx-auto min-h-full w-10/12 ">
             <header className="mx-auto mt-10 w-full">
                 <h1 className="text-center text-[32px] font-bold text-black">Create your store</h1>
                 <div>
@@ -34,16 +33,6 @@ export const CreateStore = (props: any) => {
                     </Button>
                 </div>
             </form>
-
-            {/* <footer className="mt-20">
-                <p className="text-center text-sm text-hypay-gray">
-                    Learn More.
-                    <span className="cursor-pointer pl-1 text-blue-500"> How to open a store?</span>
-                </p>
-                <p className="text-right">
-                    <span className="cursor-pointer pl-1 text-blue-500"> Help . Privacy</span>
-                </p>
-            </footer> */}
         </div>
     )
 }

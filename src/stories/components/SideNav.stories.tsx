@@ -28,7 +28,7 @@ const Template: ComponentStory<typeof SideNav> = (args) => {
     const settingsIndex = MenuItemList.length - 1
 
     return (
-        <div className="items-normal flex min-h-screen w-full max-w-[188px] flex-col justify-between bg-[#36076B] ">
+        <div className="items-normal flex h-screen min-h-screen w-full max-w-[188px] flex-col justify-between bg-[#36076B] ">
             <header className="flex w-full items-center justify-center p-4">
                 <Logo labelled={{ labelPosition: 'right' }} labelColor={'text-white'} color={COLORS.WHITE} />
             </header>

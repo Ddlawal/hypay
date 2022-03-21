@@ -27,10 +27,12 @@ a {
 
 *::-webkit-scrollbar {
     width: 5px;
+    height: 0px;
     border-radius: 3px;
 }
 
 *::-webkit-scrollbar-track {
+    height: 3px;
 }
 *::-webkit-scrollbar-thumb {
 }
