@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { setupListeners } from '@reduxjs/toolkit/query'
+import { persistStore } from 'redux-persist'
 import rootReducer from '../reducers'
 // import { persistStore } from 'redux-persist'
 import baseApi from '../services'
@@ -23,6 +24,8 @@ export const store = configureStore({
 
     devTools: process.env.NODE_ENV !== 'production',
 })
+
+export const persistor = persistStore(store)
 
 setupListeners(store.dispatch)
 

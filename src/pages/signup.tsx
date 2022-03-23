@@ -4,10 +4,37 @@ import AuthLayout from '../components/AuthLayout/AuthLayout'
 import { Button } from '../components/Button'
 import { COLORS } from '../lib/constants/colors'
 import { useRouter } from 'next/router'
+import { useForm, SubmitHandler, Controller } from 'react-hook-form'
+import { SecondInput } from '../components/form'
+import { CloseEye } from '../components/Icons/CloseEye'
+import { useMiniRegistrationMutation } from '../services/auth'
+import { updateLogin } from '../reducers/auth'
+import { useAppDispatch } from '../hooks/useStoreHooks'
+
+const EMAIL_PATTERN =
+    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
 function SignUp() {
     const [index, setIndex] = useState(0)
+    const [passwordType, setPasswordType] = useState(false)
     const { push } = useRouter()
+    const dispatch = useAppDispatch()
+    const [miniRegister, { status }] = useMiniRegistrationMutation()
+
+    console.log(status, 'status of mini registration')
+
+    const {
+        register,
+        handleSubmit,
+        watch,
+        formState: { errors },
+    } = useForm<any>()
+    const onSubmit: SubmitHandler<any> = (data) => {
+        dispatch(updateLogin(data))
+        miniRegister(data)
+        console.log(data, 'data')
+    }
+
     return (
         <AuthLayout
             title="Be part of our community"
@@ -44,32 +71,50 @@ function SignUp() {
                         </div>
                     </div>
                 </header>
-                <form onSubmit={(e) => e.preventDefault()}>
-                    <div className="">
-                        <label htmlFor="fullname" className="mb-2 font-semibold">
-                            Full Name
-                        </label>
-                        <div id="fullname" className="mt-1 rounded-md border-[1px] border-hypay-gray px-2 py-1">
-                            <input
-                                type="text"
-                                className="w-full border-none bg-transparent outline-none"
-                                placeholder="Rafael Caduso"
-                            />
-                        </div>
-                    </div>
-                    <div className="">
-                        <label htmlFor="email" className="mb-2 font-semibold">
-                            Email
-                        </label>
-                        <div id="email" className="mt-1  rounded-md border-[1px] border-hypay-gray px-2 py-1">
-                            <input
-                                type="email"
-                                className="w-full border-none bg-transparent outline-none"
-                                placeholder="cardoso.rafael@anymail.com "
-                            />
-                        </div>
-                    </div>
+                <form onSubmit={handleSubmit(onSubmit)}>
+                    <SecondInput
+                        name="fullname"
+                        errors={errors}
+                        label="Full Name"
+                        register={register}
+                        validation={{ required: true }}
+                        placeholder="Rafael Caduso"
+                        type="text"
+                    />
+                    <SecondInput
+                        name="emai;"
+                        errors={errors}
+                        label="Email"
+                        register={register}
+                        validation={{
+                            required: true,
+                            pattern: {
+                                message: 'invalid email address',
+                                value: EMAIL_PATTERN,
+                            },
+                        }}
+                        placeholder="cardoso.rafael@anymail.com "
+                        type="email"
+                    />
                     {/* password input field */}
+                    {/* <Input
+                        name="password"
+                        rightLabel
+                        errors={errors}
+                        label="Password"
+                        register={register}
+                        validation={{ required: true, minLength: 6 }}
+                        placeholder="6 characters and above"
+                        type={passwordType ? 'text' : 'password'}
+                        icon={
+                            <CloseEye
+                                onClick={() => {
+                                    setPasswordType(!passwordType)
+                                }}
+                            />
+                        }
+                    /> */}
+
                     <div className="">
                         <label htmlFor="email" className="mt-3 flex font-semibold">
                             <div className="flex w-full items-baseline justify-between">
@@ -77,23 +122,42 @@ function SignUp() {
                                 <p className="text-xs text-hypay-gray">Forgotten your password?</p>
                             </div>
                         </label>
-                        <div className="bord mt-1 rounded-md border-[1px] border-hypay-gray px-2 py-1">
+                        <div
+                            className={`mt-1 flex items-center justify-between gap-2 rounded-md border-[1px] ${
+                                errors['email']?.type ? 'border-red-600' : 'border-hypay-gray'
+                            } px-2 py-1`}
+                        >
                             <input
-                                type="password"
+                                type={passwordType ? 'text' : 'password'}
+                                {...register('password', { required: true, minLength: 6 })}
                                 className="w-full border-none bg-transparent outline-none"
                                 placeholder="6 characters and above"
                             />
+                            <CloseEye
+                                onClick={() => {
+                                    setPasswordType(!passwordType)
+                                }}
+                            />
                         </div>
-                        <p className="mt-2 text-right text-xs font-semibold text-hypay-orange">
-                            Must contain at least 6 characters
-                        </p>
+
+                        {errors.password ? (
+                            errors.password.type == 'minLength' ? (
+                                <p className="mt-2 text-right text-xs font-semibold text-hypay-orange">
+                                    Must contain at least 6 characters
+                                </p>
+                            ) : (
+                                <p className="text-sm text-red-600">This field is required!</p>
+                            )
+                        ) : (
+                            ''
+                        )}
                     </div>
                     <p className="my-3 text-center text-sm text-hypay-gray">
                         By continuing, you agree to the
                         <span className="cursor-pointer pl-1 text-blue-500">Terms and conditions</span>
                     </p>
                     <div className="mt-2 flex items-center  justify-center font-semibold">
-                        <Button className={`${COLORS.PINK} w-[80%] `} onClick={() => push('/createstore')} primary>
+                        <Button className={`${COLORS.PINK} w-[80%] `} primary>
                             Register
                         </Button>
                     </div>

@@ -1,35 +1,22 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { combineReducers, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import baseApi from '../services'
+import { persistReducer } from 'redux-persist'
+import storageSession from 'redux-persist/lib/storage/session'
+import auth from '../reducers/auth'
+import ui from './ui'
 
-export interface CounterState {
-    value: number
+const persistConfig = {
+    storage: storageSession,
+    key: 'hypay',
+    // whitelist: ["auth"],
 }
 
-const initialState: CounterState = {
-    value: 0,
-}
-
-export const counterSlice = createSlice({
-    name: 'counter',
-    initialState,
-    reducers: {
-        increment: (state) => {
-            // Redux Toolkit allows us to write "mutating" logic in reducers. It
-            // doesn't actually mutate the state because it uses the Immer library,
-            // which detects changes to a "draft state" and produces a brand new
-            // immutable state based off those changes
-            state.value += 1
-        },
-        decrement: (state) => {
-            state.value -= 1
-        },
-        incrementByAmount: (state, action: PayloadAction<number>) => {
-            state.value += action.payload
-        },
-    },
+const rootStore = combineReducers({
+    [baseApi.reducerPath]: baseApi.reducer,
+    auth,
+    ui,
 })
 
-// Action creators are generated for each case reducer function
-export const { increment, decrement, incrementByAmount } = counterSlice.actions
+const rootReducer = persistReducer(persistConfig, rootStore)
 
-export default counterSlice.reducer
+export default rootReducer
