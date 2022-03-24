@@ -5,4 +5,5 @@ export const COLORS = {
     PINK: '#D95F76',
     YELLOW: '#FFB119',
     PLACEHOLDER: '#4B506D',
+    ICON_GRAY: '#959595',
 } as const
