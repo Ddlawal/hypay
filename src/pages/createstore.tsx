@@ -27,7 +27,7 @@ const createStoreTabs = [
     },
 ]
 
-const createStore: NextPage = () => {
+const VreateStore: NextPage = () => {
     const [selectedTab, setSelectedTab] = useState(0)
 
     return (
@@ -52,4 +52,4 @@ const createStore: NextPage = () => {
     )
 }
 
-export default createStore
+export default VreateStore
