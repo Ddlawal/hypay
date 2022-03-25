@@ -1,5 +1,5 @@
+import React, { useState } from 'react'
 import Image from 'next/image'
-import { useState } from 'react'
 import AuthLayout from '../components/AuthLayout/AuthLayout'
 import { Button } from '../components/Button'
 import { COLORS } from '../lib/constants/colors'

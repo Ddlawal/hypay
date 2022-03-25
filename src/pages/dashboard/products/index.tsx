@@ -1,3 +1,4 @@
+import * as React from 'react'
 import { NextPage } from 'next'
 import { OpenLinkIcon } from '../../../components/Icons'
 import { PrimaryLayout } from '../../../components/Layout'

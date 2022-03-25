@@ -1,5 +1,5 @@
+import React, { FC } from 'react'
 import Link, { LinkProps } from 'next/link'
-import { FC } from 'react'
 
 type NextLinkProps = LinkProps & Omit<React.ComponentProps<'a'>, 'href'>
 

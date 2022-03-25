@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import React, { FC, useState } from 'react'
 import { COLORS } from '../../lib/constants/colors'
 import { Button } from '../Button'
 import { ConnectIcon, CreateAccountIcon, DeliveryIcon, ReceivePaymentIcon, ShareIcon } from '../Icons'
@@ -15,7 +15,7 @@ interface layoutProps {
 
 const AuthLayout: FC<layoutProps> = ({ children, title, subtitle, changeIndex, index, btnText }) => {
     const [selectedTab, setSelectedTab] = useState(0)
-    const {value} = useAppSelector((state) => state)
+    const { value } = useAppSelector((state) => state)
     console.log(value, 'the state')
     return (
         <main className="overflow- relative flex   min-h-screen w-screen">

@@ -1,5 +1,5 @@
+import React, { FC, useState } from 'react'
 import classNames from 'classnames'
-import { FC, useState } from 'react'
 import { NextLink } from '../Links'
 
 type NavItemProps = {
@@ -14,12 +14,20 @@ type NavItemProps = {
     rightIcon?: JSX.Element | (() => JSX.Element) | undefined
 }
 
-export const NavItem: FC<NavItemProps> = (props: any) => {
-    const { href, parentIndex, text, leftIcon, rightIcon, isActive, setActive, isDropDown } = props
+export const NavItem: FC<NavItemProps> = ({
+    href,
+    parentIndex,
+    text,
+    leftIcon,
+    rightIcon,
+    isActive,
+    setActive,
+    isDropDown,
+}) => {
     const [activeChild, setActiveChild] = useState<number>(-1)
     const [showDropdown, setShowDropdown] = useState<boolean>(false)
     const changeTab = () => {
-        setActive(parentIndex)
+        setActive(parentIndex!)
         setActiveChild(0)
     }
     const changeActiveChild = (i: number) => {

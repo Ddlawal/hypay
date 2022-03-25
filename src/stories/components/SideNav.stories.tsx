@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { SideNav } from '../../components/Layout'
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 import { COLORS } from '../../lib/constants/colors'

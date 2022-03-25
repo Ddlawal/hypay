@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import React, { FC, useState } from 'react'
 import { COLORS } from '../../lib/constants/colors'
 import { Logo } from '../../components/Logo'
 import { MenuItemList } from '../../lib/data'
