@@ -7,6 +7,7 @@ import { CloseIcon, MenuIcon, RightArrowIcon } from '../Icons'
 import { NextLink } from '../Links'
 import { Logo } from '../Logo'
 import { useRouter } from 'next/router'
+import { useOnClickOutside } from '../../hooks/useOnClickOutSide'
 
 const HeaderLinks = () => {
     const { push } = useRouter()
@@ -42,17 +43,17 @@ const DesktopLinks = () => {
 
 const MobileLinks = () => {
     const [open, setOpen] = useState(false)
+    const { ref } = useOnClickOutside(() => setOpen(false))
+
     return (
         <>
             <div
+                ref={ref}
                 className={classNames(
                     !open && 'translate-x-full',
-                    'absolute top-0 right-0 block h-screen w-10/12 bg-white py-8 px-6 transition duration-500 ease-in-out sm:w-8/12 sm:p-10 md:hidden'
+                    'absolute top-0 right-0 block h-screen w-4/6 bg-white py-8 px-6 pt-12 transition duration-500 ease-in-out sm:w-8/12 sm:p-10 md:hidden'
                 )}
             >
-                <div onClick={() => setOpen(false)} className="mb-2 flex justify-end">
-                    <CloseIcon />
-                </div>
                 <HeaderLinks />
             </div>
             <div className="block md:hidden" onClick={() => setOpen(true)}>
