@@ -7,9 +7,7 @@ import Link from 'next/link'
 import classNames from 'classnames'
 import { SIDE_NAV_WIDTH } from '../../lib/constants/elements'
 
-type SideNavProps = {}
-
-export const SideNav: FC<SideNavProps> = () => {
+export const SideNav: FC = () => {
     const [activeTab, setActivetab] = useState(0)
 
     const changeTab = (i: number) => {
