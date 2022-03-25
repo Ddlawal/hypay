@@ -23,7 +23,7 @@ const footerItems = [
 
 export const MobileFooter = () => {
     return (
-        <div className="fixed bottom-0 flex w-full items-center justify-between bg-white px-4 py-2 text-[0.7rem] font-bold text-hypay-pink">
+        <div className="fixed bottom-0 flex w-full items-center justify-between bg-white px-4 py-2 text-[0.7rem] font-bold text-hypay-pink md:hidden">
             {footerItems.map(({ text, icon }, i) => (
                 <div key={`item-${i}`} className="flex flex-col items-center gap-0.5">
                     {icon}

@@ -4,25 +4,30 @@ import { Logo } from '../../components/Logo'
 import { MenuItemList } from '../../lib/data'
 import { NavItem } from './NavItem'
 import Link from 'next/link'
+import classNames from 'classnames'
+import { SIDE_NAV_WIDTH } from '../../lib/constants/elements'
 
-type SideNavProps = {
-    close?: () => void
-}
+type SideNavProps = {}
 
-export const SideNav: FC<SideNavProps> = ({ close }) => {
+export const SideNav: FC<SideNavProps> = () => {
     const [activeTab, setActivetab] = useState(0)
 
     const changeTab = (i: number) => {
         setActivetab(i)
     }
 
+    const width = SIDE_NAV_WIDTH + 'px'
+
     const settingsIndex = MenuItemList.length - 1
 
     return (
-        <div className="items-normal flex h-screen min-h-screen w-full max-w-[188px] flex-col justify-between rounded-r-xl bg-[#36076B] md:rounded-none ">
+        <div
+            style={{ width }}
+            className="items-normal flex h-screen min-h-screen flex-col justify-between rounded-r-xl bg-[#36076B] md:rounded-none "
+        >
             <header className="flex w-full items-center justify-center p-4">
                 <Link href="#">
-                    <a onClick={close}>
+                    <a>
                         <Logo labelled={{ labelPosition: 'right' }} labelColor={'text-white'} color={COLORS.WHITE} />
                     </a>
                 </Link>
