@@ -1,7 +1,8 @@
+import * as React from 'react'
 import { IconProps } from '../../interfaces/icons'
 import { COLORS } from '../../lib/constants/colors'
 
-export const SettingsIcon = ({ size = 18, color = COLORS.WHITE }: IconProps): JSX.Element => {
+export const SettingsIcon = ({ size = 18, color = COLORS.BLACK }: IconProps): JSX.Element => {
     return (
         <svg width={size} height={size} viewBox="0 0 20 19" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path

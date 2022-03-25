@@ -1,3 +1,4 @@
+import * as React from 'react'
 import { COLORS } from '../../lib/constants/colors'
 import { Button } from '../Button'
 import { BagIcon, CameraIcon } from '../Icons'

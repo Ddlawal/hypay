@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import React, { FC, useState } from 'react'
 import { COLORS } from '../../lib/constants/colors'
 import { Button } from '../Button'
 import { ConnectIcon, CreateAccountIcon, DeliveryIcon, ReceivePaymentIcon, ShareIcon } from '../Icons'

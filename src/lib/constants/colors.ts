@@ -6,4 +6,5 @@ export const COLORS = {
     YELLOW: '#FFB119',
     PLACEHOLDER: '#4B506D',
     GREY: '#9FA2B4',
+    ICON_GRAY: '#959595',
 } as const

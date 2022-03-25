@@ -1,9 +1,9 @@
+import React, { useState } from 'react'
 import { COLORS } from '../../lib/constants/colors'
 import { Button } from '../Button'
 import { FacebookSvgIcon } from '../Icons/FacebookSvgIcon'
 import { InstagramSvgIcon } from '../Icons/InstagramSvgIcon'
 import { LinkedInSvgIcon } from '../Icons/LinkedInSvgIcon'
-import { useState } from 'react'
 
 function CreateSocialStore() {
     const [socialsIcon, setSocialIcon] = useState('')
