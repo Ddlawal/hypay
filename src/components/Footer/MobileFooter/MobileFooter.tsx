@@ -1,3 +1,4 @@
+import * as React from 'react'
 import { COLORS } from '../../../lib/constants/colors'
 import { CommentIcon, HomeIcon, SettingsIcon, TagIcon } from '../../Icons'
 
@@ -22,9 +23,9 @@ const footerItems = [
 
 export const MobileFooter = () => {
     return (
-        <div className="fixed bottom-0 flex w-full items-center justify-between bg-white px-4 py-2 text-[0.7rem] font-bold text-hypay-pink">
-            {footerItems.map(({ text, icon }) => (
-                <div className="flex flex-col items-center gap-0.5">
+        <div className="fixed bottom-0 flex w-full items-center justify-between bg-white px-4 py-2 text-[0.7rem] font-bold text-hypay-pink md:hidden">
+            {footerItems.map(({ text, icon }, i) => (
+                <div key={`item-${i}`} className="flex flex-col items-center gap-0.5">
                     {icon}
                     <div>{text}</div>
                 </div>

@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
+import { NextPage } from 'next'
 import AuthLayout from '../components/AuthLayout/AuthLayout'
 import { Button } from '../components/Button'
 import { AddAProduct } from '../components/CreateAStore/AddAProduct'
@@ -26,7 +27,7 @@ const createStoreTabs = [
     },
 ]
 
-function createStore() {
+const VreateStore: NextPage = () => {
     const [selectedTab, setSelectedTab] = useState(0)
 
     return (
@@ -51,4 +52,4 @@ function createStore() {
     )
 }
 
-export default createStore
+export default VreateStore

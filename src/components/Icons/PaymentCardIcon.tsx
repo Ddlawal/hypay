@@ -1,3 +1,4 @@
+import * as React from 'react'
 import { IconProps } from '../../interfaces/icons'
 import { COLORS } from '../../lib/constants/colors'
 

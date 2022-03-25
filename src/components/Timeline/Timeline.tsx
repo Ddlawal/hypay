@@ -1,5 +1,5 @@
+import React, { FC, ReactElement, ReactNode } from 'react'
 import classNames from 'classnames'
-import { FC, ReactElement, ReactNode } from 'react'
 import { useTimeline } from '../../hooks/useTimeline'
 import { COLORS } from '../../lib/constants/colors'
 

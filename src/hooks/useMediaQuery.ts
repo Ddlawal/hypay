@@ -1,3 +1,4 @@
+import { useLayoutEffect, useState } from 'react'
 import { useMediaQuery as useReactResponsive } from 'react-responsive'
 
 type Size = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'
@@ -12,6 +13,12 @@ const breakpoints: Record<Size, number> = {
 }
 
 export const useMediaQuery = (size: Size): boolean => {
+    const [isLarger, setIsLarger] = useState(false)
+
     const minWidth = breakpoints[size]
-    return useReactResponsive({ minWidth })
+    const dt = useReactResponsive({ minWidth })
+
+    useLayoutEffect(() => setIsLarger(dt), [])
+
+    return isLarger
 }

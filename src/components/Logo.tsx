@@ -1,3 +1,4 @@
+import * as React from 'react'
 import classNames from 'classnames'
 import { COLORS } from '../lib/constants/colors'
 import { LogoIcon } from './Icons'
