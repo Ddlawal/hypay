@@ -7,12 +7,10 @@ import { useLoginMutation } from '../services/auth'
 import { useForm } from 'react-hook-form'
 import { useRouter } from 'next/router'
 import { login as loginUser } from '../reducers/auth'
-import { useAppDispatch } from '../hooks/useStoreHooks'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import Link from 'next/link'
 import { SecondInput } from '../components/form'
 import { EMAIL_PATTERN } from '../lib/data'
-import { CloseEye } from '../components/Icons'
 import { wrapper } from '../store'
 import PasswordInput from '../components/form/PasswordInput'
 
@@ -41,12 +39,12 @@ function login(props: any) {
             console.log(data)
             useLogin(data)
                 .unwrap()
-                .then((payload) => {
+                .then((payload: any) => {
                     localStorage.setItem('user', JSON.stringify(payload))
                     dispatch(loginUser(payload))
                     push('/createstore')
                 })
-                .catch((error) => {
+                .catch((error: any) => {
                     console.error('rejected', error)
                     alert(error)
                 })
