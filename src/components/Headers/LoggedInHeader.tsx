@@ -17,7 +17,7 @@ export const LoggedInHeader = () => {
     const width = SIDE_NAV_WIDTH + 'px'
 
     return (
-        <div className="absolute z-50 flex w-full items-center justify-between bg-white py-4 px-2 md:justify-end md:px-8">
+        <div className="flex w-full items-center justify-between bg-white py-4 px-2 md:justify-end md:px-8">
             <div className="block md:hidden">
                 <div
                     ref={ref}

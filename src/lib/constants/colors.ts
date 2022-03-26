@@ -1,10 +1,11 @@
 export const COLORS = {
-    PRIMARY: '#36076B',
     BLACK: '#242424',
-    WHITE: '#FFFFFF',
-    PINK: '#D95F76',
-    YELLOW: '#FFB119',
-    PLACEHOLDER: '#4B506D',
+    GREEN: '#1B9B65',
     GREY: '#9FA2B4',
     ICON_GRAY: '#959595',
+    PINK: '#D95F76',
+    PLACEHOLDER: '#4B506D',
+    PRIMARY: '#36076B',
+    WHITE: '#FFFFFF',
+    YELLOW: '#FFB119',
 } as const
