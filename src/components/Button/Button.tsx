@@ -7,16 +7,21 @@ type ButtonProps = {
     size?: 'sm' | 'base' | 'lg'
     disabled?: string
     primary?: boolean
+    outlined?: boolean
     onClick?: () => void
 }
 
-export const Button: FC<ButtonProps> = ({ children, className, primary, size = 'sm', onClick }) => {
+export const Button: FC<ButtonProps> = ({ children, className, primary, outlined, size = 'sm', onClick }) => {
     return (
         <button
             onClick={onClick}
             className={classNames(
                 className,
-                primary && 'bg-hypay-pink text-white',
+                primary
+                    ? outlined
+                        ? 'border border-hypay-pink bg-white text-hypay-pink'
+                        : 'bg-hypay-pink text-white'
+                    : '',
                 `rounded-md py-1.5 px-2 leading-6 text-${size}`
             )}
         >
