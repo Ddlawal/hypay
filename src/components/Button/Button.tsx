@@ -5,7 +5,7 @@ type ButtonProps = {
     children?: ReactNode
     className?: string
     size?: 'sm' | 'base' | 'lg'
-    disabled?: string
+    disabled?: boolean
     primary?: boolean
     outlined?: boolean
     onClick?: () => void

@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { HYDRATE } from 'next-redux-wrapper'
 
-interface User {
+export interface User {
     userInfo: {
         customerID: number
         name: string
@@ -22,23 +23,27 @@ interface User {
     }
 }
 
-interface initialStateInterface {
+export interface initialStateInterface {
     user: User | null
     isAuthenticated: boolean
     isError: boolean
     holdLogindetails: any
 }
 
-// const initialUser = window?.localStorage.getItem('user') ? window?.localStorage.getItem('user') : null
+const firstState = () => {
+    try {
+        let serializedState = localStorage.getItem('user')
+        if (!serializedState) {
+            return null
+        }
+        return JSON.parse(serializedState)
+    } catch (error) {
+        return null
+    }
+}
 
-const initialState = {
-    // name: 'Balogun Abdulquddus',
-    // businessName: 'Halaalbuy',
-    // accountType: 'Merchant',
-    // email: 'babusunnah@gmail.com',
-    // password: 'balex1234',
-    // referral_code: '',
-    user: {},
+const initialState: initialStateInterface = {
+    user: firstState(),
     isAuthenticated: false,
     isError: false,
     holdLogindetails: {},
@@ -70,16 +75,28 @@ const userResponse = {
 export const authSlice = createSlice({
     name: 'auth',
     initialState,
+    extraReducers: {
+        [HYDRATE]: (state, action) => {
+            console.log('HYDRATE login', state, action.payload)
+            return {
+                ...state,
+                ...action.payload.subject,
+            }
+        },
+    },
     reducers: {
-        login: (state, action: PayloadAction<any>) => ({
-            ...state,
-            user: action.payload,
-            isAuthenticated: true,
-            holdLogindetails: {},
-        }),
+        login: (state, action: PayloadAction<any>) => {
+            console.log(action, ' login action was fired')
+            return {
+                ...state,
+                user: action.payload,
+                isAuthenticated: true,
+                holdLogindetails: {},
+            }
+        },
         logout: (state) => ({
             ...state,
-            user: {},
+            user: null,
             isAuthenticated: false,
             isError: false,
             holdLogindetails: {},

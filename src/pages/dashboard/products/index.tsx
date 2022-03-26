@@ -3,6 +3,7 @@ import { NextPage } from 'next'
 import { OpenLinkIcon } from '../../../components/Icons'
 import { PrimaryLayout } from '../../../components/Layout'
 import { COLORS } from '../../../lib/constants/colors'
+import { withAuth } from '../../../lib/ProtectedRoutes'
 
 const Products: NextPage = () => {
     return (
@@ -19,4 +20,4 @@ const Products: NextPage = () => {
         </PrimaryLayout>
     )
 }
-export default Products
+export default withAuth(Products)

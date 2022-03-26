@@ -1,64 +1,101 @@
-import * as React from 'react'
+import React, { useEffect } from 'react'
 import Image from 'next/image'
 import { Button } from '../components/Button'
 import { Logo } from '../components/Logo'
 import { COLORS } from '../lib/constants/colors'
+import { useLoginMutation } from '../services/auth'
+import { useForm } from 'react-hook-form'
+import { useRouter } from 'next/router'
+import { login as loginUser } from '../reducers/auth'
+import { useAppDispatch } from '../hooks/useStoreHooks'
+import { useDispatch, useSelector } from 'react-redux'
+import Link from 'next/link'
+import { SecondInput } from '../components/form'
+import { EMAIL_PATTERN } from '../lib/data'
+import { CloseEye } from '../components/Icons'
+import { wrapper } from '../store'
+import PasswordInput from '../components/form/PasswordInput'
 
-function login() {
+export const getServerSideProps = wrapper.getServerSideProps(({ getState }) => async ({ resolvedUrl, ...rest }) => {
+    if (typeof window !== undefined) {
+        const { auth } = getState()
+        console.log(getState(), 'check am out')
+    }
+    return { props: { resolvedUrl } }
+})
+
+function login(props: any) {
+    const [useLogin, { isLoading }] = useLoginMutation()
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm<any>()
+
+    const { push } = useRouter()
+    const dispatch = useDispatch()
+
+    const onSubmit = async (data: any) => {
+        // if (isLoading) return
+        try {
+            console.log(data)
+            useLogin(data)
+                .unwrap()
+                .then((payload) => {
+                    localStorage.setItem('user', JSON.stringify(payload))
+                    dispatch(loginUser(payload))
+                    push('/createstore')
+                })
+                .catch((error) => {
+                    console.error('rejected', error)
+                    alert(error)
+                })
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     return (
         <main className="relative flex h-screen flex-col   bg-login-books bg-cover bg-center">
             <div className="hidden h-[70%] md:block"></div>
             <div className="absolute top-[0%] h-[100vh] w-[100vw] bg-white p-4  md:right-[50%] md:left-[50%] md:top-[5%] md:-mr-[50%] md:-ml-[10rem] md:h-[78%] md:w-[20rem] md:rounded-md md:shadow-md">
                 <header className="text-center">
-                    <Logo
-                        // size={25}
-                        color={COLORS.YELLOW}
-                        labelColor="text-hypay-orange"
-                        labelled={{ labelPosition: 'bottom' }}
-                    />
-                    <h2 className="mt-5 text-center text-2xl font-semibold md:mt-2">Login</h2>
-                    <p className="mt-5 text-xs text-hypay-gray md:mt-3">Use seu email and senha abaixo</p>
+                    <Logo color={COLORS.YELLOW} labelColor="text-hypay-orange" labelled={{ labelPosition: 'bottom' }} />
+                    <h2 className="my-10 text-center text-2xl font-semibold md:my-4">Login</h2>
+                    <p className=" text-xs text-hypay-gray md:mt-3">Use seu email and senha abaixo</p>
                 </header>
                 <section className="mt-5">
-                    <form>
-                        <div className="">
-                            <label htmlFor="email" className="mb-2 font-semibold">
-                                Email
-                            </label>
-                            <div className="mt-1 rounded-md border-[1px] px-2 py-1">
-                                <input
-                                    type="email"
-                                    className="border-none bg-transparent outline-none"
-                                    placeholder="Enter your email"
-                                />
-                            </div>
-                        </div>
+                    <form onSubmit={handleSubmit(onSubmit)}>
+                        <SecondInput
+                            className="my-6 md:my-0"
+                            name="email"
+                            errors={errors}
+                            label="Email"
+                            register={register}
+                            validation={{
+                                required: true,
+                                pattern: {
+                                    message: 'invalid email address',
+                                    value: EMAIL_PATTERN,
+                                },
+                            }}
+                            placeholder="Digite seu email"
+                            type="email"
+                        />
                         {/* password input field */}
-                        <div className="">
-                            <label htmlFor="email" className="mt-3 flex font-semibold">
-                                <div className="flex w-full items-baseline justify-between">
-                                    <p>Password</p>
-                                    <p className="text-xs text-hypay-gray">Forgotten your password?</p>
-                                </div>
-                            </label>
-                            <div className="mt-1 rounded-md border-[1px] px-2 py-1">
-                                <input
-                                    type="password"
-                                    className="border-none bg-transparent outline-none"
-                                    placeholder="Enter your password"
-                                />
-                            </div>
-                            <p className="mt-2 text-right text-xs font-semibold text-hypay-orange">
-                                Must contain at least 6 characters
-                            </p>
-                        </div>
-                        <div className="mt-2 flex items-center  justify-center font-semibold">
-                            <Button className={`${COLORS.PINK} w-[80%] `} primary>
-                                Enter
+                        <PasswordInput
+                            errors={errors}
+                            register={register}
+                            validation={{ required: true, minLength: 6 }}
+                            placeholder="Digite sua senha"
+                        />
+                        <div className="my-6  flex items-center justify-center  font-semibold md:mt-2">
+                            <Button className={`${COLORS.PINK} ${isLoading && 'opacity-7'} w-full md:w-[80%] `} primary>
+                                {isLoading ? 'loading...' : 'Entrar'}
                             </Button>
                         </div>
                     </form>
-                    <div className="my-2 flex items-center justify-center gap-3">
+                    <div className="my-6 flex items-center justify-center gap-3 md:my-2">
                         <Image
                             src="/images/facebook-icon.png"
                             alt="facebook icon"
@@ -75,7 +112,10 @@ function login() {
                         />
                     </div>
                     <p className="text-center text-sm text-hypay-gray">
-                        Don't have an account?<span className="cursor-pointer pl-1 text-blue-500">Sign In</span>
+                        Don't have an account?
+                        <Link href="/signup">
+                            <a className="cursor-pointer pl-1 text-blue-500">Sign In</a>
+                        </Link>
                     </p>
                 </section>
             </div>

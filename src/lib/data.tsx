@@ -86,3 +86,9 @@ export const MenuItemList: Array<{
 export const generateRandomImage: (width: number, height: number) => void = (width = 200, height = 300) => {
     return `https://picsum.photos/${width}/${height}`
 }
+
+export const EMAIL_PATTERN: RegExp =
+    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+
+type typeOfUser = 'Merchant' | 'Buyer' | 'Both'
+export let TYPE_OF_USER: typeOfUser = 'Merchant'

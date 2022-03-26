@@ -1,9 +1,11 @@
-import { configureStore } from '@reduxjs/toolkit'
+import { configureStore, ThunkAction } from '@reduxjs/toolkit'
 import { setupListeners } from '@reduxjs/toolkit/query'
 import { persistStore } from 'redux-persist'
 import rootReducer from '../reducers'
 // import { persistStore } from 'redux-persist'
 import baseApi from '../services'
+import { Action } from 'redux'
+import { createWrapper, HYDRATE } from 'next-redux-wrapper'
 
 const middlewareHandler = (getDefaultMiddleware: any) => {
     const middlewareList = [
@@ -17,19 +19,26 @@ const middlewareHandler = (getDefaultMiddleware: any) => {
     return middlewareList
 }
 
-export const store = configureStore({
-    reducer: rootReducer,
+export const store = () =>
+    configureStore({
+        reducer: rootReducer,
 
-    middleware: (getDefaultMiddleware) => middlewareHandler(getDefaultMiddleware),
+        middleware: (getDefaultMiddleware) => middlewareHandler(getDefaultMiddleware),
 
-    devTools: process.env.NODE_ENV !== 'production',
-})
+        devTools: process.env.NODE_ENV !== 'production',
+    })
 
-export const persistor = persistStore(store)
+export const persistor = persistStore(store())
 
-setupListeners(store.dispatch)
+setupListeners(store().dispatch)
 
+export type AppStore = ReturnType<typeof store>
+export type AppState = ReturnType<AppStore['getState']>
+export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, AppState, unknown, Action>
 // Infer the `RootState` and `AppDispatch` types from the store itself
-export type RootState = ReturnType<typeof store.getState>
+// Infer the `RootState` and `AppDispatch` types from the store itself
+export type RootState = ReturnType<AppStore['getState']>
 // Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
-export type AppDispatch = typeof store.dispatch
+export type AppDispatch = ReturnType<AppStore['dispatch']>
+
+export const wrapper = createWrapper<AppStore>(store)

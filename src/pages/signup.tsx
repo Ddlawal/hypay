@@ -1,38 +1,73 @@
-import React, { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Image from 'next/image'
+import { useSession, getProviders, signIn, ClientSafeProvider, LiteralUnion } from 'next-auth/react'
+import type { BuiltInProviderType } from 'next-auth/providers'
 import AuthLayout from '../components/AuthLayout/AuthLayout'
 import { Button } from '../components/Button'
 import { COLORS } from '../lib/constants/colors'
 import { useRouter } from 'next/router'
-import { useForm, SubmitHandler, Controller } from 'react-hook-form'
+import { useForm, SubmitHandler } from 'react-hook-form'
 import { SecondInput } from '../components/form'
-import { CloseEye } from '../components/Icons/CloseEye'
-import { useMiniRegistrationMutation } from '../services/auth'
-import { updateLogin } from '../reducers/auth'
-import { useAppDispatch } from '../hooks/useStoreHooks'
-
-const EMAIL_PATTERN =
-    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+import { useRegistrationMutation } from '../services/auth'
+import { login } from '../reducers/auth'
+import Link from 'next/link'
+import { EMAIL_PATTERN } from '../lib/data'
+import { useDispatch } from 'react-redux'
+import PasswordInput from '../components/form/PasswordInput'
 
 function SignUp() {
     const [index, setIndex] = useState(0)
-    const [passwordType, setPasswordType] = useState(false)
-    const { push } = useRouter()
-    const dispatch = useAppDispatch()
-    const [miniRegister, { status }] = useMiniRegistrationMutation()
+    const [providers, setproviders] = useState<Record<
+        LiteralUnion<BuiltInProviderType, string>,
+        ClientSafeProvider
+    > | null>()
 
-    console.log(status, 'status of mini registration')
-
+    const { data: session, status } = useSession()
+    const { push, replace } = useRouter()
+    const dispatch = useDispatch()
+    const [miniRegister, { isLoading }] = useRegistrationMutation()
     const {
         register,
         handleSubmit,
-        watch,
         formState: { errors },
     } = useForm<any>()
-    const onSubmit: SubmitHandler<any> = (data) => {
-        dispatch(updateLogin(data))
-        miniRegister(data)
-        console.log(data, 'data')
+
+    useEffect(() => {
+        const setTheProviders = async () => {
+            const setupProviders = await getProviders()
+            setproviders(setupProviders)
+        }
+        setTheProviders()
+    }, [])
+
+    useEffect(() => {
+        if (session) {
+            replace('/')
+        }
+    }, [session])
+
+    const onSubmit: SubmitHandler<any> = async (data) => {
+        if (isLoading) return
+        try {
+            miniRegister(data)
+                .unwrap()
+                .then((payload) => {
+                    localStorage.setItem('user', JSON.stringify(payload))
+                    dispatch(login(payload))
+                    push('/createstore')
+                })
+                .catch(({ status, data }) => {
+                    const { message } = data
+                    if (status === 400) {
+                        alert(message['email'])
+                    }
+
+                    console.error('rejected', message)
+                })
+        } catch (error) {
+            console.error('rejected', error)
+        }
+        // console.log(data, 'data')
     }
 
     return (
@@ -48,7 +83,7 @@ function SignUp() {
                 }
             }}
         >
-            <div className="min-h-auto mx-auto h-auto w-7/12 max-w-[100%] overflow-x-hidden ">
+            <div className="min-h-auto mx-auto h-auto w-10/12 max-w-[100%] overflow-x-hidden md:w-7/12 ">
                 <header className="mx-auto mt-10 w-8/12">
                     <h1 className="text-center text-[32px] font-bold text-black">Create Account</h1>
                     <div>
@@ -61,19 +96,23 @@ function SignUp() {
                                 width="46"
                                 height="46"
                             />
-                            <Image
-                                src="/images/google-icon.png"
-                                alt="google icon"
-                                className="cursor-pointer"
-                                width="46"
-                                height="46"
-                            />
+                            {providers?.google && (
+                                <Image
+                                    src="/images/google-icon.png"
+                                    alt="google icon"
+                                    className="cursor-pointer"
+                                    width="46"
+                                    height="46"
+                                    onClick={() => signIn(providers.google.id)}
+                                    aria-label="Google Login"
+                                />
+                            )}
                         </div>
                     </div>
                 </header>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <SecondInput
-                        name="fullname"
+                        name="name"
                         errors={errors}
                         label="Full Name"
                         register={register}
@@ -82,7 +121,7 @@ function SignUp() {
                         type="text"
                     />
                     <SecondInput
-                        name="emai;"
+                        name="email"
                         errors={errors}
                         label="Email"
                         register={register}
@@ -97,69 +136,23 @@ function SignUp() {
                         type="email"
                     />
                     {/* password input field */}
-                    {/* <Input
-                        name="password"
-                        rightLabel
-                        errors={errors}
-                        label="Password"
-                        register={register}
-                        validation={{ required: true, minLength: 6 }}
-                        placeholder="6 characters and above"
-                        type={passwordType ? 'text' : 'password'}
-                        icon={
-                            <CloseEye
-                                onClick={() => {
-                                    setPasswordType(!passwordType)
-                                }}
-                            />
-                        }
-                    /> */}
-
-                    <div className="">
-                        <label htmlFor="email" className="mt-3 flex font-semibold">
-                            <div className="flex w-full items-baseline justify-between">
-                                <p>Password</p>
-                                <p className="text-xs text-hypay-gray">Forgotten your password?</p>
-                            </div>
-                        </label>
-                        <div
-                            className={`mt-1 flex items-center justify-between gap-2 rounded-md border-[1px] ${
-                                errors['email']?.type ? 'border-red-600' : 'border-hypay-gray'
-                            } px-2 py-1`}
-                        >
-                            <input
-                                type={passwordType ? 'text' : 'password'}
-                                {...register('password', { required: true, minLength: 6 })}
-                                className="w-full border-none bg-transparent outline-none"
-                                placeholder="6 characters and above"
-                            />
-                            <CloseEye
-                                onClick={() => {
-                                    setPasswordType(!passwordType)
-                                }}
-                            />
-                        </div>
-
-                        {errors.password ? (
-                            errors.password.type == 'minLength' ? (
-                                <p className="mt-2 text-right text-xs font-semibold text-hypay-orange">
-                                    Must contain at least 6 characters
-                                </p>
-                            ) : (
-                                <p className="text-sm text-red-600">This field is required!</p>
-                            )
-                        ) : (
-                            ''
-                        )}
-                    </div>
+                    <PasswordInput errors={errors} register={register} validation={{ required: true, minLength: 6 }} />
                     <p className="my-3 text-center text-sm text-hypay-gray">
                         By continuing, you agree to the
                         <span className="cursor-pointer pl-1 text-blue-500">Terms and conditions</span>
                     </p>
-                    <div className="mt-2 flex items-center  justify-center font-semibold">
-                        <Button className={`${COLORS.PINK} w-[80%] `} primary>
-                            Register
+                    <div className="mt-2 flex items-center justify-center font-semibold">
+                        <Button className={`${COLORS.PINK} ${isLoading && 'opacity-7'} w-full md:w-[80%] `} primary>
+                            {isLoading ? 'Registering...' : 'Register'}
                         </Button>
+                    </div>
+                    <div className="mx-auto my-3 w-full text-center">
+                        <p>
+                            Eu ja tenho uma conta{' '}
+                            <Link href="/login">
+                                <a className="text-hypay-primary">Login</a>
+                            </Link>
+                        </p>
                     </div>
                 </form>
             </div>

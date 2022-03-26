@@ -3,8 +3,31 @@ import { COLORS } from '../../lib/constants/colors'
 import { Button } from '../Button'
 import { BagIcon, CameraIcon } from '../Icons'
 import { useRouter } from 'next/router'
+import { useForm } from 'react-hook-form'
+import { SecondInput } from '../form'
+
+interface PhotographBoxProps {
+    boxSize?: string
+    cameraSize?: number
+}
+export const PhotographBox = ({ boxSize = '24', cameraSize = 50 }: PhotographBoxProps) => {
+    return (
+        <div
+            className={`h-${boxSize} flex cursor-pointer w-${boxSize} items-center justify-center rounded-md border-2 border-dashed border-hypay-gray`}
+        >
+            <CameraIcon size={cameraSize} />
+        </div>
+    )
+}
 
 export const AddAProduct = () => {
+    const {
+        register,
+        handleSubmit,
+        watch,
+        formState: { errors },
+    } = useForm<any>()
+
     const { push } = useRouter()
     return (
         <div className="mx-auto w-10/12 ">
@@ -18,46 +41,38 @@ export const AddAProduct = () => {
             </header>
             <form onSubmit={(e) => e.preventDefault()} className="mt-4 w-10/12">
                 <h3 className="my-3 font-semibold">Name and description</h3>
-                <div className="my-2">
-                    <label htmlFor="name" className="mb-2 font-semibold">
-                        Name
-                    </label>
-                    <div id="name" className="mt-1 rounded-md border-[1px] border-hypay-gray px-2 py-1">
-                        <input
-                            type="text"
-                            className="w-full border-none bg-transparent outline-none"
-                            placeholder="Lucian store"
-                        />
-                    </div>
-                </div>
-                <div className="my-2">
-                    <label htmlFor="description" className="mb-2 font-semibold">
-                        Description
-                    </label>
-                    <div id="description" className="mt-1 rounded-md border-[1px] border-hypay-gray px-2 py-1">
-                        <input
-                            type="text"
-                            className="w-full border-none bg-transparent outline-none"
-                            placeholder="Lucian store"
-                        />
-                    </div>
-                </div>
+                <SecondInput
+                    className="my-5 md:my-0"
+                    name="name"
+                    errors={errors}
+                    label="Names"
+                    register={register}
+                    validation={{
+                        required: true,
+                    }}
+                    placeholder="Lucian Store"
+                    type="text"
+                />
+                <SecondInput
+                    className="my-5 md:my-0"
+                    name="description"
+                    errors={errors}
+                    label="Description"
+                    register={register}
+                    validation={{
+                        required: true,
+                    }}
+                    placeholder="Describe your store"
+                    type="text"
+                />
 
                 <div>
                     <h4 className="my-2 text-xl font-bold">Photos</h4>
                     <div className="flex items-center justify-between">
-                        <div className="flex h-24 w-24 items-center justify-center rounded-md border-2 border-dashed border-hypay-gray ">
-                            <CameraIcon size={50} />
-                        </div>
-                        <div className="flex h-24 w-24 items-center justify-center rounded-md border-2 border-dashed border-hypay-gray ">
-                            <CameraIcon size={50} />
-                        </div>
-                        <div className="flex h-24 w-24 items-center justify-center rounded-md border-2 border-dashed border-hypay-gray ">
-                            <CameraIcon size={50} />
-                        </div>
-                        <div className="flex h-24 w-24 items-center justify-center rounded-md border-2 border-dashed border-hypay-gray ">
-                            <CameraIcon size={50} />
-                        </div>
+                        <PhotographBox />
+                        <PhotographBox />
+                        <PhotographBox />
+                        <PhotographBox />
                     </div>
 
                     {/* Product link Button  */}
@@ -71,69 +86,59 @@ export const AddAProduct = () => {
                         <p className="text-md  text-left font-normal text-black md:mt-3">
                             Link of your product's video on Youtube or Vimeo
                         </p>
-                        <div className="my-2">
-                            <div id="description" className="mt-1 rounded-md border-[1px] border-hypay-gray px-2 py-1">
-                                <input
-                                    type="text"
-                                    className="w-full border-none bg-transparent outline-none"
-                                    placeholder=""
-                                />
-                            </div>
-                        </div>
+                        <SecondInput
+                            className="my-2 md:my-0"
+                            name="videoDescription"
+                            errors={errors}
+                            register={register}
+                            validation={{
+                                required: true,
+                            }}
+                            placeholder=""
+                            type="text"
+                        />
                     </div>
 
                     {/* Stock section */}
                     <div className="mt-10">
                         <h4 className="text-xl font-bold">Stock</h4>
-                        <div className=" flex ">
-                            <div className="my-2">
-                                <label htmlFor="quantity" className="mb-2 font-semibold">
-                                    Quantity
-                                </label>
-                                <div
-                                    id="quantity"
-                                    className="mt-1 w-8/12  rounded-md border-[1px] border-hypay-gray px-2 py-1"
-                                >
-                                    <input
-                                        type="text"
-                                        className="w-full border-none bg-transparent outline-none"
-                                        placeholder=""
-                                        name="quantity"
-                                    />
-                                </div>
-                            </div>
-                            <div className="my-2">
-                                <label htmlFor="sku" className="mb-2 font-semibold">
-                                    SKU
-                                </label>
-                                <div
-                                    id="sku"
-                                    className="mt-1 w-8/12  rounded-md border-[1px] border-hypay-gray px-2 py-1"
-                                >
-                                    <input
-                                        type="text"
-                                        className="w-full border-none bg-transparent outline-none"
-                                        placeholder=""
-                                        name="sku"
-                                    />
-                                </div>
-                            </div>
-                            <div className="my-2">
-                                <label htmlFor="barCode" className="mb-2 font-semibold">
-                                    Bar code
-                                </label>
-                                <div
-                                    id="barCode"
-                                    className="mt-1 w-8/12  rounded-md border-[1px] border-hypay-gray px-2 py-1"
-                                >
-                                    <input
-                                        type="text"
-                                        className="w-full border-none bg-transparent outline-none"
-                                        placeholder=""
-                                        name="barCode"
-                                    />
-                                </div>
-                            </div>
+                        <div className=" flex justify-between">
+                            <SecondInput
+                                className="my-2 w-3/12 md:my-0"
+                                name="quantity"
+                                errors={errors}
+                                label="Quantity"
+                                register={register}
+                                validation={{
+                                    required: true,
+                                }}
+                                placeholder=""
+                                type="text"
+                            />
+                            <SecondInput
+                                className="my-2 w-3/12 md:my-0"
+                                name="sku"
+                                errors={errors}
+                                label="SKU"
+                                register={register}
+                                validation={{
+                                    required: true,
+                                }}
+                                placeholder=""
+                                type="text"
+                            />
+                            <SecondInput
+                                className="my-2 w-3/12 md:my-0"
+                                name="barcode"
+                                errors={errors}
+                                label="Bar Code"
+                                register={register}
+                                validation={{
+                                    required: true,
+                                }}
+                                placeholder=""
+                                type="text"
+                            />
                         </div>
                     </div>
                     {/* Product Type */}
@@ -141,33 +146,23 @@ export const AddAProduct = () => {
                         <h4 className=" text-xl font-bold">Product Type</h4>
                         <div className=" flex flex-col ">
                             <div className="my-2 flex items-center">
-                                <div
-                                    id="quantity"
-                                    className="mt-1 flex h-7 w-7 items-center justify-center rounded-full border-[1px] border-hypay-gray p-2"
-                                >
-                                    <input
-                                        type="radio"
-                                        className="w-full border-none bg-transparent outline-none"
-                                        placeholder=""
-                                        name="quantity"
-                                    />
-                                </div>
+                                <input
+                                    type="radio"
+                                    className="h-6 w-6 border-none bg-transparent outline-none"
+                                    placeholder=""
+                                    name="digital"
+                                />
                                 <label htmlFor="quantity" className="ml-2 font-semibold">
                                     Physical
                                 </label>
                             </div>
                             <div className=" flex items-center">
-                                <div
-                                    id="digital"
-                                    className="mt-1 flex h-7 w-7 items-center justify-center rounded-full border-[1px] border-hypay-gray p-2"
-                                >
-                                    <input
-                                        type="radio"
-                                        className="w-full border-none bg-transparent outline-none"
-                                        placeholder=""
-                                        name="digital"
-                                    />
-                                </div>
+                                <input
+                                    type="radio"
+                                    className="h-6 w-6 border-none bg-transparent outline-none"
+                                    placeholder=""
+                                    name="digital"
+                                />
                                 <label htmlFor="digital" className="ml-2 font-semibold">
                                     Digital
                                 </label>
@@ -177,88 +172,67 @@ export const AddAProduct = () => {
                     {/* Weight and dimension */}
                     <div className="mt-10">
                         <h4 className="mt-3 text-xl font-bold">Weight and dimensions</h4>
-                        <div className=" flex ">
-                            <div className="my-2">
-                                <label htmlFor="weight" className="mb-2 font-semibold">
-                                    Weight
-                                </label>
-                                <div
-                                    id="weight"
-                                    className="mt-1 w-10/12  rounded-md border-[1px] border-hypay-gray px-2 py-1"
-                                >
-                                    <input
-                                        type="text"
-                                        className="w-full border-none bg-transparent outline-none"
-                                        placeholder=""
-                                        name="weight"
-                                    />
-                                </div>
-                            </div>
-                            <div className="my-2">
-                                <label htmlFor="length" className="mb-2 font-semibold">
-                                    Length
-                                </label>
-                                <div
-                                    id="length"
-                                    className="mt-1 w-10/12  rounded-md border-[1px] border-hypay-gray px-2 py-1"
-                                >
-                                    <input
-                                        type="text"
-                                        className="w-full border-none bg-transparent outline-none"
-                                        placeholder=""
-                                        name="length"
-                                    />
-                                </div>
-                            </div>
-                            <div className="my-2">
-                                <label htmlFor="width" className="mb-2 font-semibold">
-                                    Width
-                                </label>
-                                <div
-                                    id="width"
-                                    className="mt-1 w-10/12  rounded-md border-[1px] border-hypay-gray px-2 py-1"
-                                >
-                                    <input
-                                        type="text"
-                                        className="w-full border-none bg-transparent outline-none"
-                                        placeholder=""
-                                        name="width"
-                                    />
-                                </div>
-                            </div>
-                            <div className="my-2">
-                                <label htmlFor="height" className="mb-2 font-semibold">
-                                    Height
-                                </label>
-                                <div
-                                    id="height"
-                                    className="mt-1 w-10/12  rounded-md border-[1px] border-hypay-gray px-2 py-1"
-                                >
-                                    <input
-                                        type="text"
-                                        className="w-full border-none bg-transparent outline-none"
-                                        placeholder=""
-                                        name="height"
-                                    />
-                                </div>
-                            </div>
+                        <div className=" flex justify-between gap-x-4">
+                            <SecondInput
+                                className="my-2 w-4/12 md:my-0"
+                                name="weight"
+                                errors={errors}
+                                register={register}
+                                validation={{
+                                    required: true,
+                                }}
+                                placeholder=""
+                                type="text"
+                                label="Weight"
+                            />
+                            <SecondInput
+                                className="my-2 w-4/12 md:my-0"
+                                name="length"
+                                errors={errors}
+                                register={register}
+                                validation={{
+                                    required: true,
+                                }}
+                                placeholder=""
+                                type="text"
+                                label="Length"
+                            />
+                            <SecondInput
+                                className="my-2 w-4/12 md:my-0"
+                                name="width"
+                                errors={errors}
+                                register={register}
+                                validation={{
+                                    required: true,
+                                }}
+                                placeholder=""
+                                type="text"
+                                label="Width"
+                            />
+                            <SecondInput
+                                className="my-2 w-4/12 md:my-0"
+                                name="height"
+                                errors={errors}
+                                register={register}
+                                validation={{
+                                    required: true,
+                                }}
+                                placeholder=""
+                                type="text"
+                                label="Height"
+                            />
                         </div>
                     </div>
 
                     {/* Free shipping */}
                     <h4 className="mt-6 text-xl font-bold">Free Shipping</h4>
                     <div className=" flex items-center">
-                        <div
-                            id="quantity"
-                            className="mt-1 flex h-7 w-7 items-center justify-center rounded-md border-[1px] border-hypay-gray p-2"
-                        >
-                            <input
-                                type="checkbox"
-                                className="w-full border-none bg-transparent outline-none"
-                                placeholder=""
-                                name="quantity"
-                            />
-                        </div>
+                        <input
+                            id="remember-me"
+                            name="remember-me"
+                            type="checkbox"
+                            className="h-5 w-5 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                        />
                         <label htmlFor="quantity" className="ml-2 font-semibold">
                             This product has free shipping
                         </label>
