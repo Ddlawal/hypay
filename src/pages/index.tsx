@@ -295,8 +295,8 @@ const Index: NextPage = () => {
                             </div>
                             <div className="items-base-line flex h-full  w-full  justify-between py-5 md:w-[60%] md:py-0">
                                 <div className="flex  w-[40%] items-center justify-between md:justify-evenly">
-                                    <InstagramIcon />
-                                    <FacebookIcon />
+                                    <InstagramIcon color={COLORS.PINK} size={43} />
+                                    <FacebookIcon color={COLORS.PINK} size={43} />
                                 </div>
                                 <div className="flex w-[50%] items-center justify-end">
                                     <Logo
