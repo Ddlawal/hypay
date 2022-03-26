@@ -29,8 +29,8 @@ const AuthLayout: FC<layoutProps> = ({ children, title, subtitle, changeIndex, i
                 </section>
             </div>
             {/* Form Section */}
-            <div className="authRightBar w-full bg-white md:absolute  md:right-0  md:w-6/12">
-                <div className="authRightBar relative">
+            <div className="hsb w-full bg-white md:absolute  md:right-0  md:w-6/12">
+                <div className="hsb relative">
                     <div className="mx-auto mt-[4rem] flex  items-center justify-center md:w-9/12 ">
                         <Timeline thickness={3} gap={70} progressBarBackground={COLORS.PINK} activeIndex={index}>
                             <TimelineEvent
