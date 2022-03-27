@@ -203,7 +203,7 @@ const Home = () => {
     const verifyEmail = () => setEmailVerified(true)
 
     return (
-        <PrimaryLayout className="mb-10 md:mb-0">
+        <PrimaryLayout>
             <div className="md:text-md flex items-center justify-center bg-hypay-green text-center text-xs leading-6 text-white">
                 <strong>Veja sua loja antes dela ser publicada</strong>
                 <button className="rounded-full p-2 transition duration-200 ease-in-out hover:scale-105 hover:shadow-sm">
