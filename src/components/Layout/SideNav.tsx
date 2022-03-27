@@ -4,7 +4,6 @@ import { Logo } from '../../components/Logo'
 import { MenuItemList } from '../../lib/data'
 import { NavItem } from './NavItem'
 import Link from 'next/link'
-import { SIDE_NAV_WIDTH } from '../../lib/constants/elements'
 
 export const SideNav: FC = () => {
     const [activeTab, setActivetab] = useState(0)
