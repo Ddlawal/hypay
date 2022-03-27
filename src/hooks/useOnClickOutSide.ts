@@ -1,8 +1,8 @@
 import { MutableRefObject, useCallback, useEffect, useRef } from 'react'
 
-export const useOnClickOutside = (handler: () => void) => {
+export const useOnClickOutside = <T extends HTMLDivElement | HTMLButtonElement>(handler: () => void) => {
     const cb = useCallback(handler, [])
-    const ref = useRef() as MutableRefObject<HTMLDivElement>
+    const ref = useRef() as MutableRefObject<T>
 
     useEffect(() => {
         const listener = (event: any) => {
