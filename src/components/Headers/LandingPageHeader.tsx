@@ -43,7 +43,7 @@ const DesktopLinks = () => {
 
 const MobileLinks = () => {
     const [open, setOpen] = useState(false)
-    const { ref } = useOnClickOutside(() => setOpen(false))
+    const { ref } = useOnClickOutside<HTMLDivElement>(() => setOpen(false))
 
     return (
         <>

@@ -2,7 +2,7 @@ import * as React from 'react'
 import { COLORS } from '../../lib/constants/colors'
 import { Button } from '../Button'
 
-export const CreateStore = (props: any) => {
+export const CreateStore = () => {
     return (
         <div className="mx-auto min-h-full w-10/12 ">
             <header className="mx-auto mt-10 w-full">
