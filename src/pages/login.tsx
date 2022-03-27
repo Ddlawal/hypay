@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { FC, useEffect } from 'react'
 import Image from 'next/image'
 import { Button } from '../components/Button'
 import { Logo } from '../components/Logo'
@@ -11,19 +11,10 @@ import { useDispatch } from 'react-redux'
 import Link from 'next/link'
 import { SecondInput } from '../components/form'
 import { EMAIL_PATTERN } from '../lib/data'
-import { wrapper } from '../store'
 import PasswordInput from '../components/form/PasswordInput'
 
-export const getServerSideProps = wrapper.getServerSideProps(({ getState }) => async ({ resolvedUrl, ...rest }) => {
-    if (typeof window !== undefined) {
-        const { auth } = getState()
-        console.log(getState(), 'check am out')
-    }
-    return { props: { resolvedUrl } }
-})
-
-function login(props: any) {
-    const [useLogin, { isLoading }] = useLoginMutation()
+const Login = () => {
+    const [logUserIn, { isLoading }] = useLoginMutation()
     const {
         register,
         handleSubmit,
@@ -37,7 +28,7 @@ function login(props: any) {
         // if (isLoading) return
         try {
             console.log(data)
-            useLogin(data)
+            logUserIn(data)
                 .unwrap()
                 .then((payload: any) => {
                     localStorage.setItem('user', JSON.stringify(payload))
@@ -87,13 +78,13 @@ function login(props: any) {
                             validation={{ required: true, minLength: 6 }}
                             placeholder="Digite sua senha"
                         />
-                        <div className="my-6  flex items-center justify-center  font-semibold md:mt-2">
+                        <div className="my-3  flex items-center justify-center  font-semibold md:mt-2">
                             <Button className={`${COLORS.PINK} ${isLoading && 'opacity-7'} w-full md:w-[80%] `} primary>
                                 {isLoading ? 'loading...' : 'Entrar'}
                             </Button>
                         </div>
                     </form>
-                    <div className="my-6 flex items-center justify-center gap-3 md:my-2">
+                    <div className="my-3 flex items-center justify-center gap-3 md:my-0">
                         <Image
                             src="/images/facebook-icon.png"
                             alt="facebook icon"
@@ -130,4 +121,4 @@ function login(props: any) {
     )
 }
 
-export default login
+export default Login

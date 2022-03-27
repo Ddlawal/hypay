@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import classNames from 'classnames'
 import Image from 'next/image'
-import { useMediaQuery } from '../../hooks/useMediaQuery'
 import { useOnClickOutside } from '../../hooks/useOnClickOutSide'
 import { COLORS } from '../../lib/constants/colors'
 import { TextField } from '../form'

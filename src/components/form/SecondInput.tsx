@@ -1,5 +1,4 @@
 import * as React from 'react'
-import cx from 'classnames'
 
 type Props = {
     className?: string
@@ -35,7 +34,7 @@ export const SecondInput = ({
             : ''
 
     return (
-        <div className={`${className} h-[86px]`}>
+        <div className={`${className} h-[78px]`}>
             {label && (
                 <label htmlFor="email" className="mt-3 flex font-semibold">
                     <div className="flex w-full items-baseline justify-between">

@@ -1,1 +1,1 @@
-export { withAuth } from './ProtectedRoutes'
+export * as ProtectedRoute from './ProtectedRoute'

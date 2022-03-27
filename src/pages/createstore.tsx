@@ -7,6 +7,8 @@ import CreateSocialStore from '../components/CreateAStore/CreateSocialStore'
 import { CreateAStore } from '../components/CreateAStore/CreateAStore'
 import { COLORS } from '../lib/constants/colors'
 import { useSelector } from 'react-redux'
+import { useAppSelector } from '../hooks/useStoreHooks'
+import { User } from '../reducers/auth'
 
 const createStoreTabs = [
     {
@@ -28,25 +30,10 @@ const createStoreTabs = [
     },
 ]
 
-export const getServerSideProps = async () => {
-    if (typeof window !== 'undefined') {
-        let user = localStorage.getItem('user')
-        return {
-            user: { user },
-        }
-    }
-    return { props: {} }
-}
-
 const CreateStore: NextPage = () => {
     const [selectedTab, setSelectedTab] = useState(0)
 
-    useEffect(() => {
-        // const userInfo: any = useSelector<any>((state) => state)
-        // const { firstName, lastName, address } = userInfo ?? {}
-        let userInfo = localStorage.getItem('user')
-        console.log(userInfo, 'state')
-    }, [])
+    // const { userInfo } = useAppSelector((state) => state?.auth?.user as User)
 
     return (
         <AuthLayout title={createStoreTabs[selectedTab].title} subtitle="Build your site in a fully customized way.">

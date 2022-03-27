@@ -27,7 +27,6 @@ export interface initialStateInterface {
     user: User | null
     isAuthenticated: boolean
     isError: boolean
-    holdLogindetails: any
 }
 
 const firstState = () => {
@@ -46,44 +45,11 @@ const initialState: initialStateInterface = {
     user: firstState(),
     isAuthenticated: false,
     isError: false,
-    holdLogindetails: {},
-}
-
-const userResponse = {
-    userInfo: {
-        customerID: 590,
-        name: 'Hassan Yaks',
-        email: 'yakx@gmail.com',
-        firstName: 'Hassan',
-        lastName: 'Yaks',
-        businessname: 'Dev',
-        usertype: 'Merchant',
-        merchantCode: 'yakx-1647931329',
-        deliveryAddress: [],
-        phone: null,
-        profileStatus: false,
-        referral_code: 'a582e1da',
-    },
-    token: {
-        access_token:
-            'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvcGVwcGVyZXN0LmNvbVwvaHlwYXlcL2JhY2tlbmRcL2FwaVwvcmVnaXN0ZXIiLCJpYXQiOjE2NDc5MzEzMzEsImV4cCI6MTY0NzkzNDkzMSwibmJmIjoxNjQ3OTMxMzMxLCJqdGkiOiJNN0pLc0pHV1RwNldrMzN6Iiwic3ViIjo0ODksInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.k2_emk17FlVhmXKcOmIUoCkLIENu_OnDx8ylQuOORVk',
-        token_type: 'bearer',
-        expires_in: 3600,
-    },
 }
 
 export const authSlice = createSlice({
     name: 'auth',
     initialState,
-    extraReducers: {
-        [HYDRATE]: (state, action) => {
-            console.log('HYDRATE login', state, action.payload)
-            return {
-                ...state,
-                ...action.payload.subject,
-            }
-        },
-    },
     reducers: {
         login: (state, action: PayloadAction<any>) => {
             console.log(action, ' login action was fired')
@@ -91,7 +57,6 @@ export const authSlice = createSlice({
                 ...state,
                 user: action.payload,
                 isAuthenticated: true,
-                holdLogindetails: {},
             }
         },
         logout: (state) => ({
@@ -99,7 +64,6 @@ export const authSlice = createSlice({
             user: null,
             isAuthenticated: false,
             isError: false,
-            holdLogindetails: {},
         }),
         updateLogin: (state, action: PayloadAction<any>) => {
             console.log(action, 'actions from signup')

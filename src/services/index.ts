@@ -7,13 +7,14 @@ import { HYDRATE } from 'next-redux-wrapper'
 const baseQuery = fetchBaseQuery({
     baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
     prepareHeaders: (headers, { getState }) => {
+        console.log(getState())
         headers.set('Access-Control-Allow-Origin', '*')
-        const {
-            auth: { user },
-        } = getState() as RootState
-        console.log(user, 'the user exist')
+        // const {
+        //     auth: { user },
+        // } = getState() as RootState
+        const user = JSON.parse(localStorage.getItem('user') as string)
 
-        if (user && Object.keys(user).length) {
+        if (user) {
             headers.set('Authorization', `Bearer ${user?.token?.access_token}`)
         }
         return headers

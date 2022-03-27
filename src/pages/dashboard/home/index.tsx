@@ -19,7 +19,6 @@ import { CheckIcon } from '../../../components/Icons/CheckIcon'
 import { PrimaryLayout } from '../../../components/Layout'
 import { useMediaQuery } from '../../../hooks/useMediaQuery'
 import { COLORS } from '../../../lib/constants/colors'
-import { withAuth } from '../../../lib/ProtectedRoutes'
 
 const quickGuides = [
     {
@@ -222,4 +221,4 @@ const Home = () => {
     )
 }
 
-export default withAuth(Home)
+export default Home

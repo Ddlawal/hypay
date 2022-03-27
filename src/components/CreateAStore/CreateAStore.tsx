@@ -3,14 +3,13 @@ import { useForm } from 'react-hook-form'
 import { COLORS } from '../../lib/constants/colors'
 import { Button } from '../Button'
 import { SecondInput } from '../form'
-import { useSelector } from 'react-redux'
+import { useCreateBusinessNameMutation } from '../../services/auth'
 import { useAppSelector } from '../../hooks/useStoreHooks'
 import { User } from '../../reducers/auth'
-import { useCreateBusinessNameMutation } from '../../services/auth'
 
 export const getServerSideProps = async () => {
     if (typeof window !== 'undefined') {
-        let user = localStorage.getItem('user')
+        const user = localStorage.getItem('user')
         return {
             props: { user },
         }
@@ -18,36 +17,43 @@ export const getServerSideProps = async () => {
 }
 
 export const CreateAStore = (props: any) => {
-    console.log(props)
     const {
         register,
         handleSubmit,
         formState: { errors },
     } = useForm<any>()
 
-    // const {
-    //     userInfo: { firstName, lastName, address },
-    // }: any = useAppSelector<User | null>(({ auth: { user } }) => user)
-    const userInfo: any = useSelector<any>((state) => state)
-    // const { firstName, lastName, address } = userInfo ?? {}
-    console.log(userInfo, 'state')
+    // const { userInfo } = useAppSelector((state) => state?.auth?.user as User)
+    // const { firstName, lastName } = userInfo ?? {}
+    const user = JSON.parse(localStorage.getItem('user') as string)
+
+    const {
+        userInfo: { firstName, lastName },
+    } = user
+    console.log({ firstName, lastName })
 
     const [addBusinessName, { isLoading }] = useCreateBusinessNameMutation()
     const onSubmit = async (data: { businessname?: string }) => {
-        if (isLoading) return
-        // try {
-        //     addBusinessName({ businessname: data.businessname, firstName, lastName, address: address || '' })
-        //         .unwrap()
-        //         .then((res) => {
-        //             console.log(res, 'response after the store got added')
-        //         })
-        //         .catch((err) => {
-        //             console.log(err)
-        //         })
-        // } catch (error) {
-        //     console.log(error, 'error')
-        // }
-        // console.log({ businessname: data.businessname, firstName, lastName, address: address || '' })
+        if (isLoading) {
+            return
+        }
+        try {
+            addBusinessName({
+                businessname: data.businessname,
+                first_name: firstName,
+                last_name: lastName,
+                address: 'Abuja',
+            })
+                .unwrap()
+                .then((res) => {
+                    console.log(res, 'response after the store got added')
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
+        } catch (error) {
+            console.log(error, 'error')
+        }
     }
 
     return (

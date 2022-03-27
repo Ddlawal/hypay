@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { useSession, getProviders, signIn, ClientSafeProvider, LiteralUnion } from 'next-auth/react'
 import type { BuiltInProviderType } from 'next-auth/providers'
@@ -47,7 +47,9 @@ function SignUp() {
     }, [session])
 
     const onSubmit: SubmitHandler<any> = async (data) => {
-        if (isLoading) return
+        if (isLoading) {
+            return
+        }
         try {
             miniRegister(data)
                 .unwrap()
