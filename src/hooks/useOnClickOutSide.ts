@@ -1,15 +1,14 @@
-import { MutableRefObject, useCallback, useEffect, useRef } from 'react'
+import { MutableRefObject, useEffect, useRef } from 'react'
 
-export const useOnClickOutside = (handler: () => void) => {
-    const cb = useCallback(handler, [])
-    const ref = useRef() as MutableRefObject<HTMLDivElement>
+export const useOnClickOutside = <T extends HTMLDivElement | HTMLButtonElement>(handler: () => void) => {
+    const ref = useRef() as MutableRefObject<T>
 
     useEffect(() => {
         const listener = (event: any) => {
             if (!ref.current || ref.current.contains(event.target)) {
                 return
             }
-            cb()
+            handler()
         }
         document.addEventListener('mousedown', listener)
         document.addEventListener('touchstart', listener)

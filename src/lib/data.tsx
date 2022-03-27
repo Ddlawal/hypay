@@ -4,6 +4,7 @@ import { HomeIcon } from '../components/Icons/HomeIcon'
 import { RightArrowIcon } from '../components/Icons/RightArrowIcon'
 import { SettingsIcon } from '../components/Icons/SettingsIcon'
 import { COLORS } from './constants/colors'
+
 export const headerLinks: Array<{
     id: number
     title: string
@@ -80,6 +81,24 @@ export const MenuItemList: Array<{
         href: '/dashboard/settings',
         leftIcon: SettingsIcon({ color: COLORS.YELLOW }),
         rightIcon: RightArrowIcon({ color: COLORS.YELLOW }),
+    },
+]
+
+export const dropdownMenuItems = [
+    {
+        title: 'Gerenciar conta',
+    },
+    {
+        title: 'Recebimento',
+    },
+    {
+        title: 'Lojas',
+    },
+    {
+        title: 'Central de ajuda',
+    },
+    {
+        title: 'Logout',
     },
 ]
 

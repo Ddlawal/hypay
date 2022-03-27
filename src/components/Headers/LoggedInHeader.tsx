@@ -7,11 +7,13 @@ import { TextField } from '../form'
 import { CommentIcon, MenuIcon, MoreOptionsIcon, NotificationIcon, SearchIcon } from '../Icons'
 import { SideNav } from '../Layout'
 import { SIDE_NAV_WIDTH } from '../../lib/constants/elements'
+import { Dropdown } from '../Dropdown'
+import { dropdownMenuItems } from '../../lib/data'
 
 export const LoggedInHeader = () => {
     const [open, setOpen] = useState(false)
     const [searchString, setSearchString] = useState('')
-    const { ref } = useOnClickOutside(() => setOpen(false))
+    const { ref } = useOnClickOutside<HTMLDivElement>(() => setOpen(false))
 
     const width = SIDE_NAV_WIDTH + 'px'
 
@@ -50,7 +52,7 @@ export const LoggedInHeader = () => {
                 <button className="block rounded-lg py-2 transition duration-200 ease-in-out hover:scale-105 hover:shadow-md md:hidden">
                     <MoreOptionsIcon size={26} color={COLORS.ICON_GRAY} />
                 </button>
-                <button className="hidden rounded-full transition duration-200 ease-in-out hover:scale-105 md:block">
+                <Dropdown items={dropdownMenuItems}>
                     <Image
                         className="rounded-full"
                         loader={({ src }) => src}
@@ -60,7 +62,7 @@ export const LoggedInHeader = () => {
                         height={40}
                         quality={100}
                     />
-                </button>
+                </Dropdown>
             </div>
         </div>
     )

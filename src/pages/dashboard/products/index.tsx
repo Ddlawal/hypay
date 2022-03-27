@@ -1,22 +1,46 @@
 import * as React from 'react'
 import { NextPage } from 'next'
-import { OpenLinkIcon } from '../../../components/Icons'
 import { PrimaryLayout } from '../../../components/Layout'
-import { COLORS } from '../../../lib/constants/colors'
+import { Button } from '../../../components/Button'
+import { CircularPlusIcon } from '../../../components/Icons/CircularPlusIcon'
+
+const products = [
+    // {
+    //     name: 'Alcatel',
+    // },
+]
+
+const NoProducts = () => {
+    return (
+        <div className="py-4 px-4 leading-5 md:px-16 lg:px-36">
+            <div>Você ainda não tem produtos cadastrados na sua loja.</div>
+            <div>Vamos começar a vender?</div>
+            <Button primary className="mt-2 flex items-center">
+                <span className="pl-2">
+                    <CircularPlusIcon />
+                </span>
+                <span className="px-2">Adicione seu primeiro produto</span>
+            </Button>
+        </div>
+    )
+}
 
 const Products: NextPage = () => {
+    if (products.length === 0) {
+        return (
+            <PrimaryLayout>
+                <NoProducts />
+            </PrimaryLayout>
+        )
+    }
+
     return (
         <PrimaryLayout>
-            <div className="flex items-center justify-center bg-hypay-green text-center leading-6 text-white">
-                See your store before it is published
-                <button className="rounded-full p-2 transition duration-200 ease-in-out hover:scale-105 hover:shadow-sm">
-                    <OpenLinkIcon color={COLORS.WHITE} />
-                </button>
-            </div>
             <div>
                 <strong>Welcome to Hypay</strong>
             </div>
         </PrimaryLayout>
     )
 }
+
 export default Products
