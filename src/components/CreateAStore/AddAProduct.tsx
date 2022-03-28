@@ -260,7 +260,7 @@ export const AddAProduct = () => {
                     <Card
                         rounded
                         padding="p-2"
-                        elevation="2xl"
+                        elevation="xl"
                         className="my-3 flex h-20 items-center justify-between gap-x-1"
                     >
                         <div className="flex items-center gap-x-2">
@@ -272,13 +272,16 @@ export const AddAProduct = () => {
                                 <p className="text-xs">Escolha aqui qual categoria seu produto se encaixa</p>
                             </div>
                         </div>
-                        <div className="">
-                            <Button className="rounded-md border-[1px] border-hypay-pink bg-white px-1 text-hypay-pink outline-none">
-                                Adicionar categoria
-                            </Button>
-                        </div>
+                        <Button className="rounded-md border-[1px] border-hypay-pink bg-white px-1 text-hypay-pink outline-none">
+                            Adicionar categoria
+                        </Button>
                     </Card>
-                    <Card rounded padding="p-2" className="gap-X-1 my-3 flex h-20 items-center justify-between">
+                    <Card
+                        rounded
+                        padding="p-2"
+                        elevation="xl"
+                        className="gap-X-1 my-3 flex h-20 items-center justify-between"
+                    >
                         <div className="flex items-center gap-x-2">
                             <div>
                                 <BagIcon color={COLORS.PINK} />
@@ -288,11 +291,9 @@ export const AddAProduct = () => {
                                 <p className="text-xs">Exemplo de variações são: cores e tamanhos</p>
                             </div>
                         </div>
-                        <div className="">
-                            <Button className="rounded-md border-[1px] border-hypay-pink bg-white  px-3 text-hypay-pink outline-none">
-                                Adicionar variáveis
-                            </Button>
-                        </div>
+                        <Button className="rounded-md border-[1px] border-hypay-pink bg-white  px-3 text-hypay-pink outline-none">
+                            Adicionar variáveis
+                        </Button>
                     </Card>
                     {/* Publish or discrad buttons */}
                     <div className="mt-7 flex items-center justify-around">
