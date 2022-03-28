@@ -5,7 +5,7 @@ import { useAppSelector } from '../hooks/useStoreHooks'
 import { User } from '../reducers/auth'
 
 const ProtectedRoute: FC = ({ children }) => {
-    const protectedRoutes = ['/dashboard/home']
+    const protectedRoutes = ['/dashboard/home', '/dashboard/products']
     const { user } = useAppSelector((state) => state?.auth as { user: User })
 
     const router = useRouter()
