@@ -6,6 +6,7 @@ import { AddAProduct } from '../components/CreateAStore/AddAProduct'
 import CreateSocialStore from '../components/CreateAStore/CreateSocialStore'
 import { CreateAStore } from '../components/CreateAStore/CreateAStore'
 import { COLORS } from '../lib/constants/colors'
+import ProductAdded from '../components/CreateAStore/ProductAdded'
 
 const createStoreTabs = [
     {
@@ -21,6 +22,11 @@ const createStoreTabs = [
         component: <AddAProduct />,
     },
     {
+        title: 'Confiança!',
+        subTitle: 'Conosco você encontrará as toda a segurança e suporte necessários ao seu negócio.',
+        component: <ProductAdded />,
+    },
+    {
         title: "Don't miss out!",
         subTitle: 'With us you will find all the security and support your business needs. ',
         component: <CreateSocialStore />,
@@ -29,9 +35,6 @@ const createStoreTabs = [
 
 const CreateStore: NextPage = () => {
     const [selectedTab, setSelectedTab] = useState(0)
-
-    // const { userInfo } = useAppSelector((state) => state?.auth?.user as User)
-
     return (
         <AuthLayout title={createStoreTabs[selectedTab].title} subtitle="Build your site in a fully customized way.">
             {createStoreTabs[selectedTab].component}
