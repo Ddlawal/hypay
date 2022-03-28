@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { AnalysisIcon, BagIcon, FireIcon, MarketingIcon, ShelterIcon, TagIcon } from '../components/Icons'
 import { HomeIcon } from '../components/Icons/HomeIcon'
 import { RightArrowIcon } from '../components/Icons/RightArrowIcon'
@@ -105,3 +106,11 @@ export const dropdownMenuItems = [
 export const generateRandomImage: (width: number, height: number) => void = (width = 200, height = 300) => {
     return `https://picsum.photos/${width}/${height}`
 }
+//eslint-disable-next-line
+export const EMAIL_PATTERN =
+    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+//eslint-disable-next-line
+// export const EMAIL_PATTERN = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+
+type typeOfUser = 'Merchant' | 'Buyer' | 'Both'
+export const TYPE_OF_USER: typeOfUser = 'Merchant'

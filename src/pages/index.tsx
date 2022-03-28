@@ -19,6 +19,7 @@ import { Logo } from '../components/Logo'
 import { Timeline, TimelineEvent } from '../components/Timeline'
 import { useMediaQuery } from '../hooks/useMediaQuery'
 import { COLORS } from '../lib/constants/colors'
+import { useAppSelector } from '../hooks/useStoreHooks'
 
 type ContentProps = {
     title: string

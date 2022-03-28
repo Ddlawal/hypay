@@ -1,18 +1,21 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { NextPage } from 'next'
 import AuthLayout from '../components/AuthLayout/AuthLayout'
 import { Button } from '../components/Button'
 import { AddAProduct } from '../components/CreateAStore/AddAProduct'
 import CreateSocialStore from '../components/CreateAStore/CreateSocialStore'
-import { CreateStore } from '../components/CreateAStore/CreateStore'
+import { CreateAStore } from '../components/CreateAStore/CreateAStore'
 import { COLORS } from '../lib/constants/colors'
+import { useSelector } from 'react-redux'
+import { useAppSelector } from '../hooks/useStoreHooks'
+import { User } from '../reducers/auth'
 
 const createStoreTabs = [
     {
         title: 'Create Your Store',
         subTitle:
             'The store will be connected to cardoso.rafael@anymail.com and will remain connected for the next 14 days ',
-        component: <CreateStore />,
+        component: <CreateAStore />,
         btnText: 'Create Store',
     },
     {
@@ -27,8 +30,10 @@ const createStoreTabs = [
     },
 ]
 
-const VreateStore: NextPage = () => {
+const CreateStore: NextPage = () => {
     const [selectedTab, setSelectedTab] = useState(0)
+
+    // const { userInfo } = useAppSelector((state) => state?.auth?.user as User)
 
     return (
         <AuthLayout title={createStoreTabs[selectedTab].title} subtitle="Build your site in a fully customized way.">
@@ -52,4 +57,4 @@ const VreateStore: NextPage = () => {
     )
 }
 
-export default VreateStore
+export default CreateStore

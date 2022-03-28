@@ -1,7 +1,7 @@
-import { configureStore } from '@reduxjs/toolkit'
+import { configureStore, ThunkAction } from '@reduxjs/toolkit'
 import { setupListeners } from '@reduxjs/toolkit/query'
+import { persistStore } from 'redux-persist'
 import rootReducer from '../reducers'
-// import { persistStore } from 'redux-persist'
 import baseApi from '../services'
 
 const middlewareHandler = (getDefaultMiddleware: any) => {
@@ -24,8 +24,9 @@ export const store = configureStore({
     devTools: process.env.NODE_ENV !== 'production',
 })
 
-setupListeners(store.dispatch)
+export const persistor = persistStore(store)
 
+setupListeners(store.dispatch)
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>
 // Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}

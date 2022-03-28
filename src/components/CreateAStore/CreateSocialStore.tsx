@@ -11,14 +11,12 @@ function CreateSocialStore() {
         <div className="mx-auto w-10/12 ">
             <header className="mx-auto mt-10 w-full">
                 <h1 className="text-center text-[32px] font-bold text-black">Connect your social media</h1>
-                <div>
-                    <p className="text-md mt-5 text-center font-bold text-black md:mt-3">
-                        Share your store on social networks and boost your sales!
-                    </p>
-                </div>
-                <form className="mt-4 w-10/12 ">
+                <p className="text-md mt-5 text-center font-bold text-black md:mt-3">
+                    Share your store on social networks and boost your sales!
+                </p>
+                <form className="mx-auto mt-4 w-10/12">
                     {/* Social Icons */}
-                    <div className="my-3 mx-auto flex w-4/12 gap-4 text-center ">
+                    <div className="mx-auto my-3 flex w-10/12 justify-evenly gap-4 text-center md:w-4/12 md:justify-center ">
                         <InstagramSvgIcon
                             onClick={() => setSocialIcon('insta')}
                             color={socialsIcon == 'insta' ? `${COLORS.PINK}` : `${COLORS.PRIMARY}`}
@@ -36,9 +34,12 @@ function CreateSocialStore() {
                         />
                     </div>
 
-                    <div className="text-center">
-                        <div className="mt-5 flex w-full items-center justify-center  font-semibold ">
-                            <Button className={`w-[50%] ${socialsIcon ? 'bg-hypay-pink' : 'bg-hypay-gray'}`} primary>
+                    <div className="mx-auto text-center">
+                        <div className="mt-5 flex w-full items-center justify-center font-semibold ">
+                            <Button
+                                className={`md-w-1/2 w-4/6 ${socialsIcon ? 'bg-hypay-pink' : 'bg-hypay-gray'}`}
+                                primary
+                            >
                                 Share
                             </Button>
                         </div>
