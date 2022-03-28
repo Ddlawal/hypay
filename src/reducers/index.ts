@@ -1,4 +1,4 @@
-import { combineReducers, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { combineReducers } from '@reduxjs/toolkit'
 import baseApi from '../services'
 import { persistReducer } from 'redux-persist'
 import storageSession from 'redux-persist/lib/storage/session'

@@ -21,9 +21,10 @@ const authApi = baseApi.injectEndpoints({
             }),
         }),
         logout: builder.query({
-            query: () => ({
+            query: (token: string) => ({
                 url: '/logout',
                 method: 'POST',
+                body: token,
             }),
         }),
         createBusinessName: builder.mutation({

@@ -28,7 +28,7 @@ export const headerLinks: Array<{
     {
         id: 4,
         title: 'Enter',
-        href: '#',
+        href: '/signup',
     },
 ]
 
@@ -103,7 +103,7 @@ export const dropdownMenuItems = [
 ]
 
 // Random Image Generator FUnction
-export const generateRandomImage: (width: number, height: number) => void = (width = 200, height = 300) => {
+export const generateRandomImage: (width: number, height: number) => string = (width = 200, height = 300) => {
     return `https://picsum.photos/${width}/${height}`
 }
 //eslint-disable-next-line
