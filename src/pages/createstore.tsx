@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { NextPage } from 'next'
 import AuthLayout from '../components/AuthLayout/AuthLayout'
 import { Button } from '../components/Button'
@@ -6,9 +6,6 @@ import { AddAProduct } from '../components/CreateAStore/AddAProduct'
 import CreateSocialStore from '../components/CreateAStore/CreateSocialStore'
 import { CreateAStore } from '../components/CreateAStore/CreateAStore'
 import { COLORS } from '../lib/constants/colors'
-import { useSelector } from 'react-redux'
-import { useAppSelector } from '../hooks/useStoreHooks'
-import { User } from '../reducers/auth'
 
 const createStoreTabs = [
     {

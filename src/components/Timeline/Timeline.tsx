@@ -68,8 +68,8 @@ export const TimelineEvent: FC<TimelineEventProps> = ({
                 style={{
                     height: `${labelTextHeight}px`,
                     width: `${labelTextWidth}px`,
-                    bottom: isHorizontal ? `${-labelTextHeight! - 8}px` : '',
-                    right: isHorizontal ? '' : `${-labelTextWidth! - 15}px`,
+                    bottom: isHorizontal ? `${-labelTextHeight - 8}px` : '',
+                    right: isHorizontal ? '' : `${-labelTextWidth - 15}px`,
                     fontSize: `${labelFontSize}px`,
                     lineHeight: '14px',
                     color,

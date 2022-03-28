@@ -16,12 +16,8 @@ export const getServerSideProps = async () => {
     }
 }
 
-export const CreateAStore = (props: any) => {
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-    } = useForm<any>()
+export const CreateAStore = () => {
+    const { register, handleSubmit } = useForm<any>()
 
     const { userInfo } = useAppSelector((state) => state?.auth?.user as User)
     const { firstName, lastName } = userInfo ?? {}
