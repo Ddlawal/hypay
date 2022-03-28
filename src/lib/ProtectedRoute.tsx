@@ -1,11 +1,10 @@
 import React, { FC } from 'react'
 import { useRouter } from 'next/router'
-import { useSelector } from 'react-redux'
 import { useAppSelector } from '../hooks/useStoreHooks'
 import { User } from '../reducers/auth'
 
 const ProtectedRoute: FC = ({ children }) => {
-    const protectedRoutes = ['/dashboard/home']
+    const protectedRoutes = ['/dashboard/home', '/dashboard/products', '/createstore']
     const { user } = useAppSelector((state) => state?.auth as { user: User })
 
     const router = useRouter()

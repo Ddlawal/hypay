@@ -4,8 +4,8 @@ export const useOnClickOutside = <T extends HTMLDivElement | HTMLButtonElement>(
     const ref = useRef() as MutableRefObject<T>
 
     useEffect(() => {
-        const listener = (event: any) => {
-            if (!ref.current || ref.current.contains(event.target)) {
+        const listener = (event: MouseEvent | TouchEvent) => {
+            if (!ref.current || ref.current.contains(event.target as Node)) {
                 return
             }
             handler()

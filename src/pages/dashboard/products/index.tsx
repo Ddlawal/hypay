@@ -3,11 +3,12 @@ import { NextPage } from 'next'
 import { PrimaryLayout } from '../../../components/Layout'
 import { Button } from '../../../components/Button'
 import { CircularPlusIcon } from '../../../components/Icons/CircularPlusIcon'
+import { AddAProduct } from '../../../components/CreateAStore/AddAProduct'
 
 const products = [
-    // {
-    //     name: 'Alcatel',
-    // },
+    {
+        name: 'Alcatel',
+    },
 ]
 
 const NoProducts = () => {
@@ -37,7 +38,7 @@ const Products: NextPage = () => {
     return (
         <PrimaryLayout>
             <div>
-                <strong>Welcome to Hypay</strong>
+                <AddAProduct />
             </div>
         </PrimaryLayout>
     )
