@@ -3,7 +3,7 @@ import { COLORS } from '../../lib/constants/colors'
 import { Logo } from '../../components/Logo'
 import { MenuItemList } from '../../lib/data'
 import { NavItem } from './NavItem'
-import Link from 'next/link'
+import { NextLink } from '../Links'
 
 export const SideNav: FC = () => {
     const [activeTab, setActivetab] = useState(0)
@@ -17,11 +17,9 @@ export const SideNav: FC = () => {
     return (
         <div className="items-normal flex h-screen min-h-screen w-full flex-col justify-between rounded-r-xl bg-[#36076B] md:rounded-none ">
             <header className="flex w-full items-center justify-center p-4">
-                <Link href="#">
-                    <a>
-                        <Logo labelled={{ labelPosition: 'right' }} labelColor={'text-white'} color={COLORS.WHITE} />
-                    </a>
-                </Link>
+                <NextLink href="/dashboard/home">
+                    <Logo labelled={{ labelPosition: 'right' }} labelColor={'text-white'} color={COLORS.WHITE} />
+                </NextLink>
             </header>
 
             <main className="flex w-full flex-1 items-center">

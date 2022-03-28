@@ -43,7 +43,7 @@ export const NavItem: FC<NavItemProps> = ({
         >
             <NextLink
                 href={href}
-                className={`flex w-max ${isActive && isDropDown && 'pb-2'}  relative items-center gap-4 text-white`}
+                className={`flex w-full ${isActive && isDropDown && 'pb-2'}  relative items-center gap-4 text-white`}
                 onClick={isDropDown ? () => setShowDropdown(!showDropdown) : changeTab}
             >
                 {leftIcon}
