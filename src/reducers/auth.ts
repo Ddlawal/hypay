@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { HYDRATE } from 'next-redux-wrapper'
 
 export interface User {
     userInfo: {
@@ -23,7 +22,7 @@ export interface User {
     }
 }
 
-export interface initialStateInterface {
+export interface initialAuthStateInterface {
     user: User | null
     isAuthenticated: boolean
     isError: boolean
@@ -31,7 +30,7 @@ export interface initialStateInterface {
 
 const firstState = () => {
     try {
-        let serializedState = localStorage.getItem('user')
+        const serializedState = localStorage.getItem('user')
         if (!serializedState) {
             return null
         }
@@ -41,7 +40,7 @@ const firstState = () => {
     }
 }
 
-const initialState: initialStateInterface = {
+const initialAuthState: initialAuthStateInterface = {
     user: firstState(),
     isAuthenticated: false,
     isError: false,
@@ -49,7 +48,7 @@ const initialState: initialStateInterface = {
 
 export const authSlice = createSlice({
     name: 'auth',
-    initialState,
+    initialState: initialAuthState,
     reducers: {
         login: (state, action: PayloadAction<any>) => {
             console.log(action, ' login action was fired')
@@ -65,13 +64,6 @@ export const authSlice = createSlice({
             isAuthenticated: false,
             isError: false,
         }),
-        updateLogin: (state, action: PayloadAction<any>) => {
-            console.log(action, 'actions from signup')
-            return {
-                ...state,
-                holdLogindetails: { ...action.payload },
-            }
-        },
         register: (state, action: PayloadAction<any>) => ({
             ...state,
             ...action.payload,
@@ -79,6 +71,6 @@ export const authSlice = createSlice({
     },
 })
 
-export const { login, logout, register, updateLogin } = authSlice.actions
+export const { login, logout, register } = authSlice.actions
 
 export default authSlice.reducer

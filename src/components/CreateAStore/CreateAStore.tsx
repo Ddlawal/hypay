@@ -23,14 +23,8 @@ export const CreateAStore = (props: any) => {
         formState: { errors },
     } = useForm<any>()
 
-    // const { userInfo } = useAppSelector((state) => state?.auth?.user as User)
-    // const { firstName, lastName } = userInfo ?? {}
-    const user = JSON.parse(localStorage.getItem('user') as string)
-
-    const {
-        userInfo: { firstName, lastName },
-    } = user
-    console.log({ firstName, lastName })
+    const { userInfo } = useAppSelector((state) => state?.auth?.user as User)
+    const { firstName, lastName } = userInfo ?? {}
 
     const [addBusinessName, { isLoading }] = useCreateBusinessNameMutation()
     const onSubmit = async (data: { businessname?: string }) => {

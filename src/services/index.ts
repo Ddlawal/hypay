@@ -2,7 +2,6 @@ import { createApi, fetchBaseQuery, BaseQueryFn, FetchArgs, FetchBaseQueryError 
 import { login, logout } from '../reducers/auth'
 import { RootState } from '../store'
 import { BaseQueryApi } from '@reduxjs/toolkit/dist/query/baseQueryTypes'
-import { HYDRATE } from 'next-redux-wrapper'
 
 const baseQuery = fetchBaseQuery({
     baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
@@ -21,26 +20,21 @@ const baseQuery = fetchBaseQuery({
     },
 })
 
+// This section will be used for next auth
 const baseQueryWithReauth = async (arg: string, api: BaseQueryApi, extraOptions: {}) => {
     let result = await baseQuery(arg, api, extraOptions)
     if (result.error && result.error.status === 403) {
         api.dispatch(login({ loginData: result?.data as unknown }))
+        return console.log(result?.error?.status)
     } else {
-        api.dispatch(logout())
+        console.log(result, 'is successfulll')
+        return result
     }
-    return result
 }
-
 const baseApi = createApi({
     reducerPath: 'baseApi',
-    baseQuery: baseQueryWithReauth,
+    baseQuery: baseQuery,
     endpoints: () => ({}),
-    extractRehydrationInfo(action, { reducerPath }) {
-        if (action.type === HYDRATE) {
-            return { ...action.payload[reducerPath] }
-        }
-    },
-
     //  cache , The default time is seconds , Default duration 60 second
     tagTypes: ['user'],
     keepUnusedDataFor: 5 * 60,

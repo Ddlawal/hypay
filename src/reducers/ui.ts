@@ -1,10 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { HYDRATE } from 'next-redux-wrapper'
 
 interface initialStateInterface {
     showModal: boolean
     modalType: string
-    modalProps: {}
+    modalProps: object
 }
 
 const initialState: initialStateInterface = {
@@ -26,15 +25,6 @@ export const uiSlice = createSlice({
             state.showModal = false
             state.modalType = ''
             state.modalProps = {}
-        },
-    },
-    extraReducers: {
-        [HYDRATE]: (state, action) => {
-            console.log('HYDRATE', state, action.payload)
-            return {
-                ...state,
-                ...action.payload.subject,
-            }
         },
     },
 })

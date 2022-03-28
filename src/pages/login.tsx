@@ -33,7 +33,7 @@ const Login = () => {
                 .then((payload: any) => {
                     localStorage.setItem('user', JSON.stringify(payload))
                     dispatch(loginUser(payload))
-                    push('/createstore')
+                    push('/dashboard/home')
                 })
                 .catch((error: any) => {
                     console.error('rejected', error)
