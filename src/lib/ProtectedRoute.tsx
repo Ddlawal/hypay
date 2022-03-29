@@ -10,7 +10,6 @@ const ProtectedRoute: FC = ({ children }) => {
 
     const router = useRouter()
     const { pathname } = router
-    console.log(user, pathname)
 
     if (!user) {
         if (protectedRoutes.includes(pathname) && typeof window !== 'undefined') {
