@@ -145,7 +145,7 @@ export const AddAProduct = () => {
                                 type="number"
                             />
                             <SecondInput
-                                className="my-2 w-full md:my-0 md:w-3/12"
+                                className="my-2 w-full md:my-0 md:w-4/12"
                                 name="barcode"
                                 errors={errors}
                                 label="Código e barras"
@@ -260,8 +260,8 @@ export const AddAProduct = () => {
                     <Card
                         rounded
                         padding="p-2"
-                        elevation="xl"
-                        className="my-3 flex h-20 items-center justify-between gap-x-1"
+                        // elevation="2xl"
+                        className="shadow-hypay-3xl my-3 flex h-20 items-center justify-between gap-x-1"
                     >
                         <div className="flex items-center gap-x-2">
                             <div className="">
@@ -279,8 +279,7 @@ export const AddAProduct = () => {
                     <Card
                         rounded
                         padding="p-2"
-                        elevation="xl"
-                        className="gap-X-1 my-3 flex h-20 items-center justify-between"
+                        className="gap-X-1 shadow-hypay-3xl my-3 flex h-20 items-center justify-between"
                     >
                         <div className="flex items-center gap-x-2">
                             <div>

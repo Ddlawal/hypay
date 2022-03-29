@@ -16,7 +16,7 @@ function CreateSocialStore() {
                 <p className="text-md mt-5 text-left font-bold text-black md:mt-3">
                     Share your store on social networks and boost your sales!
                 </p>
-                <section className="my-3 w-8/12">
+                <section className="my-3 md:w-8/12">
                     <Card className="flex h-[12rem] items-center justify-between gap-x-2" padding-2 rounded>
                         <div className="w-1/2">
                             <Image

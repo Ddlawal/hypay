@@ -17,10 +17,12 @@ function Notfound() {
                 <Image src="/images/meditation.png" alt="404 image" width="280" height="280" />
             </main>
             <footer className="text-center md:w-8/12">
-                <h1 className="text-left text-[4rem] font-bold text-neutral-700">Something's wrong here.</h1>
-                <p className="mx-auto text-left text-2xl font-semibold text-neutral-800 ">
+                <h1 className="text-left text-[3rem] font-bold text-neutral-700 md:text-[4rem]">
+                    Something's wrong here.
+                </h1>
+                <p className="mx-auto text-left text-xl font-semibold text-neutral-800 md:text-2xl ">
                     This is a 404 error, which means you've clicked on a bad link or entered an invalid URL. Maybe what
-                    you are looking for can be found at Hypay.com. P.S. hypay links are case sensitive.
+                    you are looking for can be found at hypay.com. P.S. Hypay links are case sensitive.
                 </p>
                 <Button primary onClick={() => back()}>
                     Go back
