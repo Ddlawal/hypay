@@ -24,10 +24,11 @@ const Login = () => {
     const { push } = useRouter()
     const dispatch = useDispatch()
 
-    const onSubmit = async (data: any) => {
-        // if (isLoading) return
+    const onSubmit = async (data: { email: string; password: string }) => {
+        if (isLoading) {
+            return
+        }
         try {
-            console.log(data)
             logUserIn(data)
                 .unwrap()
                 .then((payload: any) => {
@@ -37,7 +38,7 @@ const Login = () => {
                 })
                 .catch((error: any) => {
                     console.error('rejected', error)
-                    alert(error)
+                    alert(error.data.error)
                 })
         } catch (error) {
             console.log(error)

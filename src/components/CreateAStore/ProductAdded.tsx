@@ -18,7 +18,7 @@ function ProductAdded() {
                 </div>
             </header>
 
-            <section className="my-3 w-8/12">
+            <section className="my-3 md:w-8/12">
                 <Card className="flex h-[12rem] items-center justify-between gap-x-2" padding-2 rounded>
                     <div className="w-1/2">
                         <Image
