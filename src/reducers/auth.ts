@@ -51,19 +51,13 @@ export const authSlice = createSlice({
     initialState: initialAuthState,
     reducers: {
         login: (state, action: PayloadAction<any>) => {
-            console.log(action, ' login action was fired')
             return {
                 ...state,
                 user: action.payload,
-                isAuthenticated: true,
+                isAuthenticated: !state.isAuthenticated,
             }
         },
-        logout: (state) => ({
-            ...state,
-            user: null,
-            isAuthenticated: false,
-            isError: false,
-        }),
+        logout: () => initialAuthState,
         register: (state, action: PayloadAction<any>) => ({
             ...state,
             ...action.payload,

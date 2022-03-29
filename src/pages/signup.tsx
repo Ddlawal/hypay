@@ -69,7 +69,6 @@ function SignUp() {
         } catch (error) {
             console.error('rejected', error)
         }
-        // console.log(data, 'data')
     }
 
     return (

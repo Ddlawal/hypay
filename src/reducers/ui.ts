@@ -1,12 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-interface initialStateInterface {
+export interface initialUiStateInterface {
     showModal: boolean
     modalType: string
     modalProps: object
 }
 
-const initialState: initialStateInterface = {
+const initialUiState: initialUiStateInterface = {
     showModal: false,
     modalType: '',
     modalProps: {},
@@ -14,7 +14,7 @@ const initialState: initialStateInterface = {
 
 export const uiSlice = createSlice({
     name: 'ui',
-    initialState,
+    initialState: initialUiState,
     reducers: {
         showModal: (state, action) => {
             state.showModal = action.payload.showModal

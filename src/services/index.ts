@@ -21,16 +21,16 @@ const baseQuery = fetchBaseQuery({
 })
 
 // This section will be used for next auth
-const baseQueryWithReauth = async (arg: string, api: BaseQueryApi, extraOptions: {}) => {
-    let result = await baseQuery(arg, api, extraOptions)
-    if (result.error && result.error.status === 403) {
-        api.dispatch(login({ loginData: result?.data as unknown }))
-        return console.log(result?.error?.status)
-    } else {
-        console.log(result, 'is successfulll')
-        return result
-    }
-}
+// const baseQueryWithReauth = async (arg: string, api: BaseQueryApi, extraOptions: {}) => {
+//     let result = await baseQuery(arg, api, extraOptions)
+//     if (result.error && result.error.status === 403) {
+//         api.dispatch(login({ loginData: result?.data as unknown }))
+//         return console.log(result?.error?.status)
+//     } else {
+//         console.log(result, 'is successfulll')
+//         return result
+//     }
+// }
 const baseApi = createApi({
     reducerPath: 'baseApi',
     baseQuery: baseQuery,

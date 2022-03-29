@@ -13,7 +13,7 @@ type CardProps = {
 export const Card: FC<CardProps> = ({ children, className, bg = 'bg-white', elevation, rounded, padding }) => {
     const shadow = elevation ? 'shadow-' + elevation : 'shadow'
     return (
-        <div className={classNames(className, bg, shadow, rounded && 'rounded-lg', padding ? padding : 'py-4 px-6')}>
+        <div className={classNames(className, bg, rounded && 'rounded-lg', padding ? padding : 'py-4 px-6', shadow)}>
             {children}
         </div>
     )

@@ -27,12 +27,13 @@ export const AddAProduct = () => {
     const {
         register,
         handleSubmit,
-        watch,
         formState: { errors },
     } = useForm<any>()
 
     const { user } = useAppSelector((state) => state?.auth as { user: User })
-    console.log(user, 'add product')
+    const onSubmit = (data: any) => {
+        console.log(data, 'add the product data')
+    }
 
     const { push } = useRouter()
     return (
@@ -47,7 +48,7 @@ export const AddAProduct = () => {
                     </p>
                 </div>
             </header>
-            <form onSubmit={(e) => e.preventDefault()} className="mt-4 md:w-10/12">
+            <form onSubmit={handleSubmit(onSubmit)} className="mt-4 md:w-10/12">
                 <h3 className="my-3 font-semibold">Nome e descrição</h3>
                 <SecondInput
                     className="my-5 md:my-0"
@@ -141,10 +142,10 @@ export const AddAProduct = () => {
                                     required: true,
                                 }}
                                 placeholder=""
-                                type="text"
+                                type="number"
                             />
                             <SecondInput
-                                className="my-2 w-full md:my-0 md:w-3/12"
+                                className="my-2 w-full md:my-0 md:w-4/12"
                                 name="barcode"
                                 errors={errors}
                                 label="Código e barras"
@@ -153,7 +154,7 @@ export const AddAProduct = () => {
                                     required: true,
                                 }}
                                 placeholder=""
-                                type="text"
+                                type="number"
                             />
                         </div>
                     </div>
@@ -198,7 +199,7 @@ export const AddAProduct = () => {
                                     required: true,
                                 }}
                                 placeholder=""
-                                type="text"
+                                type="number"
                                 label="Peso"
                             />
                             <SecondInput
@@ -210,7 +211,7 @@ export const AddAProduct = () => {
                                     required: true,
                                 }}
                                 placeholder=""
-                                type="text"
+                                type="number"
                                 label="Comprimento"
                             />
                             <SecondInput
@@ -222,7 +223,7 @@ export const AddAProduct = () => {
                                     required: true,
                                 }}
                                 placeholder=""
-                                type="text"
+                                type="number"
                                 label="Altura"
                             />
                             <SecondInput
@@ -234,7 +235,7 @@ export const AddAProduct = () => {
                                     required: true,
                                 }}
                                 placeholder=""
-                                type="text"
+                                type="number"
                                 label="Largura"
                             />
                         </div>
@@ -256,7 +257,12 @@ export const AddAProduct = () => {
 
                     {/* Advanced shipping */}
                     <h4 className="mt-10 text-xl font-bold">Opções Avançadas</h4>
-                    <Card rounded padding="p-2" className="my-3 flex h-20 items-center justify-between gap-x-1">
+                    <Card
+                        rounded
+                        padding="p-2"
+                        // elevation="2xl"
+                        className="shadow-hypay-3xl my-3 flex h-20 items-center justify-between gap-x-1"
+                    >
                         <div className="flex items-center gap-x-2">
                             <div className="">
                                 <BagIcon color={COLORS.PINK} />
@@ -266,13 +272,15 @@ export const AddAProduct = () => {
                                 <p className="text-xs">Escolha aqui qual categoria seu produto se encaixa</p>
                             </div>
                         </div>
-                        <div className="">
-                            <Button className="rounded-md border-[1px] border-hypay-pink bg-white px-1 text-hypay-pink outline-none">
-                                Adicionar categoria
-                            </Button>
-                        </div>
+                        <Button className="rounded-md border-[1px] border-hypay-pink bg-white px-1 text-hypay-pink outline-none">
+                            Adicionar categoria
+                        </Button>
                     </Card>
-                    <Card rounded padding="p-2" className="gap-X-1 my-3 flex h-20 items-center justify-between">
+                    <Card
+                        rounded
+                        padding="p-2"
+                        className="gap-X-1 shadow-hypay-3xl my-3 flex h-20 items-center justify-between"
+                    >
                         <div className="flex items-center gap-x-2">
                             <div>
                                 <BagIcon color={COLORS.PINK} />
@@ -282,17 +290,15 @@ export const AddAProduct = () => {
                                 <p className="text-xs">Exemplo de variações são: cores e tamanhos</p>
                             </div>
                         </div>
-                        <div className="">
-                            <Button className="rounded-md border-[1px] border-hypay-pink bg-white  px-3 text-hypay-pink outline-none">
-                                Adicionar variáveis
-                            </Button>
-                        </div>
+                        <Button className="rounded-md border-[1px] border-hypay-pink bg-white  px-3 text-hypay-pink outline-none">
+                            Adicionar variáveis
+                        </Button>
                     </Card>
                     {/* Publish or discrad buttons */}
                     <div className="mt-7 flex items-center justify-around">
                         <button className="text-md font-bold text-hypay-primary">Descartar</button>
                         <Button
-                            onClick={() => push('/dashboard/products')}
+                            onClick={() => handleSubmit}
                             primary
                             className="rounded-md border-[1px]   px-3 text-white outline-none"
                         >
