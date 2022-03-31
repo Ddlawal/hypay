@@ -4,42 +4,39 @@ import { COLORS } from '../../lib/constants/colors'
 import { Button } from '../Button'
 import { SecondInput } from '../form'
 import { useCreateBusinessNameMutation } from '../../services/auth'
-import { useAppSelector } from '../../hooks/useStoreHooks'
-import { User } from '../../reducers/auth'
+import { useAppSelector, useAppDispatch } from '../../hooks/useStoreHooks'
+import { loginUserData } from '../../reducers/auth'
+import { setUserData, updatedUserData } from '../../reducers/temporaryData'
 
-export const getServerSideProps = async () => {
-    if (typeof window !== 'undefined') {
-        const user = localStorage.getItem('user')
-        return {
-            props: { user },
-        }
-    }
-}
-
-export const CreateAStore = () => {
+export const CreateAStore = ({ setTabIndex }: { setTabIndex: (value: React.SetStateAction<number>) => void }) => {
     const { register, handleSubmit } = useForm<any>()
-
-    const { userInfo } = useAppSelector((state) => state?.auth?.user as User)
-    const { firstName, lastName } = userInfo ?? {}
+    const dispatch = useAppDispatch()
+    const user = useAppSelector(loginUserData)
+    const userExist = useAppSelector(updatedUserData)
+    const { firstName, lastName, businessname } = user
 
     const [addBusinessName, { isLoading }] = useCreateBusinessNameMutation()
     const onSubmit = async (data: { businessname?: string }) => {
         if (isLoading) {
             return
         }
+        if (businessname || userExist?.businessname) {
+            return setTabIndex(1)
+        }
         try {
             addBusinessName({
                 businessname: data.businessname,
                 first_name: firstName,
                 last_name: lastName,
-                address: 'Abuja',
+                address: ' ',
             })
                 .unwrap()
-                .then((res) => {
-                    console.log(res, 'response after the store got added')
+                .then((res: any) => {
+                    dispatch(setUserData(res))
+                    setTabIndex(1)
                 })
                 .catch((err) => {
-                    console.log(err)
+                    console.log(err, 'store not fetched')
                 })
         } catch (error) {
             console.log(error, 'error')
@@ -64,6 +61,7 @@ export const CreateAStore = () => {
                     label="Store Name"
                     placeholder="Lucian store"
                     register={register}
+                    defaultValue={user || userExist ? businessname || userExist?.businessname : ''}
                 />
                 <div className="mt-20 flex w-full items-center justify-center   font-semibold md:pl-16">
                     <Button className={`${COLORS.PINK} w-full md:w-[70%]`} primary>

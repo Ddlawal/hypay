@@ -22,7 +22,7 @@ function SignUp() {
         ClientSafeProvider
     > | null>()
 
-    const { data: session, status } = useSession()
+    // const { data: session, status } = useSession()
     const { push, replace } = useRouter()
     const dispatch = useDispatch()
     const [miniRegister, { isLoading }] = useRegistrationMutation()
@@ -40,11 +40,11 @@ function SignUp() {
         setTheProviders()
     }, [])
 
-    useEffect(() => {
-        if (session) {
-            replace('/')
-        }
-    }, [session])
+    // useEffect(() => {
+    //     if (session) {
+    //         replace('/')
+    //     }
+    // }, [session])
 
     const onSubmit: SubmitHandler<any> = async (data) => {
         if (isLoading) {
@@ -58,13 +58,13 @@ function SignUp() {
                     dispatch(login(payload))
                     push('/createstore')
                 })
-                .catch(({ status, data }) => {
-                    const { message } = data
-                    if (status === 400) {
-                        alert(message['email'])
+                .catch((error: any) => {
+                    if (error.status == 400) {
+                        alert(error.data.message['email'])
+                    } else {
+                        console.log(error, 'the kind of error')
                     }
-
-                    console.error('rejected', message)
+                    console.error('rejected', error)
                 })
         } catch (error) {
             console.error('rejected', error)
@@ -149,9 +149,9 @@ function SignUp() {
                     </div>
                     <div className="mx-auto my-3 w-full text-center">
                         <p>
-                            Eu ja tenho uma conta{' '}
+                            Eu ja tenho uma conta
                             <Link href="/login">
-                                <a className="text-hypay-primary">Login</a>
+                                <a className="cursor-pointer pl-1 text-blue-500">Login</a>
                             </Link>
                         </p>
                     </div>

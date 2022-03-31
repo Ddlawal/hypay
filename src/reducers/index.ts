@@ -1,22 +1,24 @@
 import { combineReducers } from '@reduxjs/toolkit'
 import baseApi from '../services'
 import { persistReducer } from 'redux-persist'
-import storageSession from 'redux-persist/lib/storage/session'
+import storage from 'redux-persist/lib/storage'
 import auth from '../reducers/auth'
 import ui from './ui'
+import temporaryDataSlice from './temporaryData'
 
 const persistConfig = {
-    storage: storageSession,
+    storage,
     key: 'hypay',
     // whitelist: ["auth"],
 }
 
-const rootStore = combineReducers({
+export const rootStore = combineReducers({
     [baseApi.reducerPath]: baseApi.reducer,
     auth,
     ui,
+    temporaryDataSlice,
 })
 
-const rootReducer = persistReducer(persistConfig, rootStore)
+const persistedReducer = persistReducer(persistConfig, rootStore)
 
-export default rootReducer
+export default persistedReducer

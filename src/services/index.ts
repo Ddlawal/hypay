@@ -6,7 +6,7 @@ import { BaseQueryApi } from '@reduxjs/toolkit/dist/query/baseQueryTypes'
 const baseQuery = fetchBaseQuery({
     baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
     prepareHeaders: (headers, { getState }) => {
-        console.log(getState())
+        console.log(getState(), 'the state of the apps')
         headers.set('Access-Control-Allow-Origin', '*')
         // const {
         //     auth: { user },
@@ -35,8 +35,8 @@ const baseApi = createApi({
     reducerPath: 'baseApi',
     baseQuery: baseQuery,
     endpoints: () => ({}),
-    //  cache , The default time is seconds , Default duration 60 second
     tagTypes: ['user'],
+    //  cache , The default time is seconds , Default duration 60 second
     keepUnusedDataFor: 5 * 60,
     refetchOnMountOrArgChange: 30 * 60,
 })

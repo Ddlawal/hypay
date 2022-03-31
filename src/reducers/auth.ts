@@ -1,3 +1,4 @@
+import { RootState } from './../store/index'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 export interface User {
@@ -21,9 +22,38 @@ export interface User {
         expires_in: number
     }
 }
+export interface userDataInfo {
+    customerID: number
+    name: string
+    email: string
+    firstName: string
+    lastName: string
+    businessname: string
+    usertype: string
+    phone: null
+    address: string
+}
+
+interface deliveryAddress {
+    id: number
+    name: string
+    recipient: string
+    street_1: string
+    street_2: null
+    city: string
+    state: string
+    postal_code: string
+    longitude: null
+    latitude: null
+    country_id: number
+    phone: string
+    created_at: string
+    updated_at: string
+    deleted_at: null
+}
 
 export interface initialAuthStateInterface {
-    user: User | null
+    user: User
     isAuthenticated: boolean
     isError: boolean
 }
@@ -66,5 +96,7 @@ export const authSlice = createSlice({
 })
 
 export const { login, logout, register } = authSlice.actions
+
+export const loginUserData = (state: RootState) => state.auth.user.userInfo
 
 export default authSlice.reducer
