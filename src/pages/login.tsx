@@ -38,7 +38,7 @@ const Login = () => {
                 })
                 .catch((error: any) => {
                     console.error('rejected', error)
-                    alert(error.data.error)
+                    console.log(error.data)
                 })
         } catch (error) {
             console.log(error)
@@ -104,7 +104,7 @@ const Login = () => {
                     <p className="text-center text-sm text-hypay-gray">
                         Don't have an account?
                         <Link href="/signup">
-                            <a className="cursor-pointer pl-1 text-blue-500">Sign In</a>
+                            <a className="cursor-pointer pl-1 text-blue-500">Sign Up</a>
                         </Link>
                     </p>
                 </section>

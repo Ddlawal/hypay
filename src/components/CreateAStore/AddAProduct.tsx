@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React, { useState } from 'react'
 import { COLORS } from '../../lib/constants/colors'
 import { Button } from '../Button'
 import { BagIcon, CameraIcon } from '../Icons'
@@ -8,6 +8,8 @@ import { SecondInput } from '../form'
 import { Card } from '../Card'
 import { useAppSelector } from '../../hooks/useStoreHooks'
 import { User } from '../../reducers/auth'
+import { updatedUserData } from '../../reducers/temporaryData'
+import { useAddAProductMutation } from '../../services/productAndOrders'
 
 interface PhotographBoxProps {
     boxSize?: string
@@ -23,19 +25,53 @@ export const PhotographBox = ({ boxSize = '24', cameraSize = 50 }: PhotographBox
     )
 }
 
-export const AddAProduct = () => {
+interface AddProductProps {
+    onSuccess?: (params: unknown) => void
+    setTabIndex?: (value: React.SetStateAction<number>) => void
+}
+
+export const AddAProduct = ({ onSuccess, setTabIndex }: AddProductProps) => {
+    const [image1, setImage1] = useState<File | null>(null)
+    const { push } = useRouter()
+
     const {
         register,
         handleSubmit,
         formState: { errors },
     } = useForm<any>()
 
+    const [addProduct, { isLoading }] = useAddAProductMutation()
     const { user } = useAppSelector((state) => state?.auth as { user: User })
+
     const onSubmit = (data: any) => {
-        console.log(data, 'add the product data')
+        const extraParams = {
+            ...data,
+            product_image: image1,
+            category_id: 1,
+            currency: 'NGN',
+            deliveryperiod: 10,
+        }
+        const formData = new FormData()
+        for (const objKey in extraParams) {
+            formData.append(objKey, extraParams[objKey])
+        }
+        console.log(formData.entries(), 'the object keys')
+        addProduct(formData)
+            .unwrap()
+            .then((res) => {
+                onSuccess?.(res)
+                setTabIndex?.(2)
+            })
+            .catch((err) => console.log(err, 'An Error Occured while trying to Add your product'))
     }
 
-    const { push } = useRouter()
+    const handleImageCapture = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const fileList = event.target.files
+        if (fileList) {
+            console.log(event.target.files, 'the image captured')
+            setImage1(fileList[0])
+        }
+    }
     return (
         <div className="mx-auto w-10/12 ">
             <header className="mx-auto mt-10 w-full">
@@ -52,7 +88,7 @@ export const AddAProduct = () => {
                 <h3 className="my-3 font-semibold">Nome e descrição</h3>
                 <SecondInput
                     className="my-5 md:my-0"
-                    name="name"
+                    name="productname"
                     errors={errors}
                     label="Names"
                     register={register}
@@ -78,10 +114,17 @@ export const AddAProduct = () => {
                 <div>
                     <h4 className="my-2 text-xl font-bold">Fotos</h4>
                     <div className="flex items-center justify-between gap-x-3 overflow-x-auto py-2">
-                        <div className="">
+                        <div className="relative">
+                            <input
+                                type="file"
+                                accept=".jpg, .jpeg, .png"
+                                className="absolute h-full w-full opacity-0 outline-0"
+                                onChange={(e) => handleImageCapture(e)}
+                                name="product_image"
+                            />
                             <PhotographBox />
                         </div>
-                        <div className="">
+                        <div className="relative">
                             <PhotographBox />
                         </div>
                         <div className="">
@@ -121,22 +164,10 @@ export const AddAProduct = () => {
                         <h4 className="text-xl font-bold">Estoque</h4>
                         <div className=" flex flex-wrap justify-between">
                             <SecondInput
-                                className="my-2 w-5/12 md:my-0 md:w-3/12"
-                                name="quantity"
+                                className="my-2 w-5/12 md:my-0 md:w-2/12"
+                                name="price"
                                 errors={errors}
-                                label="Quantidade"
-                                register={register}
-                                validation={{
-                                    required: true,
-                                }}
-                                placeholder=""
-                                type="text"
-                            />
-                            <SecondInput
-                                className="my-2 w-5/12 md:my-0 md:w-3/12"
-                                name="sku"
-                                errors={errors}
-                                label="SKU"
+                                label="Price"
                                 register={register}
                                 validation={{
                                     required: true,
@@ -145,7 +176,31 @@ export const AddAProduct = () => {
                                 type="number"
                             />
                             <SecondInput
-                                className="my-2 w-full md:my-0 md:w-4/12"
+                                className="my-2 w-5/12 md:my-0 md:w-2/12"
+                                name="quantity"
+                                errors={errors}
+                                label="Quantidade"
+                                register={register}
+                                validation={{
+                                    required: true,
+                                }}
+                                placeholder=""
+                                type="number"
+                            />
+                            <SecondInput
+                                className="my-2 w-5/12 md:my-0 md:w-2/12"
+                                name="sku"
+                                errors={errors}
+                                label="SKU"
+                                register={register}
+                                validation={{
+                                    required: true,
+                                }}
+                                placeholder=""
+                                type="text"
+                            />
+                            <SecondInput
+                                className="my-2 w-full md:my-0 md:w-3/12"
                                 name="barcode"
                                 errors={errors}
                                 label="Código e barras"
@@ -167,9 +222,10 @@ export const AddAProduct = () => {
                                     type="radio"
                                     className="h-6 w-6 border-none bg-transparent outline-none"
                                     placeholder=""
-                                    name="digital"
+                                    value="physical"
+                                    {...register('product_type')}
                                 />
-                                <label htmlFor="quantity" className="ml-2 font-semibold">
+                                <label htmlFor="product_type" className="ml-2 font-semibold">
                                     Físico
                                 </label>
                             </div>
@@ -178,9 +234,10 @@ export const AddAProduct = () => {
                                     type="radio"
                                     className="h-6 w-6 border-none bg-transparent outline-none"
                                     placeholder=""
-                                    name="digital"
+                                    value="digital"
+                                    {...register('product_type')}
                                 />
-                                <label htmlFor="digital" className="ml-2 font-semibold">
+                                <label htmlFor="product_type" className="ml-2 font-semibold">
                                     Digital
                                 </label>
                             </div>
@@ -245,7 +302,6 @@ export const AddAProduct = () => {
                     <h4 className="mt-5 text-xl font-bold">Frete grátis</h4>
                     <div className=" flex items-center">
                         <input
-                            id="remember-me"
                             name="remember-me"
                             type="checkbox"
                             className="h-5 w-5 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"

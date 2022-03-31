@@ -1,8 +1,9 @@
-import { configureStore, ThunkAction } from '@reduxjs/toolkit'
+import { configureStore } from '@reduxjs/toolkit'
 import { setupListeners } from '@reduxjs/toolkit/query'
-import { persistStore } from 'redux-persist'
+import { persistStore, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist'
 import rootReducer from '../reducers'
 import baseApi from '../services'
+import logger from 'redux-logger'
 
 const middlewareHandler = (getDefaultMiddleware: any) => {
     const middlewareList = [
@@ -11,6 +12,7 @@ const middlewareHandler = (getDefaultMiddleware: any) => {
                 ignoredActions: ['persist/PERSIST'],
             },
         }).concat(baseApi.middleware),
+        logger,
     ]
 
     return middlewareList

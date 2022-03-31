@@ -15,7 +15,7 @@ const ProtectedRoute: FC = ({ children }) => {
         if (protectedRoutes.includes(pathname) && typeof window !== 'undefined') {
             router.push('/login')
             return (
-                <div className="w-sceen flex h-screen flex-col items-center justify-center">
+                <div className="flex h-screen w-full flex-col items-center justify-center">
                     <Loader />
                     <p className="font-bld text-center text-xl">Loading...</p>
                 </div>

@@ -10,13 +10,13 @@ import ProtectedRoute from '../lib/ProtectedRoute'
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
     return (
         <Provider store={store}>
-            <SessionProvider {...{ session }}>
-                <PersistGate loading={null} persistor={persistor}>
+            <PersistGate loading={null} persistor={persistor}>
+                <SessionProvider {...{ session }}>
                     <ProtectedRoute>
                         <Component {...pageProps} />
                     </ProtectedRoute>
-                </PersistGate>
-            </SessionProvider>
+                </SessionProvider>
+            </PersistGate>
         </Provider>
     )
 }
