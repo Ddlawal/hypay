@@ -3,11 +3,27 @@ import { NextPage } from 'next'
 import { PrimaryLayout } from '../../../components/Layout'
 import { Button } from '../../../components/Button'
 import { CircularPlusIcon } from '../../../components/Icons/CircularPlusIcon'
-import { AddAProduct } from '../../../components/CreateAStore/AddAProduct'
+import { useGetAllProductsQuery } from '../../../services/productAndOrders'
+import { Table } from '../../../components/Table'
+import { ImportIcon, MenuIcon } from '../../../components/Icons'
+import { useRouter } from 'next/router'
 
-const products = [
+const productActionSelectItems = [
     {
-        name: 'Alcatel',
+        title: 'Apagar',
+        onClick: () => console.log(1),
+    },
+    {
+        title: 'Ativar na loja',
+        onClick: () => console.log(1),
+    },
+    {
+        title: 'Desativar na loja',
+        onClick: () => console.log(1),
+    },
+    {
+        title: 'Alterar preço',
+        onClick: () => console.log(1),
     },
 ]
 
@@ -27,7 +43,11 @@ const NoProducts = () => {
 }
 
 const Products: NextPage = () => {
-    if (products.length === 0) {
+    const { data: products } = useGetAllProductsQuery()
+    const { push } = useRouter()
+    const gotoAddProducts = () => push('/dashboard/products/addProduxts')
+
+    if (products?.length === 0) {
         return (
             <PrimaryLayout>
                 <NoProducts />
@@ -37,8 +57,33 @@ const Products: NextPage = () => {
 
     return (
         <PrimaryLayout>
-            <div>
-                <AddAProduct />
+            <div className="py-4 md:px-8">
+                <div className="flex items-center justify-between">
+                    <div className="font-bold text-hypay-black">Products</div>
+                    <div className="flex items-center gap-x-6">
+                        <div className="flex items-center  gap-x-3">
+                            <MenuIcon /> <span>Product orders</span>
+                        </div>
+                        <div className="flex items-center  gap-x-3">
+                            <ImportIcon /> <span>Export and Import CSV</span>
+                        </div>
+                        <Button primary className="flex items-center" onClick={gotoAddProducts}>
+                            <span className="pl-2">
+                                <CircularPlusIcon />
+                            </span>
+                            <span className="px-2">Adicionar produto</span>
+                        </Button>
+                    </div>
+                </div>
+                <div className="pt-6 pb-4">Ações</div>
+                <select name="product" id="profuct">
+                    <option value="">Selecionar Ação...</option>
+                </select>
+                <Table
+                    headers={['Product', 'Inventory', 'Price', 'Discount', 'Variants', 'Actions']}
+                    keys={[]}
+                    rows={[]}
+                />
             </div>
         </PrimaryLayout>
     )
