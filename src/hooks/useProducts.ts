@@ -4,7 +4,7 @@ import { useGetAllProductsQuery } from '../services/productAndOrders'
 export const useProducts = () => {
     const { data, isLoading, isFetching, refetch } = useGetAllProductsQuery()
 
-    useEffect(() => refetch())
+    useEffect(() => refetch(), [refetch])
 
     const products = data?.products.data ?? []
 
