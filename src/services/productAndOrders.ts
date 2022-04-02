@@ -10,7 +10,7 @@ const productApi = baseApi.injectEndpoints({
                 body: data,
             }),
         }),
-        getAllProducts: builder.query<ProductsType, void>({
+        getAllProducts: builder.query<{ products: { data: ProductsType[] } }, void>({
             query: () => ({
                 url: '/myProducts',
                 method: 'GET',

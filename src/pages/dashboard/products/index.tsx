@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React, { useState } from 'react'
 import { NextPage } from 'next'
 import { PrimaryLayout } from '../../../components/Layout'
 import { Button } from '../../../components/Button'
@@ -7,23 +7,24 @@ import { useGetAllProductsQuery } from '../../../services/productAndOrders'
 import { Table } from '../../../components/Table'
 import { ImportIcon, MenuIcon } from '../../../components/Icons'
 import { useRouter } from 'next/router'
+import { SelectField } from '../../../components/Select'
 
 const productActionSelectItems = [
     {
-        title: 'Apagar',
-        onClick: () => console.log(1),
+        label: 'Apagar',
+        value: 'Apagar',
     },
     {
-        title: 'Ativar na loja',
-        onClick: () => console.log(1),
+        label: 'Ativar na loja',
+        value: 'Ativar na loja',
     },
     {
-        title: 'Desativar na loja',
-        onClick: () => console.log(1),
+        label: 'Desativar na loja',
+        value: 'Desativar na loja',
     },
     {
-        title: 'Alterar preço',
-        onClick: () => console.log(1),
+        label: 'Alterar preço',
+        value: 'Alterar preço',
     },
 ]
 
@@ -43,17 +44,22 @@ const NoProducts = () => {
 }
 
 const Products: NextPage = () => {
-    const { data: products } = useGetAllProductsQuery()
+    const [action, setAction] = useState<string | null>(null)
+    const { data } = useGetAllProductsQuery()
     const { push } = useRouter()
+
     const gotoAddProducts = () => push('/dashboard/products/addProduxts')
 
-    if (products?.length === 0) {
+    if (!data || data.products.data.length === 0) {
         return (
             <PrimaryLayout>
                 <NoProducts />
             </PrimaryLayout>
         )
     }
+
+    const products = data.products.data
+    console.log(products)
 
     return (
         <PrimaryLayout>
@@ -76,14 +82,28 @@ const Products: NextPage = () => {
                     </div>
                 </div>
                 <div className="pt-6 pb-4">Ações</div>
-                <select name="product" id="profuct">
-                    <option value="">Selecionar Ação...</option>
-                </select>
+                <div className="mb-3 w-[40%]">
+                    <SelectField<string | null>
+                        options={productActionSelectItems}
+                        name="product-list-actions"
+                        value={action}
+                        placeholder="Selecionar Ação..."
+                        onChange={(v) => setAction(v)}
+                    />
+                </div>
                 <Table
                     headers={['Product', 'Inventory', 'Price', 'Discount', 'Variants', 'Actions']}
-                    keys={[]}
-                    rows={[]}
-                />
+                    keys={['productName', 'quantity', 'amount', null, null, null]}
+                    rows={products}
+                >
+                    <div className="flex justify-end">
+                        <div className="text-left text-xs leading-4 text-hypay-pink">
+                            <div>Copy link</div>
+                            <div>Edit</div>
+                            <div className="font-bold">Delete</div>
+                        </div>
+                    </div>
+                </Table>
             </div>
         </PrimaryLayout>
     )
