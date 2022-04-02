@@ -4,7 +4,7 @@ import { ProductsType } from '../interfaces/products'
 const productApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
         addAProduct: builder.mutation({
-            query: (data: ProductsType) => ({
+            query: (data: FormData) => ({
                 url: '/product/add',
                 method: 'POST',
                 body: data,

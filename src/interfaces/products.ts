@@ -10,8 +10,8 @@ export type ProductsType = {
     other_images_url: string[]
     amount: string
     currency: string
-    deliveryDate: 5
-    transactions: 0
+    deliveryDate: number
+    transactions: number
     recentTransactions: Array<unknown>
     height: number
     weight: number
@@ -29,4 +29,23 @@ export type ProductsType = {
         updated_at: string | null
     }
     attributes: boolean
+}
+
+export type AddProductType = {
+    product_type: string
+    productname: string
+    description: string
+    videoDescription: string
+    price: string
+    quantity: string
+    sku: string
+    barcode: string
+    weight: string
+    length: string
+    width: string
+    height: string
+    product_image: File
+    category_id: string
+    currency: string
+    deliveryperiod: string
 }
