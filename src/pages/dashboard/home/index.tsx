@@ -18,7 +18,9 @@ import {
 import { CheckIcon } from '../../../components/Icons/CheckIcon'
 import { PrimaryLayout } from '../../../components/Layout'
 import { useMediaQuery } from '../../../hooks/useMediaQuery'
+import { useAppSelector } from '../../../hooks/useStoreHooks'
 import { COLORS } from '../../../lib/constants/colors'
+import { updatedUserData } from '../../../reducers/temporaryData'
 
 const quickGuides = [
     {
@@ -100,6 +102,8 @@ const WelcomeToHypay: FC<WelcomeToHypayProps> = ({ emailVerified, verifyEmail })
 )
 
 const QuickGuide = () => {
+    const userInfo = useAppSelector(updatedUserData)
+    console.log(userInfo, 'in dashboard home')
     return (
         <SectionWrapper title="Guia Rápido">
             <div className="hsb mt-3 flex gap-x-5 overflow-x-auto py-4">

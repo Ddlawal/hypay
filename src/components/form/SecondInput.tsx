@@ -12,6 +12,7 @@ type Props = {
     placeholder?: string
     type?: string
     rightLabel?: boolean
+    defaultValue?: string
 } & React.HTMLProps<HTMLInputElement>
 
 export const SecondInput = ({
@@ -26,6 +27,7 @@ export const SecondInput = ({
     type,
     rightLabel,
     placeholder,
+    defaultValue,
     ...rest
 }: Props): React.ReactElement => {
     const borderColor =
@@ -53,6 +55,7 @@ export const SecondInput = ({
                     {...rest}
                     className="h-full w-full appearance-none border-none bg-transparent outline-none"
                     placeholder={placeholder}
+                    defaultValue={defaultValue}
                 />
                 {icon && icon}
             </div>

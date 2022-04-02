@@ -1,12 +1,9 @@
-import { createApi, fetchBaseQuery, BaseQueryFn, FetchArgs, FetchBaseQueryError } from '@reduxjs/toolkit/query/react'
-import { login, logout } from '../reducers/auth'
-import { RootState } from '../store'
-import { BaseQueryApi } from '@reduxjs/toolkit/dist/query/baseQueryTypes'
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 const baseQuery = fetchBaseQuery({
     baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
     prepareHeaders: (headers, { getState }) => {
-        console.log(getState())
+        console.log(getState(), 'the state of the apps')
         headers.set('Access-Control-Allow-Origin', '*')
         // const {
         //     auth: { user },

@@ -24,9 +24,7 @@ module.exports = {
                 },
             },
             boxShadow: {
-                hypay: {
-                    '3xl': '35px 35px 60px -15px rgba(0, 0, 0, 0.3)',
-                },
+                '3xl': '35px 35px 60px -15px rgba(0, 0, 0, 0.3)',
             },
         },
         backgroundImage: {
