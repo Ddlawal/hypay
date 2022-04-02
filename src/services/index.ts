@@ -36,6 +36,8 @@ const baseApi = createApi({
     //  cache , The default time is seconds , Default duration 60 second
     keepUnusedDataFor: 5 * 60,
     refetchOnMountOrArgChange: 30 * 60,
+    refetchOnFocus: true,
+    refetchOnReconnect: true,
 })
 
 export default baseApi

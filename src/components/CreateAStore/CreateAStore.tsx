@@ -20,7 +20,8 @@ export const CreateAStore = ({ setTabIndex }: { setTabIndex: (value: React.SetSt
         if (isLoading) {
             return
         }
-        if (businessname || userExist?.businessname) {
+        console.log(businessname || userExist?.businessname == data.businessname, 'business name')
+        if (data.businessname == businessname || userExist?.businessname) {
             return setTabIndex(1)
         }
         try {
@@ -28,7 +29,7 @@ export const CreateAStore = ({ setTabIndex }: { setTabIndex: (value: React.SetSt
                 businessname: data.businessname,
                 first_name: firstName,
                 last_name: lastName,
-                address: ' ',
+                address: 'Add Address',
             })
                 .unwrap()
                 .then((res: any) => {
