@@ -1,15 +1,16 @@
 import baseApi from '.'
+import { ProductsType } from '../interfaces/products'
 
 const productApi = baseApi.injectEndpoints({
-    endpoints: (builder: any) => ({
+    endpoints: (builder) => ({
         addAProduct: builder.mutation({
-            query: (data: any) => ({
+            query: (data: FormData) => ({
                 url: '/product/add',
                 method: 'POST',
                 body: data,
             }),
         }),
-        getAllProducts: builder.mutation({
+        getAllProducts: builder.query<{ products: { data: ProductsType[] } }, void>({
             query: () => ({
                 url: '/myProducts',
                 method: 'GET',
@@ -18,4 +19,4 @@ const productApi = baseApi.injectEndpoints({
     }),
 })
 
-export const { useAddAProductMutation, useGetAllProductsMutation } = productApi
+export const { useAddAProductMutation, useGetAllProductsQuery } = productApi

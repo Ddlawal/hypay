@@ -8,8 +8,8 @@ import { SecondInput } from '../form'
 import { Card } from '../Card'
 import { useAppSelector } from '../../hooks/useStoreHooks'
 import { User } from '../../reducers/auth'
-import { updatedUserData } from '../../reducers/temporaryData'
 import { useAddAProductMutation } from '../../services/productAndOrders'
+import { AddProductType, ProductsType } from '../../interfaces/products'
 
 interface PhotographBoxProps {
     boxSize?: string
@@ -38,24 +38,24 @@ export const AddAProduct = ({ onSuccess, setTabIndex }: AddProductProps) => {
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm<any>()
+    } = useForm<AddProductType>()
 
     const [addProduct, { isLoading }] = useAddAProductMutation()
-    const { user } = useAppSelector((state) => state?.auth as { user: User })
 
-    const onSubmit = (data: any) => {
+    const onSubmit = (data: AddProductType) => {
         const extraParams = {
             ...data,
-            product_image: image1,
-            category_id: 1,
+            product_image: image1 as File,
+            category_id: '1',
             currency: 'NGN',
-            deliveryperiod: 10,
+            deliveryperiod: '10',
         }
+
         const formData = new FormData()
         for (const objKey in extraParams) {
-            formData.append(objKey, extraParams[objKey])
+            formData.append(objKey, extraParams[objKey as keyof AddProductType])
         }
-        console.log(formData.entries(), 'the object keys')
+
         addProduct(formData)
             .unwrap()
             .then((res) => {

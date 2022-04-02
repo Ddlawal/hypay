@@ -42,3 +42,7 @@ a {
 .hsb::-webkit-scrollbar {
     display: none;
 }
+
+.react-select .react-select__control {
+    border: none;
+}

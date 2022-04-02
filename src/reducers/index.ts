@@ -9,7 +9,7 @@ import temporaryDataSlice from './temporaryData'
 const persistConfig = {
     storage,
     key: 'hypay',
-    // whitelist: ["auth"],
+    // whitelist: ['auth'],
 }
 
 export const rootStore = combineReducers({

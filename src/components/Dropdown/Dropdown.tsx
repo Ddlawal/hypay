@@ -2,22 +2,29 @@ import classNames from 'classnames'
 import React, { FC, ReactNode, useState } from 'react'
 import { useOnClickOutside } from '../../hooks/useOnClickOutSide'
 
+type DropdownItemProps = {
+    title: string
+    onClick?: () => void
+}
+
 type DropdownProps = {
-    items: Array<{ title: string }>
+    items: Array<DropdownItemProps>
     children?: ReactNode
     className?: string
 }
 
 type DropdownButtonProps = {
-    items: Array<{ title: string }>
+    items: Array<DropdownItemProps>
     className?: string
 }
 
 const DropdownItems: FC<DropdownButtonProps> = ({ items, className }) => {
     return (
         <ul className={classNames(className)}>
-            {items.map(({ title }, id) => (
-                <li key={id}>{title}</li>
+            {items.map(({ title, onClick }, id) => (
+                <li key={id} onClick={onClick}>
+                    {title}
+                </li>
             ))}
         </ul>
     )

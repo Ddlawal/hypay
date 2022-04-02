@@ -1,7 +1,4 @@
-import { createApi, fetchBaseQuery, BaseQueryFn, FetchArgs, FetchBaseQueryError } from '@reduxjs/toolkit/query/react'
-import { login, logout } from '../reducers/auth'
-import { RootState } from '../store'
-import { BaseQueryApi } from '@reduxjs/toolkit/dist/query/baseQueryTypes'
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 const baseQuery = fetchBaseQuery({
     baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
@@ -35,7 +32,7 @@ const baseApi = createApi({
     reducerPath: 'baseApi',
     baseQuery: baseQuery,
     endpoints: () => ({}),
-    tagTypes: ['user'],
+    tagTypes: ['user', 'products'],
     //  cache , The default time is seconds , Default duration 60 second
     keepUnusedDataFor: 5 * 60,
     refetchOnMountOrArgChange: 30 * 60,
