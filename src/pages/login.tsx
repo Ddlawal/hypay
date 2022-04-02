@@ -12,9 +12,14 @@ import Link from 'next/link'
 import { SecondInput } from '../components/form'
 import { EMAIL_PATTERN } from '../lib/data'
 import PasswordInput from '../components/form/PasswordInput'
+import { useSession } from 'next-auth/react'
+import { signIn, signOut } from 'next-auth/react'
 
 const Login = () => {
     const [logUserIn, { isLoading }] = useLoginMutation()
+    const { data: session, status } = useSession()
+
+    console.log(session, status, 'of the us sessionn hook')
     const {
         register,
         handleSubmit,
@@ -23,6 +28,11 @@ const Login = () => {
 
     const { push } = useRouter()
     const dispatch = useDispatch()
+
+    const loginWithGoogle = async () => {
+        const data = await signIn('google')
+        console.log(data, 'trying to login with google')
+    }
 
     const onSubmit = async (data: { email: string; password: string }) => {
         if (isLoading) {
@@ -92,6 +102,7 @@ const Login = () => {
                             className="cursor-pointer"
                             width="46"
                             height="46"
+                            onClick={() => signOut()}
                         />
                         <Image
                             src="/images/google-icon.png"
@@ -99,6 +110,7 @@ const Login = () => {
                             className="cursor-pointer"
                             width="46"
                             height="46"
+                            onClick={loginWithGoogle}
                         />
                     </div>
                     <p className="text-center text-sm text-hypay-gray">

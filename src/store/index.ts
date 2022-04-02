@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { setupListeners } from '@reduxjs/toolkit/query'
 import { persistStore, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist'
-import rootReducer from '../reducers'
+import persistedReducer from '../reducers'
 import baseApi from '../services'
 import logger from 'redux-logger'
 
@@ -19,14 +19,17 @@ const middlewareHandler = (getDefaultMiddleware: any) => {
 }
 
 export const store = configureStore({
-    reducer: rootReducer,
+    reducer: persistedReducer,
 
-    middleware: (getDefaultMiddleware) => middlewareHandler(getDefaultMiddleware),
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware({
+            serializableCheck: {
+                ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+            },
+        }),
 
     devTools: process.env.NODE_ENV !== 'production',
 })
-
-export const persistor = persistStore(store)
 
 setupListeners(store.dispatch)
 // Infer the `RootState` and `AppDispatch` types from the store itself
