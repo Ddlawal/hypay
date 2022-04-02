@@ -3,11 +3,11 @@ import { NextPage } from 'next'
 import { PrimaryLayout } from '../../../components/Layout'
 import { Button } from '../../../components/Button'
 import { CircularPlusIcon } from '../../../components/Icons/CircularPlusIcon'
-import { useGetAllProductsQuery } from '../../../services/productAndOrders'
 import { Table } from '../../../components/Table'
 import { ImportIcon, MenuIcon } from '../../../components/Icons'
 import { useRouter } from 'next/router'
 import { SelectField } from '../../../components/Select'
+import { useProducts } from '../../../hooks/useProducts'
 
 const productActionSelectItems = [
     {
@@ -45,22 +45,18 @@ const NoProducts = () => {
 
 const Products: NextPage = () => {
     const [action, setAction] = useState<string | null>(null)
-    const { data } = useGetAllProductsQuery()
     const { push } = useRouter()
+    const { products } = useProducts()
 
     const gotoAddProducts = () => push('/dashboard/products/addProduxts')
 
-    if (!data || data.products.data.length === 0) {
+    if (products?.length === 0) {
         return (
             <PrimaryLayout>
                 <NoProducts />
             </PrimaryLayout>
         )
     }
-
-    const products = data.products.data
-    console.log(products)
-
     return (
         <PrimaryLayout>
             <div className="py-4 md:px-8">
