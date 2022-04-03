@@ -2,7 +2,7 @@ import React, { FC } from 'react'
 import { useRouter } from 'next/router'
 import { useAppSelector } from '../hooks/useStoreHooks'
 import { User } from '../reducers/auth'
-import { Loader } from '../components/Icons/Loader'
+import { LoaderIcon } from '../components/Icons/LoaderIcon'
 
 const ProtectedRoute: FC = ({ children }) => {
     const protectedRoutes = ['/dashboard/home', '/dashboard/products', '/createstore']
@@ -16,7 +16,7 @@ const ProtectedRoute: FC = ({ children }) => {
             router.push('/login')
             return (
                 <div className="flex h-screen w-full flex-col items-center justify-center">
-                    <Loader />
+                    <LoaderIcon />
                     <p className="font-bld text-center text-xl">Loading...</p>
                 </div>
             )
@@ -26,7 +26,7 @@ const ProtectedRoute: FC = ({ children }) => {
             router.push('/dashboard/home')
             return (
                 <div className="flex h-screen w-full flex-col items-center justify-center">
-                    <Loader />
+                    <LoaderIcon />
                     <p className="font-bld text-center text-xl">Loading...</p>
                 </div>
             )

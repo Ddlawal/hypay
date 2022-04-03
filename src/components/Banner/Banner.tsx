@@ -11,7 +11,7 @@ type BannerProps = {
     alt?: string
 }
 
-export const Banner: FC<BannerProps> = ({ children, src, srcMobile, alt, height = 24, className }) => {
+export const Banner: FC<BannerProps> = ({ children, src, srcMobile, alt, className }) => {
     return (
         <div className="relative">
             <div className={classNames(className, 'h-96 w-full overflow-hidden')}>

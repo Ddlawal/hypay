@@ -43,12 +43,38 @@ const NoProducts = () => {
     )
 }
 
-const Products: NextPage = () => {
-    const [action, setAction] = useState<string | null>(null)
+const ProductsHeader = () => {
     const { push } = useRouter()
-    const { products } = useProducts()
 
     const gotoAddProducts = () => push('/dashboard/products/addProduxts')
+
+    return (
+        <div className="flex items-center justify-between">
+            <div className="font-bold text-hypay-black">Products</div>
+            <div className="flex items-center gap-x-6">
+                <div className="flex items-center  gap-x-3">
+                    <MenuIcon /> <span>Product orders</span>
+                </div>
+                <div className="flex items-center  gap-x-3">
+                    <ImportIcon /> <span>Export and Import CSV</span>
+                </div>
+                <Button primary className="flex items-center" onClick={gotoAddProducts}>
+                    <span className="pl-2">
+                        <CircularPlusIcon />
+                    </span>
+                    <span className="px-2">Adicionar produto</span>
+                </Button>
+            </div>
+        </div>
+    )
+}
+
+const Products: NextPage = () => {
+    const [action, setAction] = useState<string | null>(null)
+    const { products } = useProducts()
+    // const { showSuccessSnackbar, showErrorSnackbar } = useSnackbar()
+
+    const onDelete = () => null
 
     if (products?.length === 0) {
         return (
@@ -57,26 +83,11 @@ const Products: NextPage = () => {
             </PrimaryLayout>
         )
     }
+
     return (
         <PrimaryLayout currentTabIndex={1}>
             <div className="py-4 md:px-8">
-                <div className="flex items-center justify-between">
-                    <div className="font-bold text-hypay-black">Products</div>
-                    <div className="flex items-center gap-x-6">
-                        <div className="flex items-center  gap-x-3">
-                            <MenuIcon /> <span>Product orders</span>
-                        </div>
-                        <div className="flex items-center  gap-x-3">
-                            <ImportIcon /> <span>Export and Import CSV</span>
-                        </div>
-                        <Button primary className="flex items-center" onClick={gotoAddProducts}>
-                            <span className="pl-2">
-                                <CircularPlusIcon />
-                            </span>
-                            <span className="px-2">Adicionar produto</span>
-                        </Button>
-                    </div>
-                </div>
+                <ProductsHeader />
                 <div className="pt-6 pb-4">Ações</div>
                 <div className="mb-3 w-[40%]">
                     <SelectField<string | null>
@@ -96,7 +107,9 @@ const Products: NextPage = () => {
                         <div className="text-left text-xs leading-4 text-hypay-pink">
                             <div>Copy link</div>
                             <div>Edit</div>
-                            <div className="font-bold">Delete</div>
+                            <div className="font-bold" onClick={onDelete}>
+                                Delete
+                            </div>
                         </div>
                     </div>
                 </Table>

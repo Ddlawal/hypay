@@ -7,6 +7,7 @@ import '../styles/globals.css'
 import { SessionProvider } from 'next-auth/react'
 import ProtectedRoute from '../lib/ProtectedRoute'
 import { persistStore } from 'redux-persist'
+import { Toaster } from 'react-hot-toast'
 
 const persistor = persistStore(store)
 
@@ -17,6 +18,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
                 <PersistGate loading={null} persistor={persistor}>
                     <ProtectedRoute>
                         <Component {...pageProps} />
+                        <Toaster />
                     </ProtectedRoute>
                 </PersistGate>
             </SessionProvider>

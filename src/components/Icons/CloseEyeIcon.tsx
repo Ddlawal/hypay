@@ -2,7 +2,7 @@ import * as React from 'react'
 import { IconProps } from '../../interfaces/icons'
 import { COLORS } from '../../lib/constants/colors'
 
-export const CloseEye = ({ size = 18, color = COLORS.GREY, onClick }: IconProps): JSX.Element => {
+export const CloseEyeIcon = ({ size = 18, color = COLORS.GREY, onClick }: IconProps): JSX.Element => {
     return (
         <svg
             width={size}

@@ -2,7 +2,7 @@ import React from 'react'
 import { IconProps } from '../../interfaces/icons'
 import { COLORS } from '../../lib/constants/colors'
 
-export const Loader = ({ size = 48, color = COLORS.PRIMARY }: IconProps): JSX.Element => {
+export const LoaderIcon = ({ size = 48, color = COLORS.PRIMARY }: IconProps): JSX.Element => {
     return (
         <svg
             width={size}

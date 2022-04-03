@@ -27,7 +27,7 @@ export const NavItem: FC<NavItemProps> = ({
     const [activeChild, setActiveChild] = useState<number>(-1)
     const [showDropdown, setShowDropdown] = useState<boolean>(false)
     const changeTab = () => {
-        setActive(parentIndex!)
+        setActive(parentIndex ?? 0)
         setActiveChild(0)
     }
     const changeActiveChild = (i: number) => {

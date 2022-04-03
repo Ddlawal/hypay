@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react'
+import React from 'react'
 import Image from 'next/image'
 import { Button } from '../components/Button'
 import { Logo } from '../components/Logo'

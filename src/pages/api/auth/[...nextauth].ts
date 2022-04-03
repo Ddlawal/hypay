@@ -1,6 +1,5 @@
 import NextAuth from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
-import { signIn } from 'next-auth/react'
 
 export default NextAuth({
     providers: [
@@ -20,7 +19,7 @@ export default NextAuth({
         signIn: '/signup',
     },
     callbacks: {
-        async session({ session, token, user }) {
+        async session({ session, token }) {
             // Send properties to the client, like an access_token from a provider.
             session.accessToken = token.accessToken
             return session
