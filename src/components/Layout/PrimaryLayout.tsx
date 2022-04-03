@@ -7,13 +7,14 @@ import { LoggedInHeader } from '../Headers'
 type PrimaryLayoutProps = {
     children: ReactNode
     className?: string
+    currentTabIndex?: number
 }
 
-export const PrimaryLayout: FC<PrimaryLayoutProps> = ({ children, className }) => {
+export const PrimaryLayout: FC<PrimaryLayoutProps> = ({ children, className, currentTabIndex }) => {
     return (
         <div className={classNames(className, 'mb-10 flex md:mb-0')}>
             <div className="fixed z-10 hidden w-[22%] bg-black md:block">
-                <SideNav />
+                <SideNav currentTabIndex={currentTabIndex} />
             </div>
 
             {/* Careful when changing the marginLeft */}

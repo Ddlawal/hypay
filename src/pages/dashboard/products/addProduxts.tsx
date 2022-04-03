@@ -4,7 +4,7 @@ import { PrimaryLayout } from '../../../components/Layout'
 
 const AddProducts: NextPage = () => {
     return (
-        <PrimaryLayout>
+        <PrimaryLayout currentTabIndex={1}>
             <AddAProduct />
         </PrimaryLayout>
     )

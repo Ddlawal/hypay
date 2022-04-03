@@ -5,8 +5,10 @@ import { MenuItemList } from '../../lib/data'
 import { NavItem } from './NavItem'
 import { NextLink } from '../Links'
 
-export const SideNav: FC = () => {
-    const [activeTab, setActivetab] = useState(0)
+type SideNavProps = { currentTabIndex?: number }
+
+export const SideNav: FC<SideNavProps> = ({ currentTabIndex = 0 }) => {
+    const [activeTab, setActivetab] = useState(currentTabIndex)
 
     const changeTab = (i: number) => {
         setActivetab(i)

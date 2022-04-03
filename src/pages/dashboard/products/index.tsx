@@ -52,13 +52,13 @@ const Products: NextPage = () => {
 
     if (products?.length === 0) {
         return (
-            <PrimaryLayout>
+            <PrimaryLayout currentTabIndex={1}>
                 <NoProducts />
             </PrimaryLayout>
         )
     }
     return (
-        <PrimaryLayout>
+        <PrimaryLayout currentTabIndex={1}>
             <div className="py-4 md:px-8">
                 <div className="flex items-center justify-between">
                     <div className="font-bold text-hypay-black">Products</div>
