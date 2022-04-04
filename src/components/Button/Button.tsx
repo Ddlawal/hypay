@@ -1,28 +1,30 @@
 import React, { FC, ReactNode } from 'react'
-import classNames from 'classnames'
+import cx from 'classnames'
 
 type ButtonProps = {
     children?: ReactNode
     className?: string
-    size?: 'sm' | 'base' | 'lg'
+    padding?: string
+    size?: 'xs' | 'sm' | 'base' | 'lg' | string
     disabled?: boolean
     primary?: boolean
     outlined?: boolean
     onClick?: () => void
 }
 
-export const Button: FC<ButtonProps> = ({ children, className, primary, outlined, size = 'sm', onClick }) => {
+export const Button: FC<ButtonProps> = ({ children, className, padding, primary, outlined, size = 'sm', onClick }) => {
     return (
         <button
             onClick={onClick}
-            className={classNames(
+            className={cx(
                 className,
+                padding ? padding : 'py-1.5 px-2',
                 primary
                     ? outlined
                         ? 'border border-hypay-pink bg-white text-hypay-pink'
                         : 'bg-hypay-pink text-white'
                     : '',
-                `rounded-md py-1.5 px-2 leading-6 text-${size}`
+                `rounded-md leading-6 text-${size}`
             )}
         >
             {children}

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { CloseEye } from '../Icons'
+import { CloseEyeIcon } from '../Icons'
 
 function PasswordInput({ errors, register, validation, className, placeholder }: any) {
     const [passwordType, setPasswordType] = useState(false)
@@ -22,7 +22,7 @@ function PasswordInput({ errors, register, validation, className, placeholder }:
                     className="h-full w-full border-none bg-white bg-transparent outline-none"
                     placeholder={placeholder}
                 />
-                <CloseEye
+                <CloseEyeIcon
                     onClick={() => {
                         setPasswordType(!passwordType)
                     }}

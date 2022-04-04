@@ -18,7 +18,7 @@ export const useMediaQuery = (size: Size): boolean => {
     const minWidth = breakpoints[size]
     const dt = useReactResponsive({ minWidth })
 
-    useLayoutEffect(() => setIsLarger(dt), [])
+    useLayoutEffect(() => setIsLarger(dt))
 
     return isLarger
 }

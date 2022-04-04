@@ -1,4 +1,5 @@
-import React from 'react'
+import cx from 'classnames'
+import React, { ReactNode } from 'react'
 import Select, { components } from 'react-select'
 
 type Option<T> = {
@@ -9,7 +10,8 @@ type Option<T> = {
 type SelectFieldProps<T> = {
     name: string
     value: T
-    placeholder: string
+    placeholder?: ReactNode
+    labelClassName?: string
     onChange: (value: T | null) => void
     label?: string
     options: Option<T>[]
@@ -24,6 +26,7 @@ export function SelectField<T = unknown>({
     value,
     placeholder,
     label,
+    labelClassName,
     options,
     isSearchable = true,
     isClearable = false,
@@ -32,7 +35,11 @@ export function SelectField<T = unknown>({
 }: SelectFieldProps<T>): JSX.Element {
     return (
         <div>
-            {label && <label htmlFor={name}>{label}</label>}
+            {label && (
+                <label htmlFor={name} className={cx(labelClassName, 'mt-5 mb-3 block')}>
+                    {label}
+                </label>
+            )}
 
             <Select<Option<T>>
                 id={name}

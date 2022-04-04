@@ -1,5 +1,5 @@
 import React, { FC, ReactNode } from 'react'
-import classNames from 'classnames'
+import cx from 'classnames'
 import Image from 'next/image'
 
 type BannerProps = {
@@ -14,7 +14,7 @@ type BannerProps = {
 export const Banner: FC<BannerProps> = ({ children, src, srcMobile, alt, className }) => {
     return (
         <div className="relative">
-            <div className={classNames(className, 'h-96 w-full overflow-hidden')}>
+            <div className={cx(className, 'h-96 w-full overflow-hidden')}>
                 <div className="hidden md:block">
                     <Image src={src} alt={alt} layout="fill" objectFit="cover" quality={100} />
                 </div>

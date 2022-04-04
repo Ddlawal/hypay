@@ -1,5 +1,5 @@
 import React, { FC, ReactElement, ReactNode } from 'react'
-import classNames from 'classnames'
+import cx from 'classnames'
 import { useTimeline } from '../../hooks/useTimeline'
 import { COLORS } from '../../lib/constants/colors'
 
@@ -38,7 +38,7 @@ export const Timeline: FC<TimelineProps> = (props) => {
         <div style={timelineStyle} className={'relative'}>
             <div style={progressBarBgStyle} className="absolute z-0" />
             <div style={progressBarFgStyle} className="absolute z-10" />
-            <div style={eventWrapperStyle} className={classNames('absolute z-20 flex')}>
+            <div style={eventWrapperStyle} className={cx('absolute z-20 flex')}>
                 {props.children}
             </div>
         </div>
@@ -61,7 +61,7 @@ export const TimelineEvent: FC<TimelineEventProps> = ({
     return (
         <div
             style={{ height: size, width: size, backgroundColor: bgColor, border }}
-            className={classNames('relative flex items-center justify-center rounded-full')}
+            className={cx('relative flex items-center justify-center rounded-full')}
         >
             {children}
             <p
@@ -74,7 +74,7 @@ export const TimelineEvent: FC<TimelineEventProps> = ({
                     lineHeight: '14px',
                     color,
                 }}
-                className={classNames(isHorizontal && 'text-center', 'absolute font-normal')}
+                className={cx(isHorizontal && 'text-center', 'absolute font-normal')}
             >
                 {label}
             </p>

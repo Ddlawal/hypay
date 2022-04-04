@@ -5,9 +5,10 @@ type Props = {
     className?: string
     error?: boolean
     icon?: JSX.Element
+    padding?: string
 } & React.HTMLProps<HTMLInputElement>
 
-export const Input = ({ className, error, icon, ...rest }: Props): React.ReactElement => {
+export const Input = ({ className, padding, error, icon, ...rest }: Props): React.ReactElement => {
     const borderColor = error ? 'border-red-200' : ''
 
     return (
@@ -15,8 +16,9 @@ export const Input = ({ className, error, icon, ...rest }: Props): React.ReactEl
             {icon && <span className="absolute inset-y-0 left-0 flex items-center pl-4">{icon}</span>}
             <input
                 className={cx(
-                    `w-full appearance-none rounded-lg bg-white py-2 pl-11 pr-4 focus:outline-none ${borderColor}`,
-                    className
+                    className,
+                    padding || 'py-2 pl-11 pr-4',
+                    `w-full appearance-none rounded-lg bg-white focus:outline-none ${borderColor}`
                 )}
                 {...rest}
             />
