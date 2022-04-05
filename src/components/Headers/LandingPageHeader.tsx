@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import classNames from 'classnames'
+import cx from 'classnames'
 import { COLORS } from '../../lib/constants/colors'
 import { headerLinks } from '../../lib/data'
 import { Button } from '../Button'
@@ -49,7 +49,7 @@ const MobileLinks = () => {
         <>
             <div
                 ref={ref}
-                className={classNames(
+                className={cx(
                     !open && 'translate-x-full',
                     'absolute top-0 right-0 block h-screen w-4/6 bg-white py-8 px-6 pt-12 transition duration-500 ease-in-out sm:w-8/12 sm:p-10 md:hidden'
                 )}

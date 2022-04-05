@@ -17,7 +17,6 @@ type Props = {
 
 export const SecondInput = ({
     className,
-    error,
     icon,
     errors,
     name,

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
-import { useSession, getProviders, signIn, ClientSafeProvider, LiteralUnion } from 'next-auth/react'
+import { getProviders, signIn, ClientSafeProvider, LiteralUnion } from 'next-auth/react'
 import type { BuiltInProviderType } from 'next-auth/providers'
 import AuthLayout from '../components/AuthLayout/AuthLayout'
 import { Button } from '../components/Button'
@@ -23,7 +23,7 @@ function SignUp() {
     > | null>()
 
     // const { data: session, status } = useSession()
-    const { push, replace } = useRouter()
+    const { push } = useRouter()
     const dispatch = useDispatch()
     const [miniRegister, { isLoading }] = useRegistrationMutation()
     const {

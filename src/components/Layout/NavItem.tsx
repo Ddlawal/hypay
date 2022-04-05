@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react'
-import classNames from 'classnames'
+import cx from 'classnames'
 import { NextLink } from '../Links'
 
 type NavItemProps = {
@@ -27,7 +27,7 @@ export const NavItem: FC<NavItemProps> = ({
     const [activeChild, setActiveChild] = useState<number>(-1)
     const [showDropdown, setShowDropdown] = useState<boolean>(false)
     const changeTab = () => {
-        setActive(parentIndex!)
+        setActive(parentIndex ?? 0)
         setActiveChild(0)
     }
     const changeActiveChild = (i: number) => {
@@ -36,7 +36,7 @@ export const NavItem: FC<NavItemProps> = ({
     }
     return (
         <div
-            className={classNames(
+            className={cx(
                 !isDropDown ? isActive && 'bg-hypay-secondary' : '',
                 `w-full cursor-pointer py-3 px-4 outline-hidden transition ease-in hover:bg-hypay-secondary`
             )}
@@ -55,7 +55,7 @@ export const NavItem: FC<NavItemProps> = ({
                     <button
                         onClick={() => changeActiveChild(i)}
                         key={marketType}
-                        className={classNames(
+                        className={cx(
                             i === activeChild && `border-l-4 border-hypay-pink`,
                             i === activeChild && 'bg-hypay-secondary',
                             ` flex w-full cursor-pointer justify-center py-2 text-white outline-hidden transition ease-in   `

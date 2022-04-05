@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import classNames from 'classnames'
+import cx from 'classnames'
 import type { NextPage } from 'next'
 import Image from 'next/image'
 import { Banner } from '../components/Banner'
@@ -19,7 +19,6 @@ import { Logo } from '../components/Logo'
 import { Timeline, TimelineEvent } from '../components/Timeline'
 import { useMediaQuery } from '../hooks/useMediaQuery'
 import { COLORS } from '../lib/constants/colors'
-import { useAppSelector } from '../hooks/useStoreHooks'
 
 type ContentProps = {
     title: string
@@ -32,7 +31,7 @@ type ContentProps = {
 const Content = ({ title, body, className, titleClassName, dotDivider = false }: ContentProps) => (
     <div>
         <p
-            className={classNames(
+            className={cx(
                 titleClassName,
                 'mb-3 text-center text-3xl font-bold tracking-wide text-hypay-primary md:mb-4 md:text-left'
             )}
@@ -40,7 +39,7 @@ const Content = ({ title, body, className, titleClassName, dotDivider = false }:
             {title}
         </p>
         <p
-            className={classNames(
+            className={cx(
                 className,
                 'mb-3 w-[100%] text-center text-base font-semibold tracking-wide text-hypay-primary md:mb-7 md:w-[85%] md:text-left'
             )}

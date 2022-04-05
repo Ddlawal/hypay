@@ -1,5 +1,5 @@
 import * as React from 'react'
-import classNames from 'classnames'
+import cx from 'classnames'
 import { COLORS } from '../lib/constants/colors'
 import { LogoIcon } from './Icons'
 
@@ -15,7 +15,7 @@ type LogoProps = {
 export const Logo = ({ className, labelled, size, color = COLORS.PRIMARY, labelColor = COLORS.PRIMARY }: LogoProps) => {
     return (
         <div
-            className={classNames(
+            className={cx(
                 className,
                 labelled?.labelPosition === 'right' ? 'flex-row' : 'flex-col',
                 'inline-flex items-center justify-center gap-1'
@@ -26,7 +26,7 @@ export const Logo = ({ className, labelled, size, color = COLORS.PRIMARY, labelC
                 <div
                     style={{ fontSize: size ? `${size}px` : '22px' }}
                     // I removed the hidden class on the hypay text for mobile which we might make dynamic later for reusability
-                    className={classNames(
+                    className={cx(
                         labelColor ? labelColor : 'text-hypay-primary',
                         ' text-lg font-bold leading-7 tracking-wider  md:block'
                     )}

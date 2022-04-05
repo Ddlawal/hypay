@@ -2,20 +2,17 @@ import React, { useState } from 'react'
 import { COLORS } from '../../lib/constants/colors'
 import { Button } from '../Button'
 import { BagIcon, CameraIcon } from '../Icons'
-import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
 import { SecondInput } from '../form'
 import { Card } from '../Card'
-import { useAppSelector } from '../../hooks/useStoreHooks'
-import { User } from '../../reducers/auth'
 import { useAddAProductMutation } from '../../services/productAndOrders'
-import { AddProductType, ProductsType } from '../../interfaces/products'
+import { AddProductType } from '../../interfaces/products'
 
 interface PhotographBoxProps {
     boxSize?: string
     cameraSize?: number
 }
-export const PhotographBox = ({ boxSize = '24', cameraSize = 50 }: PhotographBoxProps) => {
+export const PhotographBox = ({ cameraSize = 50 }: PhotographBoxProps) => {
     return (
         <div
             className={`flex h-24 w-24 cursor-pointer items-center justify-center rounded-md border-2 border-dashed border-hypay-gray`}
@@ -32,7 +29,6 @@ interface AddProductProps {
 
 export const AddAProduct = ({ onSuccess, setTabIndex }: AddProductProps) => {
     const [image1, setImage1] = useState<File | null>(null)
-    const { push } = useRouter()
 
     const {
         register,
@@ -40,7 +36,7 @@ export const AddAProduct = ({ onSuccess, setTabIndex }: AddProductProps) => {
         formState: { errors },
     } = useForm<AddProductType>()
 
-    const [addProduct, { isLoading }] = useAddAProductMutation()
+    const [addProduct] = useAddAProductMutation()
 
     const onSubmit = (data: AddProductType) => {
         const extraParams = {

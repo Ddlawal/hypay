@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import classNames from 'classnames'
+import cx from 'classnames'
 import Image from 'next/image'
 import { useOnClickOutside } from '../../hooks/useOnClickOutSide'
 import { COLORS } from '../../lib/constants/colors'
@@ -10,7 +10,7 @@ import { SIDE_NAV_WIDTH } from '../../lib/constants/elements'
 import { Dropdown } from '../Dropdown'
 import { dropdownMenuItems } from '../../lib/data'
 
-export const LoggedInHeader = () => {
+export const LoggedInHeader = ({ currentTabIndex }: { currentTabIndex?: number }) => {
     const [open, setOpen] = useState(false)
     const [searchString, setSearchString] = useState('')
     const { ref } = useOnClickOutside<HTMLDivElement>(() => setOpen(false))
@@ -23,12 +23,12 @@ export const LoggedInHeader = () => {
                 <div
                     ref={ref}
                     style={{ width }}
-                    className={classNames(
+                    className={cx(
                         !open && '-translate-x-full',
                         'absolute left-0 top-0 block h-screen transition duration-500 ease-in-out md:hidden'
                     )}
                 >
-                    <SideNav />
+                    <SideNav currentTabIndex={currentTabIndex} />
                 </div>
                 <button className="p-2 transition" onClick={() => setOpen(true)}>
                     <MenuIcon size={26} color={COLORS.ICON_GRAY} />

@@ -45,4 +45,5 @@ a {
 
 .react-select .react-select__control {
     border: none;
+    cursor: pointer;
 }

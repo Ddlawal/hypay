@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import { COLORS } from '../../lib/constants/colors'
 import { Button } from '../Button'
-import { ConnectIcon, CreateAccountIcon, DeliveryIcon, ReceivePaymentIcon, ShareIcon } from '../Icons'
+import { ConnectIcon, CreateAccountIcon, DeliveryIcon, ShareIcon } from '../Icons'
 import { Timeline, TimelineEvent } from '../Timeline'
 import { useMediaQuery } from '../../hooks/useMediaQuery'
 

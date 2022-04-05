@@ -6,6 +6,7 @@ export const COLORS = {
     PINK: '#D95F76',
     PLACEHOLDER: '#4B506D',
     PRIMARY: '#36076B',
+    RED: '#BF2A2A',
     WHITE: '#FFFFFF',
     YELLOW: '#FFB119',
 } as const
