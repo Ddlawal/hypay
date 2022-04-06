@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import Image from 'next/image'
+import { useRouter } from 'next/router'
 import { COLORS } from '../../lib/constants/colors'
 import { Button } from '../Button'
 import { BagIcon, CameraIcon } from '../Icons'
@@ -11,13 +13,42 @@ import { AddProductType } from '../../interfaces/products'
 interface PhotographBoxProps {
     boxSize?: string
     cameraSize?: number
+    imageReceiver?: (image: File | FileList | null) => void
 }
-export const PhotographBox = ({ cameraSize = 50 }: PhotographBoxProps) => {
+export const PhotographBox = ({ cameraSize = 50, imageReceiver }: PhotographBoxProps) => {
+    const [image1, setImage1] = useState<File | null>(null)
+
+    const handleImageCapture = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const fileList = event.target.files
+        if (fileList) {
+            setImage1(fileList[0])
+        }
+        imageReceiver?.(fileList && fileList[0])
+    }
     return (
         <div
-            className={`flex h-24 w-24 cursor-pointer items-center justify-center rounded-md border-2 border-dashed border-hypay-gray`}
+            className={`relative flex h-24 w-24 cursor-pointer items-center justify-center rounded-md border-2 border-dashed border-hypay-gray`}
         >
-            <CameraIcon size={cameraSize} />
+            <div className="absolute flex h-full w-full items-center justify-center">
+                <input
+                    type="file"
+                    accept=".jpg, .jpeg, .png"
+                    className="absolute z-10 h-full w-full opacity-0 outline-0"
+                    onChange={(e) => handleImageCapture(e)}
+                    name="product_image"
+                />
+                {image1 ? (
+                    <Image
+                        src={URL.createObjectURL(image1)}
+                        width="100%"
+                        alt="seleced Product"
+                        height="100%"
+                        className="absolute top-0 left-0 inline h-full w-full border border-black object-cover"
+                    />
+                ) : (
+                    <CameraIcon size={cameraSize} />
+                )}
+            </div>
         </div>
     )
 }
@@ -28,7 +59,9 @@ interface AddProductProps {
 }
 
 export const AddAProduct = ({ onSuccess, setTabIndex }: AddProductProps) => {
-    const [image1, setImage1] = useState<File | null>(null)
+    const [image1, setImage1] = useState<File | FileList | null>(null)
+
+    const { push } = useRouter()
 
     const {
         register,
@@ -37,6 +70,11 @@ export const AddAProduct = ({ onSuccess, setTabIndex }: AddProductProps) => {
     } = useForm<AddProductType>()
 
     const [addProduct] = useAddAProductMutation()
+
+    const imageReceiver = (image: File | FileList | null) => {
+        console.log(image, 'the selevted image')
+        setImage1(image)
+    }
 
     const onSubmit = (data: AddProductType) => {
         const extraParams = {
@@ -61,13 +99,6 @@ export const AddAProduct = ({ onSuccess, setTabIndex }: AddProductProps) => {
             .catch((err) => console.log(err, 'An Error Occured while trying to Add your product'))
     }
 
-    const handleImageCapture = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const fileList = event.target.files
-        if (fileList) {
-            console.log(event.target.files, 'the image captured')
-            setImage1(fileList[0])
-        }
-    }
     return (
         <div className="mx-auto w-10/12 ">
             <header className="mx-auto mt-10 w-full">
@@ -111,22 +142,15 @@ export const AddAProduct = ({ onSuccess, setTabIndex }: AddProductProps) => {
                     <h4 className="my-2 text-xl font-bold">Fotos</h4>
                     <div className="flex items-center justify-between gap-x-3 overflow-x-auto py-2">
                         <div className="relative">
-                            <input
-                                type="file"
-                                accept=".jpg, .jpeg, .png"
-                                className="absolute h-full w-full opacity-0 outline-0"
-                                onChange={(e) => handleImageCapture(e)}
-                                name="product_image"
-                            />
+                            <PhotographBox imageReceiver={imageReceiver} />
+                        </div>
+                        <div className="relative">
                             <PhotographBox />
                         </div>
                         <div className="relative">
                             <PhotographBox />
                         </div>
-                        <div className="">
-                            <PhotographBox />
-                        </div>
-                        <div className="">
+                        <div className="relative">
                             <PhotographBox />
                         </div>
                     </div>
@@ -348,7 +372,14 @@ export const AddAProduct = ({ onSuccess, setTabIndex }: AddProductProps) => {
                     </Card>
                     {/* Publish or discrad buttons */}
                     <div className="mt-7 flex items-center justify-around">
-                        <button className="text-md font-bold text-hypay-primary">Descartar</button>
+                        <Button
+                            onClick={() => {
+                                push('/dashboard/home')
+                            }}
+                            className="text-md font-bold text-hypay-primary"
+                        >
+                            Descartar
+                        </Button>
                         <Button
                             onClick={() => handleSubmit}
                             primary
