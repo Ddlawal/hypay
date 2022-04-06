@@ -55,7 +55,7 @@ const ProductsHeader = ({ isDesktop }: { isDesktop: boolean }) => {
 
     return (
         <div className="flex items-center justify-between">
-            <div className="p-4 font-bold text-hypay-black md:p-0">Produtos cadastrados</div>
+            <div className="p-4 text-lg font-bold text-hypay-black md:p-0">Produtos cadastrados</div>
             {isDesktop ? (
                 <div className="flex items-center gap-x-6">
                     <div className="flex items-center  gap-x-3">

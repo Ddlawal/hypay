@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { useOnClickOutside } from '../../hooks/useOnClickOutSide'
 import { COLORS } from '../../lib/constants/colors'
 import { TextField } from '../form'
-import { CommentIcon, MenuIcon, MoreOptionsIcon, NotificationIcon, SearchIcon } from '../Icons'
+import { CommentIcon, MenuIcon, MoreOptionsVIcon, NotificationIcon, SearchIcon } from '../Icons'
 import { SideNav } from '../Layout'
 import { SIDE_NAV_WIDTH } from '../../lib/constants/elements'
 import { Dropdown } from '../Dropdown'
@@ -50,7 +50,7 @@ export const LoggedInHeader = ({ currentTabIndex }: { currentTabIndex?: number }
                     <NotificationIcon indicator size={26} color={COLORS.ICON_GRAY} />
                 </button>
                 <button className="block rounded-lg py-2 transition duration-200 ease-in-out hover:scale-105 hover:shadow-md md:hidden">
-                    <MoreOptionsIcon size={26} color={COLORS.ICON_GRAY} />
+                    <MoreOptionsVIcon size={26} color={COLORS.ICON_GRAY} />
                 </button>
                 <Dropdown items={dropdownMenuItems}>
                     <Image

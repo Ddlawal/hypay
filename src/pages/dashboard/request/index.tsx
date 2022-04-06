@@ -29,6 +29,7 @@ const Filters = () => (
                 name="product-list-actions"
                 label="Forma de pagamento"
                 labelClassName="text-sm"
+                placeholder=""
                 value={''}
                 onChange={(v) => console.log(v)}
             />
@@ -39,6 +40,7 @@ const Filters = () => (
                 name="product-list-actions"
                 label="Status de pagamento"
                 labelClassName="text-sm"
+                placeholder=""
                 value={''}
                 onChange={(v) => console.log(v)}
             />
@@ -74,7 +76,7 @@ const Request: NextPage = () => {
     return (
         <PrimaryLayout currentTabIndex={2}>
             <div className="p-4">
-                <div className="font-bold">Histórico de pedidos</div>
+                <div className="text-lg font-bold">Histórico de pedidos</div>
                 <div className="mt-3">Ordenar por</div>
                 <Filters />
                 {isDesktop ? (
