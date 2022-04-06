@@ -5,7 +5,7 @@ const baseQuery = fetchBaseQuery({
     baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
     prepareHeaders: (headers, { getState }) => {
         headers.set('Access-Control-Allow-Origin', '*')
-        const user = JSON.parse(localStorage.getItem('user') as string)
+        // const user = JSON.parse(localStorage.getItem('user') as string)
         const token = (getState() as RootState).auth?.token?.access_token
         console.log(token, 'state of the app...+++++++')
 
