@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { useGetAllProductsQuery } from '../services/productAndOrders'
+import { useGetAllProductsQuery } from '../store/services/productAndOrders'
 
 export const useProducts = (productId?: string) => {
     const { data, isLoading, isFetching, refetch } = useGetAllProductsQuery()

@@ -19,6 +19,7 @@ import { Logo } from '../components/Logo'
 import { Timeline, TimelineEvent } from '../components/Timeline'
 import { useMediaQuery } from '../hooks/useMediaQuery'
 import { COLORS } from '../lib/constants/colors'
+import Head from 'next/head'
 
 type ContentProps = {
     title: string
@@ -67,6 +68,11 @@ const Index: NextPage = () => {
 
     return (
         <>
+            <Head>
+                <title>Hypay Landing Page</title>
+                <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+                <link rel="icon" type="image/x-icon" href="/images/hypayLogo.png"></link>
+            </Head>
             <LandingPageHeader />
             <div className="md:bg-white">
                 <Banner
@@ -76,14 +82,14 @@ const Index: NextPage = () => {
                 >
                     <div className="absolute w-full px-8 py-16 text-white md:right-56 md:w-80 md:px-0">
                         <p className="mb-2 text-2xl font-semibold tracking-wide md:mb-4">
-                            Start your online store quickly and easily.
+                            Comece sua loja virtual de maneira rápida e fácil.
                         </p>
                         <p className="mb-9 text-sm md:text-base">
-                            With Hypay you pay and receive securely through instagram and Facebook.
+                            Com o Hypay você paga e recebe com segurança através do instagram e Facebook.
                         </p>
                         <div className="flex justify-center pr-10">
                             <Button primary size="lg" className="py-4 px-9 md:py-3 md:px-7">
-                                Create your store
+                                Crie sua página
                             </Button>
                         </div>
                     </div>
@@ -92,12 +98,11 @@ const Index: NextPage = () => {
                 <section className="flex flex-col-reverse px-4 py-8 pb-10 sm:px-10 md:flex-row md:justify-between lg:px-24 xl:px-40">
                     <div className="w-full px-2 text-hypay-primary md:w-96 md:px-0 md:pt-28 md:pr-10">
                         <Content
-                            title="Engagement"
-                            body="Gain more engagement in your store with a reliable way to sell, and with a super practical
-                            platform."
+                            title="Engajamento"
+                            body="Ganhe mais engajamento na sua loja com uma forma confiável de vender e com uma plataforma super prática."
                         />
                         <Button primary size="lg" className="py-4 px-9 md:py-3 md:px-7">
-                            Create your store
+                            Crie sua página
                         </Button>
                     </div>
 
@@ -126,8 +131,9 @@ const Index: NextPage = () => {
                             <Content
                                 className="text-white"
                                 titleClassName="text-white"
-                                title="Security"
-                                body="Our platform guarantees total security of your data and easy access to support."
+                                title="Segurança"
+                                body="Nossa plataforma que garante total segurança dos seus dados e com fácil acesso para o suporte.
+"
                             />
                         </div>
                     </div>
@@ -136,7 +142,7 @@ const Index: NextPage = () => {
                 {/* todo: in-progress */}
                 <section className="flex flex-col px-7 pb-8 pt-16 sm:px-10 md:items-center md:pb-12 md:pt-24 lg:px-24 xl:px-40">
                     <div className="text-center text-3xl font-bold tracking-wide text-hypay-primary">
-                        It works like this
+                        Funciona assim
                     </div>
 
                     <div className="my-8 md:mt-16">
@@ -147,7 +153,7 @@ const Index: NextPage = () => {
                             progressBarBackground={COLORS.PINK}
                         >
                             <TimelineEvent
-                                label="Create you own account"
+                                label="Crie sua conta no Hypay."
                                 labelFontSize={isHorizontal ? undefined : 15}
                                 bgColor="white"
                                 border={`3px solid ${COLORS.PINK}`}
@@ -160,7 +166,7 @@ const Index: NextPage = () => {
                                 <CreateAccountIcon color={COLORS.PRIMARY} />
                             </TimelineEvent>
                             <TimelineEvent
-                                label="Conect your Facebook and Instagram"
+                                label="Conecte seu insagram ou facebook."
                                 labelFontSize={isHorizontal ? undefined : 15}
                                 bgColor="white"
                                 border={`3px solid ${COLORS.PINK}`}
@@ -173,7 +179,7 @@ const Index: NextPage = () => {
                                 <ConnectIcon color={COLORS.PRIMARY} />
                             </TimelineEvent>
                             <TimelineEvent
-                                label="Share your store to buyers."
+                                label="Compartilhe sua loja para os compradores."
                                 labelFontSize={isHorizontal ? undefined : 15}
                                 bgColor="white"
                                 border={`3px solid ${COLORS.PINK}`}
@@ -186,7 +192,7 @@ const Index: NextPage = () => {
                                 <ShareIcon color={COLORS.PRIMARY} />
                             </TimelineEvent>
                             <TimelineEvent
-                                label="Delivery confirmed."
+                                label="Entrega confirmada."
                                 labelFontSize={isHorizontal ? undefined : 15}
                                 bgColor="white"
                                 border={`3px solid ${COLORS.PINK}`}
@@ -199,7 +205,7 @@ const Index: NextPage = () => {
                                 <DeliveryIcon color={COLORS.PRIMARY} />
                             </TimelineEvent>
                             <TimelineEvent
-                                label="That's it. You receive the payment"
+                                label="Pronto. Você recebe o pagamento"
                                 labelFontSize={isHorizontal ? undefined : 15}
                                 bgColor="white"
                                 border={`3px solid ${COLORS.PINK}`}
@@ -215,7 +221,7 @@ const Index: NextPage = () => {
                     </div>
 
                     <Button primary size="lg" className="mr-24 py-4 px-9 md:mr-0 md:py-3 md:px-7">
-                        Create your store
+                        Crie sua página
                     </Button>
                 </section>
 
@@ -234,37 +240,37 @@ const Index: NextPage = () => {
                     <section className="grid-col-1 mt-16 grid gap-4 md:grid-cols-2 ">
                         <Content
                             dotDivider
-                            title="24-hour support"
-                            body="Our user support system will make it quicker and more convenient to solve your problems when you need our help"
+                            title="Suporte 24 horas"
+                            body="Nosso sistema de suporte ao usuário vai tornar mais rápido e prático a resolução dos seus problemas quando você precisar da nossa ajuda.
+"
                         />
                         <Content
                             dotDivider
-                            title="Simplified Checkout"
-                            body="With our simplified checkout your customers will find it easier to complete their purchases."
+                            title="Checkout simplificado"
+                            body="Com nosso checkout simplificado seus clientes terão mais facilidade em concluir as compras."
                         />
                         <Content
                             dotDivider
-                            title="Tracking System"
-                            body="At Hypay we support parcel tracking. This way you will have total control over your deliveries and your customers as well."
+                            title="Sistema de rastreio"
+                            body="No Hypay temos suporte para rastreamento de encomendas. Dessa forma você terá total controle sobre suas entregas e seus clientes também."
                         />
                         <Content
                             dotDivider
-                            title="Facility"
-                            body="Our platform offers a practical and intuitive system even for those who have no experience with online sales."
+                            title="Facilidade"
+                            body="Nossa plataforma oferece um sistema prático e intuitivo mesmo para àqueles que não têm experiência com vendas online."
                         />
                         <div className="mt-10">
                             <Content
                                 dotDivider
                                 titleClassName="md:w-[70%]"
                                 className="md:w-[70%]"
-                                title="Start your online store quickly and easily.
-"
-                                body="With Hypay you pay and receive securely through instagram and Facebook."
+                                title="Venha fazer parte da nossa comunidade!."
+                                body="Aproveite todas as vantagens de ser membro HyPay e contar com o que há de melhor no mercado."
                             />
                         </div>
                         <div className="mt-10 flex items-end justify-center md:w-[80%] md:justify-end">
                             <Button primary size="lg" className="mb-8 py-4 px-9 md:py-3 md:px-7">
-                                Create your store
+                                Crie sua página
                             </Button>
                         </div>
                     </section>
@@ -276,7 +282,7 @@ const Index: NextPage = () => {
                         className="flex h-full cursor-pointer flex-col items-center justify-end md:w-[20%] "
                     >
                         <CircularArrowUpIcon color={COLORS.PINK} size={40} />
-                        <p className="font-semibold text-hypay-pink">Return to the top</p>
+                        <p className="font-semibold text-hypay-pink">Voltar ao topo</p>
                     </a>
                 </div>
                 <footer className="grid h-[412px] place-items-center bg-hypay-primary py-3 px-6 ">
@@ -285,18 +291,18 @@ const Index: NextPage = () => {
                             <div className="mt-3 h-full w-full md:mt-0 md:w-[40%]">
                                 <ul>
                                     <li className="mb-3 font-bold tracking-wide text-white">Hypay</li>
-                                    <li className="mb-3 tracking-wide text-white">Advantages</li>
-                                    <li className="mb-3 tracking-wide text-white">How it works</li>
-                                    <li className="mb-3 tracking-wide text-white">Benefits</li>
+                                    <li className="mb-3 tracking-wide text-white">Vantagens</li>
+                                    <li className="mb-3 tracking-wide text-white">Como funciona</li>
+                                    <li className="mb-3 tracking-wide text-white">Benefícios</li>
                                     <li className="text-underline mb-3 w-min border-b border-hypay-pink tracking-wide text-hypay-pink">
-                                        Support
+                                        Suporte
                                     </li>
                                 </ul>
                             </div>
                             <div className="items-base-line flex h-full  w-full  justify-between py-5 md:w-[60%] md:py-0">
                                 <div className="flex  w-[40%] items-center justify-between md:justify-evenly">
-                                    <InstagramIcon color={COLORS.PINK} size={43} />
-                                    <FacebookIcon color={COLORS.PINK} size={43} />
+                                    <InstagramIcon color={COLORS.WHITE} size={43} />
+                                    <FacebookIcon color={COLORS.PRIMARY} size={43} />
                                 </div>
                                 <div className="flex w-[50%] items-center justify-end">
                                     <Logo
@@ -308,10 +314,10 @@ const Index: NextPage = () => {
                             </div>
                         </div>
                         <div className="flex flex-wrap items-center justify-between border-hypay-secondary pt-4 text-sm  text-white md:border-t">
-                            <p>Privacy Policy</p>
-                            <p className="font-semibold underline md:order-3 ">Privacy Policy</p>
+                            <p>Termos e Condições</p>
+                            <p className="font-semibold underline md:order-3 ">Política de Privacidade</p>
                             <p className=" mx-auto mt-4 font-normal md:order-2 md:mx-0 md:mt-0">
-                                Copyright © {new Date().getFullYear()} - All Rights Reserved
+                                Copyright © {new Date().getFullYear()} Todos os Direitos Reservados
                             </p>
                         </div>
                     </div>

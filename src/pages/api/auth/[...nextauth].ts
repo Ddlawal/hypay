@@ -1,5 +1,8 @@
-import NextAuth from 'next-auth'
+import NextAuth, { Session } from 'next-auth'
+import { JWT } from 'next-auth/jwt'
 import GoogleProvider from 'next-auth/providers/google'
+
+type UserSession = Session & JWT
 
 export default NextAuth({
     providers: [
@@ -10,19 +13,28 @@ export default NextAuth({
                 params: {
                     prompt: 'consent',
                     access_type: 'offline',
-                    response_type: 'code',
+                    // response_type: 'code',
                 },
             },
         }),
     ],
-    pages: {
-        signIn: '/signup',
-    },
     callbacks: {
+        async jwt({ token, user, account, profile }) {
+            const isUserSignedIn = user ? true : false
+            // make a http call to our graphql api
+            // store this in postgres
+            if (isUserSignedIn) {
+                token.id = user?.id.toString()
+            }
+            return { token, account, profile }
+        },
         async session({ session, token }) {
+            const userSession: UserSession = { ...session }
             // Send properties to the client, like an access_token from a provider.
-            session.accessToken = token.accessToken
-            return session
+            if (token) {
+                userSession.jwt = token
+            }
+            return userSession
         },
     },
 })

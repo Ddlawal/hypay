@@ -1,15 +1,16 @@
+import { RootState } from './../../../.history/src/store/index_20220406150655'
 import { combineReducers } from '@reduxjs/toolkit'
 import baseApi from '../services'
 import { persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
-import auth from '../reducers/auth'
+import auth from './auth'
 import ui from './ui'
 import temporaryDataSlice from './temporaryData'
 
 const persistConfig = {
     storage,
     key: 'hypay',
-    // whitelist: ['auth'],
+    // blacklist: ['auth'],
 }
 
 export const rootStore = combineReducers({

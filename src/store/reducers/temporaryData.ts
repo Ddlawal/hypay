@@ -1,4 +1,4 @@
-import { RootState } from '../store/index'
+import { RootState } from '../index'
 import { createSlice, Slice, SliceCaseReducers } from '@reduxjs/toolkit'
 
 interface initialTemporaryState {

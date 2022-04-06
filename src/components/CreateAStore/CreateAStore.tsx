@@ -3,10 +3,10 @@ import { useForm } from 'react-hook-form'
 import { COLORS } from '../../lib/constants/colors'
 import { Button } from '../Button'
 import { SecondInput } from '../form'
-import { useCreateBusinessNameMutation } from '../../services/auth'
+import { useCreateBusinessNameMutation } from '../../store/services/auth'
 import { useAppSelector, useAppDispatch } from '../../hooks/useStoreHooks'
-import { loginUserData } from '../../reducers/auth'
-import { setUserData, updatedUserData } from '../../reducers/temporaryData'
+import { loginUserData, User } from '../../store/reducers/auth'
+import { setUserData, updatedUserData } from '../../store/reducers/temporaryData'
 
 export const CreateAStore = ({ setTabIndex }: { setTabIndex: (value: React.SetStateAction<number>) => void }) => {
     const { register, handleSubmit } = useForm<any>()
@@ -14,6 +14,7 @@ export const CreateAStore = ({ setTabIndex }: { setTabIndex: (value: React.SetSt
     const user = useAppSelector(loginUserData)
     const userExist = useAppSelector(updatedUserData)
     const { firstName, lastName, businessname } = user
+    console.log({ firstName, lastName, businessname }, user, 'user data')
 
     const [addBusinessName, { isLoading }] = useCreateBusinessNameMutation()
     const onSubmit = async (data: { businessname?: string }) => {
@@ -44,6 +45,8 @@ export const CreateAStore = ({ setTabIndex }: { setTabIndex: (value: React.SetSt
         }
     }
 
+    console.log(businessname, userExist?.businessname, 'the user business name')
+
     return (
         <div className="relative mx-auto h-auto w-10/12 ">
             <header className="mx-auto mt-10 w-full">
@@ -62,7 +65,7 @@ export const CreateAStore = ({ setTabIndex }: { setTabIndex: (value: React.SetSt
                     label="Store Name"
                     placeholder="Lucian store"
                     register={register}
-                    defaultValue={user || userExist ? businessname || userExist?.businessname : ''}
+                    defaultValue={user || userExist ? userExist?.businessname || businessname : ''}
                 />
                 <div className="mt-20 flex w-full items-center justify-center   font-semibold md:pl-16">
                     <Button className={`${COLORS.PINK} w-full md:w-[70%]`} primary>

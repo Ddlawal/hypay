@@ -12,22 +12,22 @@ export const headerLinks: Array<{
 }> = [
     {
         id: 1,
-        title: 'Advantages',
+        title: 'Vantagens',
         href: '#',
     },
     {
         id: 2,
-        title: 'How it works',
+        title: 'Como funciona',
         href: '#',
     },
     {
         id: 3,
-        title: 'Benefits',
+        title: 'Benefícios',
         href: '#',
     },
     {
         id: 4,
-        title: 'Enter',
+        title: 'Entrar',
         href: '/signup',
     },
 ]
@@ -97,9 +97,9 @@ export const dropdownMenuItems = [
     {
         title: 'Central de ajuda',
     },
-    {
-        title: 'Logout',
-    },
+    // {
+    //     title: 'Logout',
+    // },
 ]
 
 // Random Image Generator FUnction
@@ -114,3 +114,19 @@ export const EMAIL_PATTERN =
 
 type typeOfUser = 'Merchant' | 'Buyer' | 'Both'
 export const TYPE_OF_USER: typeOfUser = 'Merchant'
+
+export type dummyMessagesType = {
+    name: string
+    message: string
+    time: string
+    date: string
+}
+
+export const dummyMessages: dummyMessagesType[] = [
+    { name: 'Kitto Gilmar', message: 'Qual o tamanho do produto?', time: '9:32', date: '01/02/2022' },
+    { name: 'Vitória Silva', message: 'Qual previsão de entrega?', time: '9:32', date: '01/02/2022' },
+    { name: 'Rafael Cardoso', message: 'Tem outras cores?', time: '9:32', date: '01/02/2022' },
+    { name: 'Igor Costa', message: 'Entregam hoje ainda?', time: '9:32', date: '01/02/2022' },
+    { name: 'Beatriz Lins', message: 'Meu produto veio errado!', time: '9:32', date: '01/02/2022' },
+    { name: 'Gabriel Novaes', message: 'Preciso de ajuda com um...', time: '9:32', date: '01/02/2022' },
+]
