@@ -33,8 +33,20 @@ export const productApi = createApi({
                 method: 'GET',
             }),
         }),
+        createStore: builder.mutation<{ businessName: string }, any>({
+            query: (businessName: string) => ({
+                url: '/createStore',
+                method: 'POST',
+                body: { businessName },
+            }),
+        }),
     }),
 })
 
-export const { useAddAProductMutation, useEditProductMutation, useGetAllProductsQuery, useLazyDeleteAProductQuery } =
-    productApi
+export const {
+    useAddAProductMutation,
+    useEditProductMutation,
+    useGetAllProductsQuery,
+    useLazyDeleteAProductQuery,
+    useCreateStoreMutation,
+} = productApi

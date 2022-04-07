@@ -3,18 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { PURGE } from 'redux-persist'
 
 export interface User {
-    customerID: number
-    name: string
-    email: string
-    firstName: string
-    lastName: string
-    businessname: string
-    usertype: string
-    merchantCode: string
-    deliveryAddress: never[]
-    phone: null
-    profileStatus: boolean
-    referral_code: string
+    userInfo: userDataInfo
 }
 export interface userDataInfo {
     customerID: number
@@ -90,7 +79,6 @@ export const authSlice = createSlice({
             }
         },
         logout: () => {
-            console.log('this action got fired =============================================')
             return {
                 user: null,
                 isAuthenticated: false,
@@ -102,27 +90,17 @@ export const authSlice = createSlice({
             ...state,
             ...action.payload,
         }),
+        updateUserLoggedInData: (state, action: PayloadAction<any>) => {
+            return {
+                ...state,
+                user: action.payload,
+            }
+        },
     },
-    // extraReducers: (builder) => {
-    //     console.log('this action got fired ============================================= on top extra reduceres')
-    //     return {
-    //         logout: builder.addCase(PURGE, () => {
-    //             console.log(
-    //                 'this action got fired ============================================= inside extra reduceres'
-    //             )
-    //             return {
-    //                 user: null,
-    //                 isAuthenticated: false,
-    //                 isError: false,
-    //                 token: null,
-    //             }
-    //         }),
-    //     }
-    // },
 })
 
-export const { login, logout, register } = authSlice.actions
+export const { login, logout, register, updateUserLoggedInData } = authSlice.actions
 
-export const loginUserData = (state: RootState) => state?.auth?.user as User
+export const loginUserData = (state: RootState) => state?.auth?.user?.userInfo as userDataInfo
 
 export default authSlice.reducer
