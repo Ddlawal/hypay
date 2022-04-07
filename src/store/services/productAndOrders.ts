@@ -16,7 +16,14 @@ const productApi = baseApi.injectEndpoints({
                 method: 'GET',
             }),
         }),
+        createStore: builder.mutation<{ businessName: string }, any>({
+            query: (businessName: string) => ({
+                url: '/createStore',
+                method: 'POST',
+                body: { businessName },
+            }),
+        }),
     }),
 })
 
-export const { useAddAProductMutation, useGetAllProductsQuery } = productApi
+export const { useAddAProductMutation, useGetAllProductsQuery, useCreateStoreMutation } = productApi

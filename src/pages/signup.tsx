@@ -21,7 +21,7 @@ function SignUp() {
     const [index, setIndex] = useState(0)
 
     const { data: Session } = useSession()
-    const { push, replace } = useRouter()
+    const { push } = useRouter()
     const dispatch = useDispatch()
     const [miniRegister, { isLoading }] = useRegistrationMutation()
     const [loginWithGoogle] = useLoginWithGoogleMutation()
@@ -44,33 +44,28 @@ function SignUp() {
                     userProviderID: Session.jwt.account?.providerAccountId,
                     accountType: '',
                 }
-
                 loginWithGoogle(googleData)
                     .unwrap()
                     .then((payload) => {
                         showSuccessSnackbar('Login Successful')
                         localStorage.setItem('user', JSON.stringify(payload))
                         dispatch(loginUser(payload))
-                        replace('/dashboard/home')
+                        push('/dashboard/home')
                     })
                     .catch((err) => {
-                        if (err.status == 400) {
-                            console.error('rejected it got here', err.data.message.email[0])
-                            showErrorSnackbar(err.data.message.email)
-                        }
+                        console.error('rejected', err)
+                        showErrorSnackbar(err?.data?.error || 'There was an error while trying to log in')
                     })
             }
         } catch (error) {
             showErrorSnackbar('There was an error while trying to log in')
             console.log(error, 'there was an error while trying to log in')
         }
-    }, [Session, dispatch, replace])
+    }, [Session, dispatch, push, loginWithGoogle])
 
     useEffect(() => {
-        if (Session) {
-            tryGoogleLogin()
-        }
-    }, [Session])
+        tryGoogleLogin()
+    }, [Session, tryGoogleLogin])
 
     const onSubmit: SubmitHandler<any> = async (data) => {
         if (isLoading) {

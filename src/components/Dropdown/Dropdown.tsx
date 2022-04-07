@@ -33,7 +33,6 @@ const DropdownItems: FC<DropdownButtonProps> = ({ items, className }) => {
     const token = useAppSelector((state) => state.auth.token)
 
     const logOut = async () => {
-        console.log(token?.access_token)
         const res = await logoutMutation({ token: token?.access_token })
         await signOut({ redirect: false, callbackUrl: '/login' })
         if (res) {

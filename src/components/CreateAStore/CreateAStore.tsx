@@ -5,36 +5,29 @@ import { Button } from '../Button'
 import { SecondInput } from '../form'
 import { useCreateBusinessNameMutation } from '../../store/services/auth'
 import { useAppSelector, useAppDispatch } from '../../hooks/useStoreHooks'
-import { loginUserData, User } from '../../store/reducers/auth'
+import { loginUserData, updateUserLoggedInData, User } from '../../store/reducers/auth'
 import { setUserData, updatedUserData } from '../../store/reducers/temporaryData'
+import { useCreateStoreMutation } from '../../store/services/productAndOrders'
 
 export const CreateAStore = ({ setTabIndex }: { setTabIndex: (value: React.SetStateAction<number>) => void }) => {
     const { register, handleSubmit } = useForm<any>()
+    const [createBusinessName, { isLoading }] = useCreateStoreMutation()
     const dispatch = useAppDispatch()
     const user = useAppSelector(loginUserData)
     const userExist = useAppSelector(updatedUserData)
-    const { firstName, lastName, businessname } = user
-    console.log({ firstName, lastName, businessname }, user, 'user data')
 
-    const [addBusinessName, { isLoading }] = useCreateBusinessNameMutation()
     const onSubmit = async (data: { businessname?: string }) => {
         if (isLoading) {
             return
         }
-        console.log(businessname || userExist?.businessname == data.businessname, 'business name')
-        if (data.businessname == businessname || userExist?.businessname) {
+        if (data.businessname == user?.businessname) {
             return setTabIndex(1)
         }
         try {
-            addBusinessName({
-                businessname: data.businessname,
-                first_name: firstName,
-                last_name: lastName,
-                address: 'Add Address',
-            })
+            createBusinessName(data.businessname)
                 .unwrap()
                 .then((res: any) => {
-                    dispatch(setUserData(res))
+                    dispatch(updateUserLoggedInData(res))
                     setTabIndex(1)
                 })
                 .catch((err) => {
@@ -44,8 +37,6 @@ export const CreateAStore = ({ setTabIndex }: { setTabIndex: (value: React.SetSt
             console.log(error, 'error')
         }
     }
-
-    console.log(businessname, userExist?.businessname, 'the user business name')
 
     return (
         <div className="relative mx-auto h-auto w-10/12 ">
@@ -65,7 +56,7 @@ export const CreateAStore = ({ setTabIndex }: { setTabIndex: (value: React.SetSt
                     label="Store Name"
                     placeholder="Lucian store"
                     register={register}
-                    defaultValue={user || userExist ? userExist?.businessname || businessname : ''}
+                    defaultValue={user || userExist ? userExist?.businessname || user?.businessname : ''}
                 />
                 <div className="mt-20 flex w-full items-center justify-center   font-semibold md:pl-16">
                     <Button className={`${COLORS.PINK} w-full md:w-[70%]`} primary>

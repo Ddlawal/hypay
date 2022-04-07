@@ -12,7 +12,7 @@ import { persistor } from '../store/index'
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
     return (
         <Provider store={store}>
-            <SessionProvider {...{ session }}>
+            <SessionProvider session={session}>
                 <PersistGate loading={null} persistor={persistor}>
                     <ProtectedRoute>
                         <Component {...pageProps} />

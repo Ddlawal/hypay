@@ -28,7 +28,6 @@ const Login: NextPage = () => {
     const tryGoogleLogin = useCallback(async () => {
         try {
             if (Session) {
-                console.log('pppppppppppppppppppp', Session.jwt)
                 const googleData = {
                     provider: Session.jwt.account?.provider,
                     name: Session.jwt.profile?.name,
@@ -37,6 +36,7 @@ const Login: NextPage = () => {
                     userProviderID: Session.jwt.account?.providerAccountId,
                     accountType: '',
                 }
+                console.log('pppppppppppppppppppp', googleData, Session.jwt)
 
                 loginWithGoogle(googleData)
                     .unwrap()
@@ -48,8 +48,7 @@ const Login: NextPage = () => {
                     })
                     .catch((err) => {
                         console.error('rejected', err)
-                        console.log(err.data)
-                        showErrorSnackbar(err.data.error)
+                        showErrorSnackbar(err?.data?.error || 'There was an error while trying to log in')
                     })
             }
         } catch (error) {
@@ -59,6 +58,7 @@ const Login: NextPage = () => {
     }, [Session, dispatch, push, loginWithGoogle])
 
     useEffect(() => {
+        console.log('we are here', Session)
         tryGoogleLogin()
     }, [Session, tryGoogleLogin])
 
@@ -83,7 +83,7 @@ const Login: NextPage = () => {
                 })
                 .catch((error: any) => {
                     console.error('rejected', error)
-                    showErrorSnackbar(error.data.error)
+                    showErrorSnackbar(error?.data?.error || 'There was an error while trying to log in')
                 })
         } catch (error) {
             showErrorSnackbar('There was an error while trying to log in, please try again')
@@ -151,7 +151,7 @@ const Login: NextPage = () => {
                                 className="cursor-pointer"
                                 width="46"
                                 height="46"
-                                onClick={() => signOut()}
+                                // onClick={}
                             />
                             <Image
                                 src="/images/google-icon.png"
