@@ -49,7 +49,7 @@ const RequestDetails: NextPage = () => {
     total = 'R$ ' + total + '.00'
 
     return (
-        <PrimaryLayout currentTabIndex={1}>
+        <PrimaryLayout currentTabIndex={2}>
             <div className="px-4 py-4 md:px-12">
                 <div className="flex items-center gap-x-3">
                     <div className="font-bold">Histórico de pedidos</div>

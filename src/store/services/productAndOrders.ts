@@ -1,5 +1,5 @@
 import baseApi from '.'
-import { ProductsType } from '../interfaces/products'
+import { ProductsType } from '../../interfaces/products'
 
 const productApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({

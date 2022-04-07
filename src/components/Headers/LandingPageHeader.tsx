@@ -27,7 +27,7 @@ const HeaderLinks = () => {
                 )
             })}
             <Button primary onClick={() => push('/createstore')} className="md:ml-5">
-                Create your store
+                Crie sua página
             </Button>
         </ul>
     )

@@ -1,17 +1,16 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { RootState } from '../index'
 
 const baseQuery = fetchBaseQuery({
     baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
     prepareHeaders: (headers, { getState }) => {
-        console.log(getState(), 'the state of the apps')
         headers.set('Access-Control-Allow-Origin', '*')
-        // const {
-        //     auth: { user },
-        // } = getState() as RootState
-        const user = JSON.parse(localStorage.getItem('user') as string)
+        // const user = JSON.parse(localStorage.getItem('user') as string)
+        const token = (getState() as RootState).auth?.token?.access_token
+        console.log(token, 'state of the app...+++++++')
 
-        if (user) {
-            headers.set('Authorization', `Bearer ${user?.token?.access_token}`)
+        if (token) {
+            headers.set('Authorization', `Bearer ${token}`)
         }
         return headers
     },
@@ -28,6 +27,7 @@ const baseQuery = fetchBaseQuery({
 //         return result
 //     }
 // }
+
 const baseApi = createApi({
     reducerPath: 'baseApi',
     baseQuery: baseQuery,

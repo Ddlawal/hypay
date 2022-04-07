@@ -20,7 +20,7 @@ const authApi = baseApi.injectEndpoints({
                 body: data,
             }),
         }),
-        logout: builder.query({
+        logout: builder.mutation({
             query: (token: string) => ({
                 url: '/logout',
                 method: 'POST',
@@ -34,7 +34,20 @@ const authApi = baseApi.injectEndpoints({
                 body: data,
             }),
         }),
+        loginWithGoogle: builder.mutation({
+            query: (data: any) => ({
+                url: '/login/loginFromSocial',
+                method: 'POST',
+                body: data,
+            }),
+        }),
     }),
 })
 
-export const { useRegistrationMutation, useLoginMutation, useLogoutQuery, useCreateBusinessNameMutation } = authApi
+export const {
+    useRegistrationMutation,
+    useLoginMutation,
+    useLogoutMutation,
+    useCreateBusinessNameMutation,
+    useLoginWithGoogleMutation,
+} = authApi
