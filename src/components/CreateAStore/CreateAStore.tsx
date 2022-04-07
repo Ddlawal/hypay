@@ -3,11 +3,10 @@ import { useForm } from 'react-hook-form'
 import { COLORS } from '../../lib/constants/colors'
 import { Button } from '../Button'
 import { SecondInput } from '../form'
-import { useCreateBusinessNameMutation } from '../../store/services/auth'
 import { useAppSelector, useAppDispatch } from '../../hooks/useStoreHooks'
-import { loginUserData, updateUserLoggedInData, User } from '../../store/reducers/auth'
-import { setUserData, updatedUserData } from '../../store/reducers/temporaryData'
-import { useCreateStoreMutation } from '../../store/services/productAndOrders'
+import { loginUserData, updateUserLoggedInData } from '../../store/reducers/auth'
+import { updatedUserData } from '../../store/reducers/temporaryData'
+import { useCreateStoreMutation } from '../../store/services/products'
 
 export const CreateAStore = ({ setTabIndex }: { setTabIndex: (value: React.SetStateAction<number>) => void }) => {
     const { register, handleSubmit } = useForm<any>()
