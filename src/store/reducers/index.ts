@@ -1,4 +1,3 @@
-import { RootState } from './../../../.history/src/store/index_20220406150655'
 import { combineReducers } from '@reduxjs/toolkit'
 import baseApi from '../services'
 import { persistReducer } from 'redux-persist'
