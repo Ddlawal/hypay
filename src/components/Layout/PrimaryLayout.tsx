@@ -9,9 +9,17 @@ type PrimaryLayoutProps = {
     children: ReactNode
     className?: string
     currentTabIndex?: number
+    isNavBack?: boolean
+    navHeader?: string
 }
 
-export const PrimaryLayout: FC<PrimaryLayoutProps> = ({ children, className, currentTabIndex }) => {
+export const PrimaryLayout: FC<PrimaryLayoutProps> = ({
+    children,
+    className,
+    currentTabIndex,
+    isNavBack,
+    navHeader,
+}) => {
     return (
         <>
             <Head>
@@ -27,7 +35,7 @@ export const PrimaryLayout: FC<PrimaryLayoutProps> = ({ children, className, cur
                 {/* Careful when changing the marginLeft */}
                 <div className="relative w-full md:ml-[22%] md:w-[78%]">
                     <div className="fixed z-50 flex w-full md:w-[78%]">
-                        <LoggedInHeader currentTabIndex={currentTabIndex} />
+                        <LoggedInHeader currentTabIndex={currentTabIndex} isNavBack={isNavBack} navHeader={navHeader} />
                     </div>
                     <div className="my-[4.6rem]">{children}</div>
                     <MobileFooter />

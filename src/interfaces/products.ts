@@ -35,10 +35,10 @@ export type AddProductType = {
     product_type: string
     productname: string
     description: string
-    videoDescription: string
+    video_link: string
     price: string
     quantity: string
-    sku: string
+    SKU: string
     barcode: string
     weight: string
     length: string

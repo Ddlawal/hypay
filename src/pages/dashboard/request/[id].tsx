@@ -40,7 +40,7 @@ const RequestDetails: NextPage = () => {
     const router = useRouter()
 
     const requestId = router.query.id
-    console.log(router)
+
     const { request } = useRequests(requestId as string)
     const { amount, cost_of_frieght, orderNo } = request as RequestType
     const amt = Number(amount.split('R$ ')[1])
@@ -49,7 +49,7 @@ const RequestDetails: NextPage = () => {
     total = 'R$ ' + total + '.00'
 
     return (
-        <PrimaryLayout currentTabIndex={2}>
+        <PrimaryLayout currentTabIndex={2} isNavBack navHeader="Histórico de pedidos">
             <div className="px-4 py-4 md:px-12">
                 <div className="flex items-center gap-x-3">
                     <div className="font-bold">Histórico de pedidos</div>
