@@ -13,23 +13,19 @@ const createStoreTabs = [
         title: 'Create Your Store',
         subTitle:
             'The store will be connected to cardoso.rafael@anymail.com and will remain connected for the next 14 days ',
-        // component: <CreateAStore />,
         btnText: 'Create Store',
     },
     {
         title: 'Create a success model for your business',
         subTitle: 'Build your site in a fully customized way.',
-        // component: <AddAProduct />,
     },
     {
         title: 'Confiança!',
         subTitle: 'Conosco você encontrará as toda a segurança e suporte necessários ao seu negócio.',
-        // component: <ProductAdded />,
     },
     {
         title: "Don't miss out!",
         subTitle: 'With us you will find all the security and support your business needs. ',
-        // component: <CreateSocialStore />,
     },
 ]
 

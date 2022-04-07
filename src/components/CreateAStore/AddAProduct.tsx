@@ -9,6 +9,7 @@ import { SecondInput } from '../form'
 import { Card } from '../Card'
 import { useAddAProductMutation } from '../../store/services/productAndOrders'
 import { AddProductType } from '../../interfaces/products'
+import { useSnackbar } from '../../hooks/useSnackbar'
 
 interface PhotographBoxProps {
     boxSize?: string
@@ -60,6 +61,7 @@ interface AddProductProps {
 
 export const AddAProduct = ({ onSuccess, setTabIndex }: AddProductProps) => {
     const [image1, setImage1] = useState<File | FileList | null>(null)
+    const { showErrorSnackbar } = useSnackbar()
 
     const { push } = useRouter()
 
@@ -96,7 +98,10 @@ export const AddAProduct = ({ onSuccess, setTabIndex }: AddProductProps) => {
                 onSuccess?.(res)
                 setTabIndex?.(2)
             })
-            .catch((err) => console.log(err, 'An Error Occured while trying to Add your product'))
+            .catch((err: any) => {
+                console.log(err, 'An Error Occured while trying to Add your product')
+                showErrorSnackbar(err.data.message || 'Something went wrong')
+            })
     }
 
     return (

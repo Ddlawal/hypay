@@ -10,12 +10,25 @@ export default NextAuth({
                 params: {
                     prompt: 'consent',
                     access_type: 'offline',
-                    // response_type: 'code',
+                    response_type: 'code',
+                    authorizationUrl:
+                        'https://accounts.google.com/o/oauth2/v2/auth?prompt=consent&access_type=offline&response_type=code',
                 },
             },
         }),
     ],
     callbacks: {
+        redirect({ url, baseUrl }) {
+            if (url.startsWith(baseUrl)) {
+                return url
+            }
+            // Allows relative callback URLs
+            else if (url.startsWith('/')) {
+                return new URL(url, baseUrl).toString()
+            } else {
+                return baseUrl
+            }
+        },
         async jwt({ token, user, account, profile }) {
             const isUserSignedIn = user ? true : false
             // make a http call to our graphql api
