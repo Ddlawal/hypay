@@ -7,7 +7,7 @@ import { COLORS } from '../lib/constants/colors'
 import { useRouter } from 'next/router'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { SecondInput } from '../components/form'
-import { useLoginMutation, useLoginWithGoogleMutation, useRegistrationMutation } from '../store/services/auth'
+import { useLoginWithGoogleMutation, useRegistrationMutation } from '../store/services/auth'
 import { login } from '../store/reducers/auth'
 import Link from 'next/link'
 import { EMAIL_PATTERN } from '../lib/data'
@@ -37,11 +37,11 @@ function SignUp() {
         try {
             if (Session) {
                 const googleData = {
-                    provider: Session?.jwt.token?.account?.provider,
-                    name: Session.jwt.token?.profile?.name,
-                    email: Session?.jwt?.token?.profile?.email,
+                    provider: Session.jwt.account?.provider,
+                    name: Session.jwt.profile?.name,
+                    email: Session.jwt.profile?.email,
                     phoneNo: '',
-                    userProviderID: Session?.jwt.token.account?.providerAccountId,
+                    userProviderID: Session.jwt.account?.providerAccountId,
                     accountType: '',
                 }
 

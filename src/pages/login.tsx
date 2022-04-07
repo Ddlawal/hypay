@@ -22,18 +22,19 @@ const Login: NextPage = () => {
     const [logUserIn, { isLoading }] = useLoginMutation()
     const { push } = useRouter()
     const dispatch = useAppDispatch()
-    const { data: Session, status } = useSession()
+    const { data: Session } = useSession()
     const { showSuccessSnackbar, showErrorSnackbar } = useSnackbar()
 
     const tryGoogleLogin = useCallback(async () => {
         try {
             if (Session) {
+                console.log('pppppppppppppppppppp', Session.jwt)
                 const googleData = {
-                    provider: Session?.jwt?.token?.account?.provider,
-                    name: Session?.jwt?.token?.profile?.name,
-                    email: Session?.jwt?.token?.profile?.email,
+                    provider: Session.jwt.account?.provider,
+                    name: Session.jwt.profile?.name,
+                    email: Session.jwt.profile?.email,
                     phoneNo: '',
-                    userProviderID: Session?.jwt.token.account?.providerAccountId,
+                    userProviderID: Session.jwt.account?.providerAccountId,
                     accountType: '',
                 }
 

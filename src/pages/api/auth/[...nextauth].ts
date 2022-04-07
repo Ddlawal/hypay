@@ -1,11 +1,5 @@
-import NextAuth, { Session } from 'next-auth'
-import { JWT } from 'next-auth/jwt'
+import NextAuth from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
-
-type UserSession = {
-    session: Session
-    jwt?: JWT
-}
 
 export default NextAuth({
     providers: [
@@ -32,12 +26,10 @@ export default NextAuth({
             return { token, account, profile }
         },
         async session({ session, token }) {
-            const userSession: UserSession = { session: session }
-            // Send properties to the client, like an access_token from a provider.
             if (token) {
-                userSession.jwt = token
+                session.jwt = token.token
             }
-            return userSession
+            return session
         },
     },
 })
