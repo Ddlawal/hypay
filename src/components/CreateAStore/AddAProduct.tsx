@@ -7,7 +7,7 @@ import { BagIcon, CameraIcon } from '../Icons'
 import { useForm } from 'react-hook-form'
 import { SecondInput } from '../form'
 import { Card } from '../Card'
-import { useAddAProductMutation } from '../../services/productAndOrders'
+import { useAddAProductMutation } from '../../store/services/productAndOrders'
 import { AddProductType } from '../../interfaces/products'
 
 interface PhotographBoxProps {
@@ -391,7 +391,12 @@ export const AddAProduct = ({ onSuccess, setTabIndex }: AddProductProps) => {
                     {/* or skip section */}
                     <div className="mt-4 flex flex-col items-center justify-center">
                         <p className="text-center">Ou</p>
-                        <button className="mx-auto text-sm font-bold text-hypay-secondary">Pular estapa</button>
+                        <button
+                            onClick={() => setTabIndex?.(2)}
+                            className="mx-auto text-sm font-bold text-hypay-secondary"
+                        >
+                            Pular estapa
+                        </button>
                     </div>
                 </div>
             </form>

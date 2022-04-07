@@ -72,7 +72,7 @@ const Request: NextPage = () => {
     const showDetails = () => router.push(`/dashboard/request/${orderId}`)
 
     return (
-        <PrimaryLayout>
+        <PrimaryLayout currentTabIndex={2}>
             <div className="p-4">
                 <div className="font-bold">Histórico de pedidos</div>
                 <div className="mt-3">Ordenar por</div>

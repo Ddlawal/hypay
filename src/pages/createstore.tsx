@@ -6,7 +6,7 @@ import CreateSocialStore from '../components/CreateAStore/CreateSocialStore'
 import { CreateAStore } from '../components/CreateAStore/CreateAStore'
 import ProductAdded from '../components/CreateAStore/ProductAdded'
 import { useAppDispatch } from '../hooks/useStoreHooks'
-import { addProduct } from '../reducers/temporaryData'
+import { addProduct } from '../store/reducers/temporaryData'
 
 const createStoreTabs = [
     {
@@ -58,8 +58,20 @@ const CreateStore: NextPage = () => {
                     }}
                 />
             )}
-            {selectedTab === 2 && <ProductAdded />}
-            {selectedTab === 3 && <CreateSocialStore />}
+            {selectedTab === 2 && (
+                <ProductAdded
+                    setTabIndex={(index: React.SetStateAction<number>) => {
+                        setSelectedTab(index)
+                    }}
+                />
+            )}
+            {selectedTab === 3 && (
+                <CreateSocialStore
+                    setTabIndex={(index: React.SetStateAction<number>) => {
+                        setSelectedTab(index)
+                    }}
+                />
+            )}
         </AuthLayout>
     )
 }

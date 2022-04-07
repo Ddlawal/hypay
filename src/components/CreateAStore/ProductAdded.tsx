@@ -4,7 +4,7 @@ import { generateRandomImage } from '../../lib/data'
 import { Button } from '../Button'
 import { Card } from '../Card'
 
-function ProductAdded() {
+function ProductAdded({ setTabIndex }: { setTabIndex: (value: React.SetStateAction<number>) => void }) {
     return (
         <div className="mx-auto w-10/12 ">
             <header className="mx-auto mt-10 w-full">
@@ -49,7 +49,9 @@ function ProductAdded() {
                     </Button>
                 </div>
                 <p className="text-md my-3 text-center font-bold text-black">Or</p>
-                <button className="mx-auto font-bold text-hypay-primary">Pular estapa</button>
+                <button onClick={() => setTabIndex?.(3)} className="mx-auto font-bold text-hypay-primary">
+                    Pular estapa
+                </button>
             </div>
         </div>
     )
