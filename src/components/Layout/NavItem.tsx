@@ -35,15 +35,15 @@ export const NavItem: FC<NavItemProps> = ({
         setActive(-1)
     }
     return (
-        <div
-            className={cx(
-                !isDropDown ? isActive && 'bg-hypay-secondary' : '',
-                `w-full cursor-pointer py-3 px-4 outline-hidden transition ease-in hover:bg-hypay-secondary`
-            )}
-        >
+        <div>
             <NextLink
                 href={href}
-                className={`flex w-full ${isActive && isDropDown && 'pb-2'}  relative items-center gap-4 text-white`}
+                className={cx(
+                    !isDropDown ? isActive && 'bg-hypay-secondary' : '',
+                    `flex w-full cursor-pointer py-3 px-4 outline-hidden transition ease-in hover:bg-hypay-secondary ${
+                        isActive && isDropDown && 'pb-2'
+                    }  relative items-center gap-4 text-white`
+                )}
                 onClick={isDropDown ? () => setShowDropdown(!showDropdown) : changeTab}
             >
                 {leftIcon}

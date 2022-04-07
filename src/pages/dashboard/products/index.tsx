@@ -33,12 +33,12 @@ const productActionSelectItems = [
     },
 ]
 
-const NoProducts = () => {
+const NoProducts = ({ gotoAddProducts }: { gotoAddProducts: () => void }) => {
     return (
         <div className="py-4 px-4 leading-5 md:px-16 lg:px-36">
             <div>Você ainda não tem produtos cadastrados na sua loja.</div>
             <div>Vamos começar a vender?</div>
-            <Button primary className="mt-2 flex items-center">
+            <Button primary className="mt-2 flex items-center" onClick={gotoAddProducts}>
                 <span className="pl-2">
                     <CircularPlusIcon />
                 </span>
@@ -48,11 +48,7 @@ const NoProducts = () => {
     )
 }
 
-const ProductsHeader = ({ isDesktop }: { isDesktop: boolean }) => {
-    const { push } = useRouter()
-
-    const gotoAddProducts = () => push('/dashboard/products/addProduxts')
-
+const ProductsHeader = ({ isDesktop, gotoAddProducts }: { isDesktop: boolean; gotoAddProducts: () => void }) => {
     return (
         <div className="flex items-center justify-between">
             <div className="p-4 text-lg font-bold text-hypay-black md:p-0">Produtos cadastrados</div>
@@ -81,13 +77,16 @@ const Products: NextPage = () => {
     const isDesktop = useMediaQuery('md')
     const { products } = useProducts()
     // const { showSuccessSnackbar, showErrorSnackbar } = useSnackbar()
+    const { push } = useRouter()
+
+    const gotoAddProducts = () => push('/dashboard/products/addProduxts')
 
     const onDelete = () => null
 
     if (products?.length === 0) {
         return (
             <PrimaryLayout currentTabIndex={1}>
-                <NoProducts />
+                <NoProducts gotoAddProducts={gotoAddProducts} />
             </PrimaryLayout>
         )
     }
@@ -95,7 +94,7 @@ const Products: NextPage = () => {
     return (
         <PrimaryLayout currentTabIndex={1}>
             <div className="py-4 md:px-8">
-                <ProductsHeader isDesktop={isDesktop} />
+                <ProductsHeader isDesktop={isDesktop} gotoAddProducts={gotoAddProducts} />
 
                 {isDesktop ? (
                     <>
