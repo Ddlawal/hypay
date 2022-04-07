@@ -34,12 +34,10 @@ const DropdownItems: FC<DropdownButtonProps> = ({ items, className }) => {
 
     const logOut = async () => {
         const res = await logoutMutation({ token: token?.access_token })
-        await signOut({ redirect: false, callbackUrl: '/login' })
+        await signOut({ redirect: false })
         if (res) {
             localStorage.clear()
             dispatch(logUserOut())
-        } else {
-            showErrorSnackbar('There was an error while trying to log out')
         }
     }
     return (

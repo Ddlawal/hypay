@@ -44,9 +44,11 @@ function SignUp() {
                     userProviderID: Session.jwt.account?.providerAccountId,
                     accountType: '',
                 }
+
+                // console.log('pppppppppppppppppppp', googleData, Session.jwt)
                 loginWithGoogle(googleData)
                     .unwrap()
-                    .then((payload) => {
+                    .then((payload: any) => {
                         showSuccessSnackbar('Login Successful')
                         localStorage.setItem('user', JSON.stringify(payload))
                         dispatch(loginUser(payload))

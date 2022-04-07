@@ -16,13 +16,14 @@ import { EMAIL_PATTERN } from '../lib/data'
 import PasswordInput from '../components/form/PasswordInput'
 import { useSnackbar } from '../hooks/useSnackbar'
 import { useAppDispatch } from '../hooks/useStoreHooks'
+import { LoaderIcon } from '../components/Icons'
 
 const Login: NextPage = () => {
     const [loginWithGoogle] = useLoginWithGoogleMutation()
     const [logUserIn, { isLoading }] = useLoginMutation()
     const { push } = useRouter()
     const dispatch = useAppDispatch()
-    const { data: Session } = useSession()
+    const { data: Session, status } = useSession()
     const { showSuccessSnackbar, showErrorSnackbar } = useSnackbar()
 
     const tryGoogleLogin = useCallback(async () => {
@@ -36,11 +37,11 @@ const Login: NextPage = () => {
                     userProviderID: Session.jwt.account?.providerAccountId,
                     accountType: '',
                 }
-                console.log('pppppppppppppppppppp', googleData, Session.jwt)
 
+                // console.log('pppppppppppppppppppp', googleData, Session.jwt)
                 loginWithGoogle(googleData)
                     .unwrap()
-                    .then((payload) => {
+                    .then((payload: any) => {
                         showSuccessSnackbar('Login Successful')
                         localStorage.setItem('user', JSON.stringify(payload))
                         dispatch(loginUser(payload))
