@@ -6,9 +6,11 @@ import { Button } from '../Button'
 import { Card } from '../Card'
 import { FacebookSvgIcon } from '../Icons/FacebookSvgIcon'
 import { InstagramSvgIcon } from '../Icons/InstagramSvgIcon'
+import { useRouter } from 'next/router'
 
-function CreateSocialStore() {
+function CreateSocialStore({ setTabIndex }: { setTabIndex: (value: React.SetStateAction<number>) => void }) {
     const [socialsIcon, setSocialIcon] = useState('')
+    const { push } = useRouter()
     return (
         <div className="mx-auto w-10/12 ">
             <header className="mx-auto mt-10 w-full">
@@ -41,7 +43,7 @@ function CreateSocialStore() {
                     </Card>
                     <p className="font-bold">Escolha um canal de compartilhamento</p>
                 </section>
-                <form className="mx-auto mt-4 w-10/12">
+                <form onSubmit={(e: any) => e.preventDefault()} className="mx-auto mt-4 w-10/12">
                     {/* Social Icons */}
                     <div className="mx-auto my-3 flex w-10/12 justify-evenly gap-x-8 text-center md:w-4/12 md:justify-center ">
                         <InstagramSvgIcon
@@ -66,7 +68,12 @@ function CreateSocialStore() {
                             </Button>
                         </div>
                         <p className="text-md my-3 text-center font-bold text-black">Or</p>
-                        <button className="mx-auto font-bold text-hypay-primary">Skip</button>
+                        <button
+                            onClick={() => push('/dashboard/home')}
+                            className="mx-auto font-bold text-hypay-primary"
+                        >
+                            Skip
+                        </button>
                     </div>
                 </form>
             </header>

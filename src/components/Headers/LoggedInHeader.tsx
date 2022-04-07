@@ -9,11 +9,17 @@ import { SideNav } from '../Layout'
 import { SIDE_NAV_WIDTH } from '../../lib/constants/elements'
 import { Dropdown } from '../Dropdown'
 import { dropdownMenuItems } from '../../lib/data'
+import { useRouter } from 'next/router'
+import { NextLink } from '../Links'
 
 export const LoggedInHeader = ({ currentTabIndex }: { currentTabIndex?: number }) => {
     const [open, setOpen] = useState(false)
     const [searchString, setSearchString] = useState('')
     const { ref } = useOnClickOutside<HTMLDivElement>(() => setOpen(false))
+    const { pathname } = useRouter()
+
+    const isMessagesPage = pathname === '/dashboard/messages'
+    const isNotificationsPage = pathname === '/dashboard/notifications'
 
     const width = SIDE_NAV_WIDTH + 'px'
 
@@ -43,12 +49,20 @@ export const LoggedInHeader = ({ currentTabIndex }: { currentTabIndex?: number }
                     inputIcon={<SearchIcon color={COLORS.PLACEHOLDER} />}
                     className="mr-20 hidden md:block"
                 />
-                <button className="hidden rounded-lg p-2 transition duration-200 ease-in-out hover:scale-105 hover:shadow-md md:block">
-                    <CommentIcon size={26} color={COLORS.ICON_GRAY} />
-                </button>
-                <button className="rounded-lg p-2 transition duration-200 ease-in-out hover:scale-105 hover:shadow-md">
-                    <NotificationIcon indicator size={26} color={COLORS.ICON_GRAY} />
-                </button>
+                <NextLink href="/dashboard/messages">
+                    <button className="hidden rounded-lg p-2 transition duration-200 ease-in-out hover:scale-105 hover:shadow-md md:block">
+                        <CommentIcon size={26} color={isMessagesPage ? COLORS.PINK : COLORS.ICON_GRAY} />
+                    </button>
+                </NextLink>
+                <NextLink href="/dashboard/notifications">
+                    <button className="rounded-lg p-2 transition duration-200 ease-in-out hover:scale-105 hover:shadow-md">
+                        <NotificationIcon
+                            indicator
+                            size={26}
+                            color={isNotificationsPage ? COLORS.PINK : COLORS.ICON_GRAY}
+                        />
+                    </button>
+                </NextLink>
                 <button className="block rounded-lg py-2 transition duration-200 ease-in-out hover:scale-105 hover:shadow-md md:hidden">
                     <MoreOptionsVIcon size={26} color={COLORS.ICON_GRAY} />
                 </button>
@@ -61,6 +75,7 @@ export const LoggedInHeader = ({ currentTabIndex }: { currentTabIndex?: number }
                         width={40}
                         height={40}
                         quality={100}
+                        unoptimized
                     />
                 </Dropdown>
             </div>

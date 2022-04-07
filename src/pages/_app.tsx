@@ -6,10 +6,8 @@ import { PersistGate } from 'redux-persist/integration/react'
 import '../styles/globals.css'
 import { SessionProvider } from 'next-auth/react'
 import ProtectedRoute from '../lib/ProtectedRoute'
-import { persistStore } from 'redux-persist'
 import { Toaster } from 'react-hot-toast'
-
-const persistor = persistStore(store)
+import { persistor } from '../store/index'
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
     return (

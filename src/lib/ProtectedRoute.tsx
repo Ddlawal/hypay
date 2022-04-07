@@ -1,11 +1,12 @@
 import React, { FC } from 'react'
 import { useRouter } from 'next/router'
 import { useAppSelector } from '../hooks/useStoreHooks'
-import { User } from '../reducers/auth'
+import { User } from '../store/reducers/auth'
 import { LoaderIcon } from '../components/Icons/LoaderIcon'
 
 const ProtectedRoute: FC = ({ children }) => {
-    const protectedRoutes = ['/dashboard/home', '/dashboard/products', '/createstore']
+    const protectedRoutes = ['/dashboard/home', '/dashboard/products', '/dashboard/messages', '/createstore']
+    const notAvailableWhileLogedInRoute = ['/login', '/signup']
     const { user } = useAppSelector((state) => state?.auth as { user: User })
 
     const router = useRouter()
@@ -22,7 +23,7 @@ const ProtectedRoute: FC = ({ children }) => {
             )
         }
     } else {
-        if (pathname === '/login' && typeof window !== 'undefined') {
+        if (notAvailableWhileLogedInRoute.includes(pathname) && typeof window !== 'undefined') {
             router.push('/dashboard/home')
             return (
                 <div className="flex h-screen w-full flex-col items-center justify-center">
