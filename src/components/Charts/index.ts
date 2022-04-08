@@ -1,2 +1,2 @@
 export { Barchart } from './Barchart'
-export { LineChart } from './LineChart'
+export { Linechart } from './LineChart'

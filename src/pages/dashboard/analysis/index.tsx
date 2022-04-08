@@ -6,7 +6,7 @@ import { Button } from '../../../components/Button'
 import { SelectField } from '../../../components/Select'
 import { MoreOptionsHIcon, UpArrowIcon } from '../../../components/Icons'
 import { COLORS } from '../../../lib/constants/colors'
-import { Barchart, LineChart } from '../../../components/Charts'
+import { Barchart, Linechart } from '../../../components/Charts'
 
 const dateOptions = [
     {
@@ -62,11 +62,11 @@ const Analysis: NextPage = () => {
                         </div>
                     </div>
                     <div className="grid grid-cols-12 gap-4">
-                        <div className="col-span-8">
+                        <div className="col-span-12 md:col-span-8">
                             <div>Linechart</div>
-                            <LineChart />
+                            <Linechart />
                         </div>
-                        <div className="col-span-4">
+                        <div className="col-span-12 md:col-span-4">
                             <div>Barchart</div>
                             <Barchart />
                         </div>

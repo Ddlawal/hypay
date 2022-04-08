@@ -1,38 +1,50 @@
 import React from 'react'
-import { Chart, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js'
-import { Line } from 'react-chartjs-2'
+import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 
-export const options = {
-    responsive: true,
-    scales: {
-        y: {
-            beginAtZero: true,
-        },
+const data = [
+    {
+        name: 'Jan',
+        uv: 22,
+        pv: 11,
     },
-}
+    {
+        name: 'Feb',
+        uv: 30,
+        pv: 25,
+    },
+    {
+        name: 'Mar',
+        uv: 29,
+        pv: 19,
+    },
+    {
+        name: 'Apr',
+        uv: 26,
+        pv: 24,
+    },
+    {
+        name: 'May',
+        uv: 35,
+        pv: 22,
+    },
+    {
+        name: 'Jun',
+        uv: 40,
+        pv: 33,
+    },
+]
 
-const labels = ['January', 'February', 'March', 'April', 'May', 'June']
-
-export const data = {
-    labels,
-    datasets: [
-        {
-            label: 'Dataset 1',
-            data: [14, 30, 9, 15, 6, 10],
-            borderColor: 'rgb(255, 99, 132)',
-            backgroundColor: 'rgba(255, 99, 132, 0.5)',
-        },
-        {
-            label: 'Dataset 2',
-            data: [12, 19, 3, 5, 2, 3],
-            borderColor: 'rgb(53, 162, 235)',
-            backgroundColor: 'rgba(53, 162, 235, 0.5)',
-        },
-    ],
-}
-
-export const LineChart = () => {
-    Chart.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend)
-
-    return <Line data={data} options={options} />
+export const Linechart = () => {
+    return (
+        <ResponsiveContainer width="100%" height={250}>
+            <LineChart width={730} height={250} data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Line type="monotone" dataKey="pv" stroke="#8884d8" />
+                <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
+            </LineChart>
+        </ResponsiveContainer>
+    )
 }
