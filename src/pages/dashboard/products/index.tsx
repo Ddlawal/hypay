@@ -67,7 +67,13 @@ const ProductsHeader = ({ isDesktop, gotoAddProducts }: { isDesktop: boolean; go
                         <span className="px-2">Adicionar produto</span>
                     </Button>
                 </div>
-            ) : null}
+            ) : (
+                <div className="pr-4">
+                    <Button primary padding="py-1.5 px-4" className="block md:hidden" onClick={gotoAddProducts}>
+                        <CircularPlusIcon />
+                    </Button>
+                </div>
+            )}
         </div>
     )
 }
