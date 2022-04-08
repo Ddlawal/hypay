@@ -33,12 +33,12 @@ const productActionSelectItems = [
     },
 ]
 
-const NoProducts = () => {
+const NoProducts = ({ gotoAddProducts }: { gotoAddProducts: () => void }) => {
     return (
-        <div className="py-4 px-4 leading-5 md:px-16 lg:px-36">
-            <div>Você ainda não tem produtos cadastrados na sua loja.</div>
+        <div className="flex h-[80vh] flex-col items-center justify-center  py-4 px-10 leading-5 md:h-full md:items-start md:px-16 lg:px-36">
+            <div className="mb-2 text-center md:text-left">Você ainda não tem produtos cadastrados na sua loja.</div>
             <div>Vamos começar a vender?</div>
-            <Button primary className="mt-2 flex items-center">
+            <Button primary className="mt-8 flex items-center md:mt-2" onClick={gotoAddProducts}>
                 <span className="pl-2">
                     <CircularPlusIcon />
                 </span>
@@ -48,14 +48,10 @@ const NoProducts = () => {
     )
 }
 
-const ProductsHeader = ({ isDesktop }: { isDesktop: boolean }) => {
-    const { push } = useRouter()
-
-    const gotoAddProducts = () => push('/dashboard/products/addProduxts')
-
+const ProductsHeader = ({ isDesktop, gotoAddProducts }: { isDesktop: boolean; gotoAddProducts: () => void }) => {
     return (
         <div className="flex items-center justify-between">
-            <div className="p-4 font-bold text-hypay-black md:p-0">Produtos cadastrados</div>
+            <div className="p-4 text-lg font-bold text-hypay-black md:p-0">Produtos cadastrados</div>
             {isDesktop ? (
                 <div className="flex items-center gap-x-6">
                     <div className="flex items-center  gap-x-3">
@@ -78,16 +74,23 @@ const ProductsHeader = ({ isDesktop }: { isDesktop: boolean }) => {
 
 const Products: NextPage = () => {
     const [action, setAction] = useState<string | null>(null)
+    const [productId, setProductId] = useState<string | null>(null)
     const isDesktop = useMediaQuery('md')
-    const { products } = useProducts()
-    // const { showSuccessSnackbar, showErrorSnackbar } = useSnackbar()
+    const {
+        products,
+        deleteProduct: { onDelete },
+    } = useProducts(productId as string)
+    const { push } = useRouter()
 
-    const onDelete = () => null
+    const gotoAddProducts = () => push('/dashboard/products/addProduxts')
+    const gotoEditProduct = () => push(`/dashboard/products/editProduct/${productId}`)
+
+    const deleteProduct = () => onDelete('/dashboard/products')
 
     if (products?.length === 0) {
         return (
             <PrimaryLayout currentTabIndex={1}>
-                <NoProducts />
+                <NoProducts gotoAddProducts={gotoAddProducts} />
             </PrimaryLayout>
         )
     }
@@ -95,7 +98,7 @@ const Products: NextPage = () => {
     return (
         <PrimaryLayout currentTabIndex={1}>
             <div className="py-4 md:px-8">
-                <ProductsHeader isDesktop={isDesktop} />
+                <ProductsHeader isDesktop={isDesktop} gotoAddProducts={gotoAddProducts} />
 
                 {isDesktop ? (
                     <>
@@ -114,16 +117,19 @@ const Products: NextPage = () => {
                 {isDesktop ? (
                     <Table<ProductsType>
                         uniqueKey="id"
+                        setId={setProductId}
                         headers={['Product', 'Inventory', 'Price', 'Discount', 'Variants', 'Actions']}
                         keys={['productName', 'quantity', 'amount', null, null, null]}
                         rows={products}
                     >
-                        <div className="text-left text-xs leading-4 text-hypay-pink">
-                            <div>Copy link</div>
-                            <div>Edit</div>
-                            <div className="font-bold" onClick={onDelete}>
+                        <div className="flex flex-col items-start text-[11px] leading-4 text-hypay-pink">
+                            <button className="hover:font-bold">Copy link</button>
+                            <button className="hover:font-bold" onClick={gotoEditProduct}>
+                                Edit
+                            </button>
+                            <button className="hover:font-bold" onClick={deleteProduct}>
                                 Delete
-                            </div>
+                            </button>
                         </div>
                     </Table>
                 ) : (

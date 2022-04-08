@@ -7,7 +7,9 @@ import '../styles/globals.css'
 import { SessionProvider } from 'next-auth/react'
 import ProtectedRoute from '../lib/ProtectedRoute'
 import { Toaster } from 'react-hot-toast'
-import { persistor } from '../store/index'
+import { persistStore } from 'redux-persist'
+
+export const persistor = persistStore(store)
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
     return (

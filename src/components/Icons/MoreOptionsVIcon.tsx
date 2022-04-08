@@ -2,7 +2,7 @@ import * as React from 'react'
 import { IconProps } from '../../interfaces/icons'
 import { COLORS } from '../../lib/constants/colors'
 
-export const MoreOptionsIcon = ({ size = 18, color = COLORS.BLACK }: IconProps): JSX.Element => {
+export const MoreOptionsVIcon = ({ size = 18, color = COLORS.BLACK }: IconProps): JSX.Element => {
     return (
         <svg width={size} height={size} viewBox="0 0 6 26" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path

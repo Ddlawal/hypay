@@ -41,27 +41,27 @@ export const MenuItemList: Array<{
     rightIcon?: JSX.Element | (() => JSX.Element)
 }> = [
     {
-        text: 'Home',
+        text: 'Início',
         href: '/dashboard/home',
         leftIcon: HomeIcon({ color: COLORS.YELLOW }),
     },
     {
-        text: 'Products',
+        text: 'Produtos',
         href: '/dashboard/products',
         leftIcon: TagIcon({ color: COLORS.YELLOW }),
     },
     {
-        text: 'Request',
+        text: 'Solicitações',
         href: '/dashboard/request',
         leftIcon: BagIcon({ color: COLORS.YELLOW }),
     },
     {
-        text: 'Analysis',
+        text: 'Análise',
         href: '/dashboard/analysis',
         leftIcon: AnalysisIcon({ color: COLORS.YELLOW }),
     },
     {
-        text: 'Online Store',
+        text: 'Loja Virtual',
         href: '/dashboard/online-store',
         leftIcon: ShelterIcon({ color: COLORS.YELLOW }),
     },
@@ -72,12 +72,12 @@ export const MenuItemList: Array<{
         isDropDown: ['Discount', 'Indicate'],
     },
     {
-        text: 'Coupons',
+        text: 'Cupons',
         href: '/dashboard/coupons',
         leftIcon: FireIcon({ color: COLORS.YELLOW }),
     },
     {
-        text: 'Settings',
+        text: 'Configurações',
         href: '/dashboard/settings',
         leftIcon: SettingsIcon({ color: COLORS.YELLOW }),
         rightIcon: RightArrowIcon({ color: COLORS.YELLOW }),

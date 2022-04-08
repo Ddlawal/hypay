@@ -7,16 +7,17 @@ import { BagIcon, CameraIcon } from '../Icons'
 import { useForm } from 'react-hook-form'
 import { SecondInput } from '../form'
 import { Card } from '../Card'
-import { useAddAProductMutation } from '../../store/services/productAndOrders'
-import { AddProductType } from '../../interfaces/products'
+import { useAddAProductMutation, useEditProductMutation } from '../../store/services/products'
+import { AddProductType, ProductsType } from '../../interfaces/products'
 import { useSnackbar } from '../../hooks/useSnackbar'
 
 interface PhotographBoxProps {
+    src?: string
     boxSize?: string
     cameraSize?: number
     imageReceiver?: (image: File | FileList | null) => void
 }
-export const PhotographBox = ({ cameraSize = 50, imageReceiver }: PhotographBoxProps) => {
+export const PhotographBox = ({ src, cameraSize = 50, imageReceiver }: PhotographBoxProps) => {
     const [image1, setImage1] = useState<File | null>(null)
 
     const handleImageCapture = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -47,19 +48,32 @@ export const PhotographBox = ({ cameraSize = 50, imageReceiver }: PhotographBoxP
                         className="absolute top-0 left-0 inline h-full w-full border border-black object-cover"
                     />
                 ) : (
-                    <CameraIcon size={cameraSize} />
+                    <>
+                        {src ? (
+                            <Image
+                                src={src}
+                                width="100%"
+                                alt="seleced Product"
+                                height="100%"
+                                className="absolute top-0 left-0 inline h-full w-full border border-black object-cover"
+                            />
+                        ) : (
+                            <CameraIcon size={cameraSize} />
+                        )}
+                    </>
                 )}
             </div>
         </div>
     )
 }
 
-interface AddProductProps {
-    onSuccess?: (params: unknown) => void
+interface AddProductProps<T> {
+    product?: ProductsType
+    onSuccess?: (params: T) => void
     setTabIndex?: (value: React.SetStateAction<number>) => void
 }
 
-export const AddAProduct = ({ onSuccess, setTabIndex }: AddProductProps) => {
+export const AddAProduct = <T,>({ product, onSuccess, setTabIndex }: AddProductProps<T>) => {
     const [image1, setImage1] = useState<File | FileList | null>(null)
     const { showErrorSnackbar } = useSnackbar()
 
@@ -72,24 +86,38 @@ export const AddAProduct = ({ onSuccess, setTabIndex }: AddProductProps) => {
     } = useForm<AddProductType>()
 
     const [addProduct] = useAddAProductMutation()
+    const [editProduct] = useEditProductMutation()
 
     const imageReceiver = (image: File | FileList | null) => {
-        console.log(image, 'the selevted image')
         setImage1(image)
     }
 
     const onSubmit = (data: AddProductType) => {
         const extraParams = {
             ...data,
-            product_image: image1 as File,
             category_id: '1',
             currency: 'NGN',
             deliveryperiod: '10',
         }
 
+        if (image1) {
+            extraParams.product_image = image1 as File
+        }
+
         const formData = new FormData()
         for (const objKey in extraParams) {
             formData.append(objKey, extraParams[objKey as keyof AddProductType])
+        }
+
+        if (product) {
+            formData.append('productID', String(product.id))
+            return editProduct(formData)
+                .unwrap()
+                .then((res) => {
+                    onSuccess?.(res)
+                    setTabIndex?.(2)
+                })
+                .catch((err) => console.log(err, 'An Error Occured while trying to Add your product'))
         }
 
         addProduct(formData)
@@ -108,7 +136,7 @@ export const AddAProduct = ({ onSuccess, setTabIndex }: AddProductProps) => {
         <div className="mx-auto w-10/12 ">
             <header className="mx-auto mt-10 w-full">
                 <h1 className="text-left text-2xl font-bold text-black md:text-center md:text-[32px]">
-                    Adicone um produto
+                    {product ? 'Editar produto' : 'Adicone um produto'}
                 </h1>
                 <div>
                     <p className="text-md mt-3 text-left font-bold text-black md:mt-3">
@@ -124,6 +152,7 @@ export const AddAProduct = ({ onSuccess, setTabIndex }: AddProductProps) => {
                     errors={errors}
                     label="Names"
                     register={register}
+                    defaultValue={product?.productName}
                     validation={{
                         required: true,
                     }}
@@ -136,6 +165,7 @@ export const AddAProduct = ({ onSuccess, setTabIndex }: AddProductProps) => {
                     errors={errors}
                     label="Descrição"
                     register={register}
+                    defaultValue={product?.productDescription}
                     validation={{
                         required: true,
                     }}
@@ -147,17 +177,27 @@ export const AddAProduct = ({ onSuccess, setTabIndex }: AddProductProps) => {
                     <h4 className="my-2 text-xl font-bold">Fotos</h4>
                     <div className="flex items-center justify-between gap-x-3 overflow-x-auto py-2">
                         <div className="relative">
-                            <PhotographBox imageReceiver={imageReceiver} />
+                            <PhotographBox imageReceiver={imageReceiver} src={product?.image_url} />
                         </div>
-                        <div className="relative">
-                            <PhotographBox />
-                        </div>
-                        <div className="relative">
-                            <PhotographBox />
-                        </div>
-                        <div className="relative">
-                            <PhotographBox />
-                        </div>
+                        {product?.other_images_url.length && product.other_images_url.length > 0 ? (
+                            product.other_images_url.map((image_src, i) => (
+                                <div key={i} className="relative">
+                                    <PhotographBox src={image_src} />
+                                </div>
+                            ))
+                        ) : (
+                            <>
+                                <div className="relative">
+                                    <PhotographBox />
+                                </div>
+                                <div className="relative">
+                                    <PhotographBox />
+                                </div>
+                                <div className="relative">
+                                    <PhotographBox />
+                                </div>
+                            </>
+                        )}
                     </div>
 
                     {/* Product link Button  */}
@@ -173,12 +213,10 @@ export const AddAProduct = ({ onSuccess, setTabIndex }: AddProductProps) => {
                         </p>
                         <SecondInput
                             className="my-2 md:my-0"
-                            name="videoDescription"
+                            name="video_link"
                             errors={errors}
                             register={register}
-                            validation={{
-                                required: true,
-                            }}
+                            defaultValue={product?.video_link || ''}
                             placeholder=""
                             type="text"
                         />
@@ -194,6 +232,7 @@ export const AddAProduct = ({ onSuccess, setTabIndex }: AddProductProps) => {
                                 errors={errors}
                                 label="Price"
                                 register={register}
+                                defaultValue={product?.amount}
                                 validation={{
                                     required: true,
                                 }}
@@ -206,6 +245,7 @@ export const AddAProduct = ({ onSuccess, setTabIndex }: AddProductProps) => {
                                 errors={errors}
                                 label="Quantidade"
                                 register={register}
+                                defaultValue={String(product?.quantity) || ''}
                                 validation={{
                                     required: true,
                                 }}
@@ -214,10 +254,11 @@ export const AddAProduct = ({ onSuccess, setTabIndex }: AddProductProps) => {
                             />
                             <SecondInput
                                 className="my-2 w-5/12 md:my-0 md:w-2/12"
-                                name="sku"
+                                name="SKU"
                                 errors={errors}
                                 label="SKU"
                                 register={register}
+                                defaultValue={product?.SKU || ''}
                                 validation={{
                                     required: true,
                                 }}
@@ -230,6 +271,7 @@ export const AddAProduct = ({ onSuccess, setTabIndex }: AddProductProps) => {
                                 errors={errors}
                                 label="Código e barras"
                                 register={register}
+                                defaultValue={product?.barcode || ''}
                                 validation={{
                                     required: true,
                                 }}
@@ -245,6 +287,7 @@ export const AddAProduct = ({ onSuccess, setTabIndex }: AddProductProps) => {
                             <div className="my-2 flex items-center">
                                 <input
                                     type="radio"
+                                    defaultChecked={product?.product_type === 'physical'}
                                     className="h-6 w-6 border-none bg-transparent outline-none"
                                     placeholder=""
                                     value="physical"
@@ -257,6 +300,7 @@ export const AddAProduct = ({ onSuccess, setTabIndex }: AddProductProps) => {
                             <div className=" flex items-center">
                                 <input
                                     type="radio"
+                                    defaultChecked={product?.product_type === 'digital'}
                                     className="h-6 w-6 border-none bg-transparent outline-none"
                                     placeholder=""
                                     value="digital"
@@ -277,6 +321,7 @@ export const AddAProduct = ({ onSuccess, setTabIndex }: AddProductProps) => {
                                 name="weight"
                                 errors={errors}
                                 register={register}
+                                defaultValue={String(product?.weight)}
                                 validation={{
                                     required: true,
                                 }}
@@ -289,6 +334,7 @@ export const AddAProduct = ({ onSuccess, setTabIndex }: AddProductProps) => {
                                 name="length"
                                 errors={errors}
                                 register={register}
+                                defaultValue={String(product?.length)}
                                 validation={{
                                     required: true,
                                 }}
@@ -301,6 +347,7 @@ export const AddAProduct = ({ onSuccess, setTabIndex }: AddProductProps) => {
                                 name="width"
                                 errors={errors}
                                 register={register}
+                                defaultValue={String(product?.width)}
                                 validation={{
                                     required: true,
                                 }}
@@ -313,6 +360,7 @@ export const AddAProduct = ({ onSuccess, setTabIndex }: AddProductProps) => {
                                 name="height"
                                 errors={errors}
                                 register={register}
+                                defaultValue={String(product?.height)}
                                 validation={{
                                     required: true,
                                 }}
@@ -390,7 +438,7 @@ export const AddAProduct = ({ onSuccess, setTabIndex }: AddProductProps) => {
                             primary
                             className="rounded-md border-[1px]   px-3 text-white outline-none"
                         >
-                            Publicar
+                            Publicar produto
                         </Button>
                     </div>
                     {/* or skip section */}

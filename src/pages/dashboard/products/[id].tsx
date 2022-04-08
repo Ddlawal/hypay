@@ -14,13 +14,21 @@ const ProductDetails: NextPage = () => {
     if (isDesktop) {
         router.replace('/dashboard/products')
     }
+
     const productId = router.query.id
-    console.log(router)
-    const { product } = useProducts(productId as string)
+    const gotoEditProduct = () => router.push(`/dashboard/products/editProduct/${productId}`)
+
+    const {
+        product,
+        deleteProduct: { onDelete },
+    } = useProducts(productId as string)
+
+    const deleteProduct = () => onDelete('/dashboard/products')
+
     const { image_url, productName, amount, quantity, product_type } = product as ProductsType
 
     return (
-        <PrimaryLayout currentTabIndex={1}>
+        <PrimaryLayout currentTabIndex={1} isNavBack navHeader="Detalhes do produto">
             <div className="px-4 pb-4 pt-2">
                 <div className="py-3">Detalhes do produto</div>
                 <Card rounded padding="p-0">
@@ -61,10 +69,10 @@ const ProductDetails: NextPage = () => {
                         </div>
                     </div>
                     <div className="flex justify-around border-t border-hypay-light-gray py-4">
-                        <Button padding="px-[15%] py-2" className="text-hypay-secondary">
+                        <Button padding="px-[15%] py-2" className="text-hypay-secondary" onClick={deleteProduct}>
                             Excluir
                         </Button>
-                        <Button primary padding="px-[15%] py-2">
+                        <Button primary padding="px-[15%] py-2" onClick={gotoEditProduct}>
                             Editar
                         </Button>
                     </div>

@@ -208,7 +208,7 @@ const Home = () => {
     return (
         <PrimaryLayout>
             <div className="md:text-md flex items-center justify-center bg-hypay-green text-center text-xs leading-6 text-white">
-                <strong>Veja sua loja antes dela ser publicada</strong>
+                <div className="text-lg font-bold">Veja sua loja antes dela ser publicada</div>
                 <button className="rounded-full p-2 transition duration-200 ease-in-out hover:scale-105 hover:shadow-sm">
                     <OpenLinkIcon size={isDesktop ? 18 : 12} color={COLORS.WHITE} />
                 </button>
