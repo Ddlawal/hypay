@@ -7,6 +7,7 @@ export const COLORS = {
     PLACEHOLDER: '#4B506D',
     PRIMARY: '#36076B',
     RED: '#BF2A2A',
+    SECONDARY: '#8021FF',
     WHITE: '#FFFFFF',
     YELLOW: '#FFB119',
 } as const
