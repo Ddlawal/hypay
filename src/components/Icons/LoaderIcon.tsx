@@ -17,14 +17,14 @@ export const LoaderIcon = ({ size = 48, color = COLORS.PRIMARY }: IconProps): JS
             enableBackground="new 0 0 0 0"
             xmlSpace="preserve"
         >
-            <circle fill={color} stroke="none" cx="6" cy="50" r="6">
+            <circle fill={color} stroke="none" cx="15" cy="50" r={size / 5}>
+                <animate attributeName="opacity" dur="1s" values="0;1;0" repeatCount="indefinite" begin="0.05" />
+            </circle>
+            <circle fill={color} stroke="none" cx="50" cy="50" r={size / 5}>
                 <animate attributeName="opacity" dur="1s" values="0;1;0" repeatCount="indefinite" begin="0.1" />
             </circle>
-            <circle fill={color} stroke="none" cx="26" cy="50" r="6">
-                <animate attributeName="opacity" dur="1s" values="0;1;0" repeatCount="indefinite" begin="0.2" />
-            </circle>
-            <circle fill={color} stroke="none" cx="46" cy="50" r="6">
-                <animate attributeName="opacity" dur="1s" values="0;1;0" repeatCount="indefinite" begin="0.3" />
+            <circle fill={color} stroke="none" cx="85" cy="50" r={size / 5}>
+                <animate attributeName="opacity" dur="1s" values="0;1;0" repeatCount="indefinite" begin="0.15" />
             </circle>
         </svg>
     )
