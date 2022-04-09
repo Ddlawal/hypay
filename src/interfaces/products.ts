@@ -7,7 +7,13 @@ export type ProductsType = {
     dateCreated: string
     link: string | null
     image_url: string
-    other_images_url: string[]
+    other_images_url: {
+        id: number
+        productID: number
+        image_link: string
+        created_at: string
+        updated_at: string
+    }[]
     amount: string
     currency: string
     deliveryDate: number

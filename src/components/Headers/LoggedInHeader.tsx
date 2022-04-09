@@ -30,7 +30,9 @@ export const LoggedInHeader = ({ currentTabIndex, isNavBack, navHeader }: Logged
         <div className="flex w-full items-center justify-between bg-white py-4 px-2 md:justify-end md:px-8">
             {isNavBack ? (
                 <div className="flex w-full p-2">
-                    <ArrowLeftIcon onClick={() => back()} size={26} color={COLORS.ICON_GRAY} />
+                    <div className="cursor-pointer">
+                        <ArrowLeftIcon onClick={() => back()} size={26} color={COLORS.ICON_GRAY} />
+                    </div>
                     <div className="w-full text-center font-bold">{navHeader}</div>
                 </div>
             ) : (

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react'
+import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react'
 import Image from 'next/image'
 import { NextPage } from 'next'
 import { signIn, signOut, useSession } from 'next-auth/react'
@@ -17,6 +17,7 @@ import PasswordInput from '../components/form/PasswordInput'
 import { useSnackbar } from '../hooks/useSnackbar'
 import { useAppDispatch } from '../hooks/useStoreHooks'
 import { LoaderIcon } from '../components/Icons'
+import { LoadingPage } from '../components/Layout/LoadingPage'
 
 const Login: NextPage = () => {
     const [loginWithGoogle] = useLoginWithGoogleMutation()
@@ -25,6 +26,14 @@ const Login: NextPage = () => {
     const dispatch = useAppDispatch()
     const { data: Session, status } = useSession()
     const { showSuccessSnackbar, showErrorSnackbar } = useSnackbar()
+    const [isSocialLoading, setIsSocialLoading] = useState(false)
+
+    useLayoutEffect(() => {
+        if (status === 'unauthenticated') {
+            return setIsSocialLoading(false)
+        }
+        setIsSocialLoading(true)
+    }, [status])
 
     const tryGoogleLogin = useCallback(async () => {
         try {
@@ -38,7 +47,6 @@ const Login: NextPage = () => {
                     accountType: '',
                 }
 
-                // console.log('pppppppppppppppppppp', googleData, Session.jwt)
                 loginWithGoogle(googleData)
                     .unwrap()
                     .then((payload: any) => {
@@ -92,6 +100,10 @@ const Login: NextPage = () => {
         }
     }
 
+    if (isSocialLoading) {
+        return <LoadingPage />
+    }
+
     return (
         <>
             <Head>
@@ -138,10 +150,18 @@ const Login: NextPage = () => {
                             />
                             <div className="my-3  flex items-center justify-center  font-semibold md:mt-2">
                                 <Button
-                                    className={`${COLORS.PINK} ${isLoading && 'opacity-7'} w-full md:w-[80%] `}
+                                    className={`${COLORS.PINK} ${
+                                        isLoading && 'opacity-7'
+                                    } w-full text-center md:w-[80%]`}
                                     primary
                                 >
-                                    {isLoading ? 'loading...' : 'Entrar'}
+                                    {isLoading ? (
+                                        <div className="flex items-center justify-center">
+                                            <LoaderIcon size={24} color={COLORS.WHITE} />
+                                        </div>
+                                    ) : (
+                                        'Entrar'
+                                    )}
                                 </Button>
                             </div>
                         </form>

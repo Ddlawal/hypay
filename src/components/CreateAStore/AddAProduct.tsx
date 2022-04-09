@@ -179,25 +179,21 @@ export const AddAProduct = <T,>({ product, onSuccess, setTabIndex }: AddProductP
                         <div className="relative">
                             <PhotographBox imageReceiver={imageReceiver} src={product?.image_url} />
                         </div>
-                        {product?.other_images_url.length && product.other_images_url.length > 0 ? (
-                            product.other_images_url.map((image_src, i) => (
-                                <div key={i} className="relative">
-                                    <PhotographBox src={image_src} />
-                                </div>
-                            ))
-                        ) : (
-                            <>
-                                <div className="relative">
-                                    <PhotographBox />
-                                </div>
-                                <div className="relative">
-                                    <PhotographBox />
-                                </div>
-                                <div className="relative">
-                                    <PhotographBox />
-                                </div>
-                            </>
-                        )}
+                        <div className="relative">
+                            <PhotographBox
+                                src={product?.other_images_url[0] ? product?.other_images_url[0].image_link : undefined}
+                            />
+                        </div>
+                        <div className="relative">
+                            <PhotographBox
+                                src={product?.other_images_url[1] ? product?.other_images_url[1].image_link : undefined}
+                            />
+                        </div>
+                        <div className="relative">
+                            <PhotographBox
+                                src={product?.other_images_url[2] ? product?.other_images_url[2].image_link : undefined}
+                            />
+                        </div>
                     </div>
 
                     {/* Product link Button  */}

@@ -4,6 +4,7 @@ import { SideNav } from '.'
 import { MobileFooter } from '../Footer/MobileFooter'
 import { LoggedInHeader } from '../Headers'
 import Head from 'next/head'
+import { LoadingPage } from './LoadingPage'
 
 type PrimaryLayoutProps = {
     children: ReactNode
@@ -11,6 +12,7 @@ type PrimaryLayoutProps = {
     currentTabIndex?: number
     isNavBack?: boolean
     navHeader?: string
+    isLoading?: boolean
 }
 
 export const PrimaryLayout: FC<PrimaryLayoutProps> = ({
@@ -19,6 +21,7 @@ export const PrimaryLayout: FC<PrimaryLayoutProps> = ({
     currentTabIndex,
     isNavBack,
     navHeader,
+    isLoading,
 }) => {
     return (
         <>
@@ -37,7 +40,7 @@ export const PrimaryLayout: FC<PrimaryLayoutProps> = ({
                     <div className="fixed z-50 flex w-full md:w-[78%]">
                         <LoggedInHeader currentTabIndex={currentTabIndex} isNavBack={isNavBack} navHeader={navHeader} />
                     </div>
-                    <div className="my-[4.6rem]">{children}</div>
+                    <div className="my-[4.6rem]">{isLoading ? <LoadingPage /> : children}</div>
                     <MobileFooter />
                 </div>
             </div>

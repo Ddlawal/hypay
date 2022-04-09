@@ -85,6 +85,8 @@ const Products: NextPage = () => {
     const {
         products,
         deleteProduct: { onDelete },
+        isLoading,
+        isFetching,
     } = useProducts(productId as string)
     const { push } = useRouter()
 
@@ -95,14 +97,14 @@ const Products: NextPage = () => {
 
     if (products?.length === 0) {
         return (
-            <PrimaryLayout currentTabIndex={1}>
+            <PrimaryLayout currentTabIndex={1} isLoading={isLoading || isFetching}>
                 <NoProducts gotoAddProducts={gotoAddProducts} />
             </PrimaryLayout>
         )
     }
 
     return (
-        <PrimaryLayout currentTabIndex={1}>
+        <PrimaryLayout currentTabIndex={1} isLoading={isLoading || isFetching}>
             <div className="py-4 md:px-8">
                 <ProductsHeader isDesktop={isDesktop} gotoAddProducts={gotoAddProducts} />
 

@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import { useAppSelector } from '../hooks/useStoreHooks'
 import { User } from '../store/reducers/auth'
 import { LoaderIcon } from '../components/Icons/LoaderIcon'
+import { LoadingPage } from '../components/Layout/LoadingPage'
 
 const ProtectedRoute: FC = ({ children }) => {
     const protectedRoutes = ['/dashboard/home', '/dashboard/products', '/dashboard/messages', '/createstore']
@@ -15,12 +16,7 @@ const ProtectedRoute: FC = ({ children }) => {
     if (!user) {
         if (protectedRoutes.includes(pathname) && typeof window !== 'undefined') {
             router.push('/login')
-            return (
-                <div className="flex h-screen w-full flex-col items-center justify-center">
-                    <LoaderIcon />
-                    <p className="font-bld text-center text-xl">Loading...</p>
-                </div>
-            )
+            return <LoadingPage />
         }
     } else {
         if (notAvailableWhileLogedInRoute.includes(pathname) && typeof window !== 'undefined') {
