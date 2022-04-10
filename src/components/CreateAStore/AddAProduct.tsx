@@ -106,7 +106,7 @@ export const AddAProduct = <T,>({ product, onSuccess, setTabIndex }: AddProductP
 
         const formData = new FormData()
         for (const objKey in extraParams) {
-            formData.append(objKey, extraParams[objKey as keyof AddProductType])
+            formData.append(objKey, extraParams[objKey as keyof Omit<AddProductType, 'optional_images'>])
         }
 
         if (product) {
