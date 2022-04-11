@@ -27,17 +27,23 @@ export const productApi = createApi({
                 method: 'GET',
             }),
         }),
-        deleteAProduct: builder.query<{ products: { data: ProductsType[] } }, number>({
-            query: (id: number) => ({
+        deleteAProduct: builder.query<{ products: { data: ProductsType[] } }, string>({
+            query: (id: string) => ({
                 url: `/product/remove?productID=${id}`,
                 method: 'GET',
             }),
         }),
-        createStore: builder.mutation<{ businessName: string }, any>({
+        createStore: builder.mutation<{ businessName: string }, string>({
             query: (businessName: string) => ({
                 url: '/createStore',
                 method: 'POST',
                 body: { businessName },
+            }),
+        }),
+        searchMerchantProducts: builder.query<{ products: { data: ProductsType[] } }, string>({
+            query: (id: string) => ({
+                url: `/search/products?query=${id}`,
+                method: 'GET',
             }),
         }),
     }),
@@ -49,4 +55,7 @@ export const {
     useGetAllProductsQuery,
     useLazyDeleteAProductQuery,
     useCreateStoreMutation,
+    useSearchMerchantProductsQuery,
+    useLazyGetAllProductsQuery,
+    useLazySearchMerchantProductsQuery,
 } = productApi
