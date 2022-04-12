@@ -3,6 +3,7 @@ import {
     useLazyDeleteAProductQuery,
     useGetAllProductsQuery,
     useSearchMerchantProductsQuery,
+    useLazySearchMerchantProductsQuery,
 } from '../store/services/products'
 import { useSnackbar } from './useSnackbar'
 
@@ -24,8 +25,12 @@ export const useProducts = (productId?: string) => {
         data: res,
         isLoading: searchLoading,
         isFetching: seearchFetching,
-    } = useSearchMerchantProductsQuery(productId as string)
+    } = useSearchMerchantProductsQuery(productId as string, {
+        refetchOnMountOrArgChange: true,
+    })
     const product = res?.products?.data[0]
+
+    const [searchProduct] = useLazySearchMerchantProductsQuery()
 
     const onDelete = async (url: string) => {
         if (!productId) {
@@ -43,6 +48,7 @@ export const useProducts = (productId?: string) => {
 
     return {
         product,
+        searchProduct,
         products,
         isLoading: isLoading || searchLoading || isFetching || seearchFetching,
         refetch,
