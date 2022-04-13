@@ -13,6 +13,8 @@ import { useMediaQuery } from '../../../hooks/useMediaQuery'
 import Image from 'next/image'
 import { NextLink } from '../../../components/Links'
 import { ProductsType } from '../../../interfaces/products'
+import { copyTextToClipboard } from '../../../lib/helper'
+import { useSnackbar } from '../../../hooks/useSnackbar'
 
 const productActionSelectItems = [
     {
@@ -81,6 +83,7 @@ const ProductsHeader = ({ isDesktop, gotoAddProducts }: { isDesktop: boolean; go
 const Products: NextPage = () => {
     const [action, setAction] = useState<string | null>(null)
     const [productId, setProductId] = useState<string>('')
+    const { showSuccessSnackbar } = useSnackbar()
     const isDesktop = useMediaQuery('md')
     const {
         products,
@@ -92,6 +95,13 @@ const Products: NextPage = () => {
 
     const gotoAddProducts = () => push('/dashboard/products/addProducts')
     const gotoEditProduct = () => push(`/dashboard/products/editProduct/${productId}`)
+
+    const host = window.location.origin
+
+    const copyProductLink = (id: string) => {
+        copyTextToClipboard(`${host}/store/products/${id}`)
+        showSuccessSnackbar('Link copied')
+    }
 
     const deleteProduct = async () => {
         const { data } = await searchProduct(productId)
@@ -138,7 +148,9 @@ const Products: NextPage = () => {
                         rows={products}
                     >
                         <div className="flex flex-col items-start text-[11px] leading-4 text-hypay-pink">
-                            <button className="hover:font-bold">Copy link</button>
+                            <button className="hover:font-bold" onClick={() => copyProductLink(productId)}>
+                                Copy link
+                            </button>
                             <button className="hover:font-bold" onClick={gotoEditProduct}>
                                 Edit
                             </button>

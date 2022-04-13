@@ -46,10 +46,10 @@ export const useProducts = (productId?: string) => {
 
     return {
         product,
-        searchProduct,
         products,
         isLoading: isLoading || searchLoading || isFetching || seearchFetching,
-        refetch,
         deleteProduct: { deleteAProduct, onDelete, deleteIsFetching, delIsLoading, delIsSuccess },
+        refetch,
+        searchProduct,
     }
 }

@@ -22,7 +22,7 @@ const ProductDetails: NextPage<{ id: string }> = ({ id: productId }) => {
         deleteProduct: { onDelete },
     } = useProducts(productId)
 
-    const deleteProduct = () => onDelete('/dashboard/products')
+    const deleteProduct = () => onDelete(productId, '/dashboard/products')
 
     return (
         <PrimaryLayout currentTabIndex={1} isLoading={isLoading} isNavBack navHeader="Detalhes do produto">

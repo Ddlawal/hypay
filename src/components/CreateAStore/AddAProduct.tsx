@@ -10,6 +10,7 @@ import { Card } from '../Card'
 import { useAddAProductMutation, useEditProductMutation } from '../../store/services/products'
 import { AddProductType, ProductsType } from '../../interfaces/products'
 import { useSnackbar } from '../../hooks/useSnackbar'
+import { copyTextToClipboard } from '../../lib/helper'
 
 interface PhotographBoxProps {
     src?: string
@@ -118,7 +119,9 @@ export const AddAProduct = <T,>({ product, onSuccess, setTabIndex }: AddProductP
     const [images, setImages] = useState<DataTransfer>()
     const [productImage, setProductImage] = useState<File>()
     const [isLoading, setIsLoading] = useState(false)
-    const { showErrorSnackbar } = useSnackbar()
+    const { showErrorSnackbar, showSuccessSnackbar } = useSnackbar()
+
+    const host = window.location.origin
 
     const { push } = useRouter()
 
@@ -165,6 +168,11 @@ export const AddAProduct = <T,>({ product, onSuccess, setTabIndex }: AddProductP
             dt?.items.remove(i)
             return dt
         })
+    }
+
+    const copyProductLink = (id: string) => {
+        copyTextToClipboard(`${host}/store/products/${id}`)
+        showSuccessSnackbar('Link copied')
     }
 
     const onSubmit = (data: AddProductType) => {
@@ -287,10 +295,18 @@ export const AddAProduct = <T,>({ product, onSuccess, setTabIndex }: AddProductP
                     </div>
 
                     {/* Product link Button  */}
-                    <h4 className="my-3 text-xl font-bold">Link do Produto</h4>
-                    <Button className="rounded-md border-[1px] border-hypay-pink bg-white px-3 text-hypay-pink outline-none">
-                        Copy Link
-                    </Button>
+                    {product ? (
+                        <div>
+                            <h4 className="my-3 text-xl font-bold">Link do Produto</h4>
+                            <Button
+                                onClick={() => copyProductLink(`${product.id}`)}
+                                preventDefault
+                                className="rounded-md border-[1px] border-hypay-pink bg-white px-3 text-hypay-pink outline-none"
+                            >
+                                Copy Link
+                            </Button>
+                        </div>
+                    ) : null}
 
                     <div className="mt-8">
                         <h4 className="text-xl font-bold">Videos</h4>
