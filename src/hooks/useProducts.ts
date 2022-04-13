@@ -19,7 +19,7 @@ export const useProducts = (productId?: string) => {
     const [deleteAProduct, { isFetching: deleteIsFetching, isLoading: delIsLoading, isSuccess: delIsSuccess }] =
         useLazyDeleteAProductQuery()
 
-    const products = data?.products.data ?? []
+    const products = data ?? []
 
     const {
         data: res,
@@ -28,21 +28,19 @@ export const useProducts = (productId?: string) => {
     } = useSearchMerchantProductsQuery(productId as string, {
         refetchOnMountOrArgChange: true,
     })
-    const product = res?.products?.data[0]
+    const product = res ? res[0] : undefined
 
     const [searchProduct] = useLazySearchMerchantProductsQuery()
 
-    const onDelete = async (url: string) => {
-        if (!productId) {
-            return showErrorSnackbar('Unable to delete product')
-        }
-
-        const res = await deleteAProduct(productId)
+    const onDelete = async (id: string, url: string) => {
+        const res = await deleteAProduct(id)
 
         if (res.isSuccess) {
             router.push(url)
             refetch()
             showSuccessSnackbar('Product deleted successfully!')
+        } else {
+            showErrorSnackbar('Unable to delete product')
         }
     }
 

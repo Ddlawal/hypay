@@ -80,19 +80,27 @@ const ProductsHeader = ({ isDesktop, gotoAddProducts }: { isDesktop: boolean; go
 
 const Products: NextPage = () => {
     const [action, setAction] = useState<string | null>(null)
-    const [productId, setProductId] = useState<string | null>(null)
+    const [productId, setProductId] = useState<string>('')
     const isDesktop = useMediaQuery('md')
     const {
         products,
         deleteProduct: { onDelete },
         isLoading,
-    } = useProducts(productId as string)
+        searchProduct,
+    } = useProducts()
     const { push } = useRouter()
 
     const gotoAddProducts = () => push('/dashboard/products/addProducts')
     const gotoEditProduct = () => push(`/dashboard/products/editProduct/${productId}`)
 
-    const deleteProduct = () => onDelete('/dashboard/products')
+    const deleteProduct = async () => {
+        const { data } = await searchProduct(productId)
+        const productName = data && data[0] ? data[0].productName : 'this product'
+        const proceed = confirm(`Are you sure you want to delete ${productName}`)
+        if (proceed) {
+            onDelete(productId, '/dashboard/products')
+        }
+    }
 
     if (products?.length === 0) {
         return (

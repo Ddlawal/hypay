@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { COLORS } from '../../lib/constants/colors'
 import { Button } from '../Button'
-import { BagIcon, CameraIcon, CloseIcon } from '../Icons'
+import { BagIcon, CameraIcon, CloseIcon, LoaderIcon } from '../Icons'
 import { useForm } from 'react-hook-form'
 import { SecondInput } from '../form'
 import { Card } from '../Card'
@@ -101,7 +101,8 @@ function toDataUrl(url: string, callback: (res: File) => void) {
         },
     }).then(async (res) => {
         const blob = await res.blob()
-        // const image = new File([blob], `${Date.now()}.jpg`, { type: 'image/jpeg' })
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const image: any = blob
         image.lastModifiedDate = new Date()
         image.name = `${Date.now()}.jpg`
@@ -116,6 +117,7 @@ function toDataUrl(url: string, callback: (res: File) => void) {
 export const AddAProduct = <T,>({ product, onSuccess, setTabIndex }: AddProductProps<T>) => {
     const [images, setImages] = useState<DataTransfer>()
     const [productImage, setProductImage] = useState<File>()
+    const [isLoading, setIsLoading] = useState(false)
     const { showErrorSnackbar } = useSnackbar()
 
     const { push } = useRouter()
@@ -166,6 +168,12 @@ export const AddAProduct = <T,>({ product, onSuccess, setTabIndex }: AddProductP
     }
 
     const onSubmit = (data: AddProductType) => {
+        setIsLoading(true)
+
+        if (isLoading) {
+            return
+        }
+
         const extraParams = {
             ...data,
             category_id: '1',
@@ -193,8 +201,13 @@ export const AddAProduct = <T,>({ product, onSuccess, setTabIndex }: AddProductP
                 .then((res) => {
                     onSuccess?.(res)
                     setTabIndex?.(2)
+                    setIsLoading(false)
                 })
-                .catch((err) => console.log(err, 'An Error Occured while trying to Add your product'))
+                .catch((err) => {
+                    console.log(err, 'An Error Occured while trying to Add your product')
+                    showErrorSnackbar(err.data.message || 'Something went wrong')
+                    setIsLoading(false)
+                })
         }
 
         addProduct(formData)
@@ -202,10 +215,12 @@ export const AddAProduct = <T,>({ product, onSuccess, setTabIndex }: AddProductP
             .then((res) => {
                 onSuccess?.(res)
                 setTabIndex?.(2)
+                setIsLoading(false)
             })
-            .catch((err: any) => {
+            .catch((err) => {
                 console.log(err, 'An Error Occured while trying to Add your product')
                 showErrorSnackbar(err.data.message || 'Something went wrong')
+                setIsLoading(false)
             })
     }
 
@@ -507,9 +522,15 @@ export const AddAProduct = <T,>({ product, onSuccess, setTabIndex }: AddProductP
                         <Button
                             onClick={() => handleSubmit}
                             primary
-                            className="rounded-md border-[1px]   px-3 text-white outline-none"
+                            className="rounded-md border-[1px] px-3 text-white outline-none md:w-[30%]"
                         >
-                            Publicar produto
+                            {isLoading ? (
+                                <div className="flex items-center justify-center">
+                                    <LoaderIcon size={24} color={COLORS.WHITE} />
+                                </div>
+                            ) : (
+                                'Publicar produto'
+                            )}
                         </Button>
                     </div>
                     {/* or skip section */}

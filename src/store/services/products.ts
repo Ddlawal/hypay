@@ -21,11 +21,12 @@ export const productApi = createApi({
                 body: data,
             }),
         }),
-        getAllProducts: builder.query<{ products: { data: ProductsType[] } }, void>({
+        getAllProducts: builder.query<ProductsType[], void>({
             query: () => ({
                 url: '/myProducts',
                 method: 'GET',
             }),
+            transformResponse: (res: { products: { data: ProductsType[] } }) => res.products.data,
         }),
         deleteAProduct: builder.query<{ products: { data: ProductsType[] } }, string>({
             query: (id: string) => ({
@@ -40,11 +41,12 @@ export const productApi = createApi({
                 body: { businessName },
             }),
         }),
-        searchMerchantProducts: builder.query<{ products: { data: ProductsType[] } }, string>({
+        searchMerchantProducts: builder.query<ProductsType[], string>({
             query: (id: string) => ({
                 url: `/search/products?query=${id}`,
                 method: 'GET',
             }),
+            transformResponse: (res: { products: { data: ProductsType[] } }) => res.products.data,
         }),
     }),
 })
