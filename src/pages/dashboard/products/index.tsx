@@ -89,7 +89,7 @@ const Products: NextPage = () => {
     } = useProducts(productId as string)
     const { push } = useRouter()
 
-    const gotoAddProducts = () => push('/dashboard/products/addProduxts')
+    const gotoAddProducts = () => push('/dashboard/products/addProducts')
     const gotoEditProduct = () => push(`/dashboard/products/editProduct/${productId}`)
 
     const deleteProduct = () => onDelete('/dashboard/products')

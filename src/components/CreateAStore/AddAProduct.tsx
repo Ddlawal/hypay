@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { COLORS } from '../../lib/constants/colors'
 import { Button } from '../Button'
-import { BagIcon, CameraIcon } from '../Icons'
+import { BagIcon, CameraIcon, CloseIcon } from '../Icons'
 import { useForm } from 'react-hook-form'
 import { SecondInput } from '../form'
 import { Card } from '../Card'
@@ -15,18 +15,26 @@ interface PhotographBoxProps {
     src?: string
     boxSize?: string
     cameraSize?: number
-    imageReceiver?: (image: File | FileList | null) => void
+    index: number
+    imageReceiver?: (image: File, isProductImage?: boolean) => void
+    removeImage?: (index: number) => void
 }
-export const PhotographBox = ({ src, cameraSize = 50, imageReceiver }: PhotographBoxProps) => {
+export const PhotographBox = ({ src, cameraSize = 50, index, imageReceiver, removeImage }: PhotographBoxProps) => {
     const [image1, setImage1] = useState<File | null>(null)
 
     const handleImageCapture = (event: React.ChangeEvent<HTMLInputElement>) => {
         const fileList = event.target.files
         if (fileList) {
             setImage1(fileList[0])
+            imageReceiver?.(fileList[0], index === 0)
         }
-        imageReceiver?.(fileList && fileList[0])
     }
+
+    const handleRemoveImage = () => {
+        setImage1(null)
+        removeImage?.(index)
+    }
+
     return (
         <div
             className={`relative flex h-24 w-24 cursor-pointer items-center justify-center rounded-md border-2 border-dashed border-hypay-gray`}
@@ -40,13 +48,21 @@ export const PhotographBox = ({ src, cameraSize = 50, imageReceiver }: Photograp
                     name="product_image"
                 />
                 {image1 ? (
-                    <Image
-                        src={URL.createObjectURL(image1)}
-                        width="100%"
-                        alt="seleced Product"
-                        height="100%"
-                        className="absolute top-0 left-0 inline h-full w-full border border-black object-cover"
-                    />
+                    <>
+                        <button
+                            onClick={handleRemoveImage}
+                            className="absolute top-1 right-1 z-10 rounded-full bg-white p-1"
+                        >
+                            <CloseIcon size={7} color={COLORS.PINK} />
+                        </button>
+                        <Image
+                            src={URL.createObjectURL(image1)}
+                            width="100%"
+                            alt="seleced Product"
+                            height="100%"
+                            className="absolute top-0 left-0 inline h-full w-full border border-black object-cover"
+                        />
+                    </>
                 ) : (
                     <>
                         {src ? (
@@ -73,11 +89,49 @@ interface AddProductProps<T> {
     setTabIndex?: (value: React.SetStateAction<number>) => void
 }
 
+function toDataUrl(url: string, callback: (res: File) => void) {
+    fetch(url, {
+        method: 'GET', // *GET, POST, PUT, DELETE, etc.
+        mode: 'no-cors', // no-cors, *cors, same-origin
+        cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+        credentials: 'same-origin', // include, *same-origin, omit
+        headers: {
+            'Content-Type': 'application/json',
+            // 'Content-Type': 'application/x-www-form-urlencoded',
+        },
+    }).then(async (res) => {
+        const blob = await res.blob()
+        // const image = new File([blob], `${Date.now()}.jpg`, { type: 'image/jpeg' })
+        const image: any = blob
+        image.lastModifiedDate = new Date()
+        image.name = `${Date.now()}.jpg`
+        const dT = new DataTransfer()
+
+        dT.items.add(image as File)
+
+        callback(dT.files[0])
+    })
+}
+
 export const AddAProduct = <T,>({ product, onSuccess, setTabIndex }: AddProductProps<T>) => {
-    const [image1, setImage1] = useState<File | FileList | null>(null)
+    const [images, setImages] = useState<DataTransfer>()
+    const [productImage, setProductImage] = useState<File>()
     const { showErrorSnackbar } = useSnackbar()
 
     const { push } = useRouter()
+
+    useEffect(() => {
+        if (product?.other_images_url && product?.other_images_url.length > 0) {
+            const dt = new DataTransfer()
+            for (let i = 0; i < product?.other_images_url.length; i++) {
+                toDataUrl(product.other_images_url[i].image_link, (file) => {
+                    dt.items.add(file)
+                })
+            }
+
+            setImages(dt)
+        }
+    }, [product])
 
     const {
         register,
@@ -88,8 +142,27 @@ export const AddAProduct = <T,>({ product, onSuccess, setTabIndex }: AddProductP
     const [addProduct] = useAddAProductMutation()
     const [editProduct] = useEditProductMutation()
 
-    const imageReceiver = (image: File | FileList | null) => {
-        setImage1(image)
+    const imageReceiver = (image: File, isProductImage?: boolean) => {
+        if (isProductImage) {
+            return setProductImage(image)
+        }
+
+        const dt = new DataTransfer()
+        if (images) {
+            for (let i = 0; i < images.files.length; i++) {
+                dt.items.add(images.files[i])
+            }
+        }
+        dt.items.add(image)
+
+        setImages(dt)
+    }
+
+    const removeImage = (i: number) => {
+        setImages((dt) => {
+            dt?.items.remove(i)
+            return dt
+        })
     }
 
     const onSubmit = (data: AddProductType) => {
@@ -100,13 +173,17 @@ export const AddAProduct = <T,>({ product, onSuccess, setTabIndex }: AddProductP
             deliveryperiod: '10',
         }
 
-        if (image1) {
-            extraParams.product_image = image1 as File
+        if (productImage) {
+            extraParams.product_image = productImage as File
+        }
+
+        if (images?.files.length) {
+            extraParams['optional_images[]'] = images.files
         }
 
         const formData = new FormData()
         for (const objKey in extraParams) {
-            formData.append(objKey, extraParams[objKey as keyof Omit<AddProductType, 'optional_images'>])
+            formData.append(objKey, extraParams[objKey as keyof Omit<AddProductType, 'optional_images[]'>])
         }
 
         if (product) {
@@ -176,24 +253,22 @@ export const AddAProduct = <T,>({ product, onSuccess, setTabIndex }: AddProductP
                 <div>
                     <h4 className="my-2 text-xl font-bold">Fotos</h4>
                     <div className="flex items-center justify-between gap-x-3 overflow-x-auto py-2">
-                        <div className="relative">
-                            <PhotographBox imageReceiver={imageReceiver} src={product?.image_url} />
-                        </div>
-                        <div className="relative">
-                            <PhotographBox
-                                src={product?.other_images_url[0] ? product?.other_images_url[0].image_link : undefined}
-                            />
-                        </div>
-                        <div className="relative">
-                            <PhotographBox
-                                src={product?.other_images_url[1] ? product?.other_images_url[1].image_link : undefined}
-                            />
-                        </div>
-                        <div className="relative">
-                            <PhotographBox
-                                src={product?.other_images_url[2] ? product?.other_images_url[2].image_link : undefined}
-                            />
-                        </div>
+                        {Array<string>(4)
+                            .fill('photo', 0, 4)
+                            .map((item, i) => (
+                                <div key={`${item}-${i}`}>
+                                    <PhotographBox
+                                        imageReceiver={imageReceiver}
+                                        index={i}
+                                        removeImage={removeImage}
+                                        src={
+                                            i === 0
+                                                ? product?.image_url
+                                                : product?.other_images_url[i]?.image_link || ''
+                                        }
+                                    />
+                                </div>
+                            ))}
                     </div>
 
                     {/* Product link Button  */}

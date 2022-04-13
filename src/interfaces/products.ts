@@ -51,7 +51,7 @@ export type AddProductType = {
     width: string
     height: string
     product_image: File
-    optional_images: FileList
+    'optional_images[]': FileList
     category_id: string
     currency: string
     deliveryperiod: string
