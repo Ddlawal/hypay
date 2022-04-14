@@ -1,4 +1,5 @@
-import React, { GetServerSideProps, NextPage } from 'next'
+import React, { NextPage } from 'next'
+import { useRouter } from 'next/router'
 import { Button } from '../../../components/Button'
 import { Card } from '../../../components/Card'
 import { Input } from '../../../components/form'
@@ -34,8 +35,10 @@ const timelineLabels = [
     'Pedido entregue',
 ]
 
-const RequestDetails: NextPage<{ id: string }> = ({ id: requestId }) => {
+const RequestDetails: NextPage = () => {
     const isDesktop = useMediaQuery('md')
+    const { query } = useRouter()
+    const requestId = query.id as string
 
     const { request } = useRequests(requestId)
     const { amount, cost_of_frieght, orderNo } = request as RequestType
@@ -130,11 +133,3 @@ const RequestDetails: NextPage<{ id: string }> = ({ id: requestId }) => {
 }
 
 export default RequestDetails
-
-export const getServerSideProps: GetServerSideProps<{ id: string }> = async ({ params }) => {
-    const id = params?.id as string
-
-    return {
-        props: { id },
-    }
-}
