@@ -1,4 +1,4 @@
-import React, { GetServerSideProps, NextPage } from 'next'
+import React, { NextPage } from 'next'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { LoadingPage } from '../../../components/Layout/LoadingPage'
@@ -6,7 +6,9 @@ import { Logo } from '../../../components/Logo'
 import { useProducts } from '../../../hooks/useProducts'
 import { COLORS } from '../../../lib/constants/colors'
 
-const ProductView: NextPage<{ id: string }> = ({ id }) => {
+const ProductView: NextPage = () => {
+    const { query } = useRouter()
+    const id = query.id as string
     const { product, isLoading } = useProducts(id)
     const router = useRouter()
 
@@ -40,11 +42,3 @@ const ProductView: NextPage<{ id: string }> = ({ id }) => {
 }
 
 export default ProductView
-
-export const getServerSideProps: GetServerSideProps<{ id: string }> = async ({ params }) => {
-    const id = params?.id as string
-
-    return {
-        props: { id },
-    }
-}

@@ -1,4 +1,4 @@
-import React, { GetServerSideProps, NextPage } from 'next'
+import React, { NextPage } from 'next'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { Button } from '../../../components/Button'
@@ -7,9 +7,10 @@ import { PrimaryLayout } from '../../../components/Layout'
 import { useMediaQuery } from '../../../hooks/useMediaQuery'
 import { useProducts } from '../../../hooks/useProducts'
 
-const ProductDetails: NextPage<{ id: string }> = ({ id: productId }) => {
+const ProductDetails: NextPage = () => {
     const isDesktop = useMediaQuery('md')
     const router = useRouter()
+    const productId = router.query.id as string
     if (isDesktop) {
         router.replace('/dashboard/products')
     }
@@ -80,11 +81,3 @@ const ProductDetails: NextPage<{ id: string }> = ({ id: productId }) => {
 }
 
 export default ProductDetails
-
-export const getServerSideProps: GetServerSideProps<{ id: string }> = async ({ params }) => {
-    const id = params?.id as string
-
-    return {
-        props: { id },
-    }
-}
