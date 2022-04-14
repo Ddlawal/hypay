@@ -35,8 +35,8 @@ const EditProduct: NextPage<{ id: string }> = ({ id }) => {
 
 export default EditProduct
 
-export const getServerSideProps: GetServerSideProps<{ id: string }> = async ({ query }) => {
-    const id = query.id as string
+export const getServerSideProps: GetServerSideProps<{ id: string }> = async ({ params }) => {
+    const id = params?.id as string
 
     return {
         props: { id },
