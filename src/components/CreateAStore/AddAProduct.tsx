@@ -1,32 +1,41 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { COLORS } from '../../lib/constants/colors'
 import { Button } from '../Button'
-import { BagIcon, CameraIcon } from '../Icons'
+import { BagIcon, CameraIcon, CloseIcon, LoaderIcon } from '../Icons'
 import { useForm } from 'react-hook-form'
 import { SecondInput } from '../form'
 import { Card } from '../Card'
 import { useAddAProductMutation, useEditProductMutation } from '../../store/services/products'
 import { AddProductType, ProductsType } from '../../interfaces/products'
 import { useSnackbar } from '../../hooks/useSnackbar'
+import { copyTextToClipboard } from '../../lib/helper'
 
 interface PhotographBoxProps {
     src?: string
     boxSize?: string
     cameraSize?: number
-    imageReceiver?: (image: File | FileList | null) => void
+    index: number
+    imageReceiver?: (image: File, isProductImage?: boolean) => void
+    removeImage?: (index: number) => void
 }
-export const PhotographBox = ({ src, cameraSize = 50, imageReceiver }: PhotographBoxProps) => {
+export const PhotographBox = ({ src, cameraSize = 50, index, imageReceiver, removeImage }: PhotographBoxProps) => {
     const [image1, setImage1] = useState<File | null>(null)
 
     const handleImageCapture = (event: React.ChangeEvent<HTMLInputElement>) => {
         const fileList = event.target.files
         if (fileList) {
             setImage1(fileList[0])
+            imageReceiver?.(fileList[0], index === 0)
         }
-        imageReceiver?.(fileList && fileList[0])
     }
+
+    const handleRemoveImage = () => {
+        setImage1(null)
+        removeImage?.(index)
+    }
+
     return (
         <div
             className={`relative flex h-24 w-24 cursor-pointer items-center justify-center rounded-md border-2 border-dashed border-hypay-gray`}
@@ -40,13 +49,21 @@ export const PhotographBox = ({ src, cameraSize = 50, imageReceiver }: Photograp
                     name="product_image"
                 />
                 {image1 ? (
-                    <Image
-                        src={URL.createObjectURL(image1)}
-                        width="100%"
-                        alt="seleced Product"
-                        height="100%"
-                        className="absolute top-0 left-0 inline h-full w-full border border-black object-cover"
-                    />
+                    <>
+                        <button
+                            onClick={handleRemoveImage}
+                            className="absolute top-1 right-1 z-10 rounded-full bg-white p-1"
+                        >
+                            <CloseIcon size={7} color={COLORS.PINK} />
+                        </button>
+                        <Image
+                            src={URL.createObjectURL(image1)}
+                            width="100%"
+                            alt="seleced Product"
+                            height="100%"
+                            className="absolute top-0 left-0 inline h-full w-full border border-black object-cover"
+                        />
+                    </>
                 ) : (
                     <>
                         {src ? (
@@ -73,11 +90,53 @@ interface AddProductProps<T> {
     setTabIndex?: (value: React.SetStateAction<number>) => void
 }
 
+function toDataUrl(url: string, callback: (res: File) => void) {
+    fetch(url, {
+        method: 'GET', // *GET, POST, PUT, DELETE, etc.
+        mode: 'no-cors', // no-cors, *cors, same-origin
+        cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+        credentials: 'same-origin', // include, *same-origin, omit
+        headers: {
+            'Content-Type': 'application/json',
+            // 'Content-Type': 'application/x-www-form-urlencoded',
+        },
+    }).then(async (res) => {
+        const blob = await res.blob()
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const image: any = blob
+        image.lastModifiedDate = new Date()
+        image.name = `${Date.now()}.jpg`
+        const dT = new DataTransfer()
+
+        dT.items.add(image as File)
+
+        callback(dT.files[0])
+    })
+}
+
 export const AddAProduct = <T,>({ product, onSuccess, setTabIndex }: AddProductProps<T>) => {
-    const [image1, setImage1] = useState<File | FileList | null>(null)
-    const { showErrorSnackbar } = useSnackbar()
+    const [images, setImages] = useState<DataTransfer>()
+    const [productImage, setProductImage] = useState<File>()
+    const [isLoading, setIsLoading] = useState(false)
+    const { showErrorSnackbar, showSuccessSnackbar } = useSnackbar()
+
+    const host = window.location.origin
 
     const { push } = useRouter()
+
+    useEffect(() => {
+        if (product?.other_images_url && product?.other_images_url.length > 0) {
+            const dt = new DataTransfer()
+            for (let i = 0; i < product?.other_images_url.length; i++) {
+                toDataUrl(product.other_images_url[i].image_link, (file) => {
+                    dt.items.add(file)
+                })
+            }
+
+            setImages(dt)
+        }
+    }, [product])
 
     const {
         register,
@@ -88,11 +147,41 @@ export const AddAProduct = <T,>({ product, onSuccess, setTabIndex }: AddProductP
     const [addProduct] = useAddAProductMutation()
     const [editProduct] = useEditProductMutation()
 
-    const imageReceiver = (image: File | FileList | null) => {
-        setImage1(image)
+    const imageReceiver = (image: File, isProductImage?: boolean) => {
+        if (isProductImage) {
+            return setProductImage(image)
+        }
+
+        const dt = new DataTransfer()
+        if (images) {
+            for (let i = 0; i < images.files.length; i++) {
+                dt.items.add(images.files[i])
+            }
+        }
+        dt.items.add(image)
+
+        setImages(dt)
+    }
+
+    const removeImage = (i: number) => {
+        setImages((dt) => {
+            dt?.items.remove(i)
+            return dt
+        })
+    }
+
+    const copyProductLink = (id: string) => {
+        copyTextToClipboard(`${host}/store/products/${id}`)
+        showSuccessSnackbar('Link copied')
     }
 
     const onSubmit = (data: AddProductType) => {
+        setIsLoading(true)
+
+        if (isLoading) {
+            return
+        }
+
         const extraParams = {
             ...data,
             category_id: '1',
@@ -100,13 +189,17 @@ export const AddAProduct = <T,>({ product, onSuccess, setTabIndex }: AddProductP
             deliveryperiod: '10',
         }
 
-        if (image1) {
-            extraParams.product_image = image1 as File
+        if (productImage) {
+            extraParams.product_image = productImage as File
+        }
+
+        if (images?.files.length) {
+            extraParams['optional_images[]'] = images.files
         }
 
         const formData = new FormData()
         for (const objKey in extraParams) {
-            formData.append(objKey, extraParams[objKey as keyof AddProductType])
+            formData.append(objKey, extraParams[objKey as keyof Omit<AddProductType, 'optional_images[]'>])
         }
 
         if (product) {
@@ -116,8 +209,13 @@ export const AddAProduct = <T,>({ product, onSuccess, setTabIndex }: AddProductP
                 .then((res) => {
                     onSuccess?.(res)
                     setTabIndex?.(2)
+                    setIsLoading(false)
                 })
-                .catch((err) => console.log(err, 'An Error Occured while trying to Add your product'))
+                .catch((err) => {
+                    console.log(err, 'An Error Occured while trying to Add your product')
+                    showErrorSnackbar(err.data.message || 'Something went wrong')
+                    setIsLoading(false)
+                })
         }
 
         addProduct(formData)
@@ -125,10 +223,12 @@ export const AddAProduct = <T,>({ product, onSuccess, setTabIndex }: AddProductP
             .then((res) => {
                 onSuccess?.(res)
                 setTabIndex?.(2)
+                setIsLoading(false)
             })
-            .catch((err: any) => {
+            .catch((err) => {
                 console.log(err, 'An Error Occured while trying to Add your product')
                 showErrorSnackbar(err.data.message || 'Something went wrong')
+                setIsLoading(false)
             })
     }
 
@@ -176,35 +276,37 @@ export const AddAProduct = <T,>({ product, onSuccess, setTabIndex }: AddProductP
                 <div>
                     <h4 className="my-2 text-xl font-bold">Fotos</h4>
                     <div className="flex items-center justify-between gap-x-3 overflow-x-auto py-2">
-                        <div className="relative">
-                            <PhotographBox imageReceiver={imageReceiver} src={product?.image_url} />
-                        </div>
-                        {product?.other_images_url.length && product.other_images_url.length > 0 ? (
-                            product.other_images_url.map((image_src, i) => (
-                                <div key={i} className="relative">
-                                    <PhotographBox src={image_src} />
+                        {Array<string>(4)
+                            .fill('photo', 0, 4)
+                            .map((item, i) => (
+                                <div key={`${item}-${i}`}>
+                                    <PhotographBox
+                                        imageReceiver={imageReceiver}
+                                        index={i}
+                                        removeImage={removeImage}
+                                        src={
+                                            i === 0
+                                                ? product?.image_url
+                                                : product?.other_images_url[i]?.image_link || ''
+                                        }
+                                    />
                                 </div>
-                            ))
-                        ) : (
-                            <>
-                                <div className="relative">
-                                    <PhotographBox />
-                                </div>
-                                <div className="relative">
-                                    <PhotographBox />
-                                </div>
-                                <div className="relative">
-                                    <PhotographBox />
-                                </div>
-                            </>
-                        )}
+                            ))}
                     </div>
 
                     {/* Product link Button  */}
-                    <h4 className="my-3 text-xl font-bold">Link do Produto</h4>
-                    <Button className="rounded-md border-[1px] border-hypay-pink bg-white px-3 text-hypay-pink outline-none">
-                        Copy Link
-                    </Button>
+                    {product ? (
+                        <div>
+                            <h4 className="my-3 text-xl font-bold">Link do Produto</h4>
+                            <Button
+                                onClick={() => copyProductLink(`${product.id}`)}
+                                preventDefault
+                                className="rounded-md border-[1px] border-hypay-pink bg-white px-3 text-hypay-pink outline-none"
+                            >
+                                Copy Link
+                            </Button>
+                        </div>
+                    ) : null}
 
                     <div className="mt-8">
                         <h4 className="text-xl font-bold">Videos</h4>
@@ -436,9 +538,15 @@ export const AddAProduct = <T,>({ product, onSuccess, setTabIndex }: AddProductP
                         <Button
                             onClick={() => handleSubmit}
                             primary
-                            className="rounded-md border-[1px]   px-3 text-white outline-none"
+                            className="rounded-md border-[1px] px-3 text-white outline-none md:w-[30%]"
                         >
-                            Publicar produto
+                            {isLoading ? (
+                                <div className="flex items-center justify-center">
+                                    <LoaderIcon size={24} color={COLORS.WHITE} />
+                                </div>
+                            ) : (
+                                'Publicar produto'
+                            )}
                         </Button>
                     </div>
                     {/* or skip section */}

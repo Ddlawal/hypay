@@ -1,5 +1,10 @@
 import { useRouter } from 'next/router'
-import { useLazyDeleteAProductQuery, useGetAllProductsQuery } from '../store/services/products'
+import {
+    useLazyDeleteAProductQuery,
+    useGetAllProductsQuery,
+    useSearchMerchantProductsQuery,
+    useLazySearchMerchantProductsQuery,
+} from '../store/services/products'
 import { useSnackbar } from './useSnackbar'
 
 export const useProducts = (productId?: string) => {
@@ -14,29 +19,37 @@ export const useProducts = (productId?: string) => {
     const [deleteAProduct, { isFetching: deleteIsFetching, isLoading: delIsLoading, isSuccess: delIsSuccess }] =
         useLazyDeleteAProductQuery()
 
-    const products = data?.products.data ?? []
-    const product = productId ? products.filter(({ id }) => id === Number(productId))[0] : null
+    const products = data ?? []
 
-    const onDelete = async (url: string) => {
-        if (!productId) {
-            return showErrorSnackbar('Unable to delete product')
-        }
+    const {
+        data: res,
+        isLoading: searchLoading,
+        isFetching: seearchFetching,
+    } = useSearchMerchantProductsQuery(productId as string, {
+        refetchOnMountOrArgChange: true,
+    })
+    const product = res ? res[0] : undefined
 
-        const res = await deleteAProduct(Number(productId))
+    const [searchProduct] = useLazySearchMerchantProductsQuery()
+
+    const onDelete = async (id: string, url: string) => {
+        const res = await deleteAProduct(id)
 
         if (res.isSuccess) {
             router.push(url)
             refetch()
             showSuccessSnackbar('Product deleted successfully!')
+        } else {
+            showErrorSnackbar('Unable to delete product')
         }
     }
 
     return {
         product,
         products,
-        isLoading,
-        isFetching,
-        refetch,
+        isLoading: isLoading || searchLoading || isFetching || seearchFetching,
         deleteProduct: { deleteAProduct, onDelete, deleteIsFetching, delIsLoading, delIsSuccess },
+        refetch,
+        searchProduct,
     }
 }

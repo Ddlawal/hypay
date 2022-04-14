@@ -7,7 +7,13 @@ export type ProductsType = {
     dateCreated: string
     link: string | null
     image_url: string
-    other_images_url: string[]
+    other_images_url: {
+        id: number
+        productID: number
+        image_link: string
+        created_at: string
+        updated_at: string
+    }[]
     amount: string
     currency: string
     deliveryDate: number
@@ -45,6 +51,7 @@ export type AddProductType = {
     width: string
     height: string
     product_image: File
+    'optional_images[]': FileList
     category_id: string
     currency: string
     deliveryperiod: string

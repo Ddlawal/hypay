@@ -1,4 +1,4 @@
-import React, { NextPage } from 'next'
+import React, { GetServerSideProps, NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { AddAProduct } from '../../../../components/CreateAStore/AddAProduct'
 import { PrimaryLayout } from '../../../../components/Layout'
@@ -8,9 +8,9 @@ import { ProductsType } from '../../../../interfaces/products'
 
 type OnSuccessType = { products: { data: ProductsType[] } }
 
-const EditProduct: NextPage = () => {
+const EditProduct: NextPage<{ id: string }> = ({ id }) => {
     const router = useRouter()
-    const { product } = useProducts(`${router.query.id}`)
+    const { product, isLoading } = useProducts(id)
     const { showSuccessSnackbar } = useSnackbar()
 
     const props: { product?: ProductsType } = {}
@@ -25,7 +25,7 @@ const EditProduct: NextPage = () => {
         showSuccessSnackbar(`Product updated successfully!`)
     }
     return (
-        <PrimaryLayout currentTabIndex={1} isNavBack navHeader="Editar produto">
+        <PrimaryLayout currentTabIndex={1} isLoading={isLoading} isNavBack navHeader="Editar produto">
             <div className="pt-1">
                 <AddAProduct<OnSuccessType> onSuccess={onSuccess} {...props} />
             </div>
@@ -34,3 +34,11 @@ const EditProduct: NextPage = () => {
 }
 
 export default EditProduct
+
+export const getServerSideProps: GetServerSideProps<{ id: string }> = async ({ query }) => {
+    const id = query.id as string
+
+    return {
+        props: { id },
+    }
+}

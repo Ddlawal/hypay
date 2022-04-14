@@ -57,7 +57,7 @@ export const Table = <T,>({
                                     <td
                                         className={cx(j === 0 && 'pl-4', isLast && 'pr-4', 'py-2')}
                                         key={`td-${j}`}
-                                        onMouseDown={() => setId(`${row[uniqueKey]}`)}
+                                        onMouseOver={() => setId(`${row[uniqueKey]}`)}
                                     >
                                         {isLast ? children : k ? row[k] : ''}
                                     </td>

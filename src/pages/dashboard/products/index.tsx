@@ -13,6 +13,8 @@ import { useMediaQuery } from '../../../hooks/useMediaQuery'
 import Image from 'next/image'
 import { NextLink } from '../../../components/Links'
 import { ProductsType } from '../../../interfaces/products'
+import { copyTextToClipboard } from '../../../lib/helper'
+import { useSnackbar } from '../../../hooks/useSnackbar'
 
 const productActionSelectItems = [
     {
@@ -80,29 +82,46 @@ const ProductsHeader = ({ isDesktop, gotoAddProducts }: { isDesktop: boolean; go
 
 const Products: NextPage = () => {
     const [action, setAction] = useState<string | null>(null)
-    const [productId, setProductId] = useState<string | null>(null)
+    const [productId, setProductId] = useState<string>('')
+    const { showSuccessSnackbar } = useSnackbar()
     const isDesktop = useMediaQuery('md')
     const {
         products,
         deleteProduct: { onDelete },
-    } = useProducts(productId as string)
+        isLoading,
+        searchProduct,
+    } = useProducts()
     const { push } = useRouter()
 
-    const gotoAddProducts = () => push('/dashboard/products/addProduxts')
+    const gotoAddProducts = () => push('/dashboard/products/addProducts')
     const gotoEditProduct = () => push(`/dashboard/products/editProduct/${productId}`)
 
-    const deleteProduct = () => onDelete('/dashboard/products')
+    const host = window.location.origin
+
+    const copyProductLink = (id: string) => {
+        copyTextToClipboard(`${host}/store/products/${id}`)
+        showSuccessSnackbar('Link copied')
+    }
+
+    const deleteProduct = async () => {
+        const { data } = await searchProduct(productId)
+        const productName = data && data[0] ? data[0].productName : 'this product'
+        const proceed = confirm(`Are you sure you want to delete ${productName}`)
+        if (proceed) {
+            onDelete(productId, '/dashboard/products')
+        }
+    }
 
     if (products?.length === 0) {
         return (
-            <PrimaryLayout currentTabIndex={1}>
+            <PrimaryLayout currentTabIndex={1} isLoading={isLoading}>
                 <NoProducts gotoAddProducts={gotoAddProducts} />
             </PrimaryLayout>
         )
     }
 
     return (
-        <PrimaryLayout currentTabIndex={1}>
+        <PrimaryLayout currentTabIndex={1} isLoading={isLoading}>
             <div className="py-4 md:px-8">
                 <ProductsHeader isDesktop={isDesktop} gotoAddProducts={gotoAddProducts} />
 
@@ -129,7 +148,9 @@ const Products: NextPage = () => {
                         rows={products}
                     >
                         <div className="flex flex-col items-start text-[11px] leading-4 text-hypay-pink">
-                            <button className="hover:font-bold">Copy link</button>
+                            <button className="hover:font-bold" onClick={() => copyProductLink(productId)}>
+                                Copy link
+                            </button>
                             <button className="hover:font-bold" onClick={gotoEditProduct}>
                                 Edit
                             </button>

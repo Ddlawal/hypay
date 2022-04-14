@@ -23,7 +23,7 @@ export const CreateAStore = ({ setTabIndex }: { setTabIndex: (value: React.SetSt
             return setTabIndex(1)
         }
         try {
-            createBusinessName(data.businessname)
+            createBusinessName(data.businessname as string)
                 .unwrap()
                 .then((res: any) => {
                     dispatch(updateUserLoggedInData(res))

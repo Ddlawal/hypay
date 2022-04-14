@@ -9,13 +9,28 @@ type ButtonProps = {
     disabled?: boolean
     primary?: boolean
     outlined?: boolean
+    preventDefault?: boolean
     onClick?: () => void
 }
 
-export const Button: FC<ButtonProps> = ({ children, className, padding, primary, outlined, size = 'sm', onClick }) => {
+export const Button: FC<ButtonProps> = ({
+    children,
+    className,
+    padding,
+    primary,
+    outlined,
+    size = 'sm',
+    preventDefault,
+    onClick,
+}) => {
     return (
         <button
-            onClick={onClick}
+            onClick={(e) => {
+                if (preventDefault) {
+                    e.preventDefault()
+                }
+                onClick?.()
+            }}
             className={cx(
                 className,
                 padding ? padding : 'py-1.5 px-2',
