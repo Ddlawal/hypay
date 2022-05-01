@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import React, { ReactNode, useState } from 'react'
 import cx from 'classnames'
 import Image from 'next/image'
 import { useOnClickOutside } from '../../hooks/useOnClickOutSide'
 import { COLORS } from '../../lib/constants/colors'
-import { TextField } from '../form'
+import { Input } from '../form'
 import { CommentIcon, MenuIcon, MoreOptionsVIcon, NotificationIcon, SearchIcon } from '../Icons'
 import { SideNav } from '../Layout'
 import { SIDE_NAV_WIDTH } from '../../lib/constants/elements'
@@ -12,12 +12,26 @@ import { dropdownMenuItems } from '../../lib/data'
 import { useRouter } from 'next/router'
 import { NextLink } from '../Links'
 import { ArrowLeftIcon } from '../Icons/ArrowLeftIcon'
+import { SearchType } from '../../pages/dashboard/search'
 
-type LoggedInHeaderProps = { currentTabIndex?: number; isNavBack?: boolean; navHeader?: string }
+type LoggedInHeaderProps = {
+    currentTabIndex?: number
+    header?: ReactNode
+    isNavBack?: boolean
+    searchable?: SearchType
+    navHeader?: string
+    desktopSearch?: (event: React.ChangeEvent<HTMLInputElement>) => void
+}
 
-export const LoggedInHeader = ({ currentTabIndex, isNavBack, navHeader }: LoggedInHeaderProps) => {
+export const LoggedInHeader = ({
+    currentTabIndex,
+    header,
+    isNavBack,
+    searchable,
+    navHeader,
+    desktopSearch,
+}: LoggedInHeaderProps) => {
     const [open, setOpen] = useState(false)
-    const [searchString, setSearchString] = useState('')
     const { ref } = useOnClickOutside<HTMLDivElement>(() => setOpen(false))
     const { pathname, back } = useRouter()
 
@@ -29,11 +43,20 @@ export const LoggedInHeader = ({ currentTabIndex, isNavBack, navHeader }: Logged
     return (
         <div className="flex w-full items-center justify-between bg-white py-4 px-2 md:justify-end md:px-8">
             {isNavBack ? (
-                <div className="flex w-full p-2">
+                <div className="flex w-full items-center justify-between gap-2 p-2">
                     <div className="cursor-pointer">
                         <ArrowLeftIcon onClick={() => back()} size={26} color={COLORS.ICON_GRAY} />
                     </div>
-                    <div className="w-full text-center font-bold">{navHeader}</div>
+                    {header || (
+                        <>
+                            <div className="w-full text-center font-bold">{navHeader}</div>
+                            {searchable ? (
+                                <NextLink href={`search?q=${searchable}`}>
+                                    <SearchIcon />
+                                </NextLink>
+                            ) : null}
+                        </>
+                    )}
                 </div>
             ) : (
                 <>
@@ -53,13 +76,15 @@ export const LoggedInHeader = ({ currentTabIndex, isNavBack, navHeader }: Logged
                         </button>
                     </div>
                     <div className="flex items-center justify-end gap-x-2 md:gap-x-4">
-                        <TextField
-                            value={searchString}
-                            onChange={(input) => setSearchString(input)}
-                            inputClassName="bg-hypay-light-gray text-sm"
+                        <Input
                             placeholder="Search"
-                            inputIcon={<SearchIcon color={COLORS.PLACEHOLDER} />}
-                            className="mr-20 hidden md:block"
+                            fullWidth
+                            autoFocus
+                            className="bg-hypay-light-gray text-sm"
+                            parentClassName="mr-20 hidden md:block"
+                            icon={<SearchIcon color={COLORS.PLACEHOLDER} />}
+                            type="search"
+                            onChange={desktopSearch}
                         />
                         <NextLink href="/dashboard/messages">
                             <button className="hidden rounded-lg p-2 transition duration-200 ease-in-out hover:scale-105 hover:shadow-md md:block">

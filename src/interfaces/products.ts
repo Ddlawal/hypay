@@ -1,3 +1,12 @@
+import { LazyQueryTrigger } from '@reduxjs/toolkit/dist/query/react/buildHooks'
+import {
+    BaseQueryFn,
+    FetchArgs,
+    FetchBaseQueryError,
+    FetchBaseQueryMeta,
+    QueryDefinition,
+} from '@reduxjs/toolkit/dist/query'
+
 export type ProductsType = {
     id: number
     productName: string
@@ -56,3 +65,13 @@ export type AddProductType = {
     currency: string
     deliveryperiod: string
 }
+
+export type SearchProductType = LazyQueryTrigger<
+    QueryDefinition<
+        string,
+        BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError, Record<string, unknown>, FetchBaseQueryMeta>,
+        never,
+        ProductsType[],
+        'productsApi'
+    >
+>

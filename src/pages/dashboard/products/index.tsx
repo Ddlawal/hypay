@@ -12,9 +12,10 @@ import { Card } from '../../../components/Card'
 import { useMediaQuery } from '../../../hooks/useMediaQuery'
 import Image from 'next/image'
 import { NextLink } from '../../../components/Links'
-import { ProductsType } from '../../../interfaces/products'
+import { ProductsType, SearchProductType } from '../../../interfaces/products'
 import { copyTextToClipboard } from '../../../lib/helper'
 import { useSnackbar } from '../../../hooks/useSnackbar'
+import { useSearch } from '../../../hooks/useSearch'
 
 const productActionSelectItems = [
     {
@@ -34,6 +35,60 @@ const productActionSelectItems = [
         value: 'Alterar preço',
     },
 ]
+
+const Products: NextPage = () => {
+    const [action, setAction] = useState<string | null>(null)
+    const isDesktop = useMediaQuery('md')
+    const {
+        products,
+        isLoading,
+        deleteProduct: { onDelete },
+        searchProduct,
+    } = useProducts()
+    const { result: searchableProducts, handleInputChange } = useSearch(searchProduct, products)
+    const { push } = useRouter()
+
+    const gotoAddProducts = () => push('/dashboard/products/addProducts')
+
+    if (searchableProducts?.length === 0) {
+        return (
+            <PrimaryLayout currentTabIndex={1} isLoading={isLoading}>
+                <NoProducts gotoAddProducts={gotoAddProducts} />
+            </PrimaryLayout>
+        )
+    }
+
+    return (
+        <PrimaryLayout
+            currentTabIndex={1}
+            isLoading={isLoading}
+            isNavBack={!isDesktop}
+            navHeader="Produtos"
+            searchable="product"
+            desktopSearch={handleInputChange}
+        >
+            <div className="py-4 md:px-8">
+                <ProductsHeader isDesktop={isDesktop} gotoAddProducts={gotoAddProducts} />
+
+                {isDesktop ? (
+                    <>
+                        <div className="mb-3 w-[40%]">
+                            <SelectField<string | null>
+                                options={productActionSelectItems}
+                                name="product-list-actions"
+                                label="Ações"
+                                value={action}
+                                placeholder={<span className="text-hypay-primary">Selecionar Ação...</span>}
+                                onChange={(v) => setAction(v)}
+                            />
+                        </div>
+                    </>
+                ) : null}
+                <ProductList products={searchableProducts} onDelete={onDelete} searchProduct={searchProduct} />
+            </div>
+        </PrimaryLayout>
+    )
+}
 
 const NoProducts = ({ gotoAddProducts }: { gotoAddProducts: () => void }) => {
     return (
@@ -80,20 +135,20 @@ const ProductsHeader = ({ isDesktop, gotoAddProducts }: { isDesktop: boolean; go
     )
 }
 
-const Products: NextPage = () => {
-    const [action, setAction] = useState<string | null>(null)
-    const [productId, setProductId] = useState<string>('')
-    const { showSuccessSnackbar } = useSnackbar()
+export const ProductList = ({
+    products,
+    onDelete,
+    searchProduct,
+}: {
+    products: ProductsType[]
+    onDelete: (id: string, url: string) => Promise<void>
+    searchProduct: SearchProductType
+}) => {
     const isDesktop = useMediaQuery('md')
-    const {
-        products,
-        deleteProduct: { onDelete },
-        isLoading,
-        searchProduct,
-    } = useProducts()
     const { push } = useRouter()
 
-    const gotoAddProducts = () => push('/dashboard/products/addProducts')
+    const [productId, setProductId] = useState<string>('')
+    const { showSuccessSnackbar } = useSnackbar()
     const gotoEditProduct = () => push(`/dashboard/products/editProduct/${productId}`)
 
     const host = window.location.origin
@@ -112,71 +167,45 @@ const Products: NextPage = () => {
         }
     }
 
-    if (products?.length === 0) {
-        return (
-            <PrimaryLayout currentTabIndex={1} isLoading={isLoading}>
-                <NoProducts gotoAddProducts={gotoAddProducts} />
-            </PrimaryLayout>
-        )
-    }
-
     return (
-        <PrimaryLayout currentTabIndex={1} isLoading={isLoading}>
-            <div className="py-4 md:px-8">
-                <ProductsHeader isDesktop={isDesktop} gotoAddProducts={gotoAddProducts} />
-
-                {isDesktop ? (
-                    <>
-                        <div className="mb-3 w-[40%]">
-                            <SelectField<string | null>
-                                options={productActionSelectItems}
-                                name="product-list-actions"
-                                label="Ações"
-                                value={action}
-                                placeholder={<span className="text-hypay-primary">Selecionar Ação...</span>}
-                                onChange={(v) => setAction(v)}
-                            />
-                        </div>
-                    </>
-                ) : null}
-                {isDesktop ? (
-                    <Table<ProductsType>
-                        uniqueKey="id"
-                        setId={setProductId}
-                        headers={['Product', 'Inventory', 'Price', 'Discount', 'Variants', 'Actions']}
-                        keys={['productName', 'quantity', 'amount', null, null, null]}
-                        rows={products}
-                    >
-                        <div className="flex flex-col items-start text-[11px] leading-4 text-hypay-pink">
-                            <button className="hover:font-bold" onClick={() => copyProductLink(productId)}>
-                                Copy link
-                            </button>
-                            <button className="hover:font-bold" onClick={gotoEditProduct}>
-                                Edit
-                            </button>
-                            <button className="hover:font-bold" onClick={deleteProduct}>
-                                Delete
-                            </button>
-                        </div>
-                    </Table>
-                ) : (
-                    <div className="mx-4 grid grid-cols-2 gap-y-2 gap-x-4">
-                        {products.map(({ id, productName, image_url }) => {
-                            return (
-                                <NextLink href={`/dashboard/products/${id}`} key={id}>
-                                    <Card rounded padding="p-3">
-                                        <div className="relative h-36 w-full rounded-lg border border-gray-100 sm:h-48">
-                                            <Image src={image_url} layout="fill" objectFit="cover" />
-                                        </div>
-                                        <div>{productName}</div>
-                                    </Card>
-                                </NextLink>
-                            )
-                        })}
+        <>
+            {isDesktop ? (
+                <Table<ProductsType>
+                    uniqueKey="id"
+                    setId={setProductId}
+                    headers={['Product', 'Inventory', 'Price', 'Discount', 'Variants', 'Actions']}
+                    keys={['productName', 'quantity', 'amount', null, null, null]}
+                    rows={products}
+                >
+                    <div className="flex flex-col items-start text-[11px] leading-4 text-hypay-pink">
+                        <button className="hover:font-bold" onClick={() => copyProductLink(productId)}>
+                            Copy link
+                        </button>
+                        <button className="hover:font-bold" onClick={gotoEditProduct}>
+                            Edit
+                        </button>
+                        <button className="hover:font-bold" onClick={deleteProduct}>
+                            Delete
+                        </button>
                     </div>
-                )}
-            </div>
-        </PrimaryLayout>
+                </Table>
+            ) : (
+                <div className="mx-4 grid grid-cols-2 gap-y-2 gap-x-4">
+                    {products.map(({ id, productName, image_url }) => {
+                        return (
+                            <NextLink href={`/dashboard/products/${id}`} key={id}>
+                                <Card rounded padding="p-3">
+                                    <div className="relative h-36 w-full rounded-lg border border-gray-100 sm:h-48">
+                                        <Image src={image_url} layout="fill" objectFit="cover" />
+                                    </div>
+                                    <div>{productName}</div>
+                                </Card>
+                            </NextLink>
+                        )
+                    })}
+                </div>
+            )}
+        </>
     )
 }
 
