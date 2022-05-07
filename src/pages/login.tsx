@@ -67,7 +67,6 @@ const Login: NextPage = () => {
     }, [Session, dispatch, push, loginWithGoogle])
 
     useEffect(() => {
-        console.log('we are here', Session)
         tryGoogleLogin()
     }, [Session, tryGoogleLogin])
 

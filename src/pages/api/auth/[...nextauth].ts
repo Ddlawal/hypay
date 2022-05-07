@@ -32,8 +32,7 @@ export default NextAuth({
         },
         async jwt({ token, user, account, profile }) {
             const isUserSignedIn = user ? true : false
-            // make a http call to our graphql api
-            // store this in postgres
+
             if (isUserSignedIn) {
                 token.id = user?.id.toString()
             }

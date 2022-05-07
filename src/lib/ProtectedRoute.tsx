@@ -1,18 +1,18 @@
 import React, { FC } from 'react'
 import { useRouter } from 'next/router'
-import { useAppSelector } from '../hooks/useStoreHooks'
-import { User } from '../store/reducers/auth'
 import { LoaderIcon } from '../components/Icons/LoaderIcon'
 import { LoadingPage } from '../components/Layout/LoadingPage'
+import { useSession } from '../hooks/useSession'
 
 const ProtectedRoute: FC = ({ children }) => {
     const protectedRoutes = ['/dashboard/home', '/dashboard/products', '/dashboard/messages', '/createstore']
     const notAvailableWhileLogedInRoute = ['/login', '/signup']
-    const { user } = useAppSelector((state) => state?.auth as { user: User })
-
+    const { user, sessionExpired } = useSession()
     const router = useRouter()
+
     const { pathname } = router
 
+    console.log(sessionExpired, user)
     if (!user) {
         if (protectedRoutes.includes(pathname) && typeof window !== 'undefined') {
             router.push('/login')

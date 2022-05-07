@@ -40,11 +40,13 @@ type tokenType = {
     expires_in: number
     token_type: string
 }
+
 export interface initialAuthStateInterface {
     user: User | null
     token: tokenType | null
     isAuthenticated: boolean
     isError: boolean
+    sessionExpiryTime: number
 }
 
 const firstState = () => {
@@ -64,6 +66,7 @@ const initialAuthState: initialAuthStateInterface = {
     token: null,
     isAuthenticated: false,
     isError: false,
+    sessionExpiryTime: 0,
 }
 
 export const authSlice = createSlice({
@@ -71,11 +74,15 @@ export const authSlice = createSlice({
     initialState: initialAuthState,
     reducers: {
         login: (state, action: PayloadAction<any>) => {
+            const currentTime = Date.now()
+            const expiresIn = action.payload.token.expires_in * 1000 //milliseconds
+            const sessionExpiryTime = currentTime + expiresIn
             return {
                 ...state,
                 user: action.payload.userInfo,
                 isAuthenticated: !state.isAuthenticated,
                 token: action.payload.token,
+                sessionExpiryTime,
             }
         },
         logout: () => {
@@ -84,6 +91,7 @@ export const authSlice = createSlice({
                 isAuthenticated: false,
                 isError: false,
                 token: null,
+                sessionExpiryTime: 0,
             }
         },
         register: (state, action: PayloadAction<any>) => ({
