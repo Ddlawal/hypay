@@ -35,7 +35,7 @@ interface deliveryAddress {
     deleted_at: null
 }
 
-type tokenType = {
+export type TokenType = {
     access_token: string
     expires_in: number
     token_type: string
@@ -43,7 +43,7 @@ type tokenType = {
 
 export interface initialAuthStateInterface {
     user: User | null
-    token: tokenType | null
+    token: TokenType | null
     isAuthenticated: boolean
     isError: boolean
     sessionExpiryTime: number
@@ -76,7 +76,7 @@ export const authSlice = createSlice({
         login: (state, action: PayloadAction<any>) => {
             const currentTime = Date.now()
             const expiresIn = action.payload.token.expires_in * 1000 //milliseconds
-            const sessionExpiryTime = currentTime + expiresIn
+            const sessionExpiryTime = currentTime + 10000
             return {
                 ...state,
                 user: action.payload.userInfo,

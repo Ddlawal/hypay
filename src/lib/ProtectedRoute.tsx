@@ -7,12 +7,11 @@ import { useSession } from '../hooks/useSession'
 const ProtectedRoute: FC = ({ children }) => {
     const protectedRoutes = ['/dashboard/home', '/dashboard/products', '/dashboard/messages', '/createstore']
     const notAvailableWhileLogedInRoute = ['/login', '/signup']
-    const { user, sessionExpired } = useSession()
+    const { user } = useSession()
     const router = useRouter()
 
     const { pathname } = router
 
-    console.log(sessionExpired, user)
     if (!user) {
         if (protectedRoutes.includes(pathname) && typeof window !== 'undefined') {
             router.push('/login')

@@ -1,7 +1,7 @@
 import { useAppSelector } from '../hooks/useStoreHooks'
 import { User } from '../store/reducers/auth'
 
-type SessionProps = { user: User | null; sessionExpired: boolean }
+type SessionProps = { user: User | null }
 
 export const useSession = (): SessionProps => {
     const { sessionExpiryTime, user } = useAppSelector((state) => state?.auth)
@@ -12,8 +12,8 @@ export const useSession = (): SessionProps => {
     if (sessionExpired) {
         // Show modal then logout
         localStorage.clear()
-        return { user: null, sessionExpired: true }
+        return { user: null }
     }
 
-    return { user, sessionExpired }
+    return { user }
 }
