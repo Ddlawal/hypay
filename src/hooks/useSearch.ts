@@ -12,7 +12,6 @@ export const useSearch = (search: SearchProductType, initialValue?: ProductsType
 
     const updateSearchResult = useCallback(() => {
         ;(async () => {
-            console.log(initialValue)
             if (initialValue && !initialValue.length) {
                 return
             }
