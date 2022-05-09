@@ -76,7 +76,7 @@ export const authSlice = createSlice({
         login: (state, action: PayloadAction<any>) => {
             const currentTime = Date.now()
             const expiresIn = action.payload.token.expires_in * 1000 //milliseconds
-            const sessionExpiryTime = currentTime + 10000
+            const sessionExpiryTime = currentTime + expiresIn
             return {
                 ...state,
                 user: action.payload.userInfo,

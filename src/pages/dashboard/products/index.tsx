@@ -45,6 +45,7 @@ const Products: NextPage = () => {
         deleteProduct: { onDelete },
         searchProduct,
     } = useProducts()
+
     const { result: searchableProducts, handleInputChange } = useSearch(searchProduct, products)
     const { push } = useRouter()
 

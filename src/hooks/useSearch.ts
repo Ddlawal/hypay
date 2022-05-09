@@ -1,19 +1,23 @@
-import { ChangeEvent, useEffect, useState } from 'react'
+import { ChangeEvent, useCallback, useEffect, useState } from 'react'
 import { ProductsType, SearchProductType } from '../interfaces/products'
 import { debounce } from '../lib/helper'
 
-export const useSearch = (search: SearchProductType, intialValue: ProductsType[] = []) => {
-    const [result, setResult] = useState<ProductsType[]>(intialValue)
+export const useSearch = (search: SearchProductType, initialValue: ProductsType[] = []) => {
+    const [result, setResult] = useState<ProductsType[]>(initialValue)
     const [searchString, setSearchString] = useState('')
 
     const handleInputChange = debounce<ChangeEvent<HTMLInputElement>>((event: ChangeEvent<HTMLInputElement>) =>
         setSearchString(event.target.value)
     )
 
-    useEffect(() => {
+    const updateSearchResult = useCallback(() => {
         ;(async () => {
+            if (!initialValue.length) {
+                return
+            }
+
             if (!searchString) {
-                return setResult(intialValue)
+                return setResult(initialValue)
             }
 
             const { data } = await search(searchString)
@@ -21,7 +25,9 @@ export const useSearch = (search: SearchProductType, intialValue: ProductsType[]
             setResult(data || [])
         })()
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [searchString, search])
+    }, [initialValue, searchString])
+
+    useEffect(updateSearchResult, [updateSearchResult])
 
     return { result, handleInputChange }
 }
