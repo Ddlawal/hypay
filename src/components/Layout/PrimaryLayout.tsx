@@ -5,15 +5,19 @@ import { MobileFooter } from '../Footer/MobileFooter'
 import { LoggedInHeader } from '../Headers'
 import Head from 'next/head'
 import { LoadingPage } from './LoadingPage'
+import { SearchType } from '../../pages/dashboard/search'
 
 type PrimaryLayoutProps = {
     children: ReactNode
     className?: string
     currentTabIndex?: number
     dropDownIndex?: number
+    header?: ReactNode
     isNavBack?: boolean
+    searchable?: SearchType
     navHeader?: string
     isLoading?: boolean
+    desktopSearch?: (event: React.ChangeEvent<HTMLInputElement>) => void
 }
 
 export const PrimaryLayout: FC<PrimaryLayoutProps> = ({
@@ -21,9 +25,12 @@ export const PrimaryLayout: FC<PrimaryLayoutProps> = ({
     className,
     currentTabIndex,
     dropDownIndex,
+    header,
     isNavBack,
+    searchable,
     navHeader,
     isLoading,
+    desktopSearch,
 }) => {
     return (
         <>
@@ -44,7 +51,10 @@ export const PrimaryLayout: FC<PrimaryLayoutProps> = ({
                             currentTabIndex={currentTabIndex}
                             dropDownIndex={dropDownIndex}
                             isNavBack={isNavBack}
+                            searchable={searchable}
                             navHeader={navHeader}
+                            header={header}
+                            desktopSearch={desktopSearch}
                         />
                     </div>
                     <div className="my-[4.6rem]">{isLoading ? <LoadingPage /> : children}</div>

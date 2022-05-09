@@ -3,11 +3,8 @@ import React, { FC, ReactNode, useState } from 'react'
 import { useOnClickOutside } from '../../hooks/useOnClickOutSide'
 import { signOut } from 'next-auth/react'
 import { useAppDispatch, useAppSelector } from '../../hooks/useStoreHooks'
-import { useRouter } from 'next/router'
 import { useLogoutMutation } from '../../store/services/auth'
 import { logout as logUserOut } from '../../store/reducers/auth'
-import { useSnackbar } from '../../hooks/useSnackbar'
-import persistStore from 'redux-persist/es/persistStore'
 
 type DropdownItemProps = {
     title: string
@@ -27,8 +24,6 @@ type DropdownButtonProps = {
 
 const DropdownItems: FC<DropdownButtonProps> = ({ items, className }) => {
     const dispatch = useAppDispatch()
-    const { showErrorSnackbar } = useSnackbar()
-    // const { push, replace } = useRouter()
     const [logoutMutation] = useLogoutMutation()
     const token = useAppSelector((state) => state.auth.token)
 
