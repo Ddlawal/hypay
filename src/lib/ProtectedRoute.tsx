@@ -9,7 +9,6 @@ const ProtectedRoute: FC = ({ children }) => {
     const notAvailableWhileLogedInRoute = ['/login', '/signup']
     const { user } = useSession()
     const router = useRouter()
-
     const { pathname } = router
 
     if (!user) {
