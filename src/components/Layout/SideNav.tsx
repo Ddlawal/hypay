@@ -4,14 +4,16 @@ import { Logo } from '../../components/Logo'
 import { MenuItemList } from '../../lib/data'
 import { NavItem } from './NavItem'
 import { NextLink } from '../Links'
+import { useRouter } from 'next/router'
 
-type SideNavProps = { currentTabIndex?: number }
+type SideNavProps = { currentTabIndex?: number; dropDownIndex?: number }
 
-export const SideNav: FC<SideNavProps> = ({ currentTabIndex = 0 }) => {
-    const [activeTab, setActivetab] = useState(currentTabIndex)
+export const SideNav: FC<SideNavProps> = ({ currentTabIndex = 0, dropDownIndex = 0 }) => {
+    const [activeTab, setActiveTab] = useState<number>(currentTabIndex)
+    const router = useRouter()
 
     const changeTab = (i: number) => {
-        setActivetab(i)
+        setActiveTab(i)
     }
 
     const settingsIndex = MenuItemList.length - 1
@@ -33,6 +35,7 @@ export const SideNav: FC<SideNavProps> = ({ currentTabIndex = 0 }) => {
                                 {...item}
                                 parentIndex={index}
                                 isActive={index === activeTab}
+                                childIndex={dropDownIndex}
                                 setActive={changeTab}
                             />
                         )
@@ -44,7 +47,7 @@ export const SideNav: FC<SideNavProps> = ({ currentTabIndex = 0 }) => {
                 <NavItem
                     key={`menu-${settingsIndex}`}
                     {...MenuItemList[settingsIndex]}
-                    isActive={settingsIndex === activeTab}
+                    isActive={router.pathname === MenuItemList[settingsIndex].href}
                     setActive={() => changeTab(settingsIndex)}
                 />
             </div>

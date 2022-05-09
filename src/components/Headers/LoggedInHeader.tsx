@@ -16,6 +16,7 @@ import { SearchType } from '../../pages/dashboard/search'
 
 type LoggedInHeaderProps = {
     currentTabIndex?: number
+    dropDownIndex?: number
     header?: ReactNode
     isNavBack?: boolean
     searchable?: SearchType
@@ -25,6 +26,7 @@ type LoggedInHeaderProps = {
 
 export const LoggedInHeader = ({
     currentTabIndex,
+    dropDownIndex,
     header,
     isNavBack,
     searchable,
@@ -69,7 +71,7 @@ export const LoggedInHeader = ({
                                 'absolute left-0 top-0 block h-screen transition duration-500 ease-in-out md:hidden'
                             )}
                         >
-                            <SideNav currentTabIndex={currentTabIndex} />
+                            <SideNav currentTabIndex={currentTabIndex} dropDownIndex={dropDownIndex} />
                         </div>
                         <button className="p-2 transition" onClick={() => setOpen(true)}>
                             <MenuIcon size={26} color={COLORS.ICON_GRAY} />
