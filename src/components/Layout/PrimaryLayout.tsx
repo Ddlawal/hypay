@@ -10,6 +10,7 @@ type PrimaryLayoutProps = {
     children: ReactNode
     className?: string
     currentTabIndex?: number
+    dropDownIndex?: number
     isNavBack?: boolean
     navHeader?: string
     isLoading?: boolean
@@ -19,6 +20,7 @@ export const PrimaryLayout: FC<PrimaryLayoutProps> = ({
     children,
     className,
     currentTabIndex,
+    dropDownIndex,
     isNavBack,
     navHeader,
     isLoading,
@@ -32,13 +34,18 @@ export const PrimaryLayout: FC<PrimaryLayoutProps> = ({
             </Head>
             <div className={cx(className, 'mb-10 flex md:mb-0')}>
                 <div className="fixed z-10 hidden w-[22%] bg-black md:block">
-                    <SideNav currentTabIndex={currentTabIndex} />
+                    <SideNav currentTabIndex={currentTabIndex} dropDownIndex={dropDownIndex} />
                 </div>
 
                 {/* Careful when changing the marginLeft */}
                 <div className="relative w-full md:ml-[22%] md:w-[78%]">
                     <div className="fixed z-50 flex w-full md:w-[78%]">
-                        <LoggedInHeader currentTabIndex={currentTabIndex} isNavBack={isNavBack} navHeader={navHeader} />
+                        <LoggedInHeader
+                            currentTabIndex={currentTabIndex}
+                            dropDownIndex={dropDownIndex}
+                            isNavBack={isNavBack}
+                            navHeader={navHeader}
+                        />
                     </div>
                     <div className="my-[4.6rem]">{isLoading ? <LoadingPage /> : children}</div>
                     <MobileFooter />

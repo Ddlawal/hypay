@@ -6,6 +6,7 @@ type TableProps<T> = {
     keys: Array<keyof T | null>
     rows: Array<T>
     uniqueKey: keyof T
+    headerBackground?: boolean
     children?: ReactNode
     className?: string
     headerClassName?: string
@@ -20,6 +21,7 @@ export const Table = <T,>({
     headers,
     keys,
     uniqueKey,
+    headerBackground,
     rows,
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     setId = () => {},
@@ -27,7 +29,12 @@ export const Table = <T,>({
     return (
         <div>
             <table width="100%" className={cx(className)}>
-                <thead className={cx(headerClassName, 'bg-hypay-primary text-white')}>
+                <thead
+                    className={cx(
+                        headerClassName,
+                        headerBackground ? 'bg-white text-black' : 'bg-hypay-primary text-white'
+                    )}
+                >
                     <tr>
                         {headers.map((title, i) => {
                             const isLast = i === keys?.length - 1

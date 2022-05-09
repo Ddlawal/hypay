@@ -47,3 +47,11 @@ a {
     border: none;
     cursor: pointer;
 }
+
+.adOnGradient {
+    background-image: linear-gradient(90deg, #463f94 0%, #5ac8ac 100%);
+}
+
+.campaignCardsGradient {
+    background-image: linear-gradient(270deg, #d35c76 0%, #3c0b6b 100%);
+}

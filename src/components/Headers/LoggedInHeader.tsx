@@ -13,9 +13,9 @@ import { useRouter } from 'next/router'
 import { NextLink } from '../Links'
 import { ArrowLeftIcon } from '../Icons/ArrowLeftIcon'
 
-type LoggedInHeaderProps = { currentTabIndex?: number; isNavBack?: boolean; navHeader?: string }
+type LoggedInHeaderProps = { currentTabIndex?: number; dropDownIndex?: number; isNavBack?: boolean; navHeader?: string }
 
-export const LoggedInHeader = ({ currentTabIndex, isNavBack, navHeader }: LoggedInHeaderProps) => {
+export const LoggedInHeader = ({ currentTabIndex, dropDownIndex, isNavBack, navHeader }: LoggedInHeaderProps) => {
     const [open, setOpen] = useState(false)
     const [searchString, setSearchString] = useState('')
     const { ref } = useOnClickOutside<HTMLDivElement>(() => setOpen(false))
@@ -46,7 +46,7 @@ export const LoggedInHeader = ({ currentTabIndex, isNavBack, navHeader }: Logged
                                 'absolute left-0 top-0 block h-screen transition duration-500 ease-in-out md:hidden'
                             )}
                         >
-                            <SideNav currentTabIndex={currentTabIndex} />
+                            <SideNav currentTabIndex={currentTabIndex} dropDownIndex={dropDownIndex} />
                         </div>
                         <button className="p-2 transition" onClick={() => setOpen(true)}>
                             <MenuIcon size={26} color={COLORS.ICON_GRAY} />

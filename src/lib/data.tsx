@@ -36,7 +36,7 @@ export const MenuItemList: Array<{
     text: string
     href: string
     leftIcon?: JSX.Element | (() => JSX.Element)
-    isDropDown?: string[]
+    isDropDown?: { href: string; text: string }[]
     hasRightIcon?: boolean
     rightIcon?: JSX.Element | (() => JSX.Element)
 }> = [
@@ -62,19 +62,38 @@ export const MenuItemList: Array<{
     },
     {
         text: 'Loja Virtual',
-        href: '/dashboard/online-store',
+        href: '/dashboard/onlineStore',
         leftIcon: ShelterIcon({ color: COLORS.YELLOW }),
     },
     {
         text: 'Marketing',
-        href: '/dashboard/marketing',
+        href: '',
         leftIcon: MarketingIcon({ color: COLORS.YELLOW }),
-        isDropDown: ['Discount', 'Indicate'],
+        isDropDown: [
+            {
+                href: '/dashboard/marketing/ads',
+                text: 'Ads',
+            },
+            {
+                href: '/dashboard/marketing/overview',
+                text: 'Overview',
+            },
+        ],
     },
     {
         text: 'Cupons',
-        href: '/dashboard/coupons',
+        href: '',
         leftIcon: FireIcon({ color: COLORS.YELLOW }),
+        isDropDown: [
+            {
+                href: '/dashboard/coupons/discounts',
+                text: 'Descontos',
+            },
+            {
+                href: '/dashboard/coupons/indicate',
+                text: 'Indique',
+            },
+        ],
     },
     {
         text: 'Configurações',
@@ -129,4 +148,15 @@ export const dummyMessages: dummyMessagesType[] = [
     { name: 'Igor Costa', message: 'Entregam hoje ainda?', time: '9:32', date: '01/02/2022' },
     { name: 'Beatriz Lins', message: 'Meu produto veio errado!', time: '9:32', date: '01/02/2022' },
     { name: 'Gabriel Novaes', message: 'Preciso de ajuda com um...', time: '9:32', date: '01/02/2022' },
+]
+
+export type themeTemplateDataType = {
+    title: string
+    id: string
+}[]
+
+export const themeTemplateData: themeTemplateDataType = [
+    { title: 'template1', id: '1' },
+    { title: 'template2', id: '2' },
+    { title: 'template3', id: '3' },
 ]
