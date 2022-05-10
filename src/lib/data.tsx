@@ -160,3 +160,65 @@ export const themeTemplateData: themeTemplateDataType = [
     { title: 'template2', id: '2' },
     { title: 'template3', id: '3' },
 ]
+
+export const discountTableHeader: string[] = [
+    'Name',
+    'Status',
+    '%Discount',
+    'Product',
+    'Coupon Limit',
+    'Expiration',
+    'Shares',
+]
+
+export interface dataInterface {
+    name: string
+    status: string
+    discount: string
+    product: string
+    couponLimit: string
+    expiration: string
+}
+
+export const discountTableData: dataInterface[] = [
+    {
+        name: 'Fev15',
+        status: 'Active',
+        discount: '15%',
+        product: 'Shirts',
+        couponLimit: '500',
+        expiration: '28/02/2022',
+    },
+    {
+        name: 'Fev15',
+        status: 'Active',
+        discount: '15%',
+        product: 'Shirts',
+        couponLimit: '500',
+        expiration: '28/02/2022',
+    },
+    {
+        name: 'Fev15',
+        status: 'Inactive',
+        discount: '20%',
+        product: 'Shirts',
+        couponLimit: '500',
+        expiration: '28/02/2022',
+    },
+    {
+        name: 'Jan20',
+        status: 'Inactive',
+        discount: '20%',
+        product: 'Shirts',
+        couponLimit: '500',
+        expiration: '28/02/2022',
+    },
+    {
+        name: 'Jan20',
+        status: 'Inactive',
+        discount: '20%',
+        product: 'Shirts',
+        couponLimit: '500',
+        expiration: '28/02/2022',
+    },
+]
