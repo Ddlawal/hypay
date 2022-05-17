@@ -110,19 +110,19 @@ const Login: NextPage = () => {
                 <meta name="viewport" content="initial-scale=1.0, width=device-width" />
                 <link rel="icon" type="image/x-icon" href="/images/hypayLogo.png"></link>
             </Head>
-            <main className="relative flex h-screen flex-col   bg-login-books bg-cover bg-center">
+            <main className="relative flex h-screen flex-col bg-login-books bg-cover bg-center">
                 <div className="hidden h-[70%] md:block"></div>
-                <div className="absolute top-[0%] h-[100vh] w-[100vw] bg-white p-4  md:right-[50%] md:left-[50%] md:top-[5%] md:-mr-[50%] md:-ml-[10rem] md:h-[78%] md:w-[20rem] md:rounded-md md:shadow-md">
+                <div className="absolute top-[0%] h-[100vh] w-[100vw] bg-white py-2 px-4 md:right-[50%] md:left-[50%] md:top-[5%] md:-mr-[50%] md:-ml-[10rem] md:h-[78%] md:w-[20rem] md:rounded-md md:shadow-md">
                     <header className="text-center">
                         <Logo
                             color={COLORS.YELLOW}
                             labelColor="text-hypay-orange"
                             labelled={{ labelPosition: 'bottom' }}
                         />
-                        <h2 className="my-10 text-center text-2xl font-semibold md:my-4">Login</h2>
-                        <p className=" text-xs text-hypay-gray md:mt-3">Use seu email and senha abaixo</p>
+                        <h2 className="my-10 text-center text-2xl font-semibold md:my-2">Login</h2>
+                        <p className="text-xs text-hypay-gray md:mt-2">Use seu email and senha abaixo</p>
                     </header>
-                    <section className="mt-5">
+                    <section className="mt-3">
                         <form onSubmit={handleSubmit(onSubmit)}>
                             <SecondInput
                                 className="my-6 md:my-0"
@@ -147,7 +147,7 @@ const Login: NextPage = () => {
                                 validation={{ required: true, minLength: 6 }}
                                 placeholder="Digite sua senha"
                             />
-                            <div className="my-3  flex items-center justify-center  font-semibold md:mt-2">
+                            <div className="my-3 flex items-center justify-center font-semibold md:mt-2">
                                 <Button
                                     className={`${COLORS.PINK} ${
                                         isLoading && 'opacity-7'
@@ -193,8 +193,8 @@ const Login: NextPage = () => {
                 <footer className="primary hidden h-[30%]  items-end justify-center bg-white pb-10 md:flex">
                     <div className="flex w-[60%] flex-wrap items-center justify-between border-hypay-gray pt-4 text-sm  text-hypay-gray md:border-t">
                         <p>Privacy Policy</p>
-                        <p className="  md:order-3 ">Terms and Conditions</p>
-                        <p className=" mx-auto mt-4 font-normal md:order-2 md:mx-0 md:mt-0">
+                        <p className=" md:order-3">Terms and Conditions</p>
+                        <p className="mx-auto mt-4 font-normal md:order-2 md:mx-0 md:mt-0">
                             Copyright © {new Date().getFullYear()} - All Rights Reserved
                         </p>
                     </div>

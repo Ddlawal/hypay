@@ -51,7 +51,7 @@ const SectionWrapper: FC<SectionWrapperProps> = ({ children, title }) => (
     </section>
 )
 
-const EmailVerified = () => {
+export const EmailVerified = () => {
     const [show, setShow] = useState(true)
 
     setTimeout(() => setShow(false), 3000)

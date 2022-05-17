@@ -11,6 +11,7 @@ const persistConfig = {
     storage,
     key: 'hypay',
     blacklist: [productApi.reducerPath],
+    whitelist: ['ui'],
 }
 
 export const rootStore = combineReducers({

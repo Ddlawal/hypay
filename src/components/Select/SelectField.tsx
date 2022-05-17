@@ -47,7 +47,7 @@ export function SelectField<T = unknown>({
                 value={options.find((option) => option.value === value)}
                 onChange={(option) => onChange(option?.value ?? null)}
                 isSearchable={isSearchable}
-                className="react-select"
+                className="react-select rounded border"
                 classNamePrefix="react-select"
                 isClearable={isClearable}
                 placeholder={placeholder}
