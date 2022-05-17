@@ -106,6 +106,7 @@ export const MenuItemList: Array<{
 export const dropdownMenuItems = [
     {
         title: 'Gerenciar conta',
+        href: '/dashboard/accountManagement',
     },
     {
         title: 'Recebimento',

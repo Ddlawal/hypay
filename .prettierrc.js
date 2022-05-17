@@ -1,15 +1,15 @@
 module.exports = {
-    $schema: "http://json.schemastore.org/prettierrc",
+    $schema: 'http://json.schemastore.org/prettierrc',
     printWidth: 120,
     tabWidth: 4,
     useTabs: false,
     semi: false,
     singleQuote: true,
-    trailingComma: "es5",
+    trailingComma: 'es5',
     bracketSpacing: true,
     jsxBracketSameLine: false,
-    arrowParens: "always",
+    arrowParens: 'always',
     requirePragma: false,
     insertPragma: false,
-    proseWrap: "never",
-};
+    proseWrap: 'never',
+}

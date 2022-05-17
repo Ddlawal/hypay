@@ -37,9 +37,15 @@ module.exports = {
             },
         ],
         'no-only-tests/no-only-tests': 'error',
-        'react/jsx-no-target-blank': 'warn',
+        'react/jsx-no-target-blank': 'off',
         'react/prop-types': 'off',
-        'react/no-unescaped-entities': 'warn',
+        'react/no-unescaped-entities': 'off',
         curly: 'error',
+        'prettier/prettier': [
+            'error',
+            {
+                endOfLine: 'auto',
+            },
+        ],
     },
 }

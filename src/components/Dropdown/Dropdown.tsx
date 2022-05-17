@@ -5,10 +5,12 @@ import { signOut } from 'next-auth/react'
 import { useAppDispatch, useAppSelector } from '../../hooks/useStoreHooks'
 import { useLogoutMutation } from '../../store/services/auth'
 import { logout as logUserOut } from '../../store/reducers/auth'
+import { useRouter } from 'next/router'
 
 type DropdownItemProps = {
     title: string
     onClick?: () => void
+    href?: string
 }
 
 type DropdownProps = {
@@ -26,7 +28,7 @@ const DropdownItems: FC<DropdownButtonProps> = ({ items, className }) => {
     const dispatch = useAppDispatch()
     const [logoutMutation] = useLogoutMutation()
     const token = useAppSelector((state) => state.auth.token)
-
+    const { push } = useRouter()
     const logOut = async () => {
         const res = await logoutMutation({ token: token?.access_token })
         await signOut({ redirect: false })
@@ -37,8 +39,12 @@ const DropdownItems: FC<DropdownButtonProps> = ({ items, className }) => {
     }
     return (
         <ul className={cx(className)}>
-            {items.map(({ title, onClick }, id) => (
-                <li key={id} onClick={onClick} className=" w-full transition-transform hover:scale-105">
+            {items.map(({ title, href, onClick }, id) => (
+                <li
+                    key={id}
+                    onClick={() => (href ? push(href) : onClick)}
+                    className=" w-full transition-transform hover:scale-105"
+                >
                     {title}
                 </li>
             ))}
