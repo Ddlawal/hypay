@@ -3,6 +3,7 @@ import { AnalysisIcon, BagIcon, FireIcon, MarketingIcon, ShelterIcon, TagIcon } 
 import { HomeIcon } from '../components/Icons/HomeIcon'
 import { RightArrowIcon } from '../components/Icons/RightArrowIcon'
 import { SettingsIcon } from '../components/Icons/SettingsIcon'
+import { CheckIconWhite } from '../components/Icons/CheckIcon'
 import { COLORS } from './constants/colors'
 
 export const headerLinks: Array<{
@@ -223,3 +224,22 @@ export const discountTableData: dataInterface[] = [
         expiration: '28/02/2022',
     },
 ]
+
+export interface indicateDataType  {
+    name: string,
+    bottomText:string,
+    status:string
+    icon:JSX.Element |string| (() => JSX.Element),
+}[]
+
+export const indicateData: indicateDataType[] = [
+    { name: 'Ganhe R$ 200', bottomText:'Convite 5 vendedores',status:'completed',icon:CheckIconWhite({}) },
+    { name: 'Ganhe R$ 500',bottomText:'Convite 20 vendedores',status:'pending',icon:'' },
+    { name: 'Ganhe 3 premium',bottomText:'Convite 50 vendedores',status:'idle',icon:'' },
+    { name: 'Ganhe R$ 1000',bottomText:'Convite 100 vendedores',status:'idle',icon:''  },
+    { name: 'Ganhe 1 ano premium',bottomText:'Convite 150 vendedores' ,status:'idle',icon:'' },
+]
+
+
+
+
