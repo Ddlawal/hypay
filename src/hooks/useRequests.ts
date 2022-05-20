@@ -1,37 +1,43 @@
-import { RequestType } from '../interfaces/requests'
-// import { useGetAllRequestsQuery } from '../services/requestAndOrders'
+import { useEffect, useState } from 'react'
+import { useGetAllRequestsQuery, useLazyGetRequestStatusesQuery } from '../store/services/requests'
 
-export const useRequests = (requestId?: string) => {
-    // const { data, isLoading, isFetching, refetch } = useGetAllRequestsQuery()
+export const statusLabelMap: Record<string, string> = {
+    'Order Processing': 'Processando pedido',
+    'Order Shipped': 'Pedido enviado',
+    'Order Delivered': 'Pedido completo',
+}
 
-    // useEffect(() => refetch(), [refetch])
+export const useRequests = (requestId?: string, req?: string[]) => {
+    const [getStatuses] = useLazyGetRequestStatusesQuery()
+    const { data: requests, isLoading } = useGetAllRequestsQuery()
+    const [statuses, setStatuses] = useState<string[]>([])
+    const [activeStatusIndex, setActiveStatusIndex] = useState(0)
 
-    const requests: RequestType[] = [
-        {
-            id: 0,
-            orderNo: '556',
-            product_code: 'B#876',
-            status: 'confirmed',
-            amount: 'R$ 5600.00',
-            frieght_type: 'PAC',
-            payment_method: 'Cartão de crédito',
-            cost_of_frieght: 'R$ 40.00',
-            date: '04/04/2022',
-        },
-        {
-            id: 1,
-            orderNo: '472',
-            product_code: 'B#880',
-            status: 'cancelled',
-            amount: '11350.00',
-            frieght_type: 'SedEx',
-            payment_method: 'Cartão de crédito',
-            cost_of_frieght: 'R$ 450.00',
-            date: '04/04/2022',
-        },
-    ]
+    useEffect(() => {
+        if (req?.includes('getStatuses')) {
+            const fetchStatuses = async () => {
+                const { data } = await getStatuses()
 
-    const request = requestId ? requests.filter(({ id }) => id === Number(requestId))[0] : null
+                if (data) {
+                    setStatuses(data)
+                }
+            }
+            fetchStatuses()
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
-    return { request, requests, isLoading: false }
+    useEffect(() => {
+        Object.keys(statusLabelMap).forEach((label, i) => {
+            console.log(label, request?.status)
+            if (label === request?.status) {
+                return setActiveStatusIndex(i)
+            }
+        })
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
+    const request = requestId ? requests?.filter(({ orderId }) => orderId === Number(requestId))[0] : null
+
+    return { request, requests: requests ?? [], isLoading, statuses, activeStatusIndex }
 }

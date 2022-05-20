@@ -3,6 +3,7 @@ export const COLORS = {
     GREEN: '#1B9B65',
     GREY: '#9FA2B4',
     ICON_GRAY: '#959595',
+    ORANGE: '#FFB119',
     PINK: '#D95F76',
     PLACEHOLDER: '#4B506D',
     PRIMARY: '#36076B',

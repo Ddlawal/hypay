@@ -8,7 +8,7 @@ import { PrimaryLayout } from '../../../components/Layout'
 import { SelectField } from '../../../components/Select'
 import { Timeline, TimelineEvent } from '../../../components/Timeline'
 import { useMediaQuery } from '../../../hooks/useMediaQuery'
-import { useRequests } from '../../../hooks/useRequests'
+import { statusLabelMap, useRequests } from '../../../hooks/useRequests'
 import { RequestType } from '../../../interfaces/requests'
 import { COLORS } from '../../../lib/constants/colors'
 
@@ -37,15 +37,13 @@ const timelineLabels = [
 
 const RequestDetails: NextPage = () => {
     const isDesktop = useMediaQuery('md')
-    const { query } = useRouter()
-    const requestId = query.id as string
+    const router = useRouter()
+    const requestId = router.query.id as string
 
-    const { request } = useRequests(requestId)
-    const { amount, cost_of_frieght, orderNo } = request as RequestType
-    const amt = Number(amount.split('R$ ')[1])
-    const cof = Number(cost_of_frieght.split('R$ ')[1])
-    let total: string | number = amt + cof
-    total = 'R$ ' + total + '.00'
+    const { request, statuses, activeStatusIndex } = useRequests(requestId, ['getStatuses'])
+    const { cost, cost_of_frieght, orderNo, product_code, orderItems } = request as RequestType
+    const amt = cost + Number(cost_of_frieght ?? 0)
+    const total: string = 'R$ ' + amt + '.00'
 
     return (
         <PrimaryLayout currentTabIndex={2} isNavBack navHeader="Histórico de pedidos">
@@ -89,11 +87,11 @@ const RequestDetails: NextPage = () => {
                         >
                             <div className="flex flex-col md:flex-row md:justify-between">
                                 <div className="text-hypay-gray">Produto</div>
-                                <div>{amount}</div>
+                                <div>{`Rs ${cost}`}</div>
                             </div>
                             <div className="flex flex-col md:flex-row md:justify-between">
                                 <div className="text-hypay-gray">Frete</div>
-                                <div>{cost_of_frieght}</div>
+                                <div>{`Rs ${cost_of_frieght || 0}`}</div>
                             </div>
                             <div className="flex flex-col md:flex-row md:justify-between">
                                 <div className="text-hypay-gray">Total</div>
@@ -105,11 +103,11 @@ const RequestDetails: NextPage = () => {
                         <div className="mb-2 flex gap-4 text-sm md:flex-col">
                             <div>
                                 <div className="mb-2">Quantidade de produtos</div>
-                                <Input padding="py-1 px-4" />
+                                <Input padding="py-1 px-4" value={orderItems.length} />
                             </div>
                             <div>
                                 <div className="mb-2">Código de rastreio </div>
-                                <Input padding="py-1 px-4" />
+                                <Input padding="py-1 px-4" value={product_code} />
                             </div>
                         </div>
                         <Button primary className="mt-4 w-full">

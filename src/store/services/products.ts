@@ -1,4 +1,3 @@
-// import baseApi from '.'
 import { createApi } from '@reduxjs/toolkit/query/react'
 import { baseQuery } from '.'
 import { ProductsType } from '../../interfaces/products'
