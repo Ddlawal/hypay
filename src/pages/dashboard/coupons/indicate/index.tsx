@@ -3,7 +3,13 @@ import { PrimaryLayout } from '../../../../components/Layout'
 import { SecondInput, TextField } from '../../../../components/form'
 import { useForm } from 'react-hook-form'
 import { Card } from '../../../../components/Card'
-import { indicateData, indicateDataType } from '../../../../lib/data'
+import {
+    indicateData,
+    indicateTableHeader,
+    indicateTableData,
+    indicateTableInterface,
+    indicateDataType,
+} from '../../../../lib/data'
 
 function Indicate() {
     const {
@@ -24,9 +30,9 @@ function Indicate() {
                     <p className="  flex  items-center gap-2 py-2 text-sm text-red-500">
                         Saiba mais detalhes sobre como funciona
                     </p>
-                    <div className="flex items-end">
+                    <div className="flex flex-col md:flex-row md:items-end ">
                         <SecondInput
-                            className=" mb-5 mr-8 w-2/5 items-end md:my-0"
+                            className=" mb-5 mr-8 items-end md:my-0 md:w-2/5"
                             name="productname"
                             errors={errors}
                             label="Link"
@@ -38,13 +44,15 @@ function Indicate() {
                             placeholder="www.hypay.com.br/abc123def4563def4"
                             type="text"
                         />
-                        <button className="my-6 h-8 w-44 rounded-lg bg-hypay-orange md:mb-1">Copiar link</button>
+                        <button className="mb-4 h-8 w-44 rounded-lg bg-hypay-orange md:my-6 md:mb-1">
+                            Copiar link
+                        </button>
                     </div>
                     <p className="h-3 text-xs">Compartilhe esse link com outros vendedores e ganhe beneficios</p>
                 </header>
                 <section className="my-4">
-                    <div className=" flex w-full flex-col items-center justify-between md:flex-row">
-                        <Card className="w-full rounded-lg md:h-28 md:w-7/12">
+                    <div className=" flex w-full flex-col items-center justify-between md:flex-row ">
+                        <Card className="w-4/5 rounded-lg md:h-28 md:w-7/12">
                             <p>Você está no nível 2</p>
                             <div className="flex h-11 w-11/12  items-center">
                                 <div className="my-1 h-4 w-11/12 rounded-lg bg-hypay-gray">
@@ -56,13 +64,13 @@ function Indicate() {
                                 </div>
                             </div>
                         </Card>
-                        <Card className="my-4 w-4/5 rounded-lg py-4 md:mr-0 md:mr-9 md:h-28 md:w-1/4">
+                        <Card className="my-4 w-1/2 rounded-lg py-6 text-center md:mr-0  md:w-1/3 xl:w-1/4">
                             Parabéns! Você já ajudou 09 vendedores à aumentarem suas vendas usando o Hypay.
                         </Card>
                     </div>
-                    <div className="grid grid-cols-2 flex-wrap items-center justify-center gap-4 md:flex md:justify-between">
+                    <div className=" flex grid grid-cols-3 flex-wrap items-center justify-between gap-2  text-center sm:grid-cols-4 lg:grid-cols-5  ">
                         {indicateData.map(({ name, bottomText, status, icon }: indicateDataType, index) => (
-                            <div key={index}>
+                            <div key={index} className="text-center">
                                 <Card
                                     className={`${
                                         status === 'completed'
@@ -70,7 +78,7 @@ function Indicate() {
                                             : status === 'pending'
                                             ? 'border border-hypay-secondary text-hypay-secondary'
                                             : 'text-gray-500 text-opacity-50'
-                                    } my-2 mt-2 flex h-24 w-36 flex-col items-center justify-center rounded-md text-center md:w-36`}
+                                    } my-2 mt-2 flex h-24 w-32 flex-col items-center  justify-center rounded-md text-center md:w-36 xl:w-36`}
                                 >
                                     <div className="">{icon}</div>
                                     <p>{name}</p>
@@ -82,13 +90,56 @@ function Indicate() {
                                             : status === 'pending'
                                             ? 'text-hypay-secondary'
                                             : 'text-gray-500 text-opacity-50'
-                                    } mx-5 w-36 `}
+                                    }  w-36 xl:w-36 `}
                                 >
                                     {bottomText}
                                 </p>
                             </div>
                         ))}
                     </div>
+                    {false && (
+                        <main>
+                            <table className="my-6 w-full border-collapse overflow-hidden rounded-md border-2 bg-white">
+                                <thead className="border-b-2 border-gray-200 px-6 py-10">
+                                    <tr>
+                                        {indicateTableHeader.map((header, index: number) => (
+                                            <th key={index} className={`p-4 text-left`}>
+                                                {header}
+                                            </th>
+                                        ))}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {indicateTableData.map(
+                                        (
+                                            {
+                                                code,
+                                                status,
+                                                responsible,
+                                                email,
+                                                telephone,
+                                                creationDate,
+                                                indication,
+                                            }: indicateTableInterface,
+                                            index: number
+                                        ) => (
+                                            <tr className="border-b-2" key={index}>
+                                                <td className="p-4">{code}</td>
+                                                <td className="m-4  flex items-center justify-center rounded border border-hypay-green text-sm text-hypay-green ">
+                                                    {status}
+                                                </td>
+                                                <td className="p-4">{responsible}</td>
+                                                <td className="p-4">{email}</td>
+                                                <td className="p-4">{telephone}</td>
+                                                <td className="p-4">{creationDate}</td>
+                                                <td className="p-4">{indication}</td>
+                                            </tr>
+                                        )
+                                    )}
+                                </tbody>
+                            </table>
+                        </main>
+                    )}
                 </section>
             </div>
         </PrimaryLayout>

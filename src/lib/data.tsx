@@ -225,21 +225,104 @@ export const discountTableData: dataInterface[] = [
     },
 ]
 
-export interface indicateDataType  {
-    name: string,
-    bottomText:string,
-    status:string
-    icon:JSX.Element |string| (() => JSX.Element),
-}[]
+export interface indicateDataType {
+    name: string
+    bottomText: string
+    status: string
+    icon: JSX.Element | string | (() => JSX.Element)
+}
+;[]
 
 export const indicateData: indicateDataType[] = [
-    { name: 'Ganhe R$ 200', bottomText:'Convite 5 vendedores',status:'completed',icon:CheckIconWhite({}) },
-    { name: 'Ganhe R$ 500',bottomText:'Convite 20 vendedores',status:'pending',icon:'' },
-    { name: 'Ganhe 3 premium',bottomText:'Convite 50 vendedores',status:'idle',icon:'' },
-    { name: 'Ganhe R$ 1000',bottomText:'Convite 100 vendedores',status:'idle',icon:''  },
-    { name: 'Ganhe 1 ano premium',bottomText:'Convite 150 vendedores' ,status:'idle',icon:'' },
+    { name: 'Ganhe R$200', bottomText: 'Convite 5 vendedores', status: 'completed', icon: CheckIconWhite({}) },
+    { name: 'Ganhe R$500', bottomText: 'Convite 20 vendedores', status: 'pending', icon: '' },
+    { name: 'Ganhe 3 premium', bottomText: 'Convite 50 vendedores', status: 'idle', icon: '' },
+    { name: 'Ganhe R$1000', bottomText: 'Convite 100 vendedores', status: 'idle', icon: '' },
+    { name: 'Ganhe 1 ano premium', bottomText: 'Convite 150 vendedores', status: 'idle', icon: '' },
 ]
 
+export const indicateTableHeader:string[]=[
+    'Código',
+    'Status',
+   'Responsável',
+'Email',
+'Telefone',
+ 'Data de criação',
+ 'Indicações',
+]
+export interface indicateTableInterface {
+    code: string
+    status: string
+    responsible: string
+    email: string
+    telephone: string
+    creationDate: string
+    indication: string
+}
 
-
-
+export const indicateTableData: indicateTableInterface[] = [
+  
+    {
+        code: '#59999999',
+        status: 'activa',
+        responsible: 'Nome',
+        email: 'Email',
+        telephone: '[ddd]00000-0000',
+        creationDate: '00/00/00',
+        indication: '00',
+    },
+    {
+        code: '#59999999',
+        status: 'activa',
+        responsible: 'Nome',
+        email: 'Email',
+        telephone: '[ddd]00000-0000',
+        creationDate: '00/00/00',
+        indication: '00',
+    },
+    {
+        code: '#59999999',
+        status: 'activa',
+        responsible: 'Nome',
+        email: 'Email',
+        telephone: '[ddd]00000-0000',
+        creationDate: '00/00/00',
+        indication: '00',
+    },
+    {
+        code: '#59999999',
+        status: 'activa',
+        responsible: 'Nome',
+        email: 'Email',
+        telephone: '[ddd]00000-0000',
+        creationDate: '00/00/00',
+        indication: '00',
+    },
+    {
+        code: '#59999999',
+        status: 'activa',
+        responsible: 'Nome',
+        email: 'Email',
+        telephone: '[ddd]00000-0000',
+        creationDate: '00/00/00',
+        indication: '00',
+    },
+    {
+        code: '#59999999',
+        status: 'activa',
+        responsible: 'Nome',
+        email: 'Email',
+        telephone: '[ddd]00000-0000',
+        creationDate: '00/00/00',
+        indication: '00',
+    },
+    {
+        code: '#59999999',
+        status: 'activa',
+        responsible: 'Nome',
+        email: 'Email',
+        telephone: '[ddd]00000-0000',
+        creationDate: '00/00/00',
+        indication: '00',
+    },
+]

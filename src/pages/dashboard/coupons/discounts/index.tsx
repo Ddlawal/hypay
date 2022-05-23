@@ -80,7 +80,7 @@ function Discount() {
                         </Button>
                     </div>
 
-                    {false && (
+                    {true && (
                         <main>
                             <table className="my-2 w-full border-collapse overflow-hidden rounded-md border-2 bg-white">
                                 <thead className="border-b-2 border-gray-200 px-6 py-10">
