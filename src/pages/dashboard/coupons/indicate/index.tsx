@@ -32,7 +32,7 @@ function Indicate() {
                     </p>
                     <div className="flex flex-col md:flex-row md:items-end ">
                         <SecondInput
-                            className=" mb-5 mr-8 items-end md:my-0 md:w-2/5"
+                            className="mb-5 mr-8 w-full items-end md:my-0 md:w-2/5"
                             name="productname"
                             errors={errors}
                             label="Link"
@@ -52,23 +52,23 @@ function Indicate() {
                 </header>
                 <section className="my-4">
                     <div className=" flex w-full flex-col items-center justify-between md:flex-row ">
-                        <Card className="w-4/5 rounded-lg md:h-28 md:w-7/12">
+                        <Card className="w-4/5 rounded-lg md:h-28 md:w-7/12 lg:w-3/5">
                             <p>Você está no nível 2</p>
-                            <div className="flex h-11 w-11/12  items-center">
+                            <div className="flex h-11 w-full  items-center">
                                 <div className="my-1 h-4 w-11/12 rounded-lg bg-hypay-gray">
                                     <div className="h-4 w-1/3 rounded-lg bg-hypay-secondary"></div>
                                 </div>
-                                <div className=" mb-4 ml-4 flex flex-col">
+                                <div className=" mb-4 ml-4 flex flex-col lg:w-1/3">
                                     <p className="text-xs">convites</p>
                                     <p className="font-bold text-hypay-secondary">04/10</p>
                                 </div>
                             </div>
                         </Card>
-                        <Card className="my-4 w-1/2 rounded-lg py-6 text-center md:mr-0  md:w-1/3 xl:w-1/4">
+                        <Card className="my-4 w-3/5 rounded-lg py-6 text-center md:mr-0  md:w-1/3 xl:w-1/3">
                             Parabéns! Você já ajudou 09 vendedores à aumentarem suas vendas usando o Hypay.
                         </Card>
                     </div>
-                    <div className=" flex grid grid-cols-3 flex-wrap items-center justify-between gap-2  text-center sm:grid-cols-4 lg:grid-cols-5  ">
+                    <div className=" flex grid grid-cols-2 flex-wrap items-center justify-between gap-2  text-center sm:grid-cols-4 lg:flex lg:grid-cols-5  ">
                         {indicateData.map(({ name, bottomText, status, icon }: indicateDataType, index) => (
                             <div key={index} className="text-center">
                                 <Card
@@ -78,7 +78,7 @@ function Indicate() {
                                             : status === 'pending'
                                             ? 'border border-hypay-secondary text-hypay-secondary'
                                             : 'text-gray-500 text-opacity-50'
-                                    } my-2 mt-2 flex h-24 w-32 flex-col items-center  justify-center rounded-md text-center md:w-36 xl:w-36`}
+                                    } xlg:w-36 my-2 mt-2 flex h-24 w-full flex-col  items-center justify-center rounded-md text-center md:w-36`}
                                 >
                                     <div className="">{icon}</div>
                                     <p>{name}</p>
@@ -90,7 +90,7 @@ function Indicate() {
                                             : status === 'pending'
                                             ? 'text-hypay-secondary'
                                             : 'text-gray-500 text-opacity-50'
-                                    }  w-36 xl:w-36 `}
+                                    } w-full sm:w-36 xl:w-36 `}
                                 >
                                     {bottomText}
                                 </p>
@@ -99,7 +99,7 @@ function Indicate() {
                     </div>
                     {false && (
                         <main>
-                            <table className="my-6 w-full border-collapse overflow-hidden rounded-md border-2 bg-white">
+                            <table className="my-8 w-full border-collapse overflow-hidden rounded-md border-2 bg-white">
                                 <thead className="border-b-2 border-gray-200 px-6 py-10">
                                     <tr>
                                         {indicateTableHeader.map((header, index: number) => (
@@ -125,14 +125,14 @@ function Indicate() {
                                         ) => (
                                             <tr className="border-b-2" key={index}>
                                                 <td className="p-4">{code}</td>
-                                                <td className="m-4  flex items-center justify-center rounded border border-hypay-green text-sm text-hypay-green ">
+                                                <td className="m-4  flex items-center justify-center rounded border border-hypay-green text-base text-hypay-green ">
                                                     {status}
                                                 </td>
-                                                <td className="p-4">{responsible}</td>
-                                                <td className="p-4">{email}</td>
-                                                <td className="p-4">{telephone}</td>
-                                                <td className="p-4">{creationDate}</td>
-                                                <td className="p-4">{indication}</td>
+                                                <td className="p-4 text-base">{responsible}</td>
+                                                <td className="p-4 text-base">{email}</td>
+                                                <td className="p-4 text-base">{telephone}</td>
+                                                <td className="p-4 text-base">{creationDate}</td>
+                                                <td className="p-4 text-base">{indication}</td>
                                             </tr>
                                         )
                                     )}
