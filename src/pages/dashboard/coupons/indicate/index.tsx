@@ -1,15 +1,9 @@
 import React from 'react'
 import { PrimaryLayout } from '../../../../components/Layout'
-import { SecondInput, TextField } from '../../../../components/form'
+import { SecondInput } from '../../../../components/form'
 import { useForm } from 'react-hook-form'
 import { Card } from '../../../../components/Card'
-import {
-    indicateData,
-    indicateTableHeader,
-    indicateTableData,
-    indicateTableInterface,
-    indicateDataType,
-} from '../../../../lib/data'
+import { indicateData, indicateDataType } from '../../../../lib/data'
 
 function Indicate() {
     const {
@@ -97,49 +91,6 @@ function Indicate() {
                             </div>
                         ))}
                     </div>
-                    {false && (
-                        <main>
-                            <table className="my-8 w-full border-collapse overflow-hidden rounded-md border-2 bg-white">
-                                <thead className="border-b-2 border-gray-200 px-6 py-10">
-                                    <tr>
-                                        {indicateTableHeader.map((header, index: number) => (
-                                            <th key={index} className={`p-4 text-left`}>
-                                                {header}
-                                            </th>
-                                        ))}
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {indicateTableData.map(
-                                        (
-                                            {
-                                                code,
-                                                status,
-                                                responsible,
-                                                email,
-                                                telephone,
-                                                creationDate,
-                                                indication,
-                                            }: indicateTableInterface,
-                                            index: number
-                                        ) => (
-                                            <tr className="border-b-2" key={index}>
-                                                <td className="p-4">{code}</td>
-                                                <td className="m-4  flex items-center justify-center rounded border border-hypay-green text-base text-hypay-green ">
-                                                    {status}
-                                                </td>
-                                                <td className="p-4 text-base">{responsible}</td>
-                                                <td className="p-4 text-base">{email}</td>
-                                                <td className="p-4 text-base">{telephone}</td>
-                                                <td className="p-4 text-base">{creationDate}</td>
-                                                <td className="p-4 text-base">{indication}</td>
-                                            </tr>
-                                        )
-                                    )}
-                                </tbody>
-                            </table>
-                        </main>
-                    )}
                 </section>
             </div>
         </PrimaryLayout>
@@ -147,4 +98,3 @@ function Indicate() {
 }
 
 export default Indicate
-// className="flex flex-col items-center rounded-md p-4 md:w-36"

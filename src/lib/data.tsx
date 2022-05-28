@@ -94,6 +94,10 @@ export const MenuItemList: Array<{
                 href: '/dashboard/coupons/indicate',
                 text: 'Indique',
             },
+            {
+                href: '/dashboard/coupons/recompense',
+                text: 'Recompensa',
+            },
         ],
     },
     {
@@ -241,16 +245,16 @@ export const indicateData: indicateDataType[] = [
     { name: 'Ganhe 1 ano premium', bottomText: 'Convite 150 vendedores', status: 'idle', icon: '' },
 ]
 
-export const indicateTableHeader:string[]=[
+export const recompenseTableHeader: string[] = [
     'Código',
     'Status',
-   'Responsável',
-'Email',
-'Telefone',
- 'Data de criação',
- 'Indicações',
+    'Responsável',
+    'Email',
+    'Telefone',
+    'Data de criação',
+    'Indicações',
 ]
-export interface indicateTableInterface {
+export interface recompenseTableInterface {
     code: string
     status: string
     responsible: string
@@ -260,62 +264,7 @@ export interface indicateTableInterface {
     indication: string
 }
 
-export const indicateTableData: indicateTableInterface[] = [
-  
-    {
-        code: '#59999999',
-        status: 'activa',
-        responsible: 'Nome',
-        email: 'Email',
-        telephone: '[ddd]00000-0000',
-        creationDate: '00/00/00',
-        indication: '00',
-    },
-    {
-        code: '#59999999',
-        status: 'activa',
-        responsible: 'Nome',
-        email: 'Email',
-        telephone: '[ddd]00000-0000',
-        creationDate: '00/00/00',
-        indication: '00',
-    },
-    {
-        code: '#59999999',
-        status: 'activa',
-        responsible: 'Nome',
-        email: 'Email',
-        telephone: '[ddd]00000-0000',
-        creationDate: '00/00/00',
-        indication: '00',
-    },
-    {
-        code: '#59999999',
-        status: 'activa',
-        responsible: 'Nome',
-        email: 'Email',
-        telephone: '[ddd]00000-0000',
-        creationDate: '00/00/00',
-        indication: '00',
-    },
-    {
-        code: '#59999999',
-        status: 'activa',
-        responsible: 'Nome',
-        email: 'Email',
-        telephone: '[ddd]00000-0000',
-        creationDate: '00/00/00',
-        indication: '00',
-    },
-    {
-        code: '#59999999',
-        status: 'activa',
-        responsible: 'Nome',
-        email: 'Email',
-        telephone: '[ddd]00000-0000',
-        creationDate: '00/00/00',
-        indication: '00',
-    },
+export const recompenseTableData: recompenseTableInterface[] = [
     {
         code: '#59999999',
         status: 'activa',
