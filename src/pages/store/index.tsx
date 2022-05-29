@@ -1,9 +1,9 @@
+import React, { useState } from 'react'
 import { NextPage } from 'next'
 import Image from 'next/image'
-import React from 'react'
-import { BuyersHeader } from '../../components/Headers'
 import { NextLink } from '../../components/Links'
 import { useMediaQuery } from '../../hooks/useMediaQuery'
+import { BuyerLayout } from '../../components/Layout'
 // import { useProducts } from '../../hooks/useProducts'
 
 const newProducts = ['/images/jean-jacket.png', '/images/ladies-vests.png', '/images/mens-coat.png']
@@ -68,11 +68,11 @@ const Carousel = ({ images }: { images: string[] }) => {
 
 const Store: NextPage = () => {
     const isDesktop = useMediaQuery('md')
+    const [loadingData] = useState(false)
     // const { products } = useProducts()
 
     return (
-        <div>
-            <BuyersHeader />
+        <BuyerLayout isLoading={loadingData}>
             <div className="relative h-full md:px-28">
                 <Image
                     src="/images/buyers-banner.png"
@@ -121,7 +121,7 @@ const Store: NextPage = () => {
                 <Carousel images={mostViewedProducts} />
             </div>
             <Footer />
-        </div>
+        </BuyerLayout>
     )
 }
 

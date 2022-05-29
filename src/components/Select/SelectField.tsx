@@ -36,7 +36,7 @@ export function SelectField<T = unknown>({
     return (
         <div>
             {label && (
-                <label htmlFor={name} className={cx(labelClassName, 'mt-5 mb-3 block')}>
+                <label htmlFor={name} className={cx(labelClassName, 'my-3 block')}>
                     {label}
                 </label>
             )}
