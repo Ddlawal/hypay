@@ -15,31 +15,37 @@ export const BuyersHeader = () => {
     const width = BUYER_SIDE_NAV_WIDTH + 'px'
 
     return (
-        <div className="flex items-center justify-between bg-white py-4 px-2 md:justify-end md:px-28">
-            <div
-                ref={ref}
-                style={{ width }}
-                className={cx(
-                    open && '-translate-x-full',
-                    'absolute right-[-200px] top-0 block h-screen bg-hypay-light-blue transition duration-500 ease-in-out md:hidden'
-                )}
-            >
-                <header className="flex w-full items-center justify-center pt-8 pb-16">
-                    <NextLink href="/dashboard/home">
-                        <Logo labelled={{ labelPosition: 'right' }} labelColor={'text-white'} color={COLORS.WHITE} />
-                    </NextLink>
-                </header>
+        <div className="flex w-screen items-center justify-between overflow-hidden bg-white py-4 px-2 md:justify-end md:px-28">
+            <div className="fixed right-0 top-0">
+                <div
+                    ref={ref}
+                    style={{ width }}
+                    className={cx(
+                        !open && 'translate-x-full',
+                        'absolute right-0 top-0 block h-screen rounded-tl-xl rounded-bl-xl bg-hypay-light-blue transition duration-500 ease-in-out md:hidden'
+                    )}
+                >
+                    <header className="flex w-full items-center justify-center pt-8 pb-16">
+                        <NextLink href="/dashboard/home">
+                            <Logo
+                                labelled={{ labelPosition: 'right' }}
+                                labelColor={'text-white'}
+                                color={COLORS.WHITE}
+                            />
+                        </NextLink>
+                    </header>
 
-                <div className="text-bold w-full pl-4 text-xl text-white">
-                    <NextLink href="/store" className="block py-2">
-                        Home
-                    </NextLink>
-                    <NextLink href="/store/checkout" className="block py-2">
-                        Checkout
-                    </NextLink>
-                    <NextLink href="/store/support" className="block py-2">
-                        Atendimento
-                    </NextLink>
+                    <div className="text-bold w-full pl-4 text-xl text-white">
+                        <NextLink href="/store" className="block py-2">
+                            Home
+                        </NextLink>
+                        <NextLink href="/store/checkout" className="block py-2">
+                            Checkout
+                        </NextLink>
+                        <NextLink href="/store/support" className="block py-2">
+                            Atendimento
+                        </NextLink>
+                    </div>
                 </div>
             </div>
 
