@@ -50,7 +50,7 @@ export const BuyersHeader = () => {
             </div>
 
             <Logo size={24} labelled={{ labelPosition: 'right' }} />
-            <div className="text-bold ml-44 hidden w-full gap-x-20 pl-4 text-xl md:flex">
+            <div className="text-bold ml-44 hidden w-full gap-x-20 pl-4 text-lg md:flex">
                 <NextLink href="/store">Home</NextLink>
                 <NextLink href="/store/checkout">Checkout</NextLink>
                 <NextLink href="/store/support">Atendimento</NextLink>
