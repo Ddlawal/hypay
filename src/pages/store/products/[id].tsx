@@ -10,15 +10,9 @@ const ProductView: NextPage = () => {
     const { query } = useRouter()
     const id = query.id as string
     const { product, isLoading } = useProducts(id)
-    const router = useRouter()
 
     if (isLoading) {
         return <LoadingPage />
-    }
-
-    if (!isLoading && !product) {
-        router.push('/')
-        return null
     }
 
     return (
@@ -28,7 +22,7 @@ const ProductView: NextPage = () => {
             </div>
             <div className="mt-16 flex items-start justify-between px-[20%]">
                 <div className="relative h-44 w-[50%] rounded-lg border border-gray-100 sm:h-60">
-                    <Image src={product?.image_url || ''} layout="fill" objectFit="cover" />
+                    <Image src={product?.image_url || '/s.png'} layout="fill" objectFit="cover" />
                 </div>
                 <div className="w-[40%]">
                     <p>{product?.productName}</p>

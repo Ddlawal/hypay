@@ -53,9 +53,11 @@ const Carousel = ({ images }: { images: string[] }) => {
         <div className="hsb mt-3 flex h-full gap-x-5 overflow-x-auto shadow-inner">
             {images.map((image_url, i) => (
                 <div key={`product_${i}`}>
-                    <div className="relative h-44 w-60 bg-black">
-                        <Image src={image_url} layout="fill" objectFit="cover" quality={100} />
-                    </div>
+                    <NextLink href="/store/products/477">
+                        <div className="relative h-44 w-60 bg-black">
+                            <Image src={image_url} layout="fill" objectFit="cover" quality={100} />
+                        </div>
+                    </NextLink>
                     <div className="my-2">
                         <div className="text-xs font-light">Lorem ipsum dolor sit amet</div>
                         <strong>R$30</strong>
@@ -105,7 +107,8 @@ const Store: NextPage = () => {
                     </div>
                 </div>
             </div>
-            <div className="overflow-hidden px-4 md:px-[20%]">
+            <div className="mt-4 overflow-hidden px-4 md:px-[20%]">
+                <strong className="text-xl">New</strong>
                 <Carousel images={newProducts} />
             </div>
             <div className="my-8 h-full md:px-[20%]">
@@ -117,7 +120,8 @@ const Store: NextPage = () => {
                     quality={100}
                 />
             </div>
-            <div className="overflow-hidden px-4 md:px-[20%]">
+            <div className="mt-4 overflow-hidden px-4 md:px-[20%]">
+                <strong className="text-xl">Most Viewed</strong>
                 <Carousel images={mostViewedProducts} />
             </div>
             <Footer />

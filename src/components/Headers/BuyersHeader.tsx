@@ -16,13 +16,13 @@ export const BuyersHeader = () => {
 
     return (
         <div className="flex w-screen items-center justify-between overflow-hidden bg-white py-4 px-2 md:justify-end md:px-28">
-            <div className="fixed right-0 top-0">
+            <div className="fixed right-0 top-0 z-20">
                 <div
                     ref={ref}
                     style={{ width }}
                     className={cx(
                         !open && 'translate-x-full',
-                        'absolute right-0 top-0 block h-screen rounded-tl-xl rounded-bl-xl bg-hypay-light-blue transition duration-500 ease-in-out md:hidden'
+                        'absolute right-0 top-0 block h-screen rounded-tl-xl rounded-bl-xl bg-hypay-primary transition duration-500 ease-in-out md:hidden'
                     )}
                 >
                     <header className="flex w-full items-center justify-center pt-8 pb-16">
