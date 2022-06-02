@@ -111,12 +111,14 @@ export const dropdownMenuItems = [
     },
     {
         title: 'Recebimento',
+        href: '/dashboard/bankAccount',
     },
     {
         title: 'Lojas',
     },
     {
         title: 'Central de ajuda',
+        href: '/dashboard/helpCenter',
     },
     // {
     //     title: 'Logout',
@@ -239,4 +241,17 @@ export const indicateData: indicateDataType[] = [
     { name: 'Ganhe 3 premium', bottomText: 'Convite 50 vendedores', status: 'idle', icon: '' },
     { name: 'Ganhe R$ 1000', bottomText: 'Convite 100 vendedores', status: 'idle', icon: '' },
     { name: 'Ganhe 1 ano premium', bottomText: 'Convite 150 vendedores', status: 'idle', icon: '' },
+]
+
+export interface TrxnTypeI {
+    name: string
+    trxn: string
+    amount: string
+}
+
+export const trxnType: TrxnTypeI[] = [
+    { name: 'Rafael Crespo', trxn: 'Withdrawal', amount: 'R$1.000,00' },
+    { name: 'Igor Rogério', trxn: 'App Purchase', amount: 'R$1.500,00' },
+    { name: 'Rafael Crespo', trxn: 'Withdrawal', amount: 'R$1.000,00' },
+    { name: 'Thomas Thomp...', trxn: 'Web-based purchasing', amount: 'R$7.500,00' },
 ]
