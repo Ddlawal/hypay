@@ -105,18 +105,18 @@ const ProductView: NextPage = () => {
                 </Card>
                 <Card className="mt-4" rounded>
                     <div className="divider flex items-center justify-between divide-x">
-                        <div className="flex w-full items-center justify-between px-5">
-                            <div className="flex items-end gap-x-1 text-lg">
+                        <div className="flex w-full items-center justify-between px-3">
+                            <div className="flex items-center gap-x-1 text-sm text-hypay-gray">
                                 {Array(5)
                                     .fill(0)
                                     .map((_, i) => (
-                                        <StarIcon key={`${i}`} size={28} filled />
+                                        <StarIcon key={`${i}`} size={22} filled />
                                     ))}{' '}
                                 (55)
                             </div>
                             <div className="underline">View Ratings</div>
                         </div>
-                        <div className="flex w-full items-center justify-between px-5">
+                        <div className="flex w-full items-center justify-between px-2">
                             <div>All (55)</div>
                             <div>Positive (55)</div>
                             <div>Negative (0)</div>

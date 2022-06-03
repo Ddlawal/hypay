@@ -15,7 +15,7 @@ export const BuyersHeader = () => {
     const width = BUYER_SIDE_NAV_WIDTH + 'px'
 
     return (
-        <div className="flex w-screen items-center justify-between overflow-hidden bg-white py-4 px-2 md:justify-end md:px-28">
+        <div className="flex w-screen items-center justify-between overflow-hidden bg-white py-4 px-2 md:justify-end md:px-16 lg:px-28">
             <div className="fixed right-0 top-0 z-20">
                 <div
                     ref={ref}
@@ -50,7 +50,7 @@ export const BuyersHeader = () => {
             </div>
 
             <Logo size={24} labelled={{ labelPosition: 'right' }} />
-            <div className="text-bold ml-44 hidden w-full gap-x-20 pl-4 text-lg md:flex">
+            <div className="text-bold hidden w-full pl-4 text-lg md:ml-16 md:flex md:justify-around lg:ml-28">
                 <NextLink href="/store">Home</NextLink>
                 <NextLink href="/store/checkout">Checkout</NextLink>
                 <NextLink href="/store/support">Atendimento</NextLink>
@@ -59,12 +59,12 @@ export const BuyersHeader = () => {
                 <Input
                     placeholder="Search"
                     autoFocus
-                    className="w-60 bg-hypay-light-gray text-sm"
+                    className="bg-hypay-light-gray text-sm md:w-44 lg:w-60"
                     parentClassName="hidden md:block"
                     icon={<SearchIcon color={COLORS.PLACEHOLDER} />}
                     type="search"
                 />
-                <button className=" block rounded-lg p-2 transition duration-200 ease-in-out hover:scale-105 hover:shadow-md md:hidden">
+                <button className="block rounded-lg p-2 transition duration-200 ease-in-out hover:scale-105 hover:shadow-md md:hidden">
                     <SearchIcon size={26} />
                 </button>
                 <button className="p-2 md:hidden" onClick={() => setOpen(true)}>
