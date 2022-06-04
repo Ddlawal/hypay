@@ -1,7 +1,9 @@
 import * as React from 'react'
+import cx from 'classnames'
 
 type Props = {
     className?: string
+    inputClassName?: string
     error?: boolean
     icon?: JSX.Element
     errors?: any
@@ -17,6 +19,7 @@ type Props = {
 
 export const SecondInput = ({
     className,
+    inputClassName,
     icon,
     errors,
     name,
@@ -46,13 +49,19 @@ export const SecondInput = ({
             )}
             <div
                 id={name}
-                className={`mt-1 flex items-center justify-between gap-2 rounded-md border-[1px] bg-white ${borderColor} h-[34px] px-2`}
+                className={cx(
+                    inputClassName,
+                    `mt-1 flex items-center justify-between gap-2 rounded-md border-[1px] bg-white ${borderColor} h-[34px] px-2`
+                )}
             >
                 <input
                     type={type}
                     {...register(name, { ...validation })}
                     {...rest}
-                    className="h-full w-full appearance-none border-none bg-transparent outline-none"
+                    className={cx(
+                        inputClassName,
+                        'h-full w-full appearance-none border-none bg-transparent outline-none'
+                    )}
                     placeholder={placeholder}
                     defaultValue={defaultValue}
                 />

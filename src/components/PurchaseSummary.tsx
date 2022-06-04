@@ -12,7 +12,7 @@ export const PurchaseSummary = () => {
 
     return (
         <Card>
-            <div className="font-bold">Product</div>
+            <div className="font-bold">Produto</div>
             <div className="my-4 flex gap-x-5 rounded bg-[#F2F2F2] py-4 px-2">
                 <div className="w-56">
                     <Image src="/images/jean-jacket.png" layout="responsive" height={100} width={100} quality={100} />
@@ -27,19 +27,19 @@ export const PurchaseSummary = () => {
             </div>
             <div className="flex flex-col gap-y-8">
                 <div className="flex items-center justify-between">
-                    <div>Quantity</div>
+                    <div>Quantidade</div>
                     <div>1</div>
                 </div>
                 <div className="flex items-center justify-between">
-                    <div>Value</div>
+                    <div>Valor</div>
                     <div>R$30</div>
                 </div>
                 <div className="flex items-center justify-between">
-                    <div>Shipping</div>
+                    <div>Frete</div>
                     <div>R$10</div>
                 </div>
                 <div className="flex items-center justify-between">
-                    <div>All</div>
+                    <div>Total</div>
                     <div>R$40</div>
                 </div>
             </div>
@@ -48,11 +48,11 @@ export const PurchaseSummary = () => {
                 padding="py-4"
                 onClick={goToIdentification}
             >
-                Continue
+                Continuar
             </Button>
-            <div className="my-8 text-center text-lg font-semibold">Choose more products</div>
+            <div className="my-8 text-center text-lg font-semibold">Escolher mais produtos</div>
             <div className="flex items-end justify-center gap-x-1 text-xl font-semibold">
-                <LockIcon size={40} /> 100% secure purchase
+                <LockIcon size={40} /> Compra 100% segura
             </div>
         </Card>
     )
