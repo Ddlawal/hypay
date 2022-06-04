@@ -94,6 +94,10 @@ export const MenuItemList: Array<{
                 href: '/dashboard/coupons/indicate',
                 text: 'Indique',
             },
+            {
+                href: '/dashboard/coupons/recompense',
+                text: 'Recompensa',
+            },
         ],
     },
     {
@@ -234,9 +238,40 @@ export interface indicateDataType {
 ;[]
 
 export const indicateData: indicateDataType[] = [
-    { name: 'Ganhe R$ 200', bottomText: 'Convite 5 vendedores', status: 'completed', icon: CheckIconWhite({}) },
-    { name: 'Ganhe R$ 500', bottomText: 'Convite 20 vendedores', status: 'pending', icon: '' },
+    { name: 'Ganhe R$200', bottomText: 'Convite 5 vendedores', status: 'completed', icon: CheckIconWhite({}) },
+    { name: 'Ganhe R$500', bottomText: 'Convite 20 vendedores', status: 'pending', icon: '' },
     { name: 'Ganhe 3 premium', bottomText: 'Convite 50 vendedores', status: 'idle', icon: '' },
-    { name: 'Ganhe R$ 1000', bottomText: 'Convite 100 vendedores', status: 'idle', icon: '' },
+    { name: 'Ganhe R$1000', bottomText: 'Convite 100 vendedores', status: 'idle', icon: '' },
     { name: 'Ganhe 1 ano premium', bottomText: 'Convite 150 vendedores', status: 'idle', icon: '' },
+]
+
+export const recompenseTableHeader: string[] = [
+    'Código',
+    'Status',
+    'Responsável',
+    'Email',
+    'Telefone',
+    'Data de criação',
+    'Indicações',
+]
+export interface recompenseTableInterface {
+    code: string
+    status: string
+    responsible: string
+    email: string
+    telephone: string
+    creationDate: string
+    indication: string
+}
+
+export const recompenseTableData: recompenseTableInterface[] = [
+    {
+        code: '#59999999',
+        status: 'activa',
+        responsible: 'Nome',
+        email: 'Email',
+        telephone: '[ddd]00000-0000',
+        creationDate: '00/00/00',
+        indication: '00',
+    },
 ]
