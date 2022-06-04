@@ -65,6 +65,8 @@ export const PrimaryLayout: FC<PrimaryLayoutProps> = ({
                             navHeader={navHeader}
                             header={header}
                             desktopSearch={desktopSearch}
+                            menuItemList={menuItemList}
+                            isPrimary={isPrimary}
                         />
                     </div>
                     <div className="my-[4.6rem]">{isLoading ? <LoadingPage /> : children}</div>
