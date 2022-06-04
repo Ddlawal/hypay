@@ -29,7 +29,7 @@ export const headerLinks: Array<{
     {
         id: 4,
         title: 'Entrar',
-        href: '/signup',
+        href: '/login',
     },
 ]
 
