@@ -8,7 +8,7 @@ type Props = {
 
 export const Label = ({ children, className, ...rest }: Props): React.ReactElement => {
     return (
-        <label className={cx('block py-3 text-sm text-gray-800', className)} {...rest}>
+        <label className={cx('block py-3 text-gray-800', className)} {...rest}>
             {children}
         </label>
     )

@@ -1,6 +1,5 @@
 import { RootState } from '../index'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { PURGE } from 'redux-persist'
 
 export interface User {
     userInfo: userDataInfo
@@ -17,7 +16,7 @@ export interface userDataInfo {
     address: string
 }
 
-interface deliveryAddress {
+export interface DeliveryAddress {
     id: number
     name: string
     recipient: string
@@ -66,7 +65,7 @@ const initialAuthState: initialAuthStateInterface = {
     token: null,
     isAuthenticated: false,
     isError: false,
-    sessionExpiryTime: 0,
+    sessionExpiryTime: firstState()?.sessionExpiryTime || 0,
 }
 
 export const authSlice = createSlice({
@@ -77,6 +76,7 @@ export const authSlice = createSlice({
             const currentTime = Date.now()
             const expiresIn = action.payload.token.expires_in * 1000 //milliseconds
             const sessionExpiryTime = currentTime + expiresIn
+            localStorage.setItem('user', JSON.stringify({ ...action.payload, sessionExpiryTime }))
             return {
                 ...state,
                 user: action.payload.userInfo,
