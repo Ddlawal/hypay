@@ -103,9 +103,9 @@ export const LoggedInHeader = ({
                             </button>
                         </NextLink>
                         <Dropdown items={dropdownMenuItems}>
-                            <button className="block rounded-lg py-2 transition duration-200 ease-in-out hover:scale-105 hover:shadow-md md:hidden">
+                            <div className="block rounded-lg py-2 transition duration-200 ease-in-out hover:scale-105 hover:shadow-md md:hidden">
                                 <MoreOptionsVIcon size={26} color={COLORS.ICON_GRAY} />
-                            </button>
+                            </div>
                             <div className="hidden md:block">
                                 <Image
                                     className="rounded-full"

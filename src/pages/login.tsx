@@ -51,7 +51,6 @@ const Login: NextPage = () => {
                     .unwrap()
                     .then((payload: any) => {
                         showSuccessSnackbar('Login Successful')
-                        localStorage.setItem('user', JSON.stringify(payload))
                         dispatch(loginUser(payload))
                         push('/dashboard/home')
                     })
@@ -85,7 +84,6 @@ const Login: NextPage = () => {
                 .unwrap()
                 .then((payload: any) => {
                     showSuccessSnackbar('Login Successful')
-                    localStorage.setItem('user', JSON.stringify(payload))
                     dispatch(loginUser(payload))
                     push('/dashboard/home')
                 })
