@@ -6,6 +6,15 @@ import { SettingsIcon } from '../components/Icons/SettingsIcon'
 import { CheckIconWhite } from '../components/Icons/CheckIcon'
 import { COLORS } from './constants/colors'
 
+export type MenuItemListType = {
+    text: string
+    href: string
+    leftIcon?: JSX.Element | (() => JSX.Element)
+    isDropDown?: { href: string; text: string }[]
+    hasRightIcon?: boolean
+    rightIcon?: JSX.Element | (() => JSX.Element)
+}
+
 export const headerLinks: Array<{
     id: number
     title: string
@@ -33,14 +42,7 @@ export const headerLinks: Array<{
     },
 ]
 
-export const MenuItemList: Array<{
-    text: string
-    href: string
-    leftIcon?: JSX.Element | (() => JSX.Element)
-    isDropDown?: { href: string; text: string }[]
-    hasRightIcon?: boolean
-    rightIcon?: JSX.Element | (() => JSX.Element)
-}> = [
+export const MenuItemList: MenuItemListType[] = [
     {
         text: 'Início',
         href: '/dashboard/home',
@@ -105,6 +107,39 @@ export const MenuItemList: Array<{
         href: '/dashboard/settings',
         leftIcon: SettingsIcon({ color: COLORS.YELLOW }),
         rightIcon: RightArrowIcon({ color: COLORS.YELLOW }),
+    },
+]
+
+export const SettingsMenuItemList: MenuItemListType[] = [
+    {
+        text: 'Notificações',
+        href: '/dashboard/settings',
+        leftIcon: HomeIcon({ color: COLORS.YELLOW }),
+    },
+    {
+        text: 'Comunicação',
+        href: '/dashboard/settings/communication',
+        leftIcon: TagIcon({ color: COLORS.YELLOW }),
+    },
+    {
+        text: 'Configurações Gerais',
+        href: '/dashboard/settings/general',
+        leftIcon: BagIcon({ color: COLORS.YELLOW }),
+    },
+    {
+        text: 'Configurações Avançadas',
+        href: '/dashboard/settings/other',
+        leftIcon: AnalysisIcon({ color: COLORS.YELLOW }),
+    },
+    {
+        text: 'Forma de Entrega',
+        href: '/dashboard/settings/form-delivery',
+        leftIcon: ShelterIcon({ color: COLORS.YELLOW }),
+    },
+    {
+        text: 'Planos',
+        href: '/dashboard/settings/plans',
+        leftIcon: HomeIcon({ color: COLORS.YELLOW }),
     },
 ]
 
