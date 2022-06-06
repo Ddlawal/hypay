@@ -154,14 +154,12 @@ export const dropdownMenuItems = [
     },
     {
         title: 'Lojas',
+        href: '/store',
     },
     {
         title: 'Central de ajuda',
         href: '/dashboard/helpCenter',
     },
-    // {
-    //     title: 'Logout',
-    // },
 ]
 
 // Random Image Generator FUnction
