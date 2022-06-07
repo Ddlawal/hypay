@@ -22,18 +22,18 @@ export const headerLinks: Array<{
 }> = [
     {
         id: 1,
-        title: 'Vantagens',
-        href: '#',
+        title: 'Solução',
+        href: '#solution',
     },
     {
         id: 2,
         title: 'Como funciona',
-        href: '#',
+        href: '#function',
     },
     {
         id: 3,
         title: 'Benefícios',
-        href: '#',
+        href: '#benefit',
     },
     {
         id: 4,
