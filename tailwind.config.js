@@ -31,6 +31,7 @@ module.exports = {
         backgroundImage: {
             'login-cloth': "url('/images/login-cloth.png')",
             'login-books': "url('/images/login-book.png')",
+            'plan-header-bg': "url('/images/plan-header-bg.png')",
         },
     },
     plugins: [],

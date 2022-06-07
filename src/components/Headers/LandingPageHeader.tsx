@@ -16,12 +16,23 @@ const HeaderLinks = () => {
             {headerLinks.map(({ id, title, href }) => {
                 return (
                     <li key={id} className="flex items-center gap-2">
-                        <NextLink
-                            href={href}
-                            className="text-base text-hypay-primary hover:text-hypay-secondary md:text-sm"
-                        >
-                            {title}
-                        </NextLink>
+                        {title !== 'Entrar' ? (
+                            <NextLink
+                                href={href}
+                                className="text-base capitalize text-hypay-primary hover:text-hypay-secondary md:text-sm"
+                            >
+                                {title}
+                            </NextLink>
+                        ) : (
+                            <NextLink
+                                href={href}
+                                target="_blank"
+                                className="text-base capitalize text-hypay-primary hover:text-hypay-secondary md:text-sm"
+                            >
+                                {title}
+                            </NextLink>
+                        )}
+
                         {id === 4 && <RightArrowIcon color={COLORS.PRIMARY} size={14} />}
                     </li>
                 )
