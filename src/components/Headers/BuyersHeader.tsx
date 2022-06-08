@@ -16,7 +16,7 @@ export const BuyersHeader = () => {
 
     return (
         <div className="flex w-screen items-center justify-between overflow-hidden bg-white py-4 px-2 md:justify-end md:px-16 lg:px-28">
-            <div className="fixed right-0 top-0 z-20">
+            <div className="fixed right-0 top-0 z-50">
                 <div
                     ref={ref}
                     style={{ width }}
