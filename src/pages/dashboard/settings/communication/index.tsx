@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { NextPage } from 'next'
 import { PrimaryLayout } from '../../../../components/Layout'
 import { SettingsMenuItemList } from '../../../../lib/data'
@@ -6,10 +6,12 @@ import { Card } from '../../../../components/Card'
 import Image from 'next/image'
 import { Button } from '../../../../components/Button'
 import { Input } from '../../../../components/form'
-import { CircularPlusIcon } from '../../../../components/Icons'
+import { CircularPlusIcon, WhatsAppIcon } from '../../../../components/Icons'
 import Link from 'next/link'
+import { COLORS } from '../../../../lib/constants/colors'
 
 const Communication: NextPage = () => {
+    const [enterNumber, setEnterNumber] = useState(false)
     return (
         <PrimaryLayout currentTabIndex={1} menuItemList={SettingsMenuItemList} isPrimary={false}>
             <div>
@@ -17,16 +19,10 @@ const Communication: NextPage = () => {
                     <h1 className="  ml-3 p-6 text-2xl font-bold md:text-4xl lg:p-8">
                         Auxilie seus clientes de maneira fácil
                     </h1>
-                    {false && (
+                    {enterNumber && (
                         <div className="mb-4 flex items-center justify-center md:p-8 lg:justify-start">
                             <Card className="sm:5/6  flex w-4/5 items-start rounded lg:w-3/5">
-                                <Image
-                                    className="cursor-pointer border  transition-transform hover:scale-105 "
-                                    src="/images/call-image.png"
-                                    width="25"
-                                    height="25"
-                                    alt="phone"
-                                />
+                                <WhatsAppIcon size={20} color={COLORS.PINK} />
                                 <div className="flex flex-col pl-4">
                                     <h1 className="text-xl font-bold">Iphone 13 Pro Max</h1>
                                     <Input
@@ -60,7 +56,9 @@ const Communication: NextPage = () => {
                             <Link href="/dashboard/settings/communication/whatsappQrCode">
                                 <a className="flex items-center">
                                     <CircularPlusIcon />
-                                    <p className="ml-1">{false ? 'Conectar novo whatsapp' : 'Conectar whatsapp'}</p>
+                                    <p className="ml-1">
+                                        {enterNumber ? 'Conectar novo whatsapp' : 'Conectar whatsapp'}
+                                    </p>
                                 </a>
                             </Link>
                         </Button>
