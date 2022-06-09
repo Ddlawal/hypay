@@ -37,8 +37,10 @@ const HeaderLinks = () => {
                     </li>
                 )
             })}
-            <Button primary onClick={() => push('/createstore')} className="md:ml-5">
-                Crie sua página
+            <Button primary className="md:ml-5">
+                <NextLink target="_blank" href="/createstore">
+                    Crie sua página
+                </NextLink>
             </Button>
         </ul>
     )

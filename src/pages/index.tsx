@@ -18,7 +18,6 @@ import { useMediaQuery } from '../hooks/useMediaQuery'
 import { COLORS } from '../lib/constants/colors'
 import Head from 'next/head'
 import { LandingPageFooter } from '../components/Headers/LandingPageFooter'
-import { useRouter } from 'next/router'
 
 type ContentProps = {
     title: string
@@ -54,7 +53,6 @@ const Index: NextPage = () => {
     const isLargeScreen = useMediaQuery('md')
     const [orientation, setOrientation] = useState<'horizontal' | 'vertical'>('horizontal')
     const [isHorizontal, setIsHorizontal] = useState(false)
-    const { push } = useRouter()
 
     useEffect(() => {
         if (isLargeScreen) {
@@ -89,10 +87,10 @@ const Index: NextPage = () => {
                         </p>
                         <div className="flex justify-center pr-10">
                             <Button
-                                onClick={() => push('/createstore')}
+                                onClick={() => window.open('/createstore')}
                                 primary
                                 size="lg"
-                                className="py-4 px-9 md:py-3 md:px-7"
+                                className="py-4 px-9 capitalize md:py-3 md:px-7"
                             >
                                 Crie sua página
                             </Button>
@@ -110,10 +108,10 @@ const Index: NextPage = () => {
                             body="Ganhe mais engajamento na sua loja com uma forma confiável de vender e com uma plataforma super prática."
                         />
                         <Button
-                            onClick={() => push('/createstore')}
+                            onClick={() => window.open('/createstore')}
                             primary
                             size="lg"
-                            className="py-4 px-9 md:py-3 md:px-7"
+                            className="py-4 px-9 capitalize md:py-3 md:px-7"
                         >
                             Crie sua página
                         </Button>
@@ -237,10 +235,10 @@ const Index: NextPage = () => {
                     </div>
 
                     <Button
-                        onClick={() => push('/createstore')}
+                        onClick={() => window.open('/createstore')}
                         primary
                         size="lg"
-                        className="mr-24 py-4 px-9 md:mr-0 md:py-3 md:px-7"
+                        className="mr-24 py-4 px-9 capitalize md:mr-0 md:py-3 md:px-7"
                     >
                         Crie sua página
                     </Button>
@@ -291,10 +289,10 @@ const Index: NextPage = () => {
                         </div>
                         <div className="mt-10 flex items-end justify-center md:w-[80%] md:justify-end">
                             <Button
-                                onClick={() => push('/createstore')}
+                                onClick={() => window.open('/createstore')}
                                 primary
                                 size="lg"
-                                className="mb-8 py-4 px-9 md:py-3 md:px-7"
+                                className="mb-8 py-4 px-9 capitalize md:py-3 md:px-7"
                             >
                                 Crie sua página
                             </Button>
