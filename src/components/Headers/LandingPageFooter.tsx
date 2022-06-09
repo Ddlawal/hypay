@@ -24,7 +24,7 @@ export const LandingPageFooter = () => (
                             <NextLink href="#benefit">Benefícios</NextLink>
                         </li>
                         <li className="text-underline mb-3 w-min border-b border-hypay-pink tracking-wide text-hypay-pink">
-                            <NextLink href="/">Suporte</NextLink> Suporte
+                            <NextLink href="/">Suporte</NextLink>
                         </li>
                     </ul>
                 </div>
