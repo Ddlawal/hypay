@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { NextPage } from 'next'
+import { useRouter } from 'next/router'
 import Image from 'next/image'
 import { FieldError, useForm, UseFormHandleSubmit, UseFormRegister } from 'react-hook-form'
 
@@ -15,7 +16,6 @@ import { Radio } from '../../../components/form/Radio'
 import { PurchaseSummary } from '../../../components/PurchaseSummary'
 import { Card } from '../../../components/Card'
 import { Barcode } from '../../../components/Barcode'
-import { useRouter } from 'next/router'
 
 type FormFields = {
     payment_type: string
