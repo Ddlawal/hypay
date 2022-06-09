@@ -32,7 +32,7 @@ const Content = ({ title, body, className, titleClassName, dotDivider = false }:
         <p
             className={cx(
                 titleClassName,
-                'mb-3 text-center text-3xl font-bold tracking-wide text-hypay-primary md:mb-4 md:text-left'
+                'mb-3 text-center text-3xl font-bold capitalize tracking-wide text-hypay-primary md:mb-4 md:text-left'
             )}
         >
             {title}
@@ -86,20 +86,33 @@ const Index: NextPage = () => {
                             Com o Hypay você paga e recebe com segurança através do instagram e Facebook.
                         </p>
                         <div className="flex justify-center pr-10">
-                            <Button primary size="lg" className="py-4 px-9 md:py-3 md:px-7">
+                            <Button
+                                onClick={() => window.open('/createstore')}
+                                primary
+                                size="lg"
+                                className="py-4 px-9 capitalize md:py-3 md:px-7"
+                            >
                                 Crie sua página
                             </Button>
                         </div>
                     </div>
                 </Banner>
 
-                <section className="flex flex-col-reverse px-4 py-8 pb-10 sm:px-10 md:flex-row md:justify-between lg:px-24 xl:px-40">
+                <section
+                    id="solution"
+                    className="flex flex-col-reverse px-4 py-8 pb-10 sm:px-10 md:flex-row md:justify-between lg:px-24 xl:px-40"
+                >
                     <div className="w-full px-2 text-hypay-primary md:w-96 md:px-0 md:pt-28 md:pr-10">
                         <Content
                             title="Engajamento"
                             body="Ganhe mais engajamento na sua loja com uma forma confiável de vender e com uma plataforma super prática."
                         />
-                        <Button primary size="lg" className="py-4 px-9 md:py-3 md:px-7">
+                        <Button
+                            onClick={() => window.open('/createstore')}
+                            primary
+                            size="lg"
+                            className="py-4 px-9 capitalize md:py-3 md:px-7"
+                        >
                             Crie sua página
                         </Button>
                     </div>
@@ -138,7 +151,10 @@ const Index: NextPage = () => {
                 </section>
 
                 {/* todo: in-progress */}
-                <section className="flex flex-col px-7 pb-8 pt-16 sm:px-10 md:items-center md:pb-12 md:pt-24 lg:px-24 xl:px-40">
+                <section
+                    id="function"
+                    className="flex flex-col px-7 pb-8 pt-16 sm:px-10 md:items-center md:pb-12 md:pt-24 lg:px-24 xl:px-40"
+                >
                     <div className="text-center text-3xl font-bold tracking-wide text-hypay-primary">
                         Funciona assim
                     </div>
@@ -218,7 +234,12 @@ const Index: NextPage = () => {
                         </Timeline>
                     </div>
 
-                    <Button primary size="lg" className="mr-24 py-4 px-9 md:mr-0 md:py-3 md:px-7">
+                    <Button
+                        onClick={() => window.open('/createstore')}
+                        primary
+                        size="lg"
+                        className="mr-24 py-4 px-9 capitalize md:mr-0 md:py-3 md:px-7"
+                    >
                         Crie sua página
                     </Button>
                 </section>
@@ -230,7 +251,7 @@ const Index: NextPage = () => {
                         className=""
                     />
                 </section>
-                <div className="py-10 px-7 sm:px-10 md:py-4 lg:px-24 xl:px-40">
+                <div id="benefit" className="py-10 px-7 sm:px-10 md:py-4 lg:px-24 xl:px-40">
                     {/* incase the heading is required in future */}
                     {/* <h1 className="hidden mt-20 mb-8 text-4xl font-bold tracking-wide text-center md:block text-hypay-primary">
                         Benefícios para vendedor
@@ -267,7 +288,12 @@ const Index: NextPage = () => {
                             />
                         </div>
                         <div className="mt-10 flex items-end justify-center md:w-[80%] md:justify-end">
-                            <Button primary size="lg" className="mb-8 py-4 px-9 md:py-3 md:px-7">
+                            <Button
+                                onClick={() => window.open('/createstore')}
+                                primary
+                                size="lg"
+                                className="mb-8 py-4 px-9 capitalize md:py-3 md:px-7"
+                            >
                                 Crie sua página
                             </Button>
                         </div>

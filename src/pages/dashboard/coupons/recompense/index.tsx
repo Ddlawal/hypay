@@ -46,50 +46,52 @@ function Recompense() {
                     </p>
                 </header>
                 <section className="my-4">
-                    <main>
-                        <table className="my-8 w-full border-collapse overflow-hidden rounded-md border-2 bg-white">
-                            <thead className="border-b-2 border-gray-200 px-6 py-10">
-                                <tr>
-                                    {recompenseTableHeader.map((header, index: number) => (
-                                        <th key={index} className={`p-4 text-left`}>
-                                            {header}
-                                        </th>
-                                    ))}
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {Array(7)
-                                    .fill(recompenseTableData)
-                                    .flat()
-                                    .map(
-                                        (
-                                            {
-                                                code,
-                                                status,
-                                                responsible,
-                                                email,
-                                                telephone,
-                                                creationDate,
-                                                indication,
-                                            }: recompenseTableInterface,
-                                            index: number
-                                        ) => (
-                                            <tr className="border-b-2" key={index}>
-                                                <td className="p-4">{code}</td>
-                                                <td className="m-4  flex items-center justify-center rounded border border-hypay-green text-base text-hypay-green ">
-                                                    {status}
-                                                </td>
-                                                <td className="p-4 text-base">{responsible}</td>
-                                                <td className="p-4 text-base">{email}</td>
-                                                <td className="p-4 text-base">{telephone}</td>
-                                                <td className="p-4 text-base">{creationDate}</td>
-                                                <td className="p-4 text-base">{indication}</td>
-                                            </tr>
-                                        )
-                                    )}
-                            </tbody>
-                        </table>
-                    </main>
+                    {true && (
+                        <main>
+                            <table className="my-8 w-full border-collapse overflow-hidden rounded-md border-2 bg-white">
+                                <thead className="border-b-2 border-gray-200 px-6 py-10">
+                                    <tr>
+                                        {recompenseTableHeader.map((header, index: number) => (
+                                            <th key={index} className={`p-4 text-left`}>
+                                                {header}
+                                            </th>
+                                        ))}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {Array(7)
+                                        .fill(recompenseTableData)
+                                        .flat()
+                                        .map(
+                                            (
+                                                {
+                                                    code,
+                                                    status,
+                                                    responsible,
+                                                    email,
+                                                    telephone,
+                                                    creationDate,
+                                                    indication,
+                                                }: recompenseTableInterface,
+                                                index: number
+                                            ) => (
+                                                <tr className="border-b-2" key={index}>
+                                                    <td className="p-4">{code}</td>
+                                                    <td className="m-4  flex items-center justify-center rounded border border-hypay-green text-base text-hypay-green ">
+                                                        {status}
+                                                    </td>
+                                                    <td className="p-4 text-base">{responsible}</td>
+                                                    <td className="p-4 text-base">{email}</td>
+                                                    <td className="p-4 text-base">{telephone}</td>
+                                                    <td className="p-4 text-base">{creationDate}</td>
+                                                    <td className="p-4 text-base">{indication}</td>
+                                                </tr>
+                                            )
+                                        )}
+                                </tbody>
+                            </table>
+                        </main>
+                    )}
                 </section>
             </div>
         </PrimaryLayout>

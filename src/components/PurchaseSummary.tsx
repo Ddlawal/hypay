@@ -1,25 +1,42 @@
 import React from 'react'
 import Image from 'next/image'
+import cx from 'classnames'
+
 import { Card } from '../components/Card'
 import { LockIcon } from '../components/Icons'
 import { Button } from '../components/Button'
-import { useRouter } from 'next/router'
+import { useMediaQuery } from '../hooks/useMediaQuery'
 
-export const PurchaseSummary = () => {
-    const { push } = useRouter()
+type PurchaseSummaryProps = {
+    onSubmit: () => void
+    isSideSummary?: boolean
+}
 
-    const goToIdentification = () => push('/store/checkout/identification')
+export const PurchaseSummary = ({ onSubmit, isSideSummary }: PurchaseSummaryProps) => {
+    const isMobileScreen = !useMediaQuery('md')
 
     return (
-        <Card>
+        <Card rounded={isSideSummary}>
             <div className="font-bold">Produto</div>
-            <div className="my-4 flex gap-x-5 rounded bg-[#F2F2F2] py-4 px-2">
-                <div className="w-56">
+            <div
+                className={cx(
+                    isMobileScreen || isSideSummary ? 'flex-col' : 'md:flex-row md:bg-[#F2F2F2] md:px-2',
+                    'my-4 flex gap-x-5 rounded py-4'
+                )}
+            >
+                <div className={cx(isMobileScreen || isSideSummary ? 'w-full' : 'md:w-56')}>
                     <Image src="/images/jean-jacket.png" layout="responsive" height={100} width={100} quality={100} />
                 </div>
                 <div>
-                    <div className="leading-6 tracking-wider">Jaqueta jeans azul claro com camurça</div>
-                    <div className="text-xs">
+                    <div
+                        className={cx(
+                            isMobileScreen || isSideSummary ? 'text-xl' : 'md:text-base',
+                            'my-3 leading-6 tracking-wider text-hypay-gray'
+                        )}
+                    >
+                        Jaqueta jeans azul claro com camurça
+                    </div>
+                    <div className="text-sm">
                         Jaqueta jeans azul claro com camurça feita de lã de carneiro. Possui bolsos e botões na parte da
                         frente.
                     </div>
@@ -43,17 +60,21 @@ export const PurchaseSummary = () => {
                     <div>R$40</div>
                 </div>
             </div>
-            <Button
-                className="mt-10 block w-full bg-black text-lg font-bold text-white"
-                padding="py-4"
-                onClick={goToIdentification}
-            >
-                Continuar
-            </Button>
-            <div className="my-8 text-center text-lg font-semibold">Escolher mais produtos</div>
-            <div className="flex items-end justify-center gap-x-1 text-xl font-semibold">
-                <LockIcon size={40} /> Compra 100% segura
-            </div>
+            {isSideSummary ? null : (
+                <>
+                    <Button
+                        className="mt-10 block w-full bg-black text-lg font-bold text-white"
+                        padding="py-4"
+                        onClick={onSubmit}
+                    >
+                        Continuar
+                    </Button>
+                    <div className="my-8 text-center text-lg font-semibold">Escolher mais produtos</div>
+                    <div className="flex items-end justify-center gap-x-1 text-xl font-semibold">
+                        <LockIcon size={32} /> Compra 100% segura
+                    </div>
+                </>
+            )}
         </Card>
     )
 }
