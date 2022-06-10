@@ -2,10 +2,10 @@ import React from 'react'
 import Image from 'next/image'
 import cx from 'classnames'
 
-import { Card } from '../components/Card'
-import { LockIcon } from '../components/Icons'
-import { Button } from '../components/Button'
-import { useMediaQuery } from '../hooks/useMediaQuery'
+import { Card } from '../Card'
+import { LockIcon } from '../Icons'
+import { Button } from '../Button'
+import { useMediaQuery } from '../../hooks/useMediaQuery'
 
 type PurchaseSummaryProps = {
     onSubmit: () => void
@@ -30,13 +30,13 @@ export const PurchaseSummary = ({ onSubmit, isSideSummary }: PurchaseSummaryProp
                 <div>
                     <div
                         className={cx(
-                            isMobileScreen || isSideSummary ? 'text-xl' : 'md:text-base',
-                            'my-3 leading-6 tracking-wider text-hypay-gray'
+                            isMobileScreen || isSideSummary ? '' : 'md:text-sm',
+                            'my-3 leading-6 tracking-wider text-hypay-gray md:my-0 md:mb-2 md:mt-1 md:leading-4'
                         )}
                     >
                         Jaqueta jeans azul claro com camurça
                     </div>
-                    <div className="text-sm">
+                    <div className="text-xs">
                         Jaqueta jeans azul claro com camurça feita de lã de carneiro. Possui bolsos e botões na parte da
                         frente.
                     </div>

@@ -1,21 +1,20 @@
 import React, { useState } from 'react'
 import { NextPage } from 'next'
+import { useRouter } from 'next/router'
 import Image from 'next/image'
 import { FieldError, useForm, UseFormHandleSubmit, UseFormRegister } from 'react-hook-form'
 
 import { Button } from '../../../components/Button'
 import { SecondInput } from '../../../components/form'
-import { EmailNotificationIcon, LocationIcon, LockIcon } from '../../../components/Icons'
+import { LockIcon } from '../../../components/Icons'
 import { BuyerLayout } from '../../../components/Layout'
 import { SelectField } from '../../../components/Select'
-import { Timeline, TimelineEvent } from '../../../components/Timeline'
-import { useMediaQuery } from '../../../hooks/useMediaQuery'
-import { COLORS } from '../../../lib/constants/colors'
+import { BuyerTimeline } from '../../../components/Timeline'
 import { Radio } from '../../../components/form/Radio'
-import { PurchaseSummary } from '../../../components/PurchaseSummary'
+import { PurchaseSummary } from '../../../components/Buyer/PurchaseSummary'
 import { Card } from '../../../components/Card'
 import { Barcode } from '../../../components/Barcode'
-import { useRouter } from 'next/router'
+import { DeliveryDetails } from '../../../components/Buyer'
 
 type FormFields = {
     payment_type: string
@@ -140,38 +139,7 @@ const CreditCardList = ({ onAddCard }: { onAddCard: () => void }) => {
     )
 }
 
-const DeliveryDetails = () => {
-    return (
-        <div className="my-6">
-            <div>Delivery Details</div>
-            <Card className="mt-2 mb-4 flex items-center gap-x-8">
-                <div className="flex-none">
-                    <LocationIcon />
-                </div>
-                <div className="grow text-[0.6rem]">
-                    <div className="mb-1 text-[0.8rem]">Rua Lorem Ipsum, 300</div>
-                    <div>
-                        Curitiba, Paraná - CEP 80060150
-                        <br />
-                        Rafael Crespo - 9999999999
-                    </div>
-                </div>
-                <button className="flex-none text-sm">Change</button>
-            </Card>
-            <Card className="my-4 flex items-center gap-x-8">
-                <div className="flex-none">
-                    <EmailNotificationIcon />
-                </div>
-                <div className="grow text-[0.8rem]">Your purchase will arrive between 02/02 and 03/02</div>
-                <button className="flex-none text-sm">Change</button>
-            </Card>
-        </div>
-    )
-}
-
 const CheckoutPayment: NextPage = () => {
-    const isLargeScreen = useMediaQuery('md')
-    const [index] = useState(0)
     const [paymentType, setPaymentType] = useState('card')
     const [showItem, setShowItem] = useState(false)
     const [addCard, setAddCard] = useState(false)
@@ -195,47 +163,11 @@ const CheckoutPayment: NextPage = () => {
 
     return (
         <BuyerLayout>
-            <div className="mt-6 grid grid-cols-12 md:px-[10%]">
+            <div className="mt-6 grid grid-cols-12 md:gap-x-10 md:px-[10%]">
                 <div className="col-span-12 px-4 md:col-span-8 md:px-0">
-                    <div className="flex justify-center">
-                        <Timeline
-                            thickness={2}
-                            gap={isLargeScreen ? 80 : 50}
-                            progressBarBackground={COLORS.BLACK}
-                            activeIndex={index}
-                            position="top"
-                        >
-                            <TimelineEvent
-                                bgColor={COLORS.CYAN}
-                                border="none"
-                                label="Identification"
-                                labelFontSize={isLargeScreen ? 13 : 10}
-                                labelTextHeight={30}
-                                labelTextWidth={120}
-                                eventSize={20}
-                            />
-                            <TimelineEvent
-                                bgColor={COLORS.CYAN}
-                                border="none"
-                                label="Payment"
-                                labelFontSize={isLargeScreen ? 13 : 10}
-                                labelTextHeight={20}
-                                labelTextWidth={100}
-                                eventSize={20}
-                            />
-                            <TimelineEvent
-                                bgColor={COLORS.CYAN}
-                                border="none"
-                                label="Confirmation"
-                                labelFontSize={isLargeScreen ? 13 : 10}
-                                labelTextHeight={20}
-                                labelTextWidth={100}
-                                eventSize={20}
-                            />
-                        </Timeline>
-                    </div>
-                    <div className="mt-6">Checkout</div>
-                    <div className="mt-6">Escolha sua forma de pagamento </div>
+                    <BuyerTimeline />
+                    <div className="mt-6 text-lg font-semibold">Checkout</div>
+                    <div className="mt-6 text-lg font-semibold">Escolha sua forma de pagamento </div>
                     <div className="item-center my-4 hidden justify-between md:flex">
                         <Radio<FormFields>
                             checkedValue={paymentType}
@@ -361,7 +293,7 @@ const CheckoutPayment: NextPage = () => {
                             )}
                             {paymentType === 'pix' && (
                                 <div>
-                                    <Card padding="p-4 md:p-8">
+                                    <Card padding="p-4 md:p-8 mb-16">
                                         <div className="mb-2 text-lg font-bold">Escaneie este código para pagar</div>
                                         <ol className="list-decimal pl-4 text-sm">
                                             <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
@@ -387,22 +319,13 @@ const CheckoutPayment: NextPage = () => {
                                             <button>Copiar</button>
                                         </div>
                                     </Card>
-                                    <div className="flex justify-center">
-                                        <Button
-                                            padding="py-4 md:py-3 px-12"
-                                            className="col-span-6 mt-6 bg-white"
-                                            onClick={() => null}
-                                        >
-                                            Copiar código
-                                        </Button>
-                                    </div>
                                     <DeliveryDetails />
                                 </div>
                             )}
                         </>
                     )}
                 </div>
-                <div className="hidden px-12 font-semibold md:col-span-4 md:block md:text-[.7rem] lg:text-[.9rem]">
+                <div className="hidden font-semibold md:col-span-4 md:block md:text-[.7rem] lg:text-[.9rem]">
                     <div className="mb-6 flex items-start justify-end gap-x-2">
                         <LockIcon size={15} /> Compra 100% segura
                     </div>

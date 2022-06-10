@@ -1,15 +1,13 @@
 import { NextPage } from 'next'
 import { useRouter } from 'next/router'
-import React, { useState } from 'react'
+import React from 'react'
 import { useForm } from 'react-hook-form'
 import { Button } from '../../../components/Button'
 import { SecondInput } from '../../../components/form'
 import { LockIcon } from '../../../components/Icons'
 import { BuyerLayout } from '../../../components/Layout'
 import { SelectField } from '../../../components/Select'
-import { Timeline, TimelineEvent } from '../../../components/Timeline'
-import { useMediaQuery } from '../../../hooks/useMediaQuery'
-import { COLORS } from '../../../lib/constants/colors'
+import { BuyerTimeline } from '../../../components/Timeline'
 
 type FormFields = {
     buyer_email: string
@@ -20,8 +18,6 @@ type FormFields = {
 
 const Identification: NextPage = () => {
     const { push } = useRouter()
-    const isLargeScreen = useMediaQuery('md')
-    const [index] = useState(0)
     const {
         register,
         // handleSubmit,
@@ -30,47 +26,11 @@ const Identification: NextPage = () => {
 
     return (
         <BuyerLayout>
-            <div className="mt-6 grid grid-cols-12 md:px-[10%]">
+            <div className="mt-6 grid grid-cols-12 md:gap-x-10 md:px-[10%]">
                 <div className="col-span-12 px-4 md:col-span-9 md:px-0 md:pl-[20%] lg:pl-[30%]">
-                    <div className="flex justify-center">
-                        <Timeline
-                            thickness={2}
-                            gap={isLargeScreen ? 80 : 50}
-                            progressBarBackground={COLORS.BLACK}
-                            activeIndex={index}
-                            position="top"
-                        >
-                            <TimelineEvent
-                                bgColor={COLORS.CYAN}
-                                border="none"
-                                label="Identification"
-                                labelFontSize={isLargeScreen ? 13 : 10}
-                                labelTextHeight={30}
-                                labelTextWidth={120}
-                                eventSize={20}
-                            />
-                            <TimelineEvent
-                                bgColor={COLORS.CYAN}
-                                border="none"
-                                label="Payment"
-                                labelFontSize={isLargeScreen ? 13 : 10}
-                                labelTextHeight={20}
-                                labelTextWidth={100}
-                                eventSize={20}
-                            />
-                            <TimelineEvent
-                                bgColor={COLORS.CYAN}
-                                border="none"
-                                label="Confirmation"
-                                labelFontSize={isLargeScreen ? 13 : 10}
-                                labelTextHeight={20}
-                                labelTextWidth={100}
-                                eventSize={20}
-                            />
-                        </Timeline>
-                    </div>
-                    <div className="mt-6">*Campos obrigatórios</div>
-                    <div className="mt-6">Identificação</div>
+                    <BuyerTimeline />
+                    <div className="mt-6 text-lg font-semibold">*Campos obrigatórios</div>
+                    <div className="mt-6 text-lg font-semibold">Identificação</div>
                     <form className="my-12" onSubmit={(e) => e.preventDefault()}>
                         <SecondInput
                             className="my-3 text-gray-800 md:my-0"
