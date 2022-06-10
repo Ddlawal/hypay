@@ -31,7 +31,7 @@ const baseApi = createApi({
     reducerPath: 'baseApi',
     baseQuery: baseQuery,
     endpoints: () => ({}),
-    tagTypes: ['user', 'products', 'merchant'],
+    tagTypes: ['user', 'products', 'requests', 'merchant'],
     //  cache , The default time is seconds , Default duration 60 second
     keepUnusedDataFor: 5 * 60,
     refetchOnMountOrArgChange: 30 * 60,
