@@ -8,7 +8,7 @@ function PasswordInput({ errors, register, validation, className, placeholder }:
             <label htmlFor="password" className="mt-3 flex font-semibold">
                 <div className="flex w-full items-baseline justify-between">
                     <p>Password</p>
-                    <p className="text-xs text-hypay-gray">Forgotten your password?</p>
+                    <p className="text-xs text-hypay-gray">Esqueceu sua senha?</p>
                 </div>
             </label>
             <div

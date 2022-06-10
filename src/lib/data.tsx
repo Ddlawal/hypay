@@ -324,6 +324,20 @@ export const recompenseTableData: recompenseTableInterface[] = [
     },
 ]
 
+
+export interface PlansCardInterface {
+    planTitle: string
+    planAmount: string
+    packages: boolean[]
+}
+
+export const plans: PlansCardInterface[] = [
+    { planTitle: 'Plano 1', planAmount: '10', packages: [true, true, false, false, false] },
+    { planTitle: 'Plano 2', planAmount: '500', packages: [true, true, true, false, false] },
+    { planTitle: 'Plano 3', planAmount: '500', packages: [true, true, true, true, false] },
+    { planTitle: 'Plano 4', planAmount: '500', packages: [true, true, true, true, false] },
+  ]
+
 export interface tutorialItemsInterface {
     list:string
     text:string

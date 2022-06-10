@@ -43,7 +43,7 @@ export const SecondInput = ({
                 <label htmlFor="email" className="mt-3 flex font-semibold">
                     <div className="flex w-full items-baseline justify-between">
                         {label}
-                        {rightLabel && <p className="text-xs text-hypay-gray">Forgotten your password?</p>}
+                        {rightLabel && <p className="text-xs text-hypay-gray">Esqueceu sua senha?</p>}
                     </div>
                 </label>
             )}

@@ -92,7 +92,7 @@ const Index: NextPage = () => {
                                 size="lg"
                                 className="py-4 px-9 capitalize md:py-3 md:px-7"
                             >
-                                Crie sua página
+                                Crie sua loja
                             </Button>
                         </div>
                     </div>
@@ -113,7 +113,7 @@ const Index: NextPage = () => {
                             size="lg"
                             className="py-4 px-9 capitalize md:py-3 md:px-7"
                         >
-                            Crie sua página
+                            Crie sua loja
                         </Button>
                     </div>
 
@@ -167,7 +167,7 @@ const Index: NextPage = () => {
                             progressBarBackground={COLORS.PINK}
                         >
                             <TimelineEvent
-                                label="Crie sua conta no Hypay."
+                                label="Crie sua conta no Hypay"
                                 labelFontSize={isHorizontal ? undefined : 15}
                                 bgColor="white"
                                 border={`3px solid ${COLORS.PINK}`}
@@ -180,7 +180,7 @@ const Index: NextPage = () => {
                                 <CreateAccountIcon color={COLORS.PRIMARY} />
                             </TimelineEvent>
                             <TimelineEvent
-                                label="Conecte seu insagram ou facebook."
+                                label="Conecte seu insagram ou facebook"
                                 labelFontSize={isHorizontal ? undefined : 15}
                                 bgColor="white"
                                 border={`3px solid ${COLORS.PINK}`}
@@ -193,7 +193,7 @@ const Index: NextPage = () => {
                                 <ConnectIcon color={COLORS.PRIMARY} />
                             </TimelineEvent>
                             <TimelineEvent
-                                label="Compartilhe sua loja para os compradores."
+                                label="Compartilhe sua loja para os compradores"
                                 labelFontSize={isHorizontal ? undefined : 15}
                                 bgColor="white"
                                 border={`3px solid ${COLORS.PINK}`}
@@ -206,7 +206,7 @@ const Index: NextPage = () => {
                                 <ShareIcon color={COLORS.PRIMARY} />
                             </TimelineEvent>
                             <TimelineEvent
-                                label="Entrega confirmada."
+                                label="Entrega confirmada"
                                 labelFontSize={isHorizontal ? undefined : 15}
                                 bgColor="white"
                                 border={`3px solid ${COLORS.PINK}`}
@@ -240,7 +240,7 @@ const Index: NextPage = () => {
                         size="lg"
                         className="mr-24 py-4 px-9 capitalize md:mr-0 md:py-3 md:px-7"
                     >
-                        Crie sua página
+                        Crie sua loja
                     </Button>
                 </section>
 
@@ -294,7 +294,7 @@ const Index: NextPage = () => {
                                 size="lg"
                                 className="mb-8 py-4 px-9 capitalize md:py-3 md:px-7"
                             >
-                                Crie sua página
+                                Crie sua loja
                             </Button>
                         </div>
                     </section>

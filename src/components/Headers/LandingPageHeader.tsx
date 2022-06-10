@@ -39,7 +39,7 @@ const HeaderLinks = () => {
             })}
             <Button primary className="md:ml-5">
                 <NextLink target="_blank" href="/createstore">
-                    Crie sua página
+                    Crie sua loja
                 </NextLink>
             </Button>
         </ul>
