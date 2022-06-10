@@ -6,6 +6,7 @@ import { LoggedInHeader } from '../Headers'
 import Head from 'next/head'
 import { LoadingPage } from './LoadingPage'
 import { SearchType } from '../../pages/dashboard/search'
+import { MenuItemListType } from '../../lib/data'
 
 type PrimaryLayoutProps = {
     children: ReactNode
@@ -17,6 +18,8 @@ type PrimaryLayoutProps = {
     searchable?: SearchType
     navHeader?: string
     isLoading?: boolean
+    menuItemList?: MenuItemListType[]
+    isPrimary?: boolean
     desktopSearch?: (event: React.ChangeEvent<HTMLInputElement>) => void
 }
 
@@ -30,6 +33,8 @@ export const PrimaryLayout: FC<PrimaryLayoutProps> = ({
     searchable,
     navHeader,
     isLoading,
+    menuItemList,
+    isPrimary,
     desktopSearch,
 }) => {
     return (
@@ -41,7 +46,12 @@ export const PrimaryLayout: FC<PrimaryLayoutProps> = ({
             </Head>
             <div className={cx(className, 'mb-10 flex md:mb-0')}>
                 <div className="fixed z-10 hidden w-[22%] bg-black md:block">
-                    <SideNav currentTabIndex={currentTabIndex} dropDownIndex={dropDownIndex} />
+                    <SideNav
+                        currentTabIndex={currentTabIndex}
+                        dropDownIndex={dropDownIndex}
+                        menuItemList={menuItemList}
+                        isPrimary={isPrimary}
+                    />
                 </div>
 
                 {/* Careful when changing the marginLeft */}
@@ -55,6 +65,8 @@ export const PrimaryLayout: FC<PrimaryLayoutProps> = ({
                             navHeader={navHeader}
                             header={header}
                             desktopSearch={desktopSearch}
+                            menuItemList={menuItemList}
+                            isPrimary={isPrimary}
                         />
                     </div>
                     <div className="my-[4.6rem]">{isLoading ? <LoadingPage /> : children}</div>

@@ -7,6 +7,7 @@ import ui from './ui'
 import temporaryDataSlice from './temporaryData'
 import { productApi } from '../services/products'
 import { requestApi } from '../services/requests'
+import { merchantApi } from '../services/merchant'
 
 const persistConfig = {
     storage,
@@ -19,6 +20,7 @@ export const rootStore = combineReducers({
     [baseApi.reducerPath]: baseApi.reducer,
     [productApi.reducerPath]: productApi.reducer,
     [requestApi.reducerPath]: requestApi.reducer,
+    [merchantApi.reducerPath]: merchantApi.reducer,
     auth,
     ui,
     temporaryDataSlice,

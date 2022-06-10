@@ -8,7 +8,7 @@ import { CommentIcon, MenuIcon, MoreOptionsVIcon, NotificationIcon, SearchIcon }
 import { SideNav } from '../Layout'
 import { SIDE_NAV_WIDTH } from '../../lib/constants/elements'
 import { Dropdown } from '../Dropdown'
-import { dropdownMenuItems } from '../../lib/data'
+import { dropdownMenuItems, MenuItemListType } from '../../lib/data'
 import { useRouter } from 'next/router'
 import { NextLink } from '../Links'
 import { ArrowLeftIcon } from '../Icons/ArrowLeftIcon'
@@ -21,6 +21,8 @@ type LoggedInHeaderProps = {
     isNavBack?: boolean
     searchable?: SearchType
     navHeader?: string
+    menuItemList?: MenuItemListType[]
+    isPrimary?: boolean
     desktopSearch?: (event: React.ChangeEvent<HTMLInputElement>) => void
 }
 
@@ -31,6 +33,8 @@ export const LoggedInHeader = ({
     isNavBack,
     searchable,
     navHeader,
+    menuItemList,
+    isPrimary,
     desktopSearch,
 }: LoggedInHeaderProps) => {
     const [open, setOpen] = useState(false)
@@ -71,7 +75,12 @@ export const LoggedInHeader = ({
                                 'absolute left-0 top-0 block h-screen transition duration-500 ease-in-out md:hidden'
                             )}
                         >
-                            <SideNav currentTabIndex={currentTabIndex} dropDownIndex={dropDownIndex} />
+                            <SideNav
+                                currentTabIndex={currentTabIndex}
+                                dropDownIndex={dropDownIndex}
+                                menuItemList={menuItemList}
+                                isPrimary={isPrimary}
+                            />
                         </div>
                         <button className="p-2 transition" onClick={() => setOpen(true)}>
                             <MenuIcon size={26} color={COLORS.ICON_GRAY} />
@@ -103,9 +112,9 @@ export const LoggedInHeader = ({
                             </button>
                         </NextLink>
                         <Dropdown items={dropdownMenuItems}>
-                            <button className="block rounded-lg py-2 transition duration-200 ease-in-out hover:scale-105 hover:shadow-md md:hidden">
+                            <div className="block rounded-lg py-2 transition duration-200 ease-in-out hover:scale-105 hover:shadow-md md:hidden">
                                 <MoreOptionsVIcon size={26} color={COLORS.ICON_GRAY} />
-                            </button>
+                            </div>
                             <div className="hidden md:block">
                                 <Image
                                     className="rounded-full"

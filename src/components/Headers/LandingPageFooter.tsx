@@ -10,12 +10,21 @@ export const LandingPageFooter = () => (
             <div className="flex h-[80%] flex-col-reverse items-center justify-start md:flex-row">
                 <div className="mt-3 h-full w-full md:mt-0 md:w-[40%]">
                     <ul>
-                        <li className="mb-3 font-bold tracking-wide text-white">Hypay</li>
-                        <li className="mb-3 tracking-wide text-white">Vantagens</li>
-                        <li className="mb-3 tracking-wide text-white">Como funciona</li>
-                        <li className="mb-3 tracking-wide text-white">Benefícios</li>
+                        <li className="mb-3 font-bold tracking-wide text-white">
+                            <NextLink href="/">Hypay</NextLink>{' '}
+                        </li>
+                        <li className="mb-3 tracking-wide text-white">
+                            <NextLink href="#solution">Solução</NextLink>
+                        </li>
+                        <li className="mb-3 tracking-wide text-white">
+                            <NextLink href="#function">Como funciona</NextLink>
+                        </li>
+                        <li className="mb-3 tracking-wide text-white">
+                            {' '}
+                            <NextLink href="#benefit">Benefícios</NextLink>
+                        </li>
                         <li className="text-underline mb-3 w-min border-b border-hypay-pink tracking-wide text-hypay-pink">
-                            Suporte
+                            <NextLink href="/">Suporte</NextLink>
                         </li>
                     </ul>
                 </div>

@@ -12,7 +12,13 @@ type LogoProps = {
     labelColor?: string
 }
 
-export const Logo = ({ className, labelled, size, color = COLORS.PRIMARY, labelColor = COLORS.PRIMARY }: LogoProps) => {
+export const Logo = ({
+    className,
+    labelled,
+    size,
+    color = COLORS.PRIMARY,
+    labelColor = 'text-hypay-primary',
+}: LogoProps) => {
     return (
         <div
             className={cx(
@@ -26,10 +32,7 @@ export const Logo = ({ className, labelled, size, color = COLORS.PRIMARY, labelC
                 <div
                     style={{ fontSize: size ? `${size}px` : '22px' }}
                     // I removed the hidden class on the hypay text for mobile which we might make dynamic later for reusability
-                    className={cx(
-                        labelColor ? labelColor : 'text-hypay-primary',
-                        ' text-lg font-bold leading-7 tracking-wider  md:block'
-                    )}
+                    className={cx(labelColor, ' text-lg font-bold leading-7 tracking-wider md:block')}
                 >
                     hypay
                 </div>

@@ -11,6 +11,8 @@ const ProtectedRoute: FC = ({ children }) => {
     const router = useRouter()
     const { pathname } = router
 
+    console.log(user, 'user let me see')
+
     if (!user) {
         if (protectedRoutes.includes(pathname) && typeof window !== 'undefined') {
             router.push('/login')

@@ -1,5 +1,6 @@
 export const COLORS = {
     BLACK: '#242424',
+    CYAN: '#00B5DD',
     GREEN: '#1B9B65',
     GREY: '#9FA2B4',
     ICON_GRAY: '#959595',
