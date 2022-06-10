@@ -2,7 +2,7 @@ import React from 'react'
 import { NextPage } from 'next'
 
 import { BuyerLayout } from '../../../components/Layout'
-import { PurchaseSummary } from '../../../components/PurchaseSummary'
+import { PurchaseSummary } from '../../../components/Buyer'
 import { useRouter } from 'next/router'
 
 const Checkout: NextPage = () => {

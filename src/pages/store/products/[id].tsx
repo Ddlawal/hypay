@@ -27,10 +27,10 @@ const images = ['/images/jean-jacket.png', '/images/mens-wear.png']
 const ProductDescription = () => {
     return (
         <>
-            <div className="mt-5 flex items-center gap-x-2 text-lg">
+            <div className="mt-5 flex items-center gap-x-2 text-lg md:mt-3 md:text-base">
                 Descrição do anuncio <DownArrowIcon color={COLORS.BLACK} />
             </div>
-            <div className="text-sm font-thin">
+            <div className="text-sm font-thin md:text-xs">
                 Light blue jeans jacket with suede made of sheep's wool. It has pockets and buttons on the front.
             </div>
         </>
@@ -51,15 +51,15 @@ const ProductView: NextPage = () => {
 
     return (
         <BuyerLayout>
-            <div className="mb-16 md:mb-0 md:px-[23%] md:pt-12">
+            <div className="mb-16 md:mb-0 md:px-[20%] md:pt-12">
                 <Card
                     rounded
                     padding="p-0 md:py-10 md:px-6"
                     bg="bg-transparent md:bg-white"
                     elevation={isLargeScreen ? undefined : 'none'}
                 >
-                    <div className="relative grid grid-cols-12 md:gap-x-8">
-                        <div className="col-span-12 rounded-lg md:col-span-7">
+                    <div className="relative grid grid-cols-12 md:gap-x-2">
+                        <div className="col-span-12 rounded-lg md:col-span-8 md:pr-4">
                             <Image src={currentImage} layout="responsive" height={80} width="100%" quality={100} />
                             {isLargeScreen ? (
                                 <>
@@ -97,32 +97,40 @@ const ProductView: NextPage = () => {
                                 </>
                             ) : null}
                         </div>
-                        <div className="col-span-12 mx-4 md:col-span-5 md:mx-0">
-                            <div className="mt-4 text-2xl md:mt-0">Jaqueta jeans azul claro com camurça</div>
+                        <div className="col-span-12 mx-4 md:col-span-4 md:mx-0">
+                            <div className="mt-4 text-2xl md:mt-0 md:text-lg md:leading-6 md:text-hypay-gray">
+                                Jaqueta jeans azul claro com camurça
+                            </div>
                             {isLargeScreen ? (
                                 <>
-                                    <strong className="mt-10 block text-3xl">R$ 30</strong>
-                                    <div>até 2X sem juros</div>
+                                    <strong className="mt-4 block text-xl">R$ 30</strong>
+                                    <div className="text-xs">até 2X sem juros</div>
                                 </>
                             ) : (
                                 <ProductDescription />
                             )}
-                            <div className="mt-10 flex items-center gap-x-3 rounded-lg border border-black bg-white px-3 py-2 md:mt-4 md:bg-[#FFFBFB]">
+                            <div className="mt-10 flex items-center gap-x-3 rounded-lg border border-black bg-white px-3 py-2 md:mt-2 md:bg-[#FFFBFB] md:py-1">
                                 Quantidade: 1<RightArrowIcon color={COLORS.BLACK} />
                             </div>
                             {isLargeScreen ? (
                                 <>
                                     <Button
-                                        className="mt-5 block w-full bg-black text-lg font-bold text-white"
-                                        padding="py-5"
+                                        className="mt-3 block w-full bg-black text-lg font-bold text-white"
+                                        padding="py-3"
                                         onClick={() => gotoCheckout()}
                                     >
-                                        Buy
+                                        Comprar
                                     </Button>
-                                    <Button className="mt-5 block w-full border border-black text-lg" padding="py-4">
-                                        Ask the salesperson
+                                    <Button
+                                        className="mt-3 block w-full border border-black text-[1rem]"
+                                        padding="py-2"
+                                    >
+                                        Pergunte ao vendedor
                                     </Button>
-                                    <Button className="mt-2 block w-full border border-black text-lg" padding="py-4">
+                                    <Button
+                                        className="mt-2 block w-full border border-black text-[1rem]"
+                                        padding="py-2"
+                                    >
                                         Add to cart
                                     </Button>
                                     <ProductDescription />
@@ -131,11 +139,11 @@ const ProductView: NextPage = () => {
                             <div className="mt-3 md:mt-10">Calcule seu frete</div>
                             <div className="mt-1 mb-4 flex items-end justify-between rounded-xl border border-black bg-white py-1 pl-4 pr-1 md:bg-[#FFFBFB]">
                                 <div>________ - _______</div>
-                                <Button className="rounded-xl border border-black bg-white">Calcular</Button>
+                                <Button className="rounded-xl border border-black bg-white md:text-sm">Calcular</Button>
                             </div>
                             {isLargeScreen ? (
-                                <div className="flex items-end gap-x-1 text-xl font-bold">
-                                    <LockIcon size={40} /> 100% secure purchase
+                                <div className="flex items-end gap-x-1 font-bold">
+                                    <LockIcon size={28} /> 100% secure purchase
                                 </div>
                             ) : null}
                         </div>
