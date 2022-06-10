@@ -219,7 +219,7 @@ const Index: NextPage = () => {
                                 <DeliveryIcon color={COLORS.PRIMARY} />
                             </TimelineEvent>
                             <TimelineEvent
-                                label="Pronto. Você recebe o pagamento"
+                                label="Pronto! Você recebe o pagamento"
                                 labelFontSize={isHorizontal ? undefined : 15}
                                 bgColor="white"
                                 border={`3px solid ${COLORS.PINK}`}
