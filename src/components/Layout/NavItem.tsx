@@ -55,7 +55,7 @@ export const NavItem: FC<NavItemProps> = ({
                 onClick={isDropDown ? () => setShowDropdown(!showDropdown) : () => routeToPage(href)}
             >
                 {leftIcon}
-                <p className="">{text}</p>
+                <p className="capitalize">{text}</p>
                 {rightIcon}
             </div>
             {showDropdown &&
@@ -65,7 +65,9 @@ export const NavItem: FC<NavItemProps> = ({
                             onClick={() => changeTab(i, href)}
                             key={text}
                             className={cx(
-                                i === childIndex && isActive && 'border-l-4 border-hypay-pink bg-hypay-secondary',
+                                i === childIndex &&
+                                    isActive &&
+                                    'border-l-4 border-hypay-pink bg-hypay-secondary capitalize',
                                 'flex w-full cursor-pointer py-2 pl-[3.1rem] text-white outline-hidden transition ease-in hover:bg-hypay-secondary'
                             )}
                         >
