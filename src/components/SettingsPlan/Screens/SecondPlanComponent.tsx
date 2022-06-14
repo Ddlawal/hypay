@@ -12,7 +12,7 @@ import PlanCard from '../PlanCard'
 const CARD = 'Card'
 const TICKET = 'Ticket'
 
-interface ComponentChangeState {
+export interface ComponentChangeState {
     setPlanStage: React.Dispatch<React.SetStateAction<number>>
 }
 
