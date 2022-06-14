@@ -1,12 +1,17 @@
 import React, { useState } from 'react'
 import { COLORS } from '../../../lib/constants/colors'
+import { plans } from '../../../lib/data'
+import { Barcode } from '../../Barcode'
+import { Button } from '../../Button'
 import { Card } from '../../Card'
 import { BookTagIcon, PaymentCardIcon } from '../../Icons'
+import PlanCard from '../PlanCard'
+import { ComponentChangeState } from './SecondPlanComponent'
 
 const CARD = 'Card'
 const TICKET = 'Ticket'
 
-function ThirdPlanComponent() {
+function ThirdPlanComponent({ setPlanStage }: ComponentChangeState) {
     const [paymentMethod, setPaymentMethod] = useState(CARD)
     return (
         <section className="flex  w-full items-start justify-between gap-x-10">
@@ -67,8 +72,8 @@ function ThirdPlanComponent() {
                 </div>
 
                 <section className="flex w-full items-start justify-between gap-x-10 px-4 py-4 md:px-12">
-                    <div className="md:w-8/12">
-                        <Card className="" rounded>
+                    <div className="md:w-10/12">
+                        <Card className="w-10/12 py-12 px-10" rounded>
                             <header className="mb-2 flex items-center justify-between">
                                 <h1 className="font-bold">Você tem até três dias úteis para pagar</h1>
                             </header>
@@ -78,11 +83,34 @@ function ThirdPlanComponent() {
                                 fringilla. Ut consequat leo quis quis enim gravida nibh tellus.
                             </p>
 
-                            <h1 className="mb-10 text-4xl font-bold">qrCode</h1>
+                            <div className="">
+                                <Barcode />
+                            </div>
                         </Card>
                     </div>
-                    <div className="flex w-4/12 flex-col items-center justify-center">right</div>
+                    <div className="flex w-4/12 flex-col items-center justify-center">
+                        <PlanCard
+                            showMonthPay={false}
+                            planTitle="Plano 1"
+                            planAmount={plans[0].planAmount}
+                            packages={plans[0].packages}
+                        />
+                    </div>
                 </section>
+
+                <footer>
+                    <div className="flex items-center justify-center gap-x-5">
+                        <Button onClick={() => setPlanStage(4)} primary className="w-max px-6 shadow-md">
+                            Gerar Boleto
+                        </Button>
+                        <Button
+                            onClick={() => setPlanStage(4)}
+                            className="w-max border border-hypay-secondary px-6 text-hypay-secondary"
+                        >
+                            Copiar código
+                        </Button>
+                    </div>
+                </footer>
             </div>
         </section>
     )

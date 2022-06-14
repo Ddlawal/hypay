@@ -324,10 +324,9 @@ export const recompenseTableData: recompenseTableInterface[] = [
     },
 ]
 
-
 export interface PlansCardInterface {
     planTitle: string
-    planAmount: string
+    planAmount?: string
     packages: boolean[]
 }
 
@@ -336,16 +335,28 @@ export const plans: PlansCardInterface[] = [
     { planTitle: 'Plano 2', planAmount: '500', packages: [true, true, true, false, false] },
     { planTitle: 'Plano 3', planAmount: '500', packages: [true, true, true, true, false] },
     { planTitle: 'Plano 4', planAmount: '500', packages: [true, true, true, true, false] },
-  ]
+]
 
 export interface tutorialItemsInterface {
-    list:string
-    text:string
+    list: string
+    text: string
 }
 
-export const toturialItemsData:tutorialItemsInterface []=[
-{list:'1.',text:'venenatis neque non, nunc quam fermentum ut. Magnis leo nunc porttitor facilisis blandit. Vulputate gravida mattis natoque at.'},
-{list:'2.',text:'Vel, turpis sit dictum orci hendrerit erat tristique. Purus eu risus, ultrices aliquam, odio gravida ipsum neque. Dignissim risus, suscipit mauris interdum. A sed consectetur justo tincidunt sit proin et cursus aliquet. Libero faucibus dignissim ridiculus lacus. Porta facilisis suspendisse malesuada leo. A amet nunc massa, lectus adipiscing sollicitudin leo auctor nunc. Turpis commodo, viverra augue adipiscing amet vestibulum. Tristique quam ut elit elementum. Tempor integer ut interdum sagittis elementum nisi nibh auctor pellentesque. Sapien laoreet etiam tincidunt viverra metus sed auctor.'},
-{list:'3.',text:'Suspendisse id nec velit ut enim. Amet odio sed at vitae viverra viverra eu feugiat. Feugiat nulla mattis bibendum purus ornare. Egestas donec in sit enim sapien sed id non, est. Massa adipiscing fringilla neque pellentesque. Purus porttitor sapien viverra metus. Integer ut aliquam sit nunc. Blandit enim lorem ornare amet dictum amet. Vitae lacus enim quis hendrerit nibh quisque risus montes. Vitae sit nisl ipsum at non semper. Maecenas libero tortor facilisis nisl placerat velit posuere amet. Eget luctus eu, sodales mattis. Eu, id at non facilisi.'},
-{list:'4.',text:'Nisi, faucibus phasellus et elementum. Placerat a scelerisque pulvinar ut. Aliquam facilisis eget id id volutpat tortor, enim habitasse velit. Libero lectus et tellus sit lacus, tellus risus, faucibus ligula. Laoreet mi purus, pellentesque lacus sagittis, praesent sit hac. Consequat sed magna ac amet, nunc quam fermentum quis. Dui, fusce ac cum blandit massa felis pretium. Laoreet sit magna tortor sed cras risus. Eget faucibus sit egestas tortor sed pulvinar facilisis purus. Amet sapien elementum, ipsum maecenas.'},
+export const toturialItemsData: tutorialItemsInterface[] = [
+    {
+        list: '1.',
+        text: 'venenatis neque non, nunc quam fermentum ut. Magnis leo nunc porttitor facilisis blandit. Vulputate gravida mattis natoque at.',
+    },
+    {
+        list: '2.',
+        text: 'Vel, turpis sit dictum orci hendrerit erat tristique. Purus eu risus, ultrices aliquam, odio gravida ipsum neque. Dignissim risus, suscipit mauris interdum. A sed consectetur justo tincidunt sit proin et cursus aliquet. Libero faucibus dignissim ridiculus lacus. Porta facilisis suspendisse malesuada leo. A amet nunc massa, lectus adipiscing sollicitudin leo auctor nunc. Turpis commodo, viverra augue adipiscing amet vestibulum. Tristique quam ut elit elementum. Tempor integer ut interdum sagittis elementum nisi nibh auctor pellentesque. Sapien laoreet etiam tincidunt viverra metus sed auctor.',
+    },
+    {
+        list: '3.',
+        text: 'Suspendisse id nec velit ut enim. Amet odio sed at vitae viverra viverra eu feugiat. Feugiat nulla mattis bibendum purus ornare. Egestas donec in sit enim sapien sed id non, est. Massa adipiscing fringilla neque pellentesque. Purus porttitor sapien viverra metus. Integer ut aliquam sit nunc. Blandit enim lorem ornare amet dictum amet. Vitae lacus enim quis hendrerit nibh quisque risus montes. Vitae sit nisl ipsum at non semper. Maecenas libero tortor facilisis nisl placerat velit posuere amet. Eget luctus eu, sodales mattis. Eu, id at non facilisi.',
+    },
+    {
+        list: '4.',
+        text: 'Nisi, faucibus phasellus et elementum. Placerat a scelerisque pulvinar ut. Aliquam facilisis eget id id volutpat tortor, enim habitasse velit. Libero lectus et tellus sit lacus, tellus risus, faucibus ligula. Laoreet mi purus, pellentesque lacus sagittis, praesent sit hac. Consequat sed magna ac amet, nunc quam fermentum quis. Dui, fusce ac cum blandit massa felis pretium. Laoreet sit magna tortor sed cras risus. Eget faucibus sit egestas tortor sed pulvinar facilisis purus. Amet sapien elementum, ipsum maecenas.',
+    },
 ]

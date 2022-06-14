@@ -12,7 +12,7 @@ const Plans: NextPage = () => {
         <PrimaryLayout currentTabIndex={5} menuItemList={SettingsMenuItemList} isPrimary={false}>
             {planStage === 1 && <FirstPlanComponent setPlanStage={setPlanStage} />}
             {planStage === 2 && <SecondPlanComponent setPlanStage={setPlanStage} />}
-            {planStage === 3 && <ThirdPlanComponent />}
+            {planStage === 3 && <ThirdPlanComponent setPlanStage={setPlanStage} />}
         </PrimaryLayout>
     )
 }
