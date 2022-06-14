@@ -43,7 +43,7 @@ const DropdownItems: FC<DropdownButtonProps> = ({ items, className }) => {
                 <li
                     key={id}
                     onClick={() => (href ? push(href) : onClick)}
-                    className=" w-full transition-transform hover:scale-105"
+                    className=" w-full capitalize transition-transform hover:scale-105"
                 >
                     {title}
                 </li>

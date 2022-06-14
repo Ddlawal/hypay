@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { AnalysisIcon, BagIcon, FireIcon, MarketingIcon, ShelterIcon, TagIcon } from '../components/Icons'
+import { AnalysisIcon, BagIcon, FireIcon, MarketingIcon, ShelterIcon, TagIcon,SessionIcon } from '../components/Icons'
 import { HomeIcon } from '../components/Icons/HomeIcon'
 import { RightArrowIcon } from '../components/Icons/RightArrowIcon'
 import { SettingsIcon } from '../components/Icons/SettingsIcon'
@@ -128,8 +128,13 @@ export const SettingsMenuItemList: MenuItemListType[] = [
     },
     {
         text: 'Configurações Avançadas',
-        href: '/dashboard/settings/other',
+        href: '/dashboard/settings/advance',
         leftIcon: AnalysisIcon({ color: COLORS.YELLOW }),
+    },
+    {
+        text: 'Domínios',
+        href: '/dashboard/settings/domain',
+        leftIcon: SessionIcon({ color: COLORS.YELLOW }),
     },
     {
         text: 'Forma de Entrega',
