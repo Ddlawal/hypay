@@ -24,7 +24,7 @@ const General: NextPage = () => {
                             </p>
 
                             <Button className="m-2 w-11/12 bg-hypay-pink text-white">
-                                <Link href="/dashboard/settings/general/instructions">
+                                <Link href="/dashboard/settings/advance/instructions">
                                     <a className="capitalize">Saiba mais</a>
                                 </Link>
                             </Button>

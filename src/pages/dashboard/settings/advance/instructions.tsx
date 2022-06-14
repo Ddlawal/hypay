@@ -9,7 +9,7 @@ const General: NextPage = () => {
     return (
         <PrimaryLayout currentTabIndex={2} menuItemList={SettingsMenuItemList} isPrimary={false}>
             <header className="mx-12 pt-6">
-                <Link href="http://localhost:3000/dashboard/settings/general">
+                <Link href="http://localhost:3000/dashboard/settings/advance">
                     <a>
                         <LeftArrowIcon />
                     </a>
