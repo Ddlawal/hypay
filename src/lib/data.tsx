@@ -84,7 +84,7 @@ export const MenuItemList: MenuItemListType[] = [
         ],
     },
     {
-        text: 'Cupons',
+        text: 'Coupons',
         href: '',
         leftIcon: FireIcon({ color: COLORS.YELLOW }),
         isDropDown: [

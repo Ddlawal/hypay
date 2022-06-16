@@ -33,15 +33,15 @@ function Discount() {
         <PrimaryLayout currentTabIndex={6} dropDownIndex={0}>
             <div className="px-4 py-4 md:px-12">
                 <header className="border-b-2 pb-3">
-                    <h1 className="mb-4 text-3xl font-bold">Gere cupons de desconto para seus clientes</h1>
-                    <p>Aumente as vendas dos seus produtos. Gere e compartilhe cupons para os seus clientes.</p>
+                    <h1 className="mb-4 text-3xl font-bold">Gere coupons de desconto para seus clientes</h1>
+                    <p>Aumente as vendas dos seus produtos. Gere e compartilhe coupons para os seus clientes.</p>
                     <p className="flex items-center gap-2 text-red-500">
                         Saiba mais detalhes sobre como funciona
                         <OpenLinkIcon color={COLORS.RED} />
                     </p>
                 </header>
                 <section className="my-3">
-                    <h1 className="text-xl font-bold">Seus cupons</h1>
+                    <h1 className="text-xl font-bold">Seus coupons</h1>
 
                     <div className="mt-5 mb-2 flex items-center justify-between">
                         <div className="flex items-center">
@@ -157,7 +157,7 @@ function Discount() {
                                     <SelectField<string | null>
                                         options={[]}
                                         name="numberOfCoupons"
-                                        label="Quantidade de cupons"
+                                        label="Quantidade de coupons"
                                         labelClassName="text-sm"
                                         placeholder=""
                                         value={''}
