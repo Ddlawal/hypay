@@ -6,6 +6,7 @@ import {
     FacebookIcon,
     InfoIcon,
     InstagramIcon,
+    LoaderIcon,
     OpenLinkIcon,
     PaintIcon,
     PaymentCardIcon,
@@ -20,7 +21,9 @@ import { PrimaryLayout } from '../../../components/Layout'
 import { useMediaQuery } from '../../../hooks/useMediaQuery'
 import { useAppSelector } from '../../../hooks/useStoreHooks'
 import { COLORS } from '../../../lib/constants/colors'
-import { updatedUserData } from '../../../store/reducers/temporaryData'
+import { loginUserData } from '../../../store/reducers/auth'
+import { useLazyVerifyEmailQuery } from '../../../store/services/auth'
+import { useSnackbar } from '../../../hooks/useSnackbar'
 
 const quickGuides = [
     {
@@ -42,7 +45,6 @@ const quickGuides = [
 ]
 
 type SectionWrapperProps = { title?: string }
-type WelcomeToHypayProps = { emailVerified: boolean; verifyEmail: () => void }
 
 const SectionWrapper: FC<SectionWrapperProps> = ({ children, title }) => (
     <section className="mb-8">
@@ -54,7 +56,7 @@ const SectionWrapper: FC<SectionWrapperProps> = ({ children, title }) => (
 export const EmailVerified = () => {
     const [show, setShow] = useState(true)
 
-    setTimeout(() => setShow(false), 3000)
+    setTimeout(() => setShow(false), 5000)
 
     return (
         <>
@@ -70,39 +72,54 @@ export const EmailVerified = () => {
     )
 }
 
-const WelcomeToHypay: FC<WelcomeToHypayProps> = ({ emailVerified, verifyEmail }) => (
-    <SectionWrapper>
-        <div className="mb-3 text-2xl font-semibold text-hypay-black">Bem vindo ao Hypay</div>
-        {emailVerified ? (
-            <EmailVerified />
-        ) : (
-            <Card rounded padding="py-3 md:px-3 px-10" className="md:flex md:justify-between" elevation="xl">
-                <div>
-                    <div className="mb-2 flex items-center justify-center md:mb-0 md:items-start md:justify-start">
-                        <InfoIcon color={COLORS.PINK} size={16} />
-                        <span className="ml-2 text-lg font-medium md:text-sm">Verifique seu e-mail</span>
+const WelcomeToHypay: FC = () => {
+    const [tryVerifyEmail, { isLoading }] = useLazyVerifyEmailQuery()
+    const { email_verified } = useAppSelector(loginUserData)
+    const { showSuccessSnackbar, showErrorSnackbar } = useSnackbar()
+    const handleVerifyEmail = async () => {
+        const res = await tryVerifyEmail('email')
+        const { message } = (await res.data) as { message: string }
+        if (!message) {
+            return showErrorSnackbar('Não foi possível verificar seu email')
+        }
+        return showSuccessSnackbar(message)
+    }
+
+    console.log(isLoading, ' is email verified')
+    return (
+        <SectionWrapper>
+            <div className="mb-3 text-2xl font-semibold text-hypay-black">Bem vindo ao Hypay</div>
+            {email_verified ? (
+                <EmailVerified />
+            ) : (
+                <Card rounded padding="py-3 md:px-3 px-10" className="md:flex md:justify-between" elevation="xl">
+                    <div>
+                        <div className="mb-2 flex items-center justify-center md:mb-0 md:items-start md:justify-start">
+                            <InfoIcon color={COLORS.PINK} size={16} />
+                            <span className="ml-2 text-lg font-medium md:text-sm">Verifique seu e-mail</span>
+                        </div>
+                        <div className="mb-2 ml-6 text-center text-sm text-hypay-black md:text-left md:text-[9px]">
+                            Confirme sua conta no e-mail que enviamos para: seuemail@email.com
+                        </div>
                     </div>
-                    <div className="mb-2 ml-6 text-center text-sm text-hypay-black md:text-left md:text-[9px]">
-                        Confirme sua conta no e-mail que enviamos para: seuemail@email.com
+                    <div className="flex items-center justify-center">
+                        <Button
+                            primary
+                            outlined
+                            className="flex items-center justify-center py-4 px-10 text-center md:w-[110px] md:px-1 md:py-0.5 md:text-[11px]"
+                            onClick={handleVerifyEmail}
+                            disabled={isLoading}
+                        >
+                            {isLoading ? <LoaderIcon size={24} color={COLORS.RED} /> : 'Reenviar Email'}
+                        </Button>
                     </div>
-                </div>
-                <div className="flex items-center justify-center">
-                    <Button
-                        primary
-                        outlined
-                        className="py-4 px-10 md:w-[110px] md:px-1 md:py-0.5 md:text-[11px]"
-                        onClick={verifyEmail}
-                    >
-                        Reenviar Email
-                    </Button>
-                </div>
-            </Card>
-        )}
-    </SectionWrapper>
-)
+                </Card>
+            )}
+        </SectionWrapper>
+    )
+}
 
 const QuickGuide = () => {
-    const userInfo = useAppSelector(updatedUserData)
     return (
         <SectionWrapper title="Guia Rápido">
             <div className="hsb mt-3 flex gap-x-5 overflow-x-auto py-4">
@@ -201,9 +218,8 @@ const FootNote: FC<{ isDesktop: boolean }> = ({ isDesktop }) => (
 
 const Home = () => {
     const isDesktop = useMediaQuery('md')
-    const [emailVerified, setEmailVerified] = useState(false)
-
-    const verifyEmail = () => setEmailVerified(true)
+    // const [emailVerified, setEmailVerified] = useState(false)
+    // const verifyEmail = () => setEmailVerified(true)
 
     return (
         <PrimaryLayout>
@@ -214,7 +230,7 @@ const Home = () => {
                 </button>
             </div>
             <div className="py-4 px-4 md:px-16 lg:px-36">
-                <WelcomeToHypay emailVerified={emailVerified} verifyEmail={verifyEmail} />
+                <WelcomeToHypay />
                 <QuickGuide />
                 <ConnectYourStore />
                 <ShareYourStore />
