@@ -85,7 +85,6 @@ const WelcomeToHypay: FC = () => {
         return showSuccessSnackbar(message)
     }
 
-    console.log(isLoading, ' is email verified')
     return (
         <SectionWrapper>
             <div className="mb-3 text-2xl font-semibold text-hypay-black">Bem vindo ao Hypay</div>
