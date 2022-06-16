@@ -132,7 +132,7 @@ const QuickGuide = () => {
                         padding="py-2 px-3"
                     >
                         {icon}
-                        <span className="text-sm md:text-base">{text}</span>
+                        <span className="text-sm capitalize md:text-base ">{text}</span>
                     </Card>
                 ))}
             </div>
@@ -154,7 +154,7 @@ const ConnectYourStore = () => (
                     <div className="text-sm text-hypay-black md:text-[0.6rem]">Text here and hereaaa</div>
                 </div>
                 <div className="mt-8 flex items-center md:mt-0">
-                    <Button primary className="py-4 px-10 md:w-[110px] md:px-1 md:py-0.5 md:text-[11px]">
+                    <Button primary className="py-4 px-10 capitalize md:w-[110px] md:px-1 md:py-0.5 md:text-[11px] ">
                         Vincular a conta
                     </Button>
                 </div>
@@ -176,7 +176,7 @@ const ConnectYourStore = () => (
                 <div className="mt-8 flex items-center md:mt-0">
                     <Button
                         primary
-                        className="bg-hypay-orange py-4 px-10 md:w-[110px] md:px-1 md:py-0.5 md:text-[11px]"
+                        className="bg-hypay-orange py-4 px-10 capitalize md:w-[110px] md:px-1 md:py-0.5 md:text-[11px] "
                     >
                         Configurar domínio
                     </Button>
@@ -210,7 +210,7 @@ const FootNote: FC<{ isDesktop: boolean }> = ({ isDesktop }) => (
         <span className="text-center text-[0.8rem] font-semibold">
             Tem dúvidas? Acesse nossa <span className="text-hypay-pink">Central de Ajuda</span>
         </span>
-        <button className="rounded-full p-2 transition duration-200 ease-in-out hover:scale-105 hover:shadow-sm">
+        <button className="rounded-full p-2 transition duration-200 ease-in-out hover:scale-105 hover:shadow-sm ">
             <OpenLinkIcon size={isDesktop ? 20 : 14} color={COLORS.PINK} />
         </button>
     </div>

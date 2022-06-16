@@ -38,7 +38,7 @@ const Notification: NextPage = () => {
                             </header>
                             <main>
                                 <div className="border-b border-hypay-gray py-3">
-                                    <p className="text-md">Pagamentos de banco</p>
+                                    <p className="text-md capitalize">Pagamentos de banco</p>
                                 </div>
                                 <div className="border-b border-hypay-gray py-3">
                                     <p className="text-md">Recibos</p>
@@ -133,11 +133,11 @@ const Notification: NextPage = () => {
                         <span className="my-2 flex items-center justify-center">
                             <LockIcon size={34} />
                         </span>
-                        <p>Atualize seu plano</p>
+                        <p className="capitalize">Atualize seu plano</p>
                         <span className="text-[0.7rem] leading-[0.5rem]">
                             O acesso a esse recurso só é possível a partir no Plano Champion
                         </span>
-                        <Button className="w-full text-center" primary>
+                        <Button className="w-full text-center " primary>
                             Saiba mais
                         </Button>
                     </div>

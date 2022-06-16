@@ -12,20 +12,20 @@ const General: NextPage = () => {
     const [saveEdit, setSaveEdit] = useState([])
     const { register } = useForm<any>()
     return (
-        <PrimaryLayout currentTabIndex={2} menuItemList={SettingsMenuItemList} isPrimary={false}>
+        <PrimaryLayout currentTabIndex={6} menuItemList={SettingsMenuItemList} isPrimary={false}>
             <div>
                 {saveEdit && (
                     <header className="mb-4 flex items-center justify-center">
                         <div className="mt-10 flex w-1/2 flex-col items-center justify-center lg:w-1/4">
                             <LockIcon size={38} />
-                            <h2 className="my-2 font-bold">Atualize seu plano</h2>
+                            <h2 className="my-2 font-bold capitalize">Atualize seu plano</h2>
                             <p className="p-1 text-center md:w-11/12">
                                 O acesso a esse recurso só é possível a partir no Plano Champion
                             </p>
 
                             <Button className="m-2 w-11/12 bg-hypay-pink text-white">
-                                <Link href="/dashboard/settings/general/instructions">
-                                    <a>Saiba mais</a>
+                                <Link href="/dashboard/settings/advance/instructions">
+                                    <a className="capitalize">Saiba mais</a>
                                 </Link>
                             </Button>
                         </div>
@@ -121,7 +121,9 @@ const General: NextPage = () => {
                         </div>
                     </section>
                     <div className="flex md:w-4/5 md:items-end md:justify-end">
-                        <Button className={`${saveEdit ? 'bg-hypay-gray' : 'bg-hypay-red'} text-white md:w-1/4`}>
+                        <Button
+                            className={`${saveEdit ? 'bg-hypay-gray' : 'bg-hypay-red'} capitalize text-white md:w-1/4`}
+                        >
                             Salvar Alterações
                         </Button>
                     </div>

@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { Button } from '../../../components/Button'
 import { Card } from '../../../components/Card'
 import { PrimaryLayout } from '../../../components/Layout'
+import { NextLink } from '../../../components/Links'
 import { SelectField } from '../../../components/Select'
 import { Table } from '../../../components/Table'
 import { useMediaQuery } from '../../../hooks/useMediaQuery'
@@ -66,12 +67,10 @@ const Filters = () => (
 const Request: NextPage = () => {
     const isDesktop = useMediaQuery('md')
     const router = useRouter()
-    const [orderId, setId] = useState<string>('')
+    const [requestId, setId] = useState<string>('')
     const { requests } = useRequests()
 
     const setOrderId = (id: string) => setId(id)
-
-    const showDetails = () => router.push(`/dashboard/request/${orderId}`)
 
     return (
         <PrimaryLayout currentTabIndex={2}>
@@ -82,7 +81,7 @@ const Request: NextPage = () => {
                 {isDesktop ? (
                     <Table<RequestType>
                         setId={setOrderId}
-                        uniqueKey="id"
+                        uniqueKey="orderId"
                         headerClassName="lg:text-xs text-[10px] text-center"
                         bodyClassName="lg:text-[10px] text-[8px]"
                         headers={[
@@ -91,35 +90,37 @@ const Request: NextPage = () => {
                             'Situação do pedido',
                             'Valor total',
                             'Data/Hora',
-                            'Tipo de frete',
-                            'Valor do frete',
-                            'Forma de pagamento',
+                            // 'Tipo de frete',
+                            // 'Valor do frete',
+                            // 'Forma de pagamento',
                             'Detalhes',
                         ]}
                         keys={[
-                            'orderNo',
-                            'product_code',
+                            'orderId',
+                            'orderRef',
                             'status',
-                            'amount',
-                            'date',
-                            'frieght_type',
-                            'cost_of_frieght',
-                            'payment_method',
+                            'cost',
+                            'orderDate',
+                            // 'frieght_type',
+                            // 'cost_of_frieght',
+                            // 'payment_method',
                             null,
                         ]}
                         rows={requests}
                     >
-                        <Button padding="py-1 px-2" className="w-24 truncate" size="xs" primary onClick={showDetails}>
-                            Mais detalhes
-                        </Button>
+                        <NextLink href={`/dashboard/request/${requestId}`}>
+                            <Button padding="py-1 px-2" className="w-24 truncate" size="xs" primary>
+                                Mais detalhes
+                            </Button>
+                        </NextLink>
                     </Table>
                 ) : (
                     <div className="mt-4">
-                        {requests.map(({ id, orderNo, status, date, payment_method, amount }, i) => {
+                        {requests.map(({ orderId, status, orderDate, payment_method, cost }, i) => {
                             return (
                                 <Card rounded="rounded-3xl" padding="px-5 py-8" key={i} className="mt-6">
                                     <div className="flex justify-between">
-                                        <div>Pedido {orderNo}</div>
+                                        <div>Pedido {orderId}</div>
                                         <div className="text-right">
                                             {status === 'confirmed' && (
                                                 <span className="text-hypay-green">Pagamento Efetuado</span>
@@ -132,7 +133,7 @@ const Request: NextPage = () => {
                                     <div className="mt-5 flex justify-between text-xs">
                                         <div>
                                             <div className="text-hypay-gray">Data</div>
-                                            <div>{date}</div>
+                                            <div>{orderDate}</div>
                                         </div>
                                         <div>
                                             <div className="text-hypay-gray">Forma de Pag.</div>
@@ -140,14 +141,14 @@ const Request: NextPage = () => {
                                         </div>
                                         <div>
                                             <div className="text-hypay-gray">Valor Total</div>
-                                            <div>{amount}</div>
+                                            <div>{cost}</div>
                                         </div>
                                     </div>
                                     <div className="mt-5">
                                         <Button
                                             className="w-full"
                                             primary
-                                            onClick={() => router.push(`/dashboard/request/${id}`)}
+                                            onClick={() => router.push(`/dashboard/request/${orderId}`)}
                                         >
                                             Mais detalhes
                                         </Button>
