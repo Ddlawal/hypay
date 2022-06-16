@@ -14,7 +14,7 @@ export const FirstPlanComponent = ({
             <div className="mx-auto flex w-full items-center justify-center gap-x-5  pt-3 text-center">
                 <div className="flex items-center gap-x-3">
                     <span className="grid h-10 w-10 place-items-center rounded-full bg-hypay-pink text-white">1</span>
-                    <p>Assine o plano</p>
+                    <p className="capitalize">Assine o plano</p>
                 </div>
                 <div className="flex items-center gap-x-3">
                     <span className="grid h-10 w-10 place-items-center rounded-full bg-white  text-black">2</span>

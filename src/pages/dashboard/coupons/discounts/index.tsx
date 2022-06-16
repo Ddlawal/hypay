@@ -42,7 +42,6 @@ function Discount() {
                 </header>
                 <section className="my-3">
                     <h1 className="text-xl font-bold">Seus coupons</h1>
-
                     <div className="mt-5 mb-2 flex items-center justify-between">
                         <div className="flex items-center">
                             <TextField
@@ -76,7 +75,7 @@ function Discount() {
                             <span className="pl-2">
                                 <CircularPlusIcon />
                             </span>
-                            <span className="px-2">Gerar novo cupom</span>
+                            <span className="px-2 capitalize">Gerar novo cupom</span>
                         </Button>
                     </div>
 

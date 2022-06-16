@@ -10,15 +10,15 @@ const Other: NextPage = () => {
             <div className="relative min-h-[80vh] px-4 py-4 md:w-full md:px-12">
                 <div className="md:w-10/12">
                     <header>
-                        <h1 className="text-3xl font-bold">Domínios</h1>
+                        <h1 className="text-3xl font-bold ">Domínios</h1>
                     </header>
 
                     <main>
                         <table className="my-2 w-full border-collapse overflow-hidden rounded-md border-2 bg-white py-5">
                             <thead className="mb-10 border-b-2 border-gray-200  px-6 py-10">
                                 <tr className="text-md font-bold text-hypay-secondary">
-                                    <td>Nome do domínio</td>
-                                    <td>Data adicionada</td>
+                                    <td className="capitalize">Nome do domínio</td>
+                                    <td className="capitalize">Data adicionada</td>
                                     <td>Provedor</td>
                                     <td>Status</td>
                                 </tr>
