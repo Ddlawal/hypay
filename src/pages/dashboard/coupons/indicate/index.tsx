@@ -17,7 +17,7 @@ function Indicate() {
                 <header className="border-b-2 pb-8 md:py-6">
                     <h1 className="mb-6 text-4xl font-bold">Ganhe prêmios indicando o Hypay</h1>
                     <p className="text-base">
-                        Compartilhe cupons com outros vendedores e ganhe prêmios na nossa plataforma. Todo vendedor que
+                        Compartilhe coupons com outros vendedores e ganhe prêmios na nossa plataforma. Todo vendedor que
                         entrar para o Hypay pelo link que você enviar, você acumula pontos. Quanto mais pontos você
                         alcançar, mais prêmios você ganha.
                     </p>

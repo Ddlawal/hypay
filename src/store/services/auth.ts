@@ -41,6 +41,12 @@ const authApi = baseApi.injectEndpoints({
                 body: data,
             }),
         }),
+        verifyEmail: builder.query({
+            query: () => ({
+                url: '/email/resend',
+                method: 'GET',
+            }),
+        }),
     }),
 })
 
@@ -50,4 +56,5 @@ export const {
     useLogoutMutation,
     useCreateBusinessNameMutation,
     useLoginWithGoogleMutation,
+    useLazyVerifyEmailQuery,
 } = authApi

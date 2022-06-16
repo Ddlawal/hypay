@@ -1,19 +1,10 @@
 import { RootState } from '../index'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-export interface User {
-    userInfo: userDataInfo
-}
-export interface userDataInfo {
-    customerID: number
-    name: string
-    email: string
-    firstName: string
-    lastName: string
-    businessname: string
-    usertype: string
-    phone: null
-    address: string
+export interface Token {
+    access_token: string
+    token_type: string
+    expires_in: string
 }
 
 export interface DeliveryAddress {
@@ -21,32 +12,57 @@ export interface DeliveryAddress {
     name: string
     recipient: string
     street_1: string
-    street_2: null
+    street_2: string
     city: string
     state: string
     postal_code: string
-    longitude: null
-    latitude: null
+    longitude?: any
+    latitude?: any
     country_id: number
     phone: string
     created_at: string
     updated_at: string
-    deleted_at: null
+    deleted_at?: any
+    email: string
+    country?: any
 }
 
-export type TokenType = {
-    access_token: string
-    expires_in: number
-    token_type: string
+export interface UserInfo {
+    id: number
+    customerID: number
+    name: string
+    email: string
+    firstName: string
+    lastName: string
+    businessname: string
+    usertype: string
+    merchantCode: string
+    deliveryAddress: DeliveryAddress[]
+    phone?: any
+    profileStatus: boolean
+    referral_code: string
+    email_verified: boolean
+    google2fa_enabled: boolean
+    sms2fa_enabled: boolean
+    profile_image_link?: any
+    cpf_cnpj?: any
 }
 
-export interface initialAuthStateInterface {
-    user: User | null
-    token: TokenType | null
+export interface RootObject {
+    token: Token | null
+    user: UserInfo | null
     isAuthenticated: boolean
     isError: boolean
     sessionExpiryTime: number
 }
+
+// export interface initialAuthStateInterface {
+//     user: User | null
+//     token: TokenType | null
+//     isAuthenticated: boolean
+//     isError: boolean
+//     sessionExpiryTime: number
+// }
 
 const firstState = () => {
     try {
@@ -60,7 +76,7 @@ const firstState = () => {
     }
 }
 
-const initialAuthState: initialAuthStateInterface = {
+const initialAuthState: RootObject = {
     user: firstState(),
     token: null,
     isAuthenticated: false,
@@ -72,7 +88,7 @@ export const authSlice = createSlice({
     name: 'auth',
     initialState: initialAuthState,
     reducers: {
-        login: (state, action: PayloadAction<any>) => {
+        login: (state: RootObject, action: PayloadAction<any>) => {
             const currentTime = Date.now()
             const expiresIn = action.payload.token.expires_in * 1000 //milliseconds
             const sessionExpiryTime = currentTime + expiresIn
@@ -94,11 +110,11 @@ export const authSlice = createSlice({
                 sessionExpiryTime: 0,
             }
         },
-        register: (state, action: PayloadAction<any>) => ({
+        register: (state: RootObject, action: PayloadAction<any>) => ({
             ...state,
             ...action.payload,
         }),
-        updateUserLoggedInData: (state, action: PayloadAction<any>) => {
+        updateUserLoggedInData: (state: RootObject, action: PayloadAction<any>) => {
             return {
                 ...state,
                 user: action.payload,
@@ -109,6 +125,6 @@ export const authSlice = createSlice({
 
 export const { login, logout, register, updateUserLoggedInData } = authSlice.actions
 
-export const loginUserData = (state: RootState) => state?.auth?.user?.userInfo as userDataInfo
+export const loginUserData = (state: RootState) => state?.auth?.user as UserInfo
 
 export default authSlice.reducer

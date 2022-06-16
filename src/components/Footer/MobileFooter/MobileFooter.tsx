@@ -11,7 +11,7 @@ const footerItems = [
     },
     {
         icon: <TagIcon color={COLORS.PINK} size={22} />,
-        text: 'Cupons',
+        text: 'Coupons',
         link: '/dashboard/coupons/discounts',
     },
     {

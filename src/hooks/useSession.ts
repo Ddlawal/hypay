@@ -1,9 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useCallback, useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '../hooks/useStoreHooks'
-import { logout, User } from '../store/reducers/auth'
+import { logout, UserInfo } from '../store/reducers/auth'
 
-type SessionProps = { user: User | null }
+type SessionProps = { user: UserInfo | null }
 
 export const useSession = (): SessionProps => {
     const { sessionExpiryTime, user } = useAppSelector((state) => state?.auth)
