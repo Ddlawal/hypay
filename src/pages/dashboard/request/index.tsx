@@ -68,12 +68,12 @@ const Request: NextPage = () => {
     const isDesktop = useMediaQuery('md')
     const router = useRouter()
     const [requestId, setId] = useState<string>('')
-    const { requests } = useRequests()
+    const { requests, isLoading } = useRequests()
 
     const setOrderId = (id: string) => setId(id)
 
     return (
-        <PrimaryLayout currentTabIndex={2}>
+        <PrimaryLayout currentTabIndex={2} isLoading={isLoading} isNavBack={!isDesktop} navHeader="Produtos">
             <div className="p-4">
                 <div className="text-lg font-bold">Histórico de pedidos</div>
                 <div className="mt-3">Ordenar por</div>

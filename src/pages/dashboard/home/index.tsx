@@ -24,23 +24,28 @@ import { COLORS } from '../../../lib/constants/colors'
 import { loginUserData } from '../../../store/reducers/auth'
 import { useLazyVerifyEmailQuery } from '../../../store/services/auth'
 import { useSnackbar } from '../../../hooks/useSnackbar'
+import { NextLink } from '../../../components/Links'
 
 const quickGuides = [
     {
         icon: <PaintIcon color={COLORS.PINK} size={28} />,
         text: 'Choose a theme',
+        link: '/dashboard/onlineStore',
     },
     {
         icon: <TagIcon color={COLORS.PINK} size={28} />,
         text: 'Adicionar um produto',
+        link: '/dashboard/products/addProducts',
     },
     {
         icon: <PaymentCardIcon color={COLORS.PINK} size={28} />,
         text: 'Define Payment',
+        link: '',
     },
     {
         icon: <VanIcon color={COLORS.PINK} size={28} />,
         text: 'Configure send medium',
+        link: '',
     },
 ]
 
@@ -122,17 +127,13 @@ const QuickGuide = () => {
     return (
         <SectionWrapper title="Guia Rápido">
             <div className="hsb mt-3 flex gap-x-5 overflow-x-auto py-4">
-                {quickGuides.map(({ icon, text }, i) => (
-                    <Card
-                        key={`card${i}`}
-                        rounded
-                        elevation="xl"
-                        className="w-1/3 shrink-0 md:shrink"
-                        padding="py-2 px-3"
-                    >
-                        {icon}
-                        <span className="text-sm capitalize md:text-base ">{text}</span>
-                    </Card>
+                {quickGuides.map(({ icon, text, link }, i) => (
+                    <NextLink key={`card${i}`} href={link} className="w-1/3 shrink-0 md:shrink">
+                        <Card rounded elevation="xl" padding="py-2 px-3">
+                            {icon}
+                            <span className="text-sm capitalize md:text-base ">{text}</span>
+                        </Card>
+                    </NextLink>
                 ))}
             </div>
         </SectionWrapper>

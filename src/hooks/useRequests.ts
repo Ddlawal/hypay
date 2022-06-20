@@ -8,8 +8,16 @@ export const statusLabelMap: Record<string, string> = {
 }
 
 export const useRequests = (requestId?: string, req?: string[]) => {
-    const [getStatuses] = useLazyGetRequestStatusesQuery()
-    const { data: requests, isLoading } = useGetAllRequestsQuery()
+    const [getStatuses, { isFetching: isStatusFetching, isLoading: isStatusLoading }] = useLazyGetRequestStatusesQuery()
+    const {
+        data: requests,
+        isFetching,
+        isLoading,
+    } = useGetAllRequestsQuery(undefined, {
+        pollingInterval: 3000,
+        refetchOnMountOrArgChange: true,
+        skip: false,
+    })
     const [statuses, setStatuses] = useState<string[]>([])
     const [activeStatusIndex, setActiveStatusIndex] = useState(0)
 
@@ -29,7 +37,6 @@ export const useRequests = (requestId?: string, req?: string[]) => {
 
     useEffect(() => {
         Object.keys(statusLabelMap).forEach((label, i) => {
-            console.log(label, request?.status)
             if (label === request?.status) {
                 return setActiveStatusIndex(i)
             }
@@ -39,5 +46,11 @@ export const useRequests = (requestId?: string, req?: string[]) => {
 
     const request = requestId ? requests?.filter(({ orderId }) => orderId === Number(requestId))[0] : null
 
-    return { request, requests: requests ?? [], isLoading, statuses, activeStatusIndex }
+    return {
+        request,
+        requests: requests ?? [],
+        isLoading: isLoading || isFetching || isStatusFetching || isStatusLoading,
+        statuses,
+        activeStatusIndex,
+    }
 }
