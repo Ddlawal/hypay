@@ -5,6 +5,7 @@ import { Card } from '../../../components/Card'
 import { useRouter } from 'next/router'
 import { Button } from '../../../components/Button'
 import { dummyMessages, dummyMessagesType } from '../../../lib/data'
+import { RichText } from '../../../components/RichText'
 
 type paramsType = {
     messageId: string
@@ -33,6 +34,7 @@ export async function getStaticProps({ params }: any) {
 function Message({ data }: any) {
     const { back } = useRouter()
     const { name, message, time, date } = data
+
     return (
         <PrimaryLayout>
             <div className="mx-auto  py-4 px-4 leading-5 md:px-8 lg:px-24">
@@ -60,9 +62,7 @@ function Message({ data }: any) {
                     </Card>
                 </section>
                 <div className="pl-4  md:w-9/12">
-                    <Card className="h-[10rem]  shadow-md" padding="p-2 pb-5" rounded>
-                        <textarea className="h-full w-full outline-none"></textarea>
-                    </Card>
+                    <RichText />
                     <div className="flex justify-end md:justify-start">
                         <Button onClick={() => back()} className="my-6 py-3 px-6 text-2xl" size="lg" primary>
                             Responder

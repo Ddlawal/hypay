@@ -8,11 +8,12 @@ import temporaryDataSlice from './temporaryData'
 import { productApi } from '../services/products'
 import { requestApi } from '../services/requests'
 import { merchantApi } from '../services/merchant'
+import { messageApi } from '../services/messages'
 
 const persistConfig = {
     storage,
     key: 'hypay',
-    blacklist: [productApi.reducerPath, requestApi.reducerPath],
+    blacklist: [productApi.reducerPath, requestApi.reducerPath, messageApi.reducerPath],
     whitelist: ['ui'],
 }
 
@@ -21,6 +22,7 @@ export const rootStore = combineReducers({
     [productApi.reducerPath]: productApi.reducer,
     [requestApi.reducerPath]: requestApi.reducer,
     [merchantApi.reducerPath]: merchantApi.reducer,
+    [messageApi.reducerPath]: messageApi.reducer,
     auth,
     ui,
     temporaryDataSlice,
