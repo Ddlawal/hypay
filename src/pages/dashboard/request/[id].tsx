@@ -1,5 +1,4 @@
 import React, { GetServerSideProps, NextPage } from 'next'
-import { useRouter } from 'next/router'
 import { Button } from '../../../components/Button'
 import { Card } from '../../../components/Card'
 import { Input } from '../../../components/form'
@@ -8,8 +7,7 @@ import { PrimaryLayout } from '../../../components/Layout'
 import { SelectField } from '../../../components/Select'
 import { Timeline, TimelineEvent } from '../../../components/Timeline'
 import { useMediaQuery } from '../../../hooks/useMediaQuery'
-import { statusLabelMap, useRequests } from '../../../hooks/useRequests'
-import { RequestType } from '../../../interfaces/requests'
+import { useRequests } from '../../../hooks/useRequests'
 import { COLORS } from '../../../lib/constants/colors'
 
 const requestAction = [
@@ -35,10 +33,10 @@ const timelineLabels = [
     'Pedido entregue',
 ]
 
-export const getServerSideProps: GetServerSideProps = async ({ params }: any) => {
+export const getServerSideProps: GetServerSideProps<Record<string, unknown>, { id: string }> = async ({ params }) => {
     return {
         props: {
-            requestId: params.id,
+            requestId: params?.id,
         },
     }
 }
@@ -46,10 +44,11 @@ export const getServerSideProps: GetServerSideProps = async ({ params }: any) =>
 const RequestDetails: NextPage<{ requestId: string }> = ({ requestId }) => {
     const isDesktop = useMediaQuery('md')
 
-    const { request, statuses, isLoading, activeStatusIndex, error } = useRequests(requestId, ['getStatuses'])
-    console.log(request)
-    const amt = Number(request?.cost) + Number(request?.cost_of_frieght)
+    const { request, statuses, isLoading, activeStatusIndex } = useRequests(requestId, ['getStatuses'])
+
+    const amt = Number(request?.cost ?? 0) + Number(request?.cost_of_frieght ?? 0)
     const total: string = 'R$ ' + amt + '.00'
+    console.log(statuses, activeStatusIndex)
 
     return (
         <PrimaryLayout isLoading={isLoading} currentTabIndex={2} isNavBack navHeader="Histórico de pedidos">

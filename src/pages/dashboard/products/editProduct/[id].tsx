@@ -1,4 +1,4 @@
-import React, { NextPage } from 'next'
+import React, { GetServerSideProps, NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { AddAProduct } from '../../../../components/CreateAStore/AddAProduct'
 import { PrimaryLayout } from '../../../../components/Layout'
@@ -8,10 +8,17 @@ import { ProductsType } from '../../../../interfaces/products'
 
 type OnSuccessType = { products: { data: ProductsType[] } }
 
-const EditProduct: NextPage = () => {
+export const getServerSideProps: GetServerSideProps<Record<string, unknown>, { id: string }> = async ({ params }) => {
+    return {
+        props: {
+            productId: params?.id,
+        },
+    }
+}
+
+const EditProduct: NextPage<{ productId: string }> = ({ productId }) => {
     const router = useRouter()
-    const id = router.query.id as string
-    const { product, isLoading } = useProducts(id)
+    const { product, isLoading } = useProducts(productId)
     const { showSuccessSnackbar } = useSnackbar()
 
     const props: { product?: ProductsType } = {}
