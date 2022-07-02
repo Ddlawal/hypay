@@ -1,4 +1,4 @@
-import React, { FC, MouseEventHandler, useState } from 'react'
+import React, { Dispatch, FC, MouseEventHandler } from 'react'
 import { Editor, EditorState, RichUtils } from 'draft-js'
 import 'draft-js/dist/Draft.css'
 
@@ -18,19 +18,24 @@ import {
 
 type TextStyle = 'BOLD' | 'ITALIC' | 'UNDERLINE' | 'STRIKETHROUGH'
 
-type StyleButtonProps = {
+type RTButtonProps = {
     textStyle: TextStyle
     active: boolean
     onToggle: (style: TextStyle) => void
 }
 
-const StyleButton: FC<StyleButtonProps> = ({ children, textStyle, active, onToggle }) => {
+type RichTextProps = {
+    editorState: EditorState
+    setEditorState: Dispatch<React.SetStateAction<EditorState>>
+}
+
+const RTButton: FC<RTButtonProps> = ({ children, textStyle, active, onToggle }) => {
     const onToggleHandler: MouseEventHandler<HTMLSpanElement> = (e) => {
         e.preventDefault()
         onToggle(textStyle)
     }
 
-    let className = 'RichEditor-styleButton'
+    let className = 'RichEditor-RTButton'
     if (active) {
         className += ' RichEditor-activeButton'
     }
@@ -53,28 +58,23 @@ const RichTextControls = ({
 
     return (
         <div className="mb-4 flex gap-3">
-            <StyleButton key="Italic" active={currentStyle.has('ITALIC')} onToggle={onToggle} textStyle="ITALIC">
+            <RTButton key="Italic" active={currentStyle.has('ITALIC')} onToggle={onToggle} textStyle="ITALIC">
                 <RTItalicIcon />
-            </StyleButton>
-            <StyleButton key="Bold" active={currentStyle.has('BOLD')} onToggle={onToggle} textStyle="BOLD">
+            </RTButton>
+            <RTButton key="Bold" active={currentStyle.has('BOLD')} onToggle={onToggle} textStyle="BOLD">
                 <RTBoldIcon />
-            </StyleButton>
-            <StyleButton
-                key="Underline"
-                active={currentStyle.has('UNDERLINE')}
-                onToggle={onToggle}
-                textStyle="UNDERLINE"
-            >
+            </RTButton>
+            <RTButton key="Underline" active={currentStyle.has('UNDERLINE')} onToggle={onToggle} textStyle="UNDERLINE">
                 <RTUnderlineIcon />
-            </StyleButton>
-            <StyleButton
+            </RTButton>
+            <RTButton
                 key="StrikeThrough"
                 active={currentStyle.has('STRIKETHROUGH')}
                 onToggle={onToggle}
                 textStyle="STRIKETHROUGH"
             >
                 <RTStrikeThroughIcon />
-            </StyleButton>
+            </RTButton>
             <RTLinkIcon />
             <RTColorIcon />
             <RTAlignLeftIcon />
@@ -85,19 +85,17 @@ const RichTextControls = ({
     )
 }
 
-const RichText = () => {
-    const [editorState, setEditorSatte] = useState<EditorState>(() => EditorState.createEmpty())
-
-    console.log(editorState.getCurrentContent().getPlainText())
-
-    const onChange = (editorState: EditorState) => setEditorSatte(editorState)
+const RichText = ({ editorState, setEditorState }: RichTextProps) => {
+    const onChange = (editorState: EditorState) => setEditorState(editorState)
 
     const onToggleRTIconBtn = (style: TextStyle) => onChange(RichUtils.toggleInlineStyle(editorState, style))
 
     return (
-        <Card className="h-[10rem] text-sm shadow-md" rounded>
+        <Card className="text-sm shadow-md" rounded>
             <RichTextControls editorState={editorState} onToggle={onToggleRTIconBtn} />
-            <Editor editorState={editorState} onChange={setEditorSatte} placeholder="Write your message here..." />
+            <div className="h-24">
+                <Editor editorState={editorState} onChange={setEditorState} placeholder="Write your message here..." />
+            </div>
         </Card>
     )
 }

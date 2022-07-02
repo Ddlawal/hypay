@@ -13,6 +13,13 @@ export const requestApi = createApi({
             }),
             transformResponse: (res: { orders: RequestType[] }) => res.orders,
         }),
+        getRequest: builder.query<RequestType, string>({
+            query: (requestId: string) => ({
+                url: `/myOrders?pageType=Dashboard&query=${requestId}`,
+                method: 'GET',
+            }),
+            transformResponse: (res: { orders: { data: RequestType[] } }) => res.orders.data[0],
+        }),
         getRequestStatuses: builder.query<string[], void>({
             query: () => ({
                 url: '/order/getStatuses',
@@ -23,4 +30,4 @@ export const requestApi = createApi({
     }),
 })
 
-export const { useGetAllRequestsQuery, useLazyGetRequestStatusesQuery } = requestApi
+export const { useLazyGetAllRequestsQuery, useLazyGetRequestQuery, useLazyGetRequestStatusesQuery } = requestApi

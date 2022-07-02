@@ -69,7 +69,7 @@ export const PrimaryLayout: FC<PrimaryLayoutProps> = ({
                             isPrimary={isPrimary}
                         />
                     </div>
-                    <div className="my-[4.6rem]">{isLoading ? <LoadingPage /> : children}</div>
+                    <div className={cx(className, 'my-[4.6rem]')}>{isLoading ? <LoadingPage /> : children}</div>
                     <MobileFooter />
                 </div>
             </div>

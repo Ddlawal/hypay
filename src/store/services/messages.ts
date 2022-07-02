@@ -1,6 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react'
 import { baseQuery } from '.'
-import { MessageThread } from '../../interfaces/messages'
+import { GetMessageData, Message, MessageThread } from '../../interfaces/messages'
 
 export const messageApi = createApi({
     reducerPath: 'messagesApi',
@@ -13,15 +13,29 @@ export const messageApi = createApi({
             }),
             transformResponse: (res: { threads: { data: MessageThread[] } }) => res.threads.data,
         }),
-        sendMessage: builder.mutation<MessageThread[], FormData>({
+        getMessages: builder.query<MessageThread, GetMessageData>({
+            query: (data: GetMessageData) => ({
+                url: '/thread/getMessages',
+                method: 'POST',
+                body: data,
+            }),
+            transformResponse: (res: { thread: MessageThread }) => res.thread,
+        }),
+        sendMessage: builder.mutation<Message[], FormData>({
             query: (data: FormData) => ({
                 url: '/message/sendMessage',
                 method: 'POST',
                 body: data,
             }),
-            transformResponse: (res: { chats: { data: MessageThread[] } }) => res.chats.data,
+            transformResponse: (res: { chats: { data: Message[] } }) => res.chats.data,
         }),
     }),
 })
 
-export const { useGetAllMessagesQuery, useSendMessageMutation } = messageApi
+export const {
+    useGetAllMessagesQuery,
+    useLazyGetAllMessagesQuery,
+    useSendMessageMutation,
+    useGetMessagesQuery,
+    useLazyGetMessagesQuery,
+} = messageApi

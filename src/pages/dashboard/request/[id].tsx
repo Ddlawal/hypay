@@ -1,4 +1,4 @@
-import React, { NextPage } from 'next'
+import React, { GetServerSideProps, NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { Button } from '../../../components/Button'
 import { Card } from '../../../components/Card'
@@ -35,22 +35,28 @@ const timelineLabels = [
     'Pedido entregue',
 ]
 
-const RequestDetails: NextPage = () => {
-    const isDesktop = useMediaQuery('md')
-    const router = useRouter()
-    const requestId = router.query.id as string
+export const getServerSideProps: GetServerSideProps = async ({ params }: any) => {
+    return {
+        props: {
+            requestId: params.id,
+        },
+    }
+}
 
-    const { request, statuses, activeStatusIndex } = useRequests(requestId, ['getStatuses'])
-    const { cost, cost_of_frieght, orderNo, product_code, orderItems } = request as RequestType
-    const amt = cost + Number(cost_of_frieght ?? 0)
+const RequestDetails: NextPage<{ requestId: string }> = ({ requestId }) => {
+    const isDesktop = useMediaQuery('md')
+
+    const { request, statuses, isLoading, activeStatusIndex, error } = useRequests(requestId, ['getStatuses'])
+    console.log(request)
+    const amt = Number(request?.cost) + Number(request?.cost_of_frieght)
     const total: string = 'R$ ' + amt + '.00'
 
     return (
-        <PrimaryLayout currentTabIndex={2} isNavBack navHeader="Histórico de pedidos">
+        <PrimaryLayout isLoading={isLoading} currentTabIndex={2} isNavBack navHeader="Histórico de pedidos">
             <div className="px-4 py-4 md:px-12">
                 <div className="flex items-center gap-x-3">
                     <div className="font-bold">Histórico de pedidos</div>
-                    <div className="text-sm">Pedido {orderNo}</div>
+                    <div className="text-sm">Pedido {request?.orderRef}</div>
                 </div>
                 <div>Status do pedido</div>
                 <div className="relative mt-6 mb-4 flex justify-start md:mb-16 md:justify-center">
@@ -87,11 +93,11 @@ const RequestDetails: NextPage = () => {
                         >
                             <div className="flex flex-col md:flex-row md:justify-between">
                                 <div className="text-hypay-gray">Produto</div>
-                                <div>{`Rs ${cost}`}</div>
+                                <div>{`Rs ${request?.cost}`}</div>
                             </div>
                             <div className="flex flex-col md:flex-row md:justify-between">
                                 <div className="text-hypay-gray">Frete</div>
-                                <div>{`Rs ${cost_of_frieght || 0}`}</div>
+                                <div>{`Rs ${request?.cost_of_frieght || 0}`}</div>
                             </div>
                             <div className="flex flex-col md:flex-row md:justify-between">
                                 <div className="text-hypay-gray">Total</div>
@@ -103,11 +109,11 @@ const RequestDetails: NextPage = () => {
                         <div className="mb-2 flex gap-4 text-sm md:flex-col">
                             <div>
                                 <div className="mb-2">Quantidade de produtos</div>
-                                <Input padding="py-1 px-4" value={orderItems.length} />
+                                <Input padding="py-1 px-4" value={request?.orderItems.length} />
                             </div>
                             <div>
                                 <div className="mb-2">Código de rastreio </div>
-                                <Input padding="py-1 px-4" value={product_code} />
+                                <Input padding="py-1 px-4" value={request?.product_code} />
                             </div>
                         </div>
                         <Button primary className="mt-4 w-full">

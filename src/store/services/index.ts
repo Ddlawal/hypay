@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { HYDRATE } from 'next-redux-wrapper'
 // import { RootState } from '../index'
 
 export const baseQuery = fetchBaseQuery({
@@ -30,6 +31,11 @@ export const baseQuery = fetchBaseQuery({
 const baseApi = createApi({
     reducerPath: 'baseApi',
     baseQuery: baseQuery,
+    extractRehydrationInfo(action, { reducerPath }) {
+        if (action.type === HYDRATE) {
+            return action.payload[reducerPath]
+        }
+    },
     endpoints: () => ({}),
     tagTypes: ['user', 'products', 'requests', 'merchant', 'messages'],
     //  cache , The default time is seconds , Default duration 60 second
