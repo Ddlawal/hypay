@@ -17,6 +17,7 @@ type SelectFieldProps<T> = {
     options: Option<T>[]
     isSearchable?: boolean
     isClearable?: boolean
+    isDisabled?: boolean
     CustomOption?: typeof components.Option
 }
 
@@ -30,6 +31,7 @@ export function SelectField<T = unknown>({
     options,
     isSearchable = true,
     isClearable = false,
+    isDisabled = false,
     CustomOption,
     onChange,
 }: SelectFieldProps<T>): JSX.Element {
@@ -52,6 +54,7 @@ export function SelectField<T = unknown>({
                 isClearable={isClearable}
                 placeholder={placeholder}
                 components={CustomOption ? { Option: CustomOption } : {}}
+                isDisabled={isDisabled}
             />
         </div>
     )

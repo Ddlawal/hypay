@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { AnalysisIcon, BagIcon, FireIcon, MarketingIcon, ShelterIcon, TagIcon,SessionIcon } from '../components/Icons'
+import { AnalysisIcon, BagIcon, FireIcon, MarketingIcon, ShelterIcon, TagIcon, SessionIcon } from '../components/Icons'
 import { HomeIcon } from '../components/Icons/HomeIcon'
 import { RightArrowIcon } from '../components/Icons/RightArrowIcon'
 import { SettingsIcon } from '../components/Icons/SettingsIcon'

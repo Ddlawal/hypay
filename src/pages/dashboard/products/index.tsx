@@ -1,16 +1,17 @@
-import React, { useState } from 'react'
+import React, { Dispatch, useRef, useState } from 'react'
 import { NextPage } from 'next'
+import Image from 'next/image'
+import { useRouter } from 'next/router'
+
 import { PrimaryLayout } from '../../../components/Layout'
 import { Button } from '../../../components/Button'
 import { CircularPlusIcon } from '../../../components/Icons/CircularPlusIcon'
 import { Table } from '../../../components/Table'
 import { ImportIcon, MenuIcon } from '../../../components/Icons'
-import { useRouter } from 'next/router'
 import { SelectField } from '../../../components/Select'
 import { useProducts } from '../../../hooks/useProducts'
 import { Card } from '../../../components/Card'
 import { useMediaQuery } from '../../../hooks/useMediaQuery'
-import Image from 'next/image'
 import { NextLink } from '../../../components/Links'
 import { ProductsType, SearchProductType } from '../../../interfaces/products'
 import { copyTextToClipboard } from '../../../lib/helper'
@@ -35,61 +36,6 @@ const productActionSelectItems = [
         value: 'Alterar preço',
     },
 ]
-
-const Products: NextPage = () => {
-    const [action, setAction] = useState<string | null>(null)
-    const isDesktop = useMediaQuery('md')
-    const {
-        products,
-        isLoading,
-        deleteProduct: { onDelete },
-        searchProduct,
-    } = useProducts()
-
-    const { result: searchableProducts, handleInputChange } = useSearch(searchProduct, products)
-    const { push } = useRouter()
-
-    const gotoAddProducts = () => push('/dashboard/products/addProducts')
-
-    if (searchableProducts?.length === 0) {
-        return (
-            <PrimaryLayout currentTabIndex={1} isLoading={isLoading}>
-                <NoProducts gotoAddProducts={gotoAddProducts} />
-            </PrimaryLayout>
-        )
-    }
-
-    return (
-        <PrimaryLayout
-            currentTabIndex={1}
-            isLoading={isLoading}
-            isNavBack={!isDesktop}
-            navHeader="Produtos"
-            searchable="product"
-            desktopSearch={handleInputChange}
-        >
-            <div className="py-4 md:px-8">
-                <ProductsHeader isDesktop={isDesktop} gotoAddProducts={gotoAddProducts} />
-
-                {isDesktop ? (
-                    <>
-                        <div className="mb-3 w-[40%]">
-                            <SelectField<string | null>
-                                options={productActionSelectItems}
-                                name="product-list-actions"
-                                label="Ações"
-                                value={action}
-                                placeholder={<span className="text-hypay-primary">Selecionar Ação...</span>}
-                                onChange={(v) => setAction(v)}
-                            />
-                        </div>
-                    </>
-                ) : null}
-                <ProductList products={searchableProducts} onDelete={onDelete} searchProduct={searchProduct} />
-            </div>
-        </PrimaryLayout>
-    )
-}
 
 const NoProducts = ({ gotoAddProducts }: { gotoAddProducts: () => void }) => {
     return (
@@ -140,14 +86,17 @@ export const ProductList = ({
     products,
     onDelete,
     searchProduct,
+    setIds = () => null,
 }: {
     products: ProductsType[]
     onDelete: (id: string, url: string) => Promise<void>
     searchProduct: SearchProductType
+    setIds?: Dispatch<React.SetStateAction<string[]>>
 }) => {
     const isDesktop = useMediaQuery('md')
     const { push } = useRouter()
 
+    const itemRefs = useRef({})
     const [productId, setProductId] = useState<string>('')
     const { showSuccessSnackbar } = useSnackbar()
     const gotoEditProduct = () => push(`/dashboard/products/editProduct/${productId}`)
@@ -168,15 +117,35 @@ export const ProductList = ({
         }
     }
 
+    const onSelect = (id: string, isChecked: boolean) => {
+        if (isChecked) {
+            return setIds((prev) => [...prev, id])
+        }
+
+        setIds((prev) => prev.filter((i) => i !== id))
+    }
+
+    const onSelectAll = (ids: Array<string>, isChecked: boolean) => {
+        if (isChecked) {
+            return setIds(ids)
+        }
+
+        setIds([])
+    }
+
     return (
         <>
             {isDesktop ? (
                 <Table<ProductsType>
                     uniqueKey="id"
+                    refs={itemRefs}
                     setId={setProductId}
-                    headers={['Product', 'Inventory', 'Price', 'Discount', 'Variants', 'Actions']}
-                    keys={['productName', 'quantity', 'amount', null, null, null]}
+                    onSelect={onSelect}
+                    onSelectAll={onSelectAll}
+                    headers={['', 'Product', 'Inventory', 'Price', 'Discount', 'Variants', 'Actions']}
+                    keys={['image_url', 'productName', 'quantity', 'amount', null, null, null]}
                     rows={products}
+                    selectable
                 >
                     <div className="flex flex-col items-start text-[11px] leading-4 text-hypay-pink">
                         <button className="hover:font-bold" onClick={() => copyProductLink(productId)}>
@@ -207,6 +176,83 @@ export const ProductList = ({
                 </div>
             )}
         </>
+    )
+}
+
+const Products: NextPage = () => {
+    const [action, setAction] = useState<string | null>(null)
+    const [ids, setIds] = useState<Array<string>>([])
+    const isDesktop = useMediaQuery('md')
+    const {
+        products,
+        isLoading,
+        deleteProduct: { onDelete, onDeleteMany },
+        searchProduct,
+    } = useProducts()
+
+    const { result: searchableProducts, handleInputChange } = useSearch(searchProduct, products)
+    const { push } = useRouter()
+
+    const gotoAddProducts = () => push('/dashboard/products/addProducts')
+
+    if (searchableProducts?.length === 0) {
+        return (
+            <PrimaryLayout currentTabIndex={1} isLoading={isLoading}>
+                <NoProducts gotoAddProducts={gotoAddProducts} />
+            </PrimaryLayout>
+        )
+    }
+
+    const handleSelectAction = async (action: string | null) => {
+        setAction(action)
+
+        if (action === 'Apagar') {
+            const proceed = confirm(
+                `Are you sure you want to delete these ${ids.length} ${ids.length > 1 ? 'products' : 'product'}`
+            )
+            if (proceed) {
+                await onDeleteMany(ids)
+                setAction(null)
+                setIds([])
+            }
+        }
+    }
+
+    return (
+        <PrimaryLayout
+            currentTabIndex={1}
+            isLoading={isLoading}
+            isNavBack={!isDesktop}
+            navHeader="Produtos"
+            searchable="product"
+            desktopSearch={handleInputChange}
+        >
+            <div className="py-4 md:px-8">
+                <ProductsHeader isDesktop={isDesktop} gotoAddProducts={gotoAddProducts} />
+
+                {isDesktop ? (
+                    <>
+                        <div className="mb-3 w-[40%]">
+                            <SelectField<string | null>
+                                options={productActionSelectItems}
+                                name="product-list-actions"
+                                label="Ações"
+                                value={action}
+                                placeholder={<span className="text-hypay-primary">Selecionar Ação...</span>}
+                                onChange={handleSelectAction}
+                                isDisabled={ids.length < 1}
+                            />
+                        </div>
+                    </>
+                ) : null}
+                <ProductList
+                    setIds={setIds}
+                    products={searchableProducts}
+                    onDelete={onDelete}
+                    searchProduct={searchProduct}
+                />
+            </div>
+        </PrimaryLayout>
     )
 }
 
