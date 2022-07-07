@@ -1,6 +1,7 @@
 import { EditorState } from 'draft-js'
 import React, { useState } from 'react'
 import cx from 'classnames'
+
 import { Button } from '../../../components/Button'
 import { Card } from '../../../components/Card'
 import { LoaderIcon, StarIcon, TrashCanIcon } from '../../../components/Icons'
@@ -59,7 +60,6 @@ export const ThreadList = ({ active, messageThread: { messages }, onClick }: mes
                             </button>
                         </div>
                     </div>
-                    <div className="flex justify-end gap-x-3 text-sm"></div>
                 </div>
             </Card>
             {/* Mobile screen cards designs starts here */}

@@ -36,7 +36,7 @@ export const useProducts = (productId?: string) => {
         const res = await deleteAProduct(id)
 
         if (res.isSuccess) {
-            router.push(url)
+            router.replace(url)
             refetch()
             showSuccessSnackbar('Product deleted successfully!')
         } else {
@@ -44,11 +44,34 @@ export const useProducts = (productId?: string) => {
         }
     }
 
+    const onDeleteMany = async (ids: Array<string>) => {
+        if (!ids.length) {
+            return
+        }
+
+        const resultPromises: Array<ReturnType<typeof deleteAProduct>> = []
+
+        for (let i = 0; i < ids.length; i++) {
+            const res = deleteAProduct(ids[i])
+
+            resultPromises.push(res)
+        }
+
+        try {
+            await Promise.all(resultPromises)
+        } catch (error) {
+            showErrorSnackbar(`Error! Unable to delete ${ids.length > 1 ? 'items' : 'item'}!`)
+        } finally {
+            refetch()
+            showSuccessSnackbar(`${ids.length} ${ids.length > 1 ? 'items' : 'item'} deleted successfully`)
+        }
+    }
+
     return {
         product,
         products,
         isLoading: isLoading || searchLoading || isFetching || seearchFetching,
-        deleteProduct: { deleteAProduct, onDelete, deleteIsFetching, delIsLoading, delIsSuccess },
+        deleteProduct: { deleteAProduct, onDelete, onDeleteMany, deleteIsFetching, delIsLoading, delIsSuccess },
         refetch,
         searchProduct,
     }
