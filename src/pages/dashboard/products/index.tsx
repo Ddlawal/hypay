@@ -86,12 +86,12 @@ export const ProductList = ({
     products,
     onDelete,
     searchProduct,
-    setIds,
+    setIds = () => null,
 }: {
     products: ProductsType[]
     onDelete: (id: string, url: string) => Promise<void>
     searchProduct: SearchProductType
-    setIds: Dispatch<React.SetStateAction<string[]>>
+    setIds?: Dispatch<React.SetStateAction<string[]>>
 }) => {
     const isDesktop = useMediaQuery('md')
     const { push } = useRouter()
