@@ -4,7 +4,7 @@ import cx from 'classnames'
 type TableKeyType<T> = keyof T | null
 
 type TableProps<T> = {
-    refs: MutableRefObject<Record<string, HTMLInputElement>>
+    refs?: MutableRefObject<Record<string, HTMLInputElement>>
     headers: Array<string>
     keys: Array<TableKeyType<T>>
     rows: Array<T>
@@ -33,7 +33,7 @@ const tdValue = <T,>({ k, row }: { k: TableKeyType<T>; row: T }) => {
 }
 
 export const Table = <T,>({
-    refs,
+    refs = { current: {} },
     children,
     className,
     headerClassName,

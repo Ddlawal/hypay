@@ -207,9 +207,14 @@ const Products: NextPage = () => {
         setAction(action)
 
         if (action === 'Apagar') {
-            await onDeleteMany(ids)
-            setAction(null)
-            setIds([])
+            const proceed = confirm(
+                `Are you sure you want to delete these ${ids.length} ${ids.length > 1 ? 'products' : 'product'}`
+            )
+            if (proceed) {
+                await onDeleteMany(ids)
+                setAction(null)
+                setIds([])
+            }
         }
     }
 
