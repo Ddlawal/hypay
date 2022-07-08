@@ -1,31 +1,22 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useRouter } from 'next/router'
-import { useForm } from 'react-hook-form'
 import { PrimaryLayout } from '../../../../components/Layout'
-import { Card } from '../../../../components/Card'
 import { COLORS } from '../../../../lib/constants/colors'
-import {
-    CheckIcon,
-    OpenLinkIcon,
-    SettingsIcon,
-    TransactionRecievedArrow,
-    TransactionSentArrow,
-} from '../../../../components/Icons'
+import { RoundedCheckIcon } from '../../../../components/Icons'
 import Image from 'next/image'
 import mailbox from '../../../../../public/images/mailbox.png'
 import Link from 'next/link'
-import { trxnType } from '../../../../lib/data'
 import { Button } from '../../../../components/Button'
 
-const listOfBankAccount = [{ name: 'Banco Inter' }, { name: 'First Bank' }]
+// const listOfBankAccount = [{ name: 'Banco Inter' }, { name: 'First Bank' }]
 
 function Index() {
-    const { push, back } = useRouter()
+    const { push } = useRouter()
     return (
         <PrimaryLayout>
             <div className="px-4 py-4 md:w-full md:px-12">
                 <header className="flex items-center justify-start gap-x-2  pb-3">
-                    <CheckIcon color={COLORS.GREEN} size={24} />{' '}
+                    <RoundedCheckIcon color={COLORS.GREEN} size={24} />{' '}
                     <h1 className="text-3xl font-bold">Your withdrawal has been confirmed</h1>
                 </header>
                 <>

@@ -3,6 +3,7 @@ import { Button } from '../../../components/Button'
 import { Card } from '../../../components/Card'
 import { Input } from '../../../components/form'
 import { CheckIcon } from '../../../components/Icons'
+import { TimeIcon } from '../../../components/Icons/TimeIcon'
 import { PrimaryLayout } from '../../../components/Layout'
 import { SelectField } from '../../../components/Select'
 import { Timeline, TimelineEvent } from '../../../components/Timeline'
@@ -44,11 +45,10 @@ export const getServerSideProps: GetServerSideProps<Record<string, unknown>, { i
 const RequestDetails: NextPage<{ requestId: string }> = ({ requestId }) => {
     const isDesktop = useMediaQuery('md')
 
-    const { request, statuses, isLoading, activeStatusIndex } = useRequests(requestId, ['getStatuses'])
+    const { request, isLoading, activeStatusIndex } = useRequests(requestId)
 
     const amt = Number(request?.cost ?? 0) + Number(request?.cost_of_frieght ?? 0)
     const total: string = 'R$ ' + amt + '.00'
-    console.log(statuses, activeStatusIndex)
 
     return (
         <PrimaryLayout isLoading={isLoading} currentTabIndex={2} isNavBack navHeader="Histórico de pedidos">
@@ -70,21 +70,34 @@ const RequestDetails: NextPage<{ requestId: string }> = ({ requestId }) => {
                                 label={label}
                                 eventSize={isDesktop ? 45 : 35}
                                 border="none"
-                                bgColor={COLORS.GREEN}
+                                bgColor={
+                                    activeStatusIndex > i
+                                        ? COLORS.GREEN
+                                        : activeStatusIndex === i
+                                        ? COLORS.DEEP_ORANGE
+                                        : COLORS.WHITE
+                                }
                                 key={`timeline${i}`}
                                 isHorizontal={isDesktop}
                                 labelTextWidth={200}
                             >
-                                <span className="rounded-full border border-white bg-white">
-                                    <CheckIcon color={COLORS.GREEN} />
-                                </span>
+                                {activeStatusIndex > i ? (
+                                    <CheckIcon color={COLORS.WHITE} size={22} />
+                                ) : (
+                                    <TimeIcon
+                                        color={activeStatusIndex === i ? COLORS.WHITE : COLORS.DEEP_ORANGE}
+                                        size={22}
+                                    />
+                                )}
                             </TimelineEvent>
                         ))}
                     </Timeline>
                 </div>
                 <div className="mt-12 grid grid-cols-10 gap-y-10 md:gap-x-10">
                     <div className="col-span-10 md:col-span-3">
-                        <div className="mb-2 text-sm">Informações de pagamento</div>
+                        <div className="mb-2 text-sm">
+                            Informações de pagamento {`${activeStatusIndex} ${request?.status}`}
+                        </div>
                         <Card
                             rounded
                             padding="p-4"

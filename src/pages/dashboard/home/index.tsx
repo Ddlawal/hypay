@@ -11,12 +11,12 @@ import {
     PaintIcon,
     PaymentCardIcon,
     QuestionMarkIcon,
+    RoundedCheckIcon,
     TagIcon,
     TwitterIcon,
     VanIcon,
     WhatsAppIcon,
 } from '../../../components/Icons'
-import { CheckIcon } from '../../../components/Icons/CheckIcon'
 import { PrimaryLayout } from '../../../components/Layout'
 import { useMediaQuery } from '../../../hooks/useMediaQuery'
 import { useAppSelector } from '../../../hooks/useStoreHooks'
@@ -67,7 +67,7 @@ export const EmailVerified = () => {
         <>
             {show ? (
                 <div className="flex items-center rounded-lg border border-hypay-green bg-white px-5 py-2 transition-opacity">
-                    <CheckIcon size={36} />
+                    <RoundedCheckIcon size={36} />
                     <span className="ml-2 text-sm leading-4">
                         Parabéns! Seu email foi verificado e você já pode começar a vender!
                     </span>

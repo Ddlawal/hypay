@@ -21,6 +21,7 @@ module.exports = {
                     iconGray: '#959595',
                     cyan: '#00B5DD',
                     orange: '#FFB119',
+                    'deep-orange': '#FF881A',
                     green: '#1B9B65',
                 },
             },
