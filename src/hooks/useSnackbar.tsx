@@ -1,6 +1,6 @@
 import React, { CSSProperties } from 'react'
 import toast, { Renderable, ToastPosition } from 'react-hot-toast'
-import { WarningIcon, CheckIcon } from '../components/Icons'
+import { WarningIcon, RoundedCheckIcon } from '../components/Icons'
 import { COLORS } from '../lib/constants/colors'
 
 type ToastOption = { position: ToastPosition; style: CSSProperties; icon: Renderable }
@@ -10,7 +10,7 @@ export const useSnackbar = () => {
         toast.error(message, {
             position: options?.position || 'bottom-center',
             style: { color: COLORS.WHITE, backgroundColor: COLORS.GREEN },
-            icon: <CheckIcon color="white" />,
+            icon: <RoundedCheckIcon color="white" />,
             duration: 4000,
         })
     }

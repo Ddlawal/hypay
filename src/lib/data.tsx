@@ -1,9 +1,17 @@
 /* eslint-disable */
-import { AnalysisIcon, BagIcon, FireIcon, MarketingIcon, ShelterIcon, TagIcon, SessionIcon } from '../components/Icons'
-import { HomeIcon } from '../components/Icons/HomeIcon'
-import { RightArrowIcon } from '../components/Icons/RightArrowIcon'
-import { SettingsIcon } from '../components/Icons/SettingsIcon'
-import { CheckIconWhite } from '../components/Icons/CheckIcon'
+import {
+    AnalysisIcon,
+    BagIcon,
+    FireIcon,
+    HomeIcon,
+    MarketingIcon,
+    RightArrowIcon,
+    RoundedCheckIcon,
+    SettingsIcon,
+    ShelterIcon,
+    TagIcon,
+    SessionIcon,
+} from '../components/Icons'
 import { COLORS } from './constants/colors'
 
 export type MenuItemListType = {
@@ -277,7 +285,12 @@ export interface indicateDataType {
 }
 
 export const indicateData: indicateDataType[] = [
-    { name: 'Ganhe R$200', bottomText: 'Convite 5 vendedores', status: 'completed', icon: CheckIconWhite({}) },
+    {
+        name: 'Ganhe R$200',
+        bottomText: 'Convite 5 vendedores',
+        status: 'completed',
+        icon: RoundedCheckIcon({ color: COLORS.WHITE }),
+    },
     { name: 'Ganhe R$500', bottomText: 'Convite 20 vendedores', status: 'pending', icon: '' },
     { name: 'Ganhe 3 premium', bottomText: 'Convite 50 vendedores', status: 'idle', icon: '' },
     { name: 'Ganhe R$1000', bottomText: 'Convite 100 vendedores', status: 'idle', icon: '' },
