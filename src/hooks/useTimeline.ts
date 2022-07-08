@@ -14,13 +14,18 @@ export const useTimeline = ({
     progressBarBackground,
     progressBarForeground,
 }: TimelineProps) => {
+    const lastIndex = children.length - 1
     const eventSize = children[0].props.eventSize ?? DEFAULT_EVENT_SIZE
     const labelTextHeight = children[0].props.labelTextHeight ?? DEFAULT_LABEL_TEXT_HEIGHT
     const labelTextWidth = children[0].props.labelTextWidth ?? DEFAULT_LABEL_TEXT_WIDTH
     const adjustment = eventSize / 2 - thickness / 2
-    const progress = (clipped ? 0 : gap + eventSize) + adjustment + (gap + eventSize) * activeIndex + 'px'
-    const progressBar = (clipped ? 0 : gap + eventSize) + adjustment + (gap + eventSize) * (children.length - 1) + 'px'
-    const timelineSize = eventSize + thickness + (gap + eventSize) * (children.length - 1) + 'px'
+    const progress =
+        (clipped ? 0 : gap + eventSize) +
+        adjustment +
+        (gap + eventSize) * (activeIndex < children.length ? activeIndex : lastIndex) +
+        'px'
+    const progressBar = (clipped ? 0 : gap + eventSize) + adjustment + (gap + eventSize) * lastIndex + 'px'
+    const timelineSize = eventSize + thickness + (gap + eventSize) * lastIndex + 'px'
     const top = orientation === 'horizontal' ? `${adjustment}px` : clipped ? 0 : -((gap + eventSize / 2) / 2)
     const left = orientation === 'horizontal' ? (clipped ? 0 : -((gap + eventSize / 2) / 2)) : `${adjustment}px`
     const height = orientation === 'horizontal' ? `${eventSize + labelTextHeight}px` : timelineSize
