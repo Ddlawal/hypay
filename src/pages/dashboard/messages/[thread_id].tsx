@@ -6,28 +6,10 @@ import { PrimaryLayout } from '../../../components/Layout'
 import { LeftArrowIcon } from '../../../components/Icons'
 import { Card } from '../../../components/Card'
 import { Button } from '../../../components/Button'
-import { dummyMessages } from '../../../lib/data'
 import { RichText } from '../../../components/RichText'
 import { useMessages } from '../../../hooks/useMessages'
 import { Message, MessageData } from '../../../interfaces/messages'
 import { useSnackbar } from '../../../hooks/useSnackbar'
-import { messageApi } from '../../../store/services/messages'
-import { dispatch } from 'react-hot-toast/dist/core/store'
-
-type paramsType = {
-    thread_id: string
-}
-
-// export async function getStaticPaths() {
-//     const paths: {
-//         params: paramsType
-//     }[] = dummyMessages.map((path, index) => ({ params: { ...path, thread_id: `${index}` } }))
-
-//     const result = messageApi.endpoints.getAllMessages.select()()
-//     const { data, status, error } = result
-//     console.log('uuuuuuuuuuuuuuuuuuuuu', result)
-//     return { paths, fallback: false }
-// }
 
 export async function getServerSideProps({ params }: any) {
     return {

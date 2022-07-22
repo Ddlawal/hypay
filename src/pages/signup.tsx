@@ -45,7 +45,6 @@ function SignUp() {
                     accountType: '',
                 }
 
-                // console.log('pppppppppppppppppppp', googleData, Session.jwt)
                 loginWithGoogle(googleData)
                     .unwrap()
                     .then((payload: any) => {

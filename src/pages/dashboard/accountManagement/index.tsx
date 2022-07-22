@@ -1,18 +1,23 @@
+import React from 'react'
 import Image from 'next/image'
-import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useRouter } from 'next/router'
+
+import { EmailVerified } from '../home'
 import { Button } from '../../../components/Button'
 import { Card } from '../../../components/Card'
 import { SecondInput } from '../../../components/form'
-import { InfoIcon, ShieldIcon } from '../../../components/Icons'
+import { InfoIcon, LoaderIcon, ShieldIcon } from '../../../components/Icons'
 import { PrimaryLayout } from '../../../components/Layout'
 import { COLORS } from '../../../lib/constants/colors'
-import { EmailVerified } from '../home'
 import chromeIcon from '../../../../public/images/chromeIcon.png'
 import operaIcon from '../../../../public/images/operaIcon.png'
 import safariIcon from '../../../../public/images/safariIcon.png'
 import { PhotographBox } from '../../../components/CreateAStore/AddAProduct'
+import { useLazyVerifyEmailQuery } from '../../../store/services/auth'
+import { useAppSelector } from '../../../hooks/useStoreHooks'
+import { loginUserData } from '../../../store/reducers/auth'
+import { useSnackbar } from '../../../hooks/useSnackbar'
 
 interface ActiveBrowser {
     icon: StaticImageData
@@ -27,16 +32,25 @@ export const ListOfActiveBrowsers: ActiveBrowser[] = [
 
 function AccountManagement() {
     const { register } = useForm()
-    const [emailVerified, setEmailVerified] = useState(false)
-    const verifyEmail = () => setEmailVerified(true)
     const { push } = useRouter()
+    const [tryVerifyEmail, { isLoading }] = useLazyVerifyEmailQuery()
+    const user = useAppSelector(loginUserData)
+    const { showSuccessSnackbar, showErrorSnackbar } = useSnackbar()
+    const handleVerifyEmail = async () => {
+        const res = await tryVerifyEmail('email')
+        const { message } = (await res.data) as { message: string }
+        if (!message) {
+            return showErrorSnackbar('Não foi possível verificar seu email')
+        }
+        return showSuccessSnackbar(message)
+    }
 
     return (
         <PrimaryLayout>
             <div className="px-4 py-4 md:w-9/12 md:px-12">
                 <header>
                     <h1 className="font-bold">Minha conta</h1>
-                    {emailVerified ? (
+                    {user.email_verified ? (
                         <EmailVerified />
                     ) : (
                         <Card
@@ -59,9 +73,10 @@ function AccountManagement() {
                                     primary
                                     outlined
                                     className="py-4 px-10 md:w-[110px] md:px-1 md:py-0.5 md:text-[11px]"
-                                    onClick={verifyEmail}
+                                    onClick={handleVerifyEmail}
+                                    disabled={isLoading}
                                 >
-                                    Reenviar Email
+                                    {isLoading ? <LoaderIcon size={24} color={COLORS.RED} /> : 'Reenviar Email'}
                                 </Button>
                             </div>
                         </Card>
@@ -71,18 +86,28 @@ function AccountManagement() {
                     <h2 className="mb-3 text-xl font-bold">Informações pessoais</h2>
                     <div className="flex justify-center space-x-5">
                         <div className="w-6/12">
-                            <SecondInput name="nome" label="Nome" register={register} />
+                            <SecondInput name="nome" label="Nome" register={register} defaultValue={user.firstName} />
                         </div>
                         <div className="w-6/12">
-                            <SecondInput name="Sobrenome" label="Sobrenome" register={register} />
+                            <SecondInput
+                                name="Sobrenome"
+                                label="Sobrenome"
+                                register={register}
+                                defaultValue={user.lastName}
+                            />
                         </div>
                     </div>
                     <div className="flex justify-center space-x-5">
                         <div className="w-6/12">
-                            <SecondInput name="Telefone" label="Telefone" register={register} />
+                            <SecondInput
+                                name="Telefone"
+                                label="Telefone"
+                                register={register}
+                                defaultValue={user.phone}
+                            />
                         </div>
                         <div className="w-6/12">
-                            <SecondInput name="Email" label="Email" register={register} />
+                            <SecondInput name="Email" label="Email" register={register} defaultValue={user.email} />
                         </div>
                     </div>
                     <div className="">

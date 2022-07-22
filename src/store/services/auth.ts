@@ -1,7 +1,8 @@
 import baseApi from '.'
+import { EnableTwoFAResponce, GeneratedTwoFASecret, LogoutResponse } from '../../interfaces/auth'
 
 const authApi = baseApi.injectEndpoints({
-    endpoints: (builder: any) => ({
+    endpoints: (builder) => ({
         registration: builder.mutation({
             query: (data: any) => ({
                 url: '/register',
@@ -20,8 +21,8 @@ const authApi = baseApi.injectEndpoints({
                 body: data,
             }),
         }),
-        logout: builder.mutation({
-            query: (token: string) => ({
+        logout: builder.mutation<LogoutResponse, { token: string }>({
+            query: (token) => ({
                 url: '/logout',
                 method: 'POST',
                 body: token,
@@ -47,6 +48,21 @@ const authApi = baseApi.injectEndpoints({
                 method: 'GET',
             }),
         }),
+        generateSecret: builder.query<GeneratedTwoFASecret, void>({
+            query: () => ({
+                url: '/2fa/generateSecret',
+                method: 'POST',
+            }),
+            transformResponse: (res: { data: GeneratedTwoFASecret }) => res.data,
+        }),
+        enableTwoFA: builder.query<EnableTwoFAResponce, { code: string }>({
+            query: (data) => ({
+                url: '/2fa/enable2fa',
+                method: 'POST',
+                body: data,
+            }),
+            transformResponse: (res: EnableTwoFAResponce) => res,
+        }),
     }),
 })
 
@@ -57,4 +73,6 @@ export const {
     useCreateBusinessNameMutation,
     useLoginWithGoogleMutation,
     useLazyVerifyEmailQuery,
+    useLazyGenerateSecretQuery,
+    useLazyEnableTwoFAQuery,
 } = authApi

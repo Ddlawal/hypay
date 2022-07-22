@@ -23,7 +23,6 @@ const HORIZONTAL = 'Horizontal'
 const VERTICAL = 'Vertical'
 
 const CampaignPlatform = ({ campaignPath }: { campaignPath: string }) => {
-    console.log(campaignPath, 'components')
     const [photoBoxCount, setPhotoBoxCount] = useState(3)
     const [previewType, setPreviewType] = useState(FEED)
 

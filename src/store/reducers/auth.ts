@@ -50,7 +50,7 @@ export interface UserInfo {
 
 export interface RootObject {
     token: Token | null
-    user: UserInfo | null
+    user: { userInfo: UserInfo | null } | null
     isAuthenticated: boolean
     isError: boolean
     sessionExpiryTime: number
@@ -125,6 +125,6 @@ export const authSlice = createSlice({
 
 export const { login, logout, register, updateUserLoggedInData } = authSlice.actions
 
-export const loginUserData = (state: RootState) => state?.auth?.user as UserInfo
+export const loginUserData = (state: RootState) => (state?.auth?.user?.userInfo || state?.auth?.user) as UserInfo
 
 export default authSlice.reducer

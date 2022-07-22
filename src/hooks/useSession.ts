@@ -25,5 +25,5 @@ export const useSession = (): SessionProps => {
         verifySession()
     }, [])
 
-    return { user }
+    return { user } as SessionProps
 }

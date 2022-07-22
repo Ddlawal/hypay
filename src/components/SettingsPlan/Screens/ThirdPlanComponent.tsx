@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { COLORS } from '../../../lib/constants/colors'
 import { plans } from '../../../lib/data'
-import { Barcode } from '../../Barcode'
+import { Barcode } from '../../CodeGenerator'
 import { Button } from '../../Button'
 import { Card } from '../../Card'
 import { BookTagIcon, PaymentCardIcon } from '../../Icons'

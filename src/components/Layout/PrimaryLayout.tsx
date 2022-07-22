@@ -1,12 +1,14 @@
-import cx from 'classnames'
 import React, { FC, ReactNode } from 'react'
+import cx from 'classnames'
+import Head from 'next/head'
+
 import { SideNav } from '.'
 import { MobileFooter } from '../Footer/MobileFooter'
 import { LoggedInHeader } from '../Headers'
-import Head from 'next/head'
 import { LoadingPage } from './LoadingPage'
 import { SearchType } from '../../pages/dashboard/search'
 import { MenuItemListType } from '../../lib/data'
+import { Modal } from '../Modal'
 
 type PrimaryLayoutProps = {
     children: ReactNode
@@ -20,6 +22,7 @@ type PrimaryLayoutProps = {
     isLoading?: boolean
     menuItemList?: MenuItemListType[]
     isPrimary?: boolean
+    modalProps?: { modalClass: string; modalChildren: ReactNode; open: boolean; onClose: () => void } | null
     desktopSearch?: (event: React.ChangeEvent<HTMLInputElement>) => void
 }
 
@@ -35,6 +38,7 @@ export const PrimaryLayout: FC<PrimaryLayoutProps> = ({
     isLoading,
     menuItemList,
     isPrimary,
+    modalProps,
     desktopSearch,
 }) => {
     return (
@@ -73,6 +77,7 @@ export const PrimaryLayout: FC<PrimaryLayoutProps> = ({
                     <MobileFooter />
                 </div>
             </div>
+            {modalProps ? <Modal {...modalProps}>{modalProps.modalChildren}</Modal> : null}
         </>
     )
 }

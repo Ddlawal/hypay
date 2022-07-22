@@ -44,7 +44,6 @@ export const useMessages = (thread_id?: number): UseMessagesType => {
             setThread((prev) => {
                 return { thread_id: prev?.thread_id as number, messages: payload }
             })
-            console.log(payload)
 
             return true
         } catch (error) {

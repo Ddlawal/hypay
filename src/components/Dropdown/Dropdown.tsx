@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks/useStoreHooks'
 import { useLogoutMutation } from '../../store/services/auth'
 import { logout as logUserOut } from '../../store/reducers/auth'
 import { useRouter } from 'next/router'
+import { useSnackbar } from '../../hooks/useSnackbar'
 
 type DropdownItemProps = {
     title: string
@@ -29,13 +30,19 @@ const DropdownItems: FC<DropdownButtonProps> = ({ items, className }) => {
     const [logoutMutation] = useLogoutMutation()
     const token = useAppSelector((state) => state.auth.token)
     const { push } = useRouter()
+
     const logOut = async () => {
-        const res = await logoutMutation({ token: token?.access_token })
-        await signOut({ redirect: false })
-        // if (res) {
-        localStorage.clear()
-        dispatch(logUserOut())
-        // }
+        try {
+            const { status } = await logoutMutation({ token: token?.access_token as string }).unwrap()
+            if (status === 'success') {
+                localStorage.clear()
+                dispatch(logUserOut())
+                push('/login')
+                await signOut({ redirect: false })
+            }
+        } catch (error) {
+            console.log(error)
+        }
     }
     return (
         <ul className={cx(className)}>

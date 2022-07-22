@@ -13,7 +13,7 @@ import { BuyerTimeline } from '../../../components/Timeline'
 import { Radio } from '../../../components/form/Radio'
 import { PurchaseSummary } from '../../../components/Buyer/PurchaseSummary'
 import { Card } from '../../../components/Card'
-import { Barcode } from '../../../components/Barcode'
+import { Barcode } from '../../../components/CodeGenerator'
 import { DeliveryDetails } from '../../../components/Buyer'
 
 type FormFields = {
