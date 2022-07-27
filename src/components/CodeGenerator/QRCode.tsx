@@ -1,5 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
+
 import { GeneratedTwoFASecret } from '../../interfaces/auth'
 
 const QRCodeComponent = ({ QR_image }: GeneratedTwoFASecret): JSX.Element => {

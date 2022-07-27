@@ -6,7 +6,6 @@ import { useAppDispatch, useAppSelector } from '../../hooks/useStoreHooks'
 import { useLogoutMutation } from '../../store/services/auth'
 import { logout as logUserOut } from '../../store/reducers/auth'
 import { useRouter } from 'next/router'
-import { useSnackbar } from '../../hooks/useSnackbar'
 
 type DropdownItemProps = {
     title: string

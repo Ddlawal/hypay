@@ -1,13 +1,18 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { HYDRATE } from 'next-redux-wrapper'
+import { readCokie, USER_PENDING_2FA_AUTH } from '../../lib/helper'
 
 export const baseQuery = fetchBaseQuery({
     baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
     prepareHeaders: (headers) => {
         headers.set('Access-Control-Allow-Origin', '*')
-        const user = JSON.parse(localStorage.getItem('user') as string)
-        // const token = (getState() as RootState).auth?.token?.access_token
+        let user = JSON.parse(localStorage.getItem('user') as string)
 
+        const user_2fa = readCokie(USER_PENDING_2FA_AUTH)
+        if (!user && user_2fa) {
+            user = JSON.parse(user_2fa)
+        }
+        console.log('rrrrrrrrr', user)
         if (user?.token?.access_token) {
             headers.set('Authorization', `Bearer ${user.token.access_token}`)
         }

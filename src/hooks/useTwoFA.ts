@@ -1,7 +1,9 @@
-import { useEffect, useState } from 'react'
-
-import { GeneratedTwoFASecret } from '../interfaces/auth'
-import { useLazyEnableTwoFAQuery, useLazyGenerateSecretQuery } from '../store/services/auth'
+import {
+    useLazyAuthenticateTwoFAQuery,
+    useLazyDisableTwoFAQuery,
+    useLazyEnableTwoFAQuery,
+    useLazyGenerateSecretQuery,
+} from '../store/services/auth'
 
 export const useTwoFA = () => {
     const [generateSecret, { isFetching, isLoading }] = useLazyGenerateSecretQuery({
@@ -12,23 +14,25 @@ export const useTwoFA = () => {
         refetchOnFocus: false,
         refetchOnReconnect: false,
     })
-    const [generatedTwoFASecret, setGeneratedTwoFASecret] = useState<GeneratedTwoFASecret>()
-
-    useEffect(() => {
-        const fetchData = async () => {
-            const res = await generateSecret().unwrap()
-
-            setGeneratedTwoFASecret(res)
+    const [disableTwoFA, { isFetching: isDisableFetching, isLoading: isDisableLoading }] = useLazyDisableTwoFAQuery({
+        refetchOnFocus: false,
+        refetchOnReconnect: false,
+    })
+    const [authenticateTwoFA, { isFetching: isAuthFetching, isLoading: isAuthLoading }] = useLazyAuthenticateTwoFAQuery(
+        {
+            refetchOnFocus: false,
+            refetchOnReconnect: false,
         }
-
-        fetchData()
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    )
 
     return {
-        generatedTwoFASecret,
+        generateSecret,
         isLoading: isFetching || isLoading,
         enableTwoFA,
         isEnabling: isEnableFetching || isEnableLoading,
+        disableTwoFA,
+        isDisabling: isDisableFetching || isDisableLoading,
+        authenticateTwoFA,
+        isAuthenticating: isAuthFetching || isAuthLoading,
     }
 }
