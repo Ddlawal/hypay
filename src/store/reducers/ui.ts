@@ -17,7 +17,6 @@ export const uiSlice = createSlice({
     initialState: initialUiState,
     reducers: {
         showModal: (state: initialUiStateInterface, action: any) => {
-            console.log(action, 'this action was fired')
             state.showModal = action.payload.showModal
             state.modalType = action.payload.modalType
             state.modalProps = action.payload.modalProps

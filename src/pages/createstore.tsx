@@ -34,7 +34,6 @@ const CreateStore: NextPage = () => {
     const dispatch = useAppDispatch()
 
     const onSuccess = (params: unknown): void => {
-        console.log(params, 'on success this should be fired')
         dispatch(addProduct(params))
     }
     return (

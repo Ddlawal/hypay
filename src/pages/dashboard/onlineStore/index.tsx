@@ -13,7 +13,6 @@ const OnlineStore: NextPage = () => {
             <div className="py-4 px-4 md:px-12">
                 <div className="mb-4 items-center justify-between md:flex">
                     <h1 className="text-2xl font-bold">Temas</h1>
-                    {/* <SelectField name="date" value="haje" onChange={() => console.log('')} options={dateOptions} /> */}
                 </div>
                 <div className="mt-3 mb-5">
                     <Card

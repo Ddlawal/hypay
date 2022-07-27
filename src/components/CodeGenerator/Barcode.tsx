@@ -10,7 +10,7 @@ type BarcodeProps = {
 export const Barcode = ({
     barcodeValue = '1234567891234567891234567891234567891234567891234567',
     options,
-}: BarcodeProps) => {
+}: BarcodeProps): JSX.Element => {
     const isLargeScreen = useMediaQuery('md')
 
     useEffect(() => {

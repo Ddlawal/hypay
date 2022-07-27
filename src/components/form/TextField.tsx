@@ -9,6 +9,7 @@ type Props = {
     className?: string
     inputClassName?: string
     inputIcon?: JSX.Element
+    padding?: string
     onChange: (newVal: string) => void
     label?: string
     placeholder?: string
@@ -26,6 +27,7 @@ export const TextField = ({
     className,
     inputClassName,
     inputIcon,
+    padding,
 }: Props): React.ReactElement => {
     const idRef = React.useRef(randomId())
 
@@ -39,6 +41,7 @@ export const TextField = ({
                 placeholder={placeholder}
                 type={type}
                 icon={inputIcon}
+                padding={padding}
                 onChange={(e: any) => onChange(e.target.value)}
             />
         </div>

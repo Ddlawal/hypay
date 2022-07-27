@@ -5,12 +5,11 @@ import { PrimaryLayout } from '../../../components/Layout'
 import { NextPage } from 'next'
 import { Button } from '../../../components/Button'
 import { COLORS } from '../../../lib/constants/colors'
-import { themeTemplateData, themeTemplateDataType } from '../../../lib/data'
+import { themeTemplateData } from '../../../lib/data'
 import { GetStaticPaths } from 'next'
 
 export const getStaticPaths: GetStaticPaths = async () => {
     const paths = themeTemplateData.map((template) => {
-        // console.log(template, 'exach rtemplate')
         return {
             params: {
                 selectedTemplate: `${template.id}`,
@@ -39,7 +38,7 @@ interface SelectedTemplateProps {
     }
 }
 
-const SelectedTemplate = ({ template }: SelectedTemplateProps) => {
+const SelectedTemplate: NextPage<SelectedTemplateProps> = ({ template }) => {
     const { back } = useRouter()
     return (
         <PrimaryLayout currentTabIndex={4}>

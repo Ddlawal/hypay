@@ -56,33 +56,36 @@ export interface RootObject {
     sessionExpiryTime: number
 }
 
-// export interface initialAuthStateInterface {
-//     user: User | null
-//     token: TokenType | null
-//     isAuthenticated: boolean
-//     isError: boolean
-//     sessionExpiryTime: number
-// }
-
-const firstState = () => {
+const firstState = (): RootObject | null => {
     try {
         const serializedState = localStorage.getItem('user')
         if (!serializedState) {
             return null
         }
-        return JSON.parse(serializedState)
+
+        const user = JSON.parse(serializedState)
+        return {
+            user: user.user,
+            token: user.token,
+            sessionExpiryTime: user.sessionExpiryTime,
+            isAuthenticated: true,
+            isError: false,
+        }
     } catch (error) {
         return null
     }
 }
 
-const initialAuthState: RootObject = {
-    user: firstState(),
-    token: null,
-    isAuthenticated: false,
-    isError: false,
-    sessionExpiryTime: firstState()?.sessionExpiryTime || 0,
-}
+const authUser = firstState()
+const initialAuthState: RootObject = authUser
+    ? authUser
+    : {
+          user: null,
+          token: null,
+          isAuthenticated: false,
+          isError: false,
+          sessionExpiryTime: 0,
+      }
 
 export const authSlice = createSlice({
     name: 'auth',
@@ -92,11 +95,21 @@ export const authSlice = createSlice({
             const currentTime = Date.now()
             const expiresIn = action.payload.token.expires_in * 1000 //milliseconds
             const sessionExpiryTime = currentTime + expiresIn
-            localStorage.setItem('user', JSON.stringify({ ...action.payload, sessionExpiryTime }))
+            localStorage.setItem(
+                'user',
+                JSON.stringify({
+                    user: action.payload.userInfo,
+                    token: action.payload.token,
+                    sessionExpiryTime,
+                    isAuthenticated: true,
+                    isError: false,
+                })
+            )
+
             return {
                 ...state,
                 user: action.payload.userInfo,
-                isAuthenticated: !state.isAuthenticated,
+                isAuthenticated: true,
                 token: action.payload.token,
                 sessionExpiryTime,
             }

@@ -28,7 +28,6 @@ const EditProduct: NextPage<{ productId: string }> = ({ productId }) => {
     }
 
     const onSuccess = (res: OnSuccessType) => {
-        console.log(res.products.data[0])
         router.back()
         showSuccessSnackbar(`Product updated successfully!`)
     }

@@ -22,7 +22,6 @@ export const temporaryDataSlice = createSlice({
             }
         },
         addProduct: (state, action) => {
-            console.log(action.payload, 'action.payload')
             return {
                 ...state,
                 product: action.payload.products,

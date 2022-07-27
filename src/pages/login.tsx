@@ -1,16 +1,17 @@
 import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react'
 import Image from 'next/image'
 import { NextPage } from 'next'
-import { signIn, signOut, useSession } from 'next-auth/react'
+import { signIn, useSession } from 'next-auth/react'
 import Head from 'next/head'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { useForm } from 'react-hook-form'
+
 import { Button } from '../components/Button'
 import { Logo } from '../components/Logo'
 import { COLORS } from '../lib/constants/colors'
 import { useLoginMutation, useLoginWithGoogleMutation } from '../store/services/auth'
-import { useForm } from 'react-hook-form'
-import { useRouter } from 'next/router'
 import { login as loginUser } from '../store/reducers/auth'
-import Link from 'next/link'
 import { SecondInput } from '../components/form'
 import { EMAIL_PATTERN } from '../lib/data'
 import PasswordInput from '../components/form/PasswordInput'
@@ -18,6 +19,10 @@ import { useSnackbar } from '../hooks/useSnackbar'
 import { useAppDispatch } from '../hooks/useStoreHooks'
 import { LoaderIcon } from '../components/Icons'
 import { LoadingPage } from '../components/Layout/LoadingPage'
+import { GoogleLoginData, UserAuth } from '../interfaces/auth'
+import { removeCookie, setCookie, USER_PENDING_2FA_AUTH } from '../lib/helper'
+
+type FormData = { email: string; password: string }
 
 const Login: NextPage = () => {
     const [loginWithGoogle] = useLoginWithGoogleMutation()
@@ -35,10 +40,22 @@ const Login: NextPage = () => {
         setIsSocialLoading(true)
     }, [status])
 
+    const authenticateUser = (payload: UserAuth) => {
+        if (payload.userInfo.google2fa_enabled) {
+            setCookie(USER_PENDING_2FA_AUTH, JSON.stringify(payload))
+            push('/2fa/auth')
+        } else {
+            dispatch(loginUser(payload))
+            removeCookie(USER_PENDING_2FA_AUTH)
+            showSuccessSnackbar('Login Successful')
+            push('/dashboard/home')
+        }
+    }
+
     const tryGoogleLogin = useCallback(async () => {
         try {
             if (Session) {
-                const googleData = {
+                const googleData: GoogleLoginData = {
                     provider: Session.jwt.account?.provider,
                     name: Session.jwt.profile?.name,
                     email: Session.jwt.profile?.email,
@@ -47,20 +64,12 @@ const Login: NextPage = () => {
                     accountType: '',
                 }
 
-                loginWithGoogle(googleData)
-                    .unwrap()
-                    .then((payload: any) => {
-                        showSuccessSnackbar('Login Successful')
-                        dispatch(loginUser(payload))
-                        push('/dashboard/home')
-                    })
-                    .catch((err) => {
-                        console.error('rejected', err)
-                        showErrorSnackbar(err?.data?.error || 'There was an error while trying to log in')
-                    })
+                const payload = await loginWithGoogle(googleData).unwrap()
+
+                authenticateUser(payload)
             }
-        } catch (error) {
-            showErrorSnackbar('There was an error while trying to log in')
+        } catch (error: any) {
+            showErrorSnackbar(error?.data?.error || 'There was an error while trying to log in')
             console.log(error, 'there was an error while trying to log in')
         }
     }, [Session, dispatch, push, loginWithGoogle])
@@ -73,27 +82,20 @@ const Login: NextPage = () => {
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm<any>()
+    } = useForm<FormData>()
 
-    const onSubmit = async (data: { email: string; password: string }) => {
+    const onSubmit = async (data: FormData) => {
         if (isLoading) {
             return
         }
+
         try {
-            logUserIn(data)
-                .unwrap()
-                .then((payload: any) => {
-                    showSuccessSnackbar('Login Successful')
-                    dispatch(loginUser(payload))
-                    push('/dashboard/home')
-                })
-                .catch((error: any) => {
-                    console.error('rejected', error)
-                    showErrorSnackbar(error?.data?.error || 'There was an error while trying to log in')
-                })
-        } catch (error) {
-            showErrorSnackbar('There was an error while trying to log in, please try again')
+            const payload = await logUserIn(data).unwrap()
+
+            authenticateUser(payload)
+        } catch (error: any) {
             console.log(error)
+            showErrorSnackbar(error?.data?.error || 'There was an error while trying to log in, please try again')
         }
     }
 
