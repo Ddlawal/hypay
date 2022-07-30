@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { CloseEyeIcon } from '../Icons'
+import { NextLink } from '../Links'
 
 function PasswordInput({ errors, register, validation, className, placeholder }: any) {
     const [passwordType, setPasswordType] = useState(false)
@@ -8,7 +9,9 @@ function PasswordInput({ errors, register, validation, className, placeholder }:
             <label htmlFor="password" className="mt-3 flex font-semibold">
                 <div className="flex w-full items-baseline justify-between">
                     <p>Password</p>
-                    <p className="text-xs text-hypay-gray">Esqueceu sua senha?</p>
+                    <NextLink href="/reset-password/request" className="text-xs text-blue-500">
+                        Esqueceu sua senha?
+                    </NextLink>
                 </div>
             </label>
             <div

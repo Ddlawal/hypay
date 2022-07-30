@@ -1,48 +1,45 @@
 import React from 'react'
 import { NextPage } from 'next'
 import Head from 'next/head'
-import { useRouter } from 'next/router'
-import { useForm } from 'react-hook-form'
 
 import { Logo } from '../../components/Logo'
-import { SecondInput } from '../../components/form'
 import { COLORS } from '../../lib/constants/colors'
+import { SecondInput } from '../../components/form'
 import { Button } from '../../components/Button'
-import { AuthFormInputData } from '../../interfaces/auth'
-import { useTwoFA } from '../../hooks/useTwoFA'
 import { LoaderIcon } from '../../components/Icons'
-import { login } from '../../store/reducers/auth'
-import { useAppDispatch } from '../../hooks/useStoreHooks'
-import { readCokie, removeCookie, USER_PENDING_2FA_AUTH } from '../../lib/helper'
+import { useForm } from 'react-hook-form'
+import { ResetPasswordData } from '../../interfaces/auth'
+import { useLazyResetPasswordConfirmationQuery } from '../../store/services/auth'
+import { useRouter } from 'next/router'
 import { useSnackbar } from '../../hooks/useSnackbar'
 
-const TwoFAAuth: NextPage = () => {
+const ResetPassword: NextPage<{ token: string }> = () => {
     const {
         formState: { errors },
         handleSubmit,
         register,
-    } = useForm<AuthFormInputData>()
-
-    const dispatch = useAppDispatch()
-    const { push } = useRouter()
+    } = useForm<ResetPasswordData>()
+    const { push, query } = useRouter()
     const { showSuccessSnackbar, showErrorSnackbar } = useSnackbar()
-    const { authenticateTwoFA, isAuthenticating } = useTwoFA()
+    const [resetPassword, { isFetching, isLoading }] = useLazyResetPasswordConfirmationQuery({
+        refetchOnFocus: false,
+        refetchOnReconnect: false,
+    })
 
-    const onSubmit = async ({ code }: AuthFormInputData) => {
-        if (isAuthenticating) {
+    const loading = isFetching || isLoading
+
+    const onSubmit = async ({ password, password_confirmation }: ResetPasswordData) => {
+        if (password !== password_confirmation) {
+            return showErrorSnackbar('Password mismatch!')
+        }
+        if (loading) {
             return
         }
         try {
-            const res = await authenticateTwoFA({ code }).unwrap()
-            if (res.success) {
-                const payload = JSON.parse(readCokie(USER_PENDING_2FA_AUTH) as string)
-                dispatch(login(payload))
-                showSuccessSnackbar('Login Successful')
-                removeCookie(USER_PENDING_2FA_AUTH)
-                push('/dashboard/home')
-            } else {
-                showErrorSnackbar(res.message)
-            }
+            await resetPassword({ email: query.email as string, password, token: query.token as string })
+
+            showSuccessSnackbar('Password reset successful!')
+            push('/login')
         } catch (error) {
             showErrorSnackbar('Error! Failed to enable Two Factor Authentication')
             console.log(error)
@@ -52,7 +49,7 @@ const TwoFAAuth: NextPage = () => {
     return (
         <>
             <Head>
-                <title>Hypay / 2FA</title>
+                <title>Hypay / Reset Password</title>
                 <meta name="viewport" content="initial-scale=1.0, width=device-width" />
                 <link rel="icon" type="image/x-icon" href="/images/hypayLogo.png"></link>
             </Head>
@@ -66,18 +63,27 @@ const TwoFAAuth: NextPage = () => {
                             size={32}
                             labelled={{ labelPosition: 'bottom' }}
                         />
-                        <h2 className="my-10 text-center text-2xl font-semibold md:my-6">Two-factor Authentication</h2>
-                        <p className="text-left text-base text-hypay-gray md:mt-2">Digite o código de autenticação</p>
+                        <h2 className="my-10 text-center text-2xl font-semibold md:my-6">Redefinição de Senha</h2>
+                        <p className="text-left text-base text-hypay-gray md:mt-2">Digite sua nova senha</p>
                     </header>
                     <section className="mt-3">
                         <form onSubmit={handleSubmit(onSubmit)}>
                             {/* password input field */}
                             <SecondInput
-                                name="code"
+                                name="password"
+                                type="password"
                                 errors={errors}
                                 register={register}
-                                validation={{ required: true, minLength: 6, maxLength: 6 }}
-                                placeholder="Digite sua senha"
+                                validation={{ required: true, minLength: 6 }}
+                                placeholder="Nova senha"
+                            />
+                            <SecondInput
+                                name="password_confirmation"
+                                type="password"
+                                errors={errors}
+                                register={register}
+                                validation={{ required: true, minLength: 6 }}
+                                placeholder="Confirme a senha"
                             />
                             <div className="my-3 flex items-center justify-center font-semibold md:mt-2">
                                 <Button
@@ -86,7 +92,7 @@ const TwoFAAuth: NextPage = () => {
                                     className="flex h-10 w-full items-center justify-center"
                                     padding="px-6 py-2"
                                 >
-                                    {isAuthenticating ? <LoaderIcon size={28} color={COLORS.WHITE} /> : 'Autenticar'}
+                                    {loading ? <LoaderIcon size={28} color={COLORS.WHITE} /> : 'Autenticar'}
                                 </Button>
                             </div>
                         </form>
@@ -106,4 +112,4 @@ const TwoFAAuth: NextPage = () => {
     )
 }
 
-export default TwoFAAuth
+export default ResetPassword

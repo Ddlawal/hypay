@@ -1,5 +1,18 @@
 import baseApi from '.'
-import { TwoFAResponse, GeneratedTwoFASecret, LogoutResponse, UserAuth, GoogleLoginData } from '../../interfaces/auth'
+import {
+    TwoFAResponse,
+    GeneratedTwoFASecret,
+    LogoutResponse,
+    UserAuth,
+    GoogleLoginData,
+    ResetPasswordByEmailResponse,
+    ResetPasswordRequestData,
+    AuthFormInputData,
+    ResetPasswordData,
+    ResetPasswordResponse,
+    ResetPasswordConfirmData,
+} from '../../interfaces/auth'
+import { Token } from '../reducers/auth'
 
 const authApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
@@ -73,13 +86,37 @@ const authApi = baseApi.injectEndpoints({
             }),
             transformResponse: (res: TwoFAResponse) => res,
         }),
-        authenticateTwoFA: builder.query<TwoFAResponse, { code: string }>({
+        authenticateTwoFA: builder.query<TwoFAResponse, AuthFormInputData>({
             query: (data) => ({
                 url: '/2fa/authenticate',
                 method: 'POST',
                 body: data,
             }),
             transformResponse: (res: TwoFAResponse) => res,
+        }),
+        resetPasswordByEmail: builder.query<ResetPasswordByEmailResponse, ResetPasswordRequestData>({
+            query: (data) => ({
+                url: '/password/resetByEmail',
+                method: 'POST',
+                body: data,
+            }),
+            transformResponse: (res: ResetPasswordByEmailResponse) => res,
+        }),
+        resetPasswordConfirmation: builder.query<ResetPasswordByEmailResponse, ResetPasswordConfirmData>({
+            query: (data) => ({
+                url: '/password/resetConfirm',
+                method: 'POST',
+                body: data,
+            }),
+            transformResponse: (res: ResetPasswordByEmailResponse) => res,
+        }),
+        resetPassword: builder.query<Token, ResetPasswordData>({
+            query: (data) => ({
+                url: '/resetPassword',
+                method: 'POST',
+                body: data,
+            }),
+            transformResponse: (res: ResetPasswordResponse) => res.token.access_token as Token,
         }),
     }),
 })
@@ -95,4 +132,7 @@ export const {
     useLazyEnableTwoFAQuery,
     useLazyDisableTwoFAQuery,
     useLazyAuthenticateTwoFAQuery,
+    useLazyResetPasswordByEmailQuery,
+    useLazyResetPasswordQuery,
+    useLazyResetPasswordConfirmationQuery,
 } = authApi
