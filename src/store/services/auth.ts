@@ -96,7 +96,7 @@ const authApi = baseApi.injectEndpoints({
         }),
         resetPasswordByEmail: builder.query<ResetPasswordByEmailResponse, ResetPasswordRequestData>({
             query: (data) => ({
-                url: '/password/resetByEmail',
+                url: '/password/forgot',
                 method: 'POST',
                 body: data,
             }),
@@ -104,7 +104,7 @@ const authApi = baseApi.injectEndpoints({
         }),
         resetPasswordConfirmation: builder.query<ResetPasswordByEmailResponse, ResetPasswordConfirmData>({
             query: (data) => ({
-                url: '/password/resetConfirm',
+                url: '/password/reset',
                 method: 'POST',
                 body: data,
             }),

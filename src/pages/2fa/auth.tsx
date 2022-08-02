@@ -44,7 +44,7 @@ const TwoFAAuth: NextPage = () => {
                 showErrorSnackbar(res.message)
             }
         } catch (error) {
-            showErrorSnackbar('Error! Failed to enable Two Factor Authentication')
+            showErrorSnackbar('Error! Failed to authenticate 2FA')
             console.log(error)
         }
     }

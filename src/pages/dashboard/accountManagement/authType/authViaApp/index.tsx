@@ -66,7 +66,7 @@ const AuthViaApp: NextPage = () => {
                 showErrorSnackbar(res.message)
             }
         } catch (error) {
-            showErrorSnackbar('Error! Failed to enable Two Factor Authentication')
+            showErrorSnackbar('Error! Failed to disable Two Factor Authentication')
             console.log(error)
         }
     }
@@ -120,8 +120,13 @@ const AuthViaApp: NextPage = () => {
                                             <LoaderIcon size={32} color={COLORS.RED} />
                                         ) : (
                                             <div>
-                                                <p>{generatedTwoFASecret.google2fa_secret}</p>
-                                                <QRCode {...generatedTwoFASecret} />
+                                                <p>
+                                                    Scan the QR Code below or enter this secret key in you Authenticator
+                                                    app: {generatedTwoFASecret.google2fa_secret}
+                                                </p>
+                                                <div className="flex items-center justify-center">
+                                                    <QRCode {...generatedTwoFASecret} />
+                                                </div>
                                             </div>
                                         )}
                                     </div>
