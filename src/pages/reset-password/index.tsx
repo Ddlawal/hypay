@@ -8,7 +8,7 @@ import { SecondInput } from '../../components/form'
 import { Button } from '../../components/Button'
 import { LoaderIcon } from '../../components/Icons'
 import { useForm } from 'react-hook-form'
-import { ResetPasswordData } from '../../interfaces/auth'
+import { ResetPasswordConfirmData } from '../../interfaces/auth'
 import { useLazyResetPasswordConfirmationQuery } from '../../store/services/auth'
 import { useRouter } from 'next/router'
 import { useSnackbar } from '../../hooks/useSnackbar'
@@ -18,7 +18,7 @@ const ResetPassword: NextPage<{ token: string }> = () => {
         formState: { errors },
         handleSubmit,
         register,
-    } = useForm<ResetPasswordData>()
+    } = useForm<Omit<ResetPasswordConfirmData, 'token'>>()
     const { push, query } = useRouter()
     const { showSuccessSnackbar, showErrorSnackbar } = useSnackbar()
     const [resetPassword, { isFetching, isLoading }] = useLazyResetPasswordConfirmationQuery({
@@ -28,7 +28,7 @@ const ResetPassword: NextPage<{ token: string }> = () => {
 
     const loading = isFetching || isLoading
 
-    const onSubmit = async ({ password, password_confirmation }: ResetPasswordData) => {
+    const onSubmit = async ({ password, password_confirmation }: Omit<ResetPasswordConfirmData, 'token'>) => {
         if (password !== password_confirmation) {
             return showErrorSnackbar('Password mismatch!')
         }
@@ -36,12 +36,12 @@ const ResetPassword: NextPage<{ token: string }> = () => {
             return
         }
         try {
-            await resetPassword({ email: query.email as string, password, token: query.token as string })
+            const res = await resetPassword({ password, password_confirmation, token: query.token as string }).unwrap()
 
-            showSuccessSnackbar('Password reset successful!')
+            showSuccessSnackbar(res.Detail)
             push('/login')
         } catch (error) {
-            showErrorSnackbar('Error! Failed to enable Two Factor Authentication')
+            showErrorSnackbar('Error! Failed to reset password!')
             console.log(error)
         }
     }
@@ -68,13 +68,12 @@ const ResetPassword: NextPage<{ token: string }> = () => {
                     </header>
                     <section className="mt-3">
                         <form onSubmit={handleSubmit(onSubmit)}>
-                            {/* password input field */}
                             <SecondInput
                                 name="password"
                                 type="password"
                                 errors={errors}
                                 register={register}
-                                validation={{ required: true, minLength: 6 }}
+                                validation={{ required: true, minLength: 8 }}
                                 placeholder="Nova senha"
                             />
                             <SecondInput
@@ -82,7 +81,7 @@ const ResetPassword: NextPage<{ token: string }> = () => {
                                 type="password"
                                 errors={errors}
                                 register={register}
-                                validation={{ required: true, minLength: 6 }}
+                                validation={{ required: true, minLength: 8 }}
                                 placeholder="Confirme a senha"
                             />
                             <div className="my-3 flex items-center justify-center font-semibold md:mt-2">

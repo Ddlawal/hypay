@@ -44,7 +44,7 @@ const ResetPasswordRequest: NextPage = () => {
                 showErrorSnackbar(res.message)
             }
         } catch (error) {
-            showErrorSnackbar('Error! Failed to enable Two Factor Authentication')
+            showErrorSnackbar('Error! Failed to send password reset link')
             console.log(error)
         }
     }
@@ -97,7 +97,7 @@ const ResetPasswordRequest: NextPage = () => {
                                         className="flex h-10 w-full items-center justify-center"
                                         padding="px-6 py-2"
                                     >
-                                        {loading ? <LoaderIcon size={28} color={COLORS.WHITE} /> : 'Autenticar'}
+                                        {loading ? <LoaderIcon size={28} color={COLORS.WHITE} /> : 'Enviar'}
                                     </Button>
                                 </div>
                             </form>

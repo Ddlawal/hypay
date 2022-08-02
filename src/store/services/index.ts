@@ -12,10 +12,11 @@ export const baseQuery = fetchBaseQuery({
         if (!user && user_2fa) {
             user = JSON.parse(user_2fa)
         }
-        console.log('rrrrrrrrr', user)
+
         if (user?.token?.access_token) {
             headers.set('Authorization', `Bearer ${user.token.access_token}`)
         }
+
         return headers
     },
 })

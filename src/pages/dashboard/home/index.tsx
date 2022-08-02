@@ -59,7 +59,8 @@ const SectionWrapper: FC<SectionWrapperProps> = ({ children, title }) => (
 )
 
 export const EmailVerified = () => {
-    const [show, setShow] = useState(true)
+    // TODO: Find a better way to only show this once
+    const [show, setShow] = useState(false) // I'm changing the default value to false
 
     setTimeout(() => setShow(false), 5000)
 

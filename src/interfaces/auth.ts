@@ -10,16 +10,17 @@ export type AuthFormInputData = { code: string }
 export type ResetPasswordRequestData = { email: string }
 
 export type ResetPasswordConfirmData = {
-    email: string
-    token: string
     password: string
+    password_confirmation: string
+    token: string
 }
 
 export type ResetPasswordResponse = { token: Token & { access_token: Token } }
 
 export type ResetPasswordData = {
-    password: string
-    password_confirmation: string
+    current_password: string
+    new_password: string
+    new_password_confirmation: string
 }
 
 export type GoogleLoginData = {
