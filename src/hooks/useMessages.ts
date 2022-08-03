@@ -1,38 +1,42 @@
-import { useEffect, useState } from 'react'
-import { MessageData, MessageThread } from '../interfaces/messages'
-import { useLazyGetAllMessagesQuery, useLazyGetMessagesQuery, useSendMessageMutation } from '../store/services/messages'
+import { LazyQueryType, MutationType } from '../interfaces/helperTypes'
+import {
+    DeleteNotification,
+    GetMessageData,
+    Message,
+    MessageData,
+    MessageThread,
+    NotificationData,
+} from '../interfaces/messages'
+import {
+    useDeleteNotificationMutation,
+    useLazyGetAllMessagesQuery,
+    useLazyGetAllNotificationsQuery,
+    useLazyGetMessagesQuery,
+    useSendMessageMutation,
+} from '../store/services/messages'
 
 type UseMessagesType = {
-    messageThreads: MessageThread[]
-    thread?: MessageThread
+    getMessageThreads: LazyQueryType<void, Array<MessageThread>>
+    getThread: LazyQueryType<GetMessageData, MessageThread>
+    getAllNotifications: LazyQueryType<void, Array<NotificationData>>
+    sendMessage: (messageData: MessageData) => Promise<Array<Message> | undefined>
+    deleteNotification: MutationType<DeleteNotification, Array<NotificationData>>
     isLoading: boolean
-    sendMessage: (messageData: MessageData) => Promise<boolean>
+    isLoadingOne: boolean
+    isLoadingNotifications: boolean
+    isDeletingNotification: boolean
 }
 
-export const useMessages = (thread_id?: number): UseMessagesType => {
-    const [messageThreads, setMessageThreads] = useState<MessageThread[]>([])
-    const [thread, setThread] = useState<MessageThread>()
-
+export const useMessages = (): UseMessagesType => {
     const [getMessageThreads, { isFetching, isLoading }] = useLazyGetAllMessagesQuery()
     const [getThread, { isFetching: isFetchingOne, isLoading: isLoadingOne }] = useLazyGetMessagesQuery()
     const [sendMessageMutation] = useSendMessageMutation()
+    const [getAllNotifications, { isFetching: isFetchingNotification, isLoading: isLoadingNotification }] =
+        useLazyGetAllNotificationsQuery()
 
-    useEffect(() => {
-        const fetchData = async () => {
-            if (!thread_id) {
-                const result = await getMessageThreads().unwrap()
-                setMessageThreads(result ?? [])
-            } else {
-                const thread = await getThread({ thread_id }).unwrap()
-                setThread(thread ?? [])
-            }
-        }
+    const [deleteNotification, { isLoading: isDeletingNotification }] = useDeleteNotificationMutation()
 
-        fetchData()
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [thread_id])
-
-    const sendMessage = async (messageData: MessageData): Promise<boolean> => {
+    const sendMessage = async (messageData: MessageData): Promise<Array<Message> | undefined> => {
         const data = new FormData()
 
         Object.entries(messageData).map(([key, value]) => {
@@ -41,17 +45,22 @@ export const useMessages = (thread_id?: number): UseMessagesType => {
 
         try {
             const payload = await sendMessageMutation(data).unwrap()
-            setThread((prev) => {
-                return { thread_id: prev?.thread_id as number, messages: payload }
-            })
 
-            return true
+            return payload
         } catch (error) {
             console.log(error)
-
-            return false
         }
     }
 
-    return { messageThreads, thread, isLoading: isLoading || isFetching || isLoadingOne || isFetchingOne, sendMessage }
+    return {
+        getMessageThreads,
+        getThread,
+        sendMessage,
+        getAllNotifications,
+        deleteNotification,
+        isLoading: isLoading || isFetching,
+        isLoadingOne: isLoadingOne || isFetchingOne,
+        isLoadingNotifications: isFetchingNotification || isLoadingNotification,
+        isDeletingNotification,
+    }
 }

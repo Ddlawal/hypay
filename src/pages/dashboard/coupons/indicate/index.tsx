@@ -3,7 +3,7 @@ import { PrimaryLayout } from '../../../../components/Layout'
 import { SecondInput } from '../../../../components/form'
 import { useForm } from 'react-hook-form'
 import { Card } from '../../../../components/Card'
-import { indicateData, indicateDataType } from '../../../../lib/data'
+import { indicateData, IndicateDataType } from '../../../../lib/data'
 
 function Indicate() {
     const {
@@ -63,7 +63,7 @@ function Indicate() {
                         </Card>
                     </div>
                     <div className=" flex grid grid-cols-2 flex-wrap items-center justify-between gap-2  text-center sm:grid-cols-4 lg:flex lg:grid-cols-5  ">
-                        {indicateData.map(({ name, bottomText, status, icon }: indicateDataType, index) => (
+                        {indicateData.map(({ name, bottomText, status, icon }: IndicateDataType, index) => (
                             <div key={index} className="text-center">
                                 <Card
                                     className={`${

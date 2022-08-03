@@ -51,3 +51,5 @@ export type ResetPasswordByEmailResponse = {
 }
 
 export type LogoutResponse = { mmessage: string; status: string }
+
+export type LogoutError = { message: string }

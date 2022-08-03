@@ -16,13 +16,13 @@ export type ProductsType = {
     dateCreated: string
     link: string | null
     image_url: string
-    other_images_url: {
+    other_images_url: Array<{
         id: number
         productID: number
         image_link: string
         created_at: string
         updated_at: string
-    }[]
+    }>
     amount: string
     currency: string
     deliveryDate: number
@@ -71,7 +71,7 @@ export type SearchProductType = LazyQueryTrigger<
         string,
         BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError, Record<string, unknown>, FetchBaseQueryMeta>,
         never,
-        ProductsType[],
+        Array<ProductsType>,
         'productsApi'
     >
 >

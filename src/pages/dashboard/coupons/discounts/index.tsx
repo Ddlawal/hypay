@@ -12,7 +12,7 @@ import {
 import { ThreeDots } from '../../../../components/Icons/ThreeDots'
 import { PrimaryLayout } from '../../../../components/Layout'
 import { COLORS } from '../../../../lib/constants/colors'
-import { dataInterface, discountTableData, discountTableHeader } from '../../../../lib/data'
+import { DataInterface, discountTableData, discountTableHeader } from '../../../../lib/data'
 import { useAppSelector, useAppDispatch } from '../../../../hooks/useStoreHooks'
 import { showModal, hideModal } from '../../../../store/reducers/ui'
 import { Card } from '../../../../components/Card'
@@ -94,7 +94,7 @@ function Discount() {
                                 <tbody className="rounded-b">
                                     {discountTableData.map(
                                         (
-                                            { name, status, discount, product, couponLimit, expiration }: dataInterface,
+                                            { name, status, discount, product, couponLimit, expiration }: DataInterface,
                                             index
                                         ) => (
                                             <tr key={index} className="border-b-2">

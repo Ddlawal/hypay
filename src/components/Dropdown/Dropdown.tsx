@@ -39,8 +39,14 @@ const DropdownItems: FC<DropdownButtonProps> = ({ items, className }) => {
                 push('/login')
                 await signOut({ redirect: false })
             }
-        } catch (error) {
+        } catch (error: any) {
             console.log(error)
+            if (error.data.message === 'Invalid or expired or no token') {
+                localStorage.clear()
+                dispatch(logUserOut())
+                push('/login')
+                await signOut({ redirect: false })
+            }
         }
     }
     return (

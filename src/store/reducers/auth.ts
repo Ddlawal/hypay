@@ -37,7 +37,7 @@ export interface UserInfo {
     businessname: string
     usertype: string
     merchantCode: string
-    deliveryAddress: DeliveryAddress[]
+    deliveryAddress: Array<DeliveryAddress>
     phone?: any
     profileStatus: boolean
     referral_code: string

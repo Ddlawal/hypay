@@ -6,26 +6,26 @@ export const requestApi = createApi({
     reducerPath: 'requestsApi',
     baseQuery: baseQuery,
     endpoints: (builder) => ({
-        getAllRequests: builder.query<RequestType[], void>({
+        getAllRequests: builder.query<Array<RequestType>, void>({
             query: () => ({
                 url: '/myOrders?pageType=Dashboard',
                 method: 'GET',
             }),
-            transformResponse: (res: { orders: RequestType[] }) => res.orders,
+            transformResponse: (res: { orders: Array<RequestType> }) => res.orders,
         }),
         getRequest: builder.query<RequestType, string>({
             query: (requestId: string) => ({
                 url: `/myOrders?pageType=Dashboard&query=${requestId}`,
                 method: 'GET',
             }),
-            transformResponse: (res: { orders: { data: RequestType[] } }) => res.orders.data[0],
+            transformResponse: (res: { orders: { data: Array<RequestType> } }) => res.orders.data[0],
         }),
-        getRequestStatuses: builder.query<string[], void>({
+        getRequestStatuses: builder.query<Array<string>, void>({
             query: () => ({
                 url: '/order/getStatuses',
                 method: 'GET',
             }),
-            transformResponse: (res: { orderStatuses: string[] }) => res.orderStatuses,
+            transformResponse: (res: { orderStatuses: Array<string> }) => res.orderStatuses,
         }),
     }),
 })

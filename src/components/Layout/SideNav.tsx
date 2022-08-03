@@ -9,7 +9,7 @@ import { useRouter } from 'next/router'
 type SideNavProps = {
     currentTabIndex?: number
     dropDownIndex?: number
-    menuItemList?: MenuItemListType[]
+    menuItemList?: Array<MenuItemListType>
     isPrimary?: boolean
 }
 

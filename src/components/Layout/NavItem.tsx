@@ -10,7 +10,7 @@ type NavItemProps = {
     parentIndex?: number
     childIndex?: number
     leftIcon?: JSX.Element | (() => JSX.Element) | undefined
-    isDropDown?: { href: string; text: string }[] | undefined
+    isDropDown?: Array<{ href: string; text: string }> | undefined
     hasRightIcon?: boolean | undefined
     rightIcon?: JSX.Element | (() => JSX.Element) | undefined
     activeTab?: number

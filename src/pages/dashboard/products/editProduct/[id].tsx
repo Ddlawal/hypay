@@ -6,7 +6,7 @@ import { useProducts } from '../../../../hooks/useProducts'
 import { useSnackbar } from '../../../../hooks/useSnackbar'
 import { ProductsType } from '../../../../interfaces/products'
 
-type OnSuccessType = { products: { data: ProductsType[] } }
+type OnSuccessType = { products: { data: Array<ProductsType> } }
 
 export const getServerSideProps: GetServerSideProps<Record<string, unknown>, { id: string }> = async ({ params }) => {
     return {

@@ -115,7 +115,6 @@ const CampaignPlatform = ({ campaignPath }: { campaignPath: string }) => {
                                     </div>
                                     <span
                                         onClick={() => {
-                                            console.log('clicked')
                                             setPhotoBoxCount((count) => count + 1)
                                         }}
                                         className="mb-3"

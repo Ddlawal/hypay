@@ -48,7 +48,7 @@ const Footer = () => {
  * @param images Array of image urls
  * @returns JSX Element
  */
-const Carousel = ({ images }: { images: string[] }) => {
+const Carousel = ({ images }: { images: Array<string> }) => {
     return (
         <div className="hsb mt-3 flex h-full gap-x-5 overflow-x-auto shadow-inner">
             {images.map((image_url, i) => (

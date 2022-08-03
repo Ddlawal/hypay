@@ -88,10 +88,10 @@ export const ProductList = ({
     searchProduct,
     setIds = () => null,
 }: {
-    products: ProductsType[]
+    products: Array<ProductsType>
     onDelete: (id: string, url: string) => Promise<void>
     searchProduct: SearchProductType
-    setIds?: Dispatch<React.SetStateAction<string[]>>
+    setIds?: Dispatch<React.SetStateAction<Array<string>>>
 }) => {
     const isDesktop = useMediaQuery('md')
     const { push } = useRouter()
@@ -111,7 +111,7 @@ export const ProductList = ({
     const deleteProduct = async () => {
         const { data } = await searchProduct(productId)
         const productName = data && data[0] ? data[0].productName : 'this product'
-        const proceed = confirm(`Are you sure you want to delete ${productName}`)
+        const proceed = confirm(`Are you sure you want to delete ${productName}?`)
         if (proceed) {
             onDelete(productId, '/dashboard/products')
         }
@@ -208,7 +208,7 @@ const Products: NextPage = () => {
 
         if (action === 'Apagar') {
             const proceed = confirm(
-                `Are you sure you want to delete these ${ids.length} ${ids.length > 1 ? 'products' : 'product'}`
+                `Are you sure you want to delete these ${ids.length} ${ids.length > 1 ? 'products' : 'product'}?`
             )
             if (proceed) {
                 await onDeleteMany(ids)
