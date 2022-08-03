@@ -1,7 +1,7 @@
 import React from 'react'
 import { NextPage } from 'next'
 import { PrimaryLayout } from '../../../../components/Layout'
-import { SettingsMenuItemList, toturialItemsData, tutorialItemsInterface } from '../../../../lib/data'
+import { SettingsMenuItemList, toturialItemsData, TutorialItemsInterface } from '../../../../lib/data'
 import { LeftArrowIcon } from '../../../../components/Icons'
 import Link from 'next/link'
 
@@ -31,7 +31,7 @@ const General: NextPage = () => {
                 <div className="">
                     <h2 className="my-6 text-xl font-bold">Tutorial</h2>
                     <div>
-                        {toturialItemsData.map(({ list, text }: tutorialItemsInterface, index) => (
+                        {toturialItemsData.map(({ list, text }: TutorialItemsInterface, index) => (
                             <div key={index} className="flex items-start">
                                 <p className="mr-1 text-sm">{list}</p>
                                 <p className="text-sm">{text}</p>
