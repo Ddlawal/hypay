@@ -13,6 +13,7 @@ import { MessageData, MessageThread } from '../../../interfaces/messages'
 import { COLORS } from '../../../lib/constants/colors'
 import { useMediaQuery } from '../../../hooks/useMediaQuery'
 import { ArrowLeftIcon } from '../../../components/Icons/ArrowLeftIcon'
+import { NextPage } from 'next'
 
 type messageCardProps = {
     active: boolean
@@ -190,7 +191,7 @@ const ThreadMessages = ({ thread_id }: ThreadMessagesProps) => {
     )
 }
 
-const Messages = () => {
+const Messages: NextPage = () => {
     const [messageThreads, setMessageThreads] = useState<Array<MessageThread>>([])
     const { getMessageThreads, isLoading } = useMessages()
     const isDesktop = useMediaQuery('md')
@@ -212,38 +213,45 @@ const Messages = () => {
                 <header className="mb-2 flex items-center justify-between md:mb-10 md:items-center">
                     <div className="flex flex-col items-start justify-between md:w-full md:flex-row md:items-center">
                         <h2 className="text-2xl font-bold">Mensagens</h2>
-                        <p className="text-md mt-4 font-semibold  md:mt-0">Marcar todas como lida</p>
                     </div>
-                    <div className="mr-2 block cursor-pointer md:hidden">
-                        <StarIcon size={28} />
-                    </div>
+                    {messageThreads.length ? (
+                        <div className="mr-2 block cursor-pointer md:hidden">
+                            <StarIcon size={28} />
+                        </div>
+                    ) : null}
                 </header>
-                <div className="pt-3 pb-2">
-                    {!isDesktop ? <ArrowLeftIcon size={20} onClick={() => setActiveThread(null)} /> : null}
-                </div>
-                <main className="grid grid-cols-12 gap-2">
-                    <div className="col-span-12 h-[75vh] w-full overflow-scroll md:col-span-5 md:pr-2">
-                        {activeThread !== null && !isDesktop ? (
-                            <ThreadMessages thread_id={messageThreads[activeThread].thread_id} />
-                        ) : (
-                            messageThreads.map((messageThread, i) => (
-                                <ThreadList
-                                    key={messageThread.thread_id}
-                                    active={activeThread === i}
-                                    messageThread={messageThread}
-                                    onClick={() => setActiveThread(i)}
-                                />
-                            ))
-                        )}
+                {messageThreads.length ? (
+                    <div className="pt-3 pb-2">
+                        {!isDesktop ? <ArrowLeftIcon size={20} onClick={() => setActiveThread(null)} /> : null}
                     </div>
-                    <div className="col-span-7 hidden md:block">
-                        {activeThread === null ? (
-                            <div className="mt-8 text-center">No thread selected</div>
-                        ) : (
-                            <ThreadMessages thread_id={messageThreads[activeThread].thread_id} />
-                        )}
-                    </div>
-                </main>
+                ) : null}
+                {messageThreads.length ? (
+                    <main className="grid grid-cols-12 gap-2">
+                        <div className="col-span-12 h-[75vh] w-full overflow-scroll md:col-span-5 md:pr-2">
+                            {activeThread !== null && !isDesktop ? (
+                                <ThreadMessages thread_id={messageThreads[activeThread].thread_id} />
+                            ) : (
+                                messageThreads.map((messageThread, i) => (
+                                    <ThreadList
+                                        key={messageThread.thread_id}
+                                        active={activeThread === i}
+                                        messageThread={messageThread}
+                                        onClick={() => setActiveThread(i)}
+                                    />
+                                ))
+                            )}
+                        </div>
+                        <div className="col-span-7 hidden md:block">
+                            {activeThread === null ? (
+                                <div className="mt-8 text-center">No thread selected</div>
+                            ) : (
+                                <ThreadMessages thread_id={messageThreads[activeThread].thread_id} />
+                            )}
+                        </div>
+                    </main>
+                ) : (
+                    <div className="mt-8 text-center text-hypay-pink">You don't have any messages yet</div>
+                )}
             </div>
         </PrimaryLayout>
     )

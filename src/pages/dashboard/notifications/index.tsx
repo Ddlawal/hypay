@@ -58,6 +58,10 @@ const NotificationPage: NextPage = () => {
             try {
                 const payload = await getAllNotifications().unwrap()
 
+                if (!payload.length) {
+                    return setNotificationsByDate(undefined)
+                }
+
                 const notificationObj: NotificationsByDate = {}
 
                 for (const notification of payload) {
@@ -122,7 +126,7 @@ const NotificationPage: NextPage = () => {
                         </div>
                     </header>
                     <main className="">
-                        {notificationsByDate &&
+                        {notificationsByDate ? (
                             Object.entries(notificationsByDate).map(([heading, notifications], index) => (
                                 <div key={index}>
                                     <h2 className="mt-6 font-semibold">{heading}</h2>
@@ -137,16 +141,18 @@ const NotificationPage: NextPage = () => {
                                                     <span className="absolute top-[-5px] right-0 h-3 w-3 rounded-full bg-hypay-pink"></span>
                                                 )}
                                                 <div className="grid grid-cols-12 items-center gap-x-2">
-                                                    <Image
-                                                        className="col-span-1 rounded-[50%]"
-                                                        loader={({ src }) => src}
-                                                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWnQScKMx5KEgFZiQtqXBFX8EuF7GI-DWfsA&usqp=CAU"
-                                                        alt="avatar"
-                                                        width={40}
-                                                        height={40}
-                                                        quality={100}
-                                                        unoptimized
-                                                    />
+                                                    <div className="col-span-1">
+                                                        <Image
+                                                            className="rounded-[50%]"
+                                                            loader={({ src }) => src}
+                                                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWnQScKMx5KEgFZiQtqXBFX8EuF7GI-DWfsA&usqp=CAU"
+                                                            alt="avatar"
+                                                            width={40}
+                                                            height={40}
+                                                            quality={100}
+                                                            unoptimized
+                                                        />
+                                                    </div>
                                                     <div className="col-span-11">
                                                         <div className="mb-1 truncate">
                                                             <b>{title}:</b> {description}
@@ -182,31 +188,69 @@ const NotificationPage: NextPage = () => {
                                                     />
                                                 </div>
                                             </Card>
-                                            <Card className="items-between my-3 flex flex-col md:hidden" rounded>
-                                                <div className="flex items-center gap-x-2">
-                                                    <Image
-                                                        className="rounded-[50%]"
-                                                        loader={({ src }) => src}
-                                                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWnQScKMx5KEgFZiQtqXBFX8EuF7GI-DWfsA&usqp=CAU"
-                                                        alt="avatar"
-                                                        width={40}
-                                                        height={40}
-                                                        quality={100}
-                                                        unoptimized
-                                                    />
-                                                    <p>
-                                                        Você recebeu um pagamento de <b>{title}</b>
-                                                    </p>
-                                                </div>
-                                                <div className="mt-3 flex items-center justify-between">
-                                                    <b>{created_at}</b>
-                                                    <TrashCanIcon color={COLORS.YELLOW} />
+                                            <Card
+                                                className="items-between my-3 flex flex-col md:hidden"
+                                                padding="p-3"
+                                                rounded
+                                            >
+                                                <div className="grid grid-cols-12 items-center gap-x-2">
+                                                    <div className="col-span-2">
+                                                        <Image
+                                                            className="rounded-[50%]"
+                                                            loader={({ src }) => src}
+                                                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWnQScKMx5KEgFZiQtqXBFX8EuF7GI-DWfsA&usqp=CAU"
+                                                            alt="avatar"
+                                                            width={40}
+                                                            height={40}
+                                                            quality={100}
+                                                            unoptimized
+                                                        />
+                                                    </div>
+                                                    <div className="col-span-10">
+                                                        <div className="mb-1 truncate">
+                                                            <b>{title}:</b> {description}
+                                                        </div>
+                                                        <div className="flex items-center justify-between">
+                                                            <div>
+                                                                <b className="text-sm text-hypay-iconGray">
+                                                                    {getDate(created_at, 'HH:MM')}h
+                                                                </b>
+                                                            </div>
+                                                            <div className="flex gap-x-3">
+                                                                <button
+                                                                    className="mr-2 cursor-pointer"
+                                                                    onClick={() => handleDelete(id)}
+                                                                >
+                                                                    <TrashCanIcon color={COLORS.PINK} size={18} />
+                                                                </button>
+
+                                                                <div className="mr-2  cursor-pointer">
+                                                                    <StarIcon size={18} />
+                                                                </div>
+                                                                {/* TODO: change to longpress then tap on mobole */}
+                                                                {/* <input
+                                                                    ref={(element) =>
+                                                                        (notificationRefs.current[id] =
+                                                                            element as HTMLInputElement)
+                                                                    }
+                                                                    type="checkbox"
+                                                                    className="h-4 w-4 cursor-pointer border-[5px] border-black"
+                                                                    onChange={(e) => {
+                                                                        onSelect(id, e.currentTarget.checked)
+                                                                    }}
+                                                                /> */}
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </Card>
                                         </div>
                                     ))}
                                 </div>
-                            ))}
+                            ))
+                        ) : (
+                            <div className="text-center text-hypay-pink">You don't have any notifications</div>
+                        )}
                     </main>
                 </div>
             </div>
