@@ -19,7 +19,7 @@ type PrimaryLayoutProps = {
     searchable?: SearchType
     navHeader?: string
     isLoading?: boolean
-    menuItemList?: MenuItemListType[]
+    menuItemList?: Array<MenuItemListType>
     isPrimary?: boolean
     desktopSearch?: (event: React.ChangeEvent<HTMLInputElement>) => void
 }

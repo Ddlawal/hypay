@@ -2,7 +2,7 @@ import React from 'react'
 import { PrimaryLayout } from '../../../../components/Layout'
 import { SecondInput } from '../../../../components/form'
 import { useForm } from 'react-hook-form'
-import { recompenseTableHeader, recompenseTableData, recompenseTableInterface } from '../../../../lib/data'
+import { recompenseTableHeader, recompenseTableData, RecompenseTableInterface } from '../../../../lib/data'
 
 function Recompense() {
     const {
@@ -72,7 +72,7 @@ function Recompense() {
                                                     telephone,
                                                     creationDate,
                                                     indication,
-                                                }: recompenseTableInterface,
+                                                }: RecompenseTableInterface,
                                                 index: number
                                             ) => (
                                                 <tr className="border-b-2" key={index}>

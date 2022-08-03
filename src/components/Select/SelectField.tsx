@@ -14,7 +14,7 @@ type SelectFieldProps<T> = {
     labelClassName?: string
     onChange: (value: T | null) => void
     label?: string
-    options: Option<T>[]
+    options: Array<Option<T>>
     isSearchable?: boolean
     isClearable?: boolean
     isDisabled?: boolean

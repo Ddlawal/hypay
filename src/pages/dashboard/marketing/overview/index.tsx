@@ -33,13 +33,13 @@ export const adsCardsContent = [
     },
 ]
 
-interface dataInterface {
+interface DataInterface {
     name: string
     status?: string
 }
 
-export const tableHeaderList: string[] = ['Name', 'Status', 'Cast', 'Sales', 'Sessions']
-export const tableDataContents: dataInterface[] = [
+export const tableHeaderList: Array<string> = ['Name', 'Status', 'Cast', 'Sales', 'Sessions']
+export const tableDataContents: Array<DataInterface> = [
     { name: '------------------------' },
     { name: '----------------' },
     { name: '----------------' },
@@ -47,7 +47,7 @@ export const tableDataContents: dataInterface[] = [
     { name: '----------------' },
 ]
 
-export const instagramCampaign: dataInterface[] = [
+export const instagramCampaign: Array<DataInterface> = [
     { name: 'New Year’s Campaing' },
     { name: 'active', status: 'Active' },
     { name: '$150' },
@@ -59,8 +59,8 @@ const WhiteTable = ({
     tableHeaderList,
     tableDataContents,
 }: {
-    tableHeaderList: string[]
-    tableDataContents: dataInterface[]
+    tableHeaderList: Array<string>
+    tableDataContents: Array<DataInterface>
 }) => {
     return (
         <table className="my-2 w-full border-collapse overflow-hidden rounded-md bg-white">

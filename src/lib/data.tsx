@@ -18,7 +18,7 @@ export type MenuItemListType = {
     text: string
     href: string
     leftIcon?: JSX.Element | (() => JSX.Element)
-    isDropDown?: { href: string; text: string }[]
+    isDropDown?: Array<{ href: string; text: string }>
     hasRightIcon?: boolean
     rightIcon?: JSX.Element | (() => JSX.Element)
 }
@@ -50,7 +50,7 @@ export const headerLinks: Array<{
     },
 ]
 
-export const MenuItemList: MenuItemListType[] = [
+export const MenuItemList: Array<MenuItemListType> = [
     {
         text: 'Início',
         href: '/dashboard/home',
@@ -118,7 +118,7 @@ export const MenuItemList: MenuItemListType[] = [
     },
 ]
 
-export const SettingsMenuItemList: MenuItemListType[] = [
+export const SettingsMenuItemList: Array<MenuItemListType> = [
     {
         text: 'Notificações',
         href: '/dashboard/settings',
@@ -188,14 +188,14 @@ export const EMAIL_PATTERN =
 type typeOfUser = 'Merchant' | 'Buyer' | 'Both'
 export const TYPE_OF_USER: typeOfUser = 'Merchant'
 
-export type dummyMessagesType = {
+type DummyMessagesType = {
     name: string
     message: string
     time: string
     date: string
 }
 
-export const dummyMessages: dummyMessagesType[] = [
+export const dummyMessages: Array<DummyMessagesType> = [
     { name: 'Kitto Gilmar', message: 'Qual o tamanho do produto?', time: '9:32', date: '01/02/2022' },
     { name: 'Vitória Silva', message: 'Qual previsão de entrega?', time: '9:32', date: '01/02/2022' },
     { name: 'Rafael Cardoso', message: 'Tem outras cores?', time: '9:32', date: '01/02/2022' },
@@ -204,10 +204,10 @@ export const dummyMessages: dummyMessagesType[] = [
     { name: 'Gabriel Novaes', message: 'Preciso de ajuda com um...', time: '9:32', date: '01/02/2022' },
 ]
 
-export type themeTemplateDataType = {
+export type themeTemplateDataType = Array<{
     title: string
     id: string
-}[]
+}>
 
 export const themeTemplateData: themeTemplateDataType = [
     { title: 'template1', id: '1' },
@@ -215,7 +215,7 @@ export const themeTemplateData: themeTemplateDataType = [
     { title: 'template3', id: '3' },
 ]
 
-export const discountTableHeader: string[] = [
+export const discountTableHeader: Array<string> = [
     'Name',
     'Status',
     '%Discount',
@@ -225,7 +225,7 @@ export const discountTableHeader: string[] = [
     'Shares',
 ]
 
-export interface dataInterface {
+export interface DataInterface {
     name: string
     status: string
     discount: string
@@ -234,7 +234,7 @@ export interface dataInterface {
     expiration: string
 }
 
-export const discountTableData: dataInterface[] = [
+export const discountTableData: Array<DataInterface> = [
     {
         name: 'Fev15',
         status: 'Active',
@@ -277,14 +277,14 @@ export const discountTableData: dataInterface[] = [
     },
 ]
 
-export interface indicateDataType {
+export interface IndicateDataType {
     name: string
     bottomText: string
     status: string
     icon: JSX.Element | string | (() => JSX.Element)
 }
 
-export const indicateData: indicateDataType[] = [
+export const indicateData: Array<IndicateDataType> = [
     {
         name: 'Ganhe R$200',
         bottomText: 'Convite 5 vendedores',
@@ -303,14 +303,14 @@ export interface TrxnTypeI {
     amount: string
 }
 
-export const trxnType: TrxnTypeI[] = [
+export const trxnType: Array<TrxnTypeI> = [
     { name: 'Rafael Crespo', trxn: 'Withdrawal', amount: 'R$1.000,00' },
     { name: 'Igor Rogério', trxn: 'App Purchase', amount: 'R$1.500,00' },
     { name: 'Rafael Crespo', trxn: 'Withdrawal', amount: 'R$1.000,00' },
     { name: 'Thomas Thomp...', trxn: 'Web-based purchasing', amount: 'R$7.500,00' },
 ]
 
-export const recompenseTableHeader: string[] = [
+export const recompenseTableHeader: Array<string> = [
     'Código',
     'Status',
     'Responsável',
@@ -320,7 +320,7 @@ export const recompenseTableHeader: string[] = [
     'Indicações',
 ]
 
-export interface recompenseTableInterface {
+export interface RecompenseTableInterface {
     code: string
     status: string
     responsible: string
@@ -330,7 +330,7 @@ export interface recompenseTableInterface {
     indication: string
 }
 
-export const recompenseTableData: recompenseTableInterface[] = [
+export const recompenseTableData: Array<RecompenseTableInterface> = [
     {
         code: '#59999999',
         status: 'activa',
@@ -345,22 +345,22 @@ export const recompenseTableData: recompenseTableInterface[] = [
 export interface PlansCardInterface {
     planTitle: string
     planAmount?: string
-    packages: boolean[]
+    packages: Array<boolean>
 }
 
-export const plans: PlansCardInterface[] = [
+export const plans: Array<PlansCardInterface> = [
     { planTitle: 'Plano 1', planAmount: '10', packages: [true, true, false, false, false] },
     { planTitle: 'Plano 2', planAmount: '500', packages: [true, true, true, false, false] },
     { planTitle: 'Plano 3', planAmount: '500', packages: [true, true, true, true, false] },
     { planTitle: 'Plano 4', planAmount: '500', packages: [true, true, true, true, false] },
 ]
 
-export interface tutorialItemsInterface {
+export interface TutorialItemsInterface {
     list: string
     text: string
 }
 
-export const toturialItemsData: tutorialItemsInterface[] = [
+export const toturialItemsData: Array<TutorialItemsInterface> = [
     {
         list: '1.',
         text: 'venenatis neque non, nunc quam fermentum ut. Magnis leo nunc porttitor facilisis blandit. Vulputate gravida mattis natoque at.',

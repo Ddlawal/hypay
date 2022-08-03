@@ -17,7 +17,7 @@ type TimelineEventProps = {
 }
 
 export type TimelineProps = {
-    children: ReactElement<TimelineEventProps>[]
+    children: Array<ReactElement<TimelineEventProps>>
     activeIndex?: number
     gap?: number
     clipped?: boolean

@@ -21,7 +21,7 @@ type LoggedInHeaderProps = {
     isNavBack?: boolean
     searchable?: SearchType
     navHeader?: string
-    menuItemList?: MenuItemListType[]
+    menuItemList?: Array<MenuItemListType>
     isPrimary?: boolean
     desktopSearch?: (event: React.ChangeEvent<HTMLInputElement>) => void
 }

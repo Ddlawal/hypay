@@ -55,7 +55,7 @@ const SearchList = ({
     searchProduct,
 }: {
     searchType: SearchType
-    result: ProductsType[]
+    result: Array<ProductsType>
     onDelete: (id: string, url: string) => Promise<void>
     searchProduct: SearchProductType
 }) => {

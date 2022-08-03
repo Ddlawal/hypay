@@ -5,7 +5,7 @@ import { PrimaryLayout } from '../../../components/Layout'
 import { useSnackbar } from '../../../hooks/useSnackbar'
 import { ProductsType } from '../../../interfaces/products'
 
-type OnSuccessType = { products: { data: ProductsType[] } }
+type OnSuccessType = { products: { data: Array<ProductsType> } }
 
 const AddProducts: NextPage = () => {
     const router = useRouter()

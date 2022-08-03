@@ -20,14 +20,14 @@ export const productApi = createApi({
                 body: data,
             }),
         }),
-        getAllProducts: builder.query<ProductsType[], void>({
+        getAllProducts: builder.query<Array<ProductsType>, void>({
             query: () => ({
                 url: '/myProducts',
                 method: 'GET',
             }),
-            transformResponse: (res: { products: { data: ProductsType[] } }) => res.products.data,
+            transformResponse: (res: { products: { data: Array<ProductsType> } }) => res.products.data,
         }),
-        deleteAProduct: builder.query<{ products: { data: ProductsType[] } }, string>({
+        deleteAProduct: builder.query<{ products: { data: Array<ProductsType> } }, string>({
             query: (id: string) => ({
                 url: `/product/remove?productID=${id}`,
                 method: 'GET',
@@ -40,12 +40,12 @@ export const productApi = createApi({
                 body: { businessName },
             }),
         }),
-        searchMerchantProducts: builder.query<ProductsType[], string>({
+        searchMerchantProducts: builder.query<Array<ProductsType>, string>({
             query: (id: string) => ({
                 url: `/search/products?query=${id}`,
                 method: 'GET',
             }),
-            transformResponse: (res: { products: { data: ProductsType[] } }) => res.products.data,
+            transformResponse: (res: { products: { data: Array<ProductsType> } }) => res.products.data,
         }),
     }),
 })

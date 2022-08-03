@@ -13,7 +13,7 @@ export const statusLabelMap: Record<string, number> = {
 export const useRequests = (requestId?: string) => {
     // const [statuses, setStatuses] = useState<string[]>([])
     const [activeStatusIndex, setActiveStatusIndex] = useState(0)
-    const [requests, setRequests] = useState<RequestType[]>([])
+    const [requests, setRequests] = useState<Array<RequestType>>([])
     const [request, setRequest] = useState<RequestType>()
     // const [getStatuses, { isFetching: isStatusFetching, isLoading: isStatusLoading }] = useLazyGetRequestStatusesQuery()
     const [getAllRequests, { isFetching, isLoading }] = useLazyGetAllRequestsQuery()

@@ -3,7 +3,7 @@ import { createSlice, Slice, SliceCaseReducers } from '@reduxjs/toolkit'
 
 interface initialTemporaryState {
     userData: any
-    product: never[]
+    product: Array<never>
 }
 
 const initialState: initialTemporaryState = {

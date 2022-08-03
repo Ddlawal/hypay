@@ -38,10 +38,10 @@ type Lines = { dataKey: string; stroke: string }
 
 type LinechartProps = {
     chartData?: any
-    lines?: Lines[]
+    lines?: Array<Lines>
 }
 
-const chartLines: Lines[] = [
+const chartLines: Array<Lines> = [
     {
         dataKey: 'pv',
         stroke: '#8884d8',

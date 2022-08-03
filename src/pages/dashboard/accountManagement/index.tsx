@@ -24,7 +24,7 @@ interface ActiveBrowser {
     name: string
 }
 
-export const ListOfActiveBrowsers: ActiveBrowser[] = [
+export const ListOfActiveBrowsers: Array<ActiveBrowser> = [
     { icon: chromeIcon, name: 'Chrome' },
     { icon: operaIcon, name: 'Opera' },
     { icon: safariIcon, name: 'Safari' },

@@ -11,7 +11,6 @@ export const useProducts = (productId?: string) => {
     const { showSuccessSnackbar, showErrorSnackbar } = useSnackbar()
     const router = useRouter()
     const { data, isLoading, isFetching, refetch } = useGetAllProductsQuery(undefined, {
-        pollingInterval: 3000,
         refetchOnMountOrArgChange: true,
         skip: false,
     })

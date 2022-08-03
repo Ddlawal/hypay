@@ -1,5 +1,5 @@
 import { EditorState } from 'draft-js'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import cx from 'classnames'
 
 import { Button } from '../../../components/Button'
@@ -52,12 +52,12 @@ export const ThreadList = ({ active, messageThread: { messages }, onClick }: mes
                     <div className="flex items-center justify-between">
                         <div>{message}</div>
                         <div className="flex items-center gap-1">
-                            <button className="box-border rounded-full px-1 py-2 hover:bg-hypay-light-gray">
+                            <div className="box-border rounded-full px-2 py-2 hover:bg-gray-50">
                                 <TrashCanIcon size={18} />
-                            </button>
-                            <button className="box-border rounded-full px-1 py-2 hover:bg-gray-50">
+                            </div>
+                            <div className="box-border rounded-full px-2 py-2 hover:bg-gray-50">
                                 <StarIcon size={18} />
-                            </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -86,23 +86,50 @@ export const ThreadList = ({ active, messageThread: { messages }, onClick }: mes
 
 const ThreadMessages = ({ thread_id }: ThreadMessagesProps) => {
     const [editorState, setEditorSatte] = useState<EditorState>(() => EditorState.createEmpty())
+    const [thread, setThread] = useState<MessageThread>()
+    const [isSendingMessage, setIsSendingMessage] = useState(false)
 
-    const { thread, isLoading, sendMessage } = useMessages(thread_id)
+    const { getThread, isLoadingOne: isLoading, sendMessage } = useMessages()
     const { showErrorSnackbar, showSuccessSnackbar } = useSnackbar()
 
+    useEffect(() => {
+        const fetchData = async () => {
+            const thread = await getThread({ thread_id }).unwrap()
+            setThread(thread ?? [])
+        }
+
+        fetchData()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [thread_id])
+
     const handleSendMessage = async () => {
+        if (isSendingMessage) {
+            return
+        }
+
+        setIsSendingMessage(true)
         const messageData: MessageData = {
             message: editorState.getCurrentContent().getPlainText(),
             thread_id: `${thread?.thread_id}`,
             receiver_id: '1',
         }
 
-        const sent = await sendMessage(messageData)
-        if (sent) {
-            showSuccessSnackbar('Message sent!')
-            setEditorSatte(() => EditorState.createEmpty())
-        } else {
+        try {
+            const payload = await sendMessage(messageData)
+            if (payload) {
+                setThread((prev) => {
+                    return { thread_id: prev?.thread_id as number, messages: payload }
+                })
+                showSuccessSnackbar('Message sent!')
+                setEditorSatte(() => EditorState.createEmpty())
+            } else {
+                showErrorSnackbar('Error! Message not sent!')
+            }
+        } catch (error) {
+            console.log(error)
             showErrorSnackbar('Error! Message not sent!')
+        } finally {
+            setIsSendingMessage(false)
         }
     }
 
@@ -148,8 +175,14 @@ const ThreadMessages = ({ thread_id }: ThreadMessagesProps) => {
 
                 <RichText editorState={editorState} setEditorState={setEditorSatte} />
                 <div className="flex justify-end md:justify-start">
-                    <Button onClick={() => handleSendMessage()} className="my-6 py-3 px-6 text-2xl" size="lg" primary>
-                        Responder
+                    <Button
+                        primary
+                        size="md"
+                        className="my-6 flex h-10 w-[8rem] items-center justify-center"
+                        padding="px-6 py-2"
+                        onClick={() => handleSendMessage()}
+                    >
+                        {isSendingMessage ? <LoaderIcon size={28} color={COLORS.WHITE} /> : 'Responder'}
                     </Button>
                 </div>
             </section>
@@ -158,9 +191,20 @@ const ThreadMessages = ({ thread_id }: ThreadMessagesProps) => {
 }
 
 const Messages = () => {
-    const { messageThreads, isLoading } = useMessages()
+    const [messageThreads, setMessageThreads] = useState<Array<MessageThread>>([])
+    const { getMessageThreads, isLoading } = useMessages()
     const isDesktop = useMediaQuery('md')
     const [activeThread, setActiveThread] = useState<number | null>(null)
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const result = await getMessageThreads().unwrap()
+            setMessageThreads(result ?? [])
+        }
+
+        fetchData()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     return (
         <PrimaryLayout className="mb-6" isLoading={isLoading}>
