@@ -72,7 +72,7 @@ const Login: NextPage = () => {
             showErrorSnackbar(error?.data?.error || 'There was an error while trying to log in')
             console.log(error, 'there was an error while trying to log in')
         }
-    }, [Session, dispatch, push, loginWithGoogle])
+    }, [Session, loginWithGoogle, dispatch, push])
 
     useEffect(() => {
         tryGoogleLogin()

@@ -8,9 +8,10 @@ type CardProps = {
     elevation?: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'inner' | 'none'
     rounded?: string | boolean
     padding?: string
+    onClick?: () => void
 }
 
-export const Card: FC<CardProps> = ({ children, className, bg = 'bg-white', elevation, rounded, padding }) => {
+export const Card: FC<CardProps> = ({ children, className, bg = 'bg-white', elevation, rounded, padding, onClick }) => {
     const shadow = elevation ? 'shadow-' + elevation : 'shadow'
     return (
         <div
@@ -21,6 +22,7 @@ export const Card: FC<CardProps> = ({ children, className, bg = 'bg-white', elev
                 padding ? padding : 'py-4 px-6',
                 shadow
             )}
+            onClick={onClick}
         >
             {children}
         </div>

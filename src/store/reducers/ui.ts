@@ -1,9 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { ISingleCouponResponse } from '../../interfaces/coupons'
+import { ProductsType } from '../../interfaces/products'
 
 export interface initialUiStateInterface {
     showModal: boolean
     modalType: string
-    modalProps: object
+    modalProps: {
+        products?: ProductsType[]
+        coupon?: ISingleCouponResponse
+    }
 }
 
 const initialUiState: initialUiStateInterface = {

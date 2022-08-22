@@ -11,6 +11,7 @@ type ButtonProps = {
     outlined?: boolean
     preventDefault?: boolean
     onClick?: () => void
+    type?: 'button' | 'submit' | 'reset'
 }
 
 export const Button: FC<ButtonProps> = ({
@@ -22,6 +23,7 @@ export const Button: FC<ButtonProps> = ({
     size = 'sm',
     preventDefault,
     onClick,
+    type,
 }) => {
     return (
         <button
@@ -41,6 +43,7 @@ export const Button: FC<ButtonProps> = ({
                     : '',
                 `rounded-md leading-6 text-${size}`
             )}
+            type={type}
         >
             {children}
         </button>

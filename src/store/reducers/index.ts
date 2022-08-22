@@ -13,7 +13,7 @@ import { messageApi } from '../services/messages'
 const persistConfig = {
     storage,
     key: 'hypay',
-    blacklist: [productApi.reducerPath, requestApi.reducerPath, messageApi.reducerPath],
+    blacklist: [productApi.reducerPath, requestApi.reducerPath],
     whitelist: ['ui'],
 }
 

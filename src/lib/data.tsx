@@ -216,66 +216,31 @@ export const themeTemplateData: themeTemplateDataType = [
 ]
 
 export const discountTableHeader: Array<string> = [
-    'Name',
+    'Nome',
     'Status',
-    '%Discount',
-    'Product',
-    'Coupon Limit',
-    'Expiration',
-    'Shares',
+    '% Desconto',
+    'Produto',
+    'Quant Cupons',
+    'Expiração',
+    'Ações',
 ]
+
+export const ABOUT_COUPON_MODAL = 'about_coupon_modal'
+export const ADD_COUPON_MODAL = 'add_coupon_modal'
+export const UPDATE_COUPON_MODAL = 'update_coupon_modal'
 
 export interface DataInterface {
-    name: string
+    id: number
+    merchant_id: number
+    coupon_name: string
+    coupon_code: string
+    coupon_discount: string
+    coupon_limit: number
     status: string
-    discount: string
-    product: string
-    couponLimit: string
-    expiration: string
+    date_created: string
+    end_date: string
+    products: string[]
 }
-
-export const discountTableData: Array<DataInterface> = [
-    {
-        name: 'Fev15',
-        status: 'Active',
-        discount: '15%',
-        product: 'Shirts',
-        couponLimit: '500',
-        expiration: '28/02/2022',
-    },
-    {
-        name: 'Fev15',
-        status: 'Active',
-        discount: '15%',
-        product: 'Shirts',
-        couponLimit: '500',
-        expiration: '28/02/2022',
-    },
-    {
-        name: 'Fev15',
-        status: 'Inactive',
-        discount: '20%',
-        product: 'Shirts',
-        couponLimit: '500',
-        expiration: '28/02/2022',
-    },
-    {
-        name: 'Jan20',
-        status: 'Inactive',
-        discount: '20%',
-        product: 'Shirts',
-        couponLimit: '500',
-        expiration: '28/02/2022',
-    },
-    {
-        name: 'Jan20',
-        status: 'Inactive',
-        discount: '20%',
-        product: 'Shirts',
-        couponLimit: '500',
-        expiration: '28/02/2022',
-    },
-]
 
 export interface IndicateDataType {
     name: string

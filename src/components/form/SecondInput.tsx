@@ -15,6 +15,7 @@ type Props = {
     type?: string
     rightLabel?: boolean
     defaultValue?: string
+    disabled?: boolean
 } & React.HTMLProps<HTMLInputElement>
 
 export const SecondInput = ({
@@ -82,7 +83,9 @@ export const SecondInput = ({
                         <p className="text-sm text-red-600">
                             {errors[name]?.type != 'required'
                                 ? errors[name].message
-                                : ` this field is ${errors[name]?.type}`}
+                                : errors[name].message
+                                ? `${errors[name].message}`
+                                : `This field is ${errors[name]?.type}`}
                         </p>
                     )
                 )
