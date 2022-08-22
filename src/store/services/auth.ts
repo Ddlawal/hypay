@@ -127,7 +127,7 @@ export const {
     useLogoutMutation,
     useCreateBusinessNameMutation,
     useLoginWithGoogleMutation,
-    useLazyLoginWithGoogleQuery,
+    // useLazyLoginWithGoogleQuery,
     useLazyVerifyEmailQuery,
     useLazyGenerateSecretQuery,
     useLazyEnableTwoFAQuery,
