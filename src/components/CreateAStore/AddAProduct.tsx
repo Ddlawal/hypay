@@ -227,7 +227,7 @@ export const AddAProduct = <T,>({ product, onSuccess, setTabIndex }: AddProductP
             })
             .catch((err) => {
                 console.log(err, 'An Error Occured while trying to Add your product')
-                showErrorSnackbar(err.data.message || 'Something went wrong')
+                showErrorSnackbar(err?.data?.message || 'Something went wrong')
                 setIsLoading(false)
             })
     }

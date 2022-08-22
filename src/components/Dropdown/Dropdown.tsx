@@ -40,8 +40,7 @@ const DropdownItems: FC<DropdownButtonProps> = ({ items, className }) => {
                 await signOut({ redirect: false })
             }
         } catch (error: any) {
-            console.log(error)
-            if (error.data.message === 'Invalid or expired or no token') {
+            if (error?.data?.message === 'Invalid or expired or no token') {
                 localStorage.clear()
                 dispatch(logUserOut())
                 push('/login')
@@ -55,7 +54,7 @@ const DropdownItems: FC<DropdownButtonProps> = ({ items, className }) => {
                 <li
                     key={id}
                     onClick={() => (href ? push(href) : onClick)}
-                    className=" w-full capitalize transition-transform hover:scale-105"
+                    className="w-full capitalize transition-transform hover:scale-105"
                 >
                     {title}
                 </li>

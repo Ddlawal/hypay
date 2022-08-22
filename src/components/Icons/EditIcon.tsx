@@ -2,9 +2,16 @@ import * as React from 'react'
 import { IconProps } from '../../interfaces/icons'
 import { COLORS } from '../../lib/constants/colors'
 
-export const EditIcon = ({ size = 18, color = COLORS.BLACK }: IconProps): JSX.Element => {
+export const EditIcon = ({ size = 18, color = COLORS.BLACK, onClick }: IconProps): JSX.Element => {
     return (
-        <svg width={size} height={size} viewBox="0 0 29 29" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg
+            onClick={onClick}
+            width={size}
+            height={size}
+            viewBox="0 0 29 29"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+        >
             <path
                 d="M22.7682 26.6646H2.21962V6.40434H14.5675L16.4355 4.5625H2.21962C1.72418 4.5625 1.24903 4.75655 0.898703 5.10196C0.548375 5.44737 0.351563 5.91585 0.351562 6.40434V26.6646C0.351563 27.1531 0.548375 27.6216 0.898703 27.967C1.24903 28.3124 1.72418 28.5064 2.21962 28.5064H22.7682C23.2637 28.5064 23.7388 28.3124 24.0891 27.967C24.4395 27.6216 24.6363 27.1531 24.6363 26.6646V12.8508L22.7682 14.6926V26.6646Z"
                 fill={color}

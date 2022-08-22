@@ -2,9 +2,16 @@ import * as React from 'react'
 import { IconProps } from '../../interfaces/icons'
 import { COLORS } from '../../lib/constants/colors'
 
-export const ThreeDots = ({ size = 18, color = COLORS.BLACK }: IconProps): JSX.Element => {
+export const ThreeDots = ({ size = 18, color = COLORS.BLACK, onClick }: IconProps): JSX.Element => {
     return (
-        <svg width={size} height={size - 4} viewBox="0 0 18 4" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg
+            onClick={onClick}
+            width={size}
+            height={size - 4}
+            viewBox="0 0 18 4"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+        >
             <path
                 d="M9 3C9.55228 3 10 2.55228 10 2C10 1.44772 9.55228 1 9 1C8.44772 1 8 1.44772 8 2C8 2.55228 8.44772 3 9 3Z"
                 stroke={color}

@@ -17,15 +17,13 @@ export const store = configureStore({
             serializableCheck: {
                 ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
             },
-        })
-            .concat(
-                baseApi.middleware,
-                productApi.middleware,
-                requestApi.middleware,
-                merchantApi.middleware,
-                messageApi.middleware
-            )
-            .concat(logger),
+        }).concat(
+            baseApi.middleware,
+            productApi.middleware,
+            requestApi.middleware,
+            merchantApi.middleware,
+            messageApi.middleware
+        ),
 
     devTools: process.env.NODE_ENV !== 'production',
 })

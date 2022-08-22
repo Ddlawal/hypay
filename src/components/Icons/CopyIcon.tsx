@@ -2,9 +2,17 @@ import * as React from 'react'
 import { IconProps } from '../../interfaces/icons'
 import { COLORS } from '../../lib/constants/colors'
 
-export const CopyIcon = ({ size = 24, color = COLORS.GREY }: IconProps): JSX.Element => {
+export const CopyIcon = ({ size = 24, color = COLORS.GREY, className = '', onClick }: IconProps): JSX.Element => {
     return (
-        <svg width={size} height={size} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg
+            className={className}
+            width={size}
+            height={size}
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            onClick={onClick}
+        >
             <path
                 d="M20 9H11C9.89543 9 9 9.89543 9 11V20C9 21.1046 9.89543 22 11 22H20C21.1046 22 22 21.1046 22 20V11C22 9.89543 21.1046 9 20 9Z"
                 stroke={color}
