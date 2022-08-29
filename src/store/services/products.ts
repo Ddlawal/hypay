@@ -1,6 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react'
 import { baseQuery } from '.'
-import { ProductsType } from '../../interfaces/products'
+import { IproductCategory, ProductsType } from '../../interfaces/products'
 
 export const productApi = createApi({
     reducerPath: 'productsApi',
@@ -47,6 +47,12 @@ export const productApi = createApi({
             }),
             transformResponse: (res: { products: { data: Array<ProductsType> } }) => res.products.data,
         }),
+        getProductDetails: builder.query<IproductCategory, string>({
+            query: () => ({
+                url: '/getCategories',
+                method: 'GET',
+            }),
+        }),
     }),
 })
 
@@ -59,4 +65,5 @@ export const {
     useSearchMerchantProductsQuery,
     useLazyGetAllProductsQuery,
     useLazySearchMerchantProductsQuery,
+    useGetProductDetailsQuery,
 } = productApi

@@ -21,9 +21,16 @@ interface IGeneratedCouponRes {
 interface IAddCouponDIscountModal {
     createACouponFunc?: (createCouponPayload: ICreateCoupon) => Promise<any>
     updateACouponFunc?: (updateACouponPayload: IUpdateCoupon) => Promise<any>
+    updatingCouponLoading?: boolean
+    creatingACouponLoading?: boolean
 }
 
-export const AddCouponDIscountModal = ({ createACouponFunc, updateACouponFunc }: IAddCouponDIscountModal) => {
+export const AddCouponDIscountModal = ({
+    createACouponFunc,
+    updateACouponFunc,
+    updatingCouponLoading,
+    creatingACouponLoading,
+}: IAddCouponDIscountModal) => {
     const {
         register,
         handleSubmit,
@@ -43,7 +50,9 @@ export const AddCouponDIscountModal = ({ createACouponFunc, updateACouponFunc }:
         modalProps: { products, coupon: hasCouponToUpdate },
     } = useAppSelector((state) => state.ui)
     const { showSuccessSnackbar, showErrorSnackbar } = useSnackbar()
-    const { generateCoupon, loadingGeneratingCoupon, updatingCouponLoading, creatingACoupon } = useCoupon()
+    const { generateCoupon, loadingGeneratingCoupon } = useCoupon()
+
+    console.log(updatingCouponLoading, creatingACouponLoading, 'updatingCouponLoading')
 
     // copy to clipboard
     const handleCopyToClipboard = function (code: string) {
@@ -88,7 +97,7 @@ export const AddCouponDIscountModal = ({ createACouponFunc, updateACouponFunc }:
     }, [hasCouponToUpdate, setValue, setValue2])
 
     const createCoupon = async (data: ICreateCoupon) => {
-        if (creatingACoupon || updatingCouponLoading) {
+        if (creatingACouponLoading || updatingCouponLoading) {
             return
         }
         const { coupon_name, coupon_code } = data
@@ -247,17 +256,26 @@ export const AddCouponDIscountModal = ({ createACouponFunc, updateACouponFunc }:
                     <Button onClick={() => dispatch(hideModal())} className="text-bold w-4/12">
                         Cancelar
                     </Button>
-                    <Button
-                        type="submit"
-                        disabled={creatingACoupon || updatingCouponLoading}
-                        primary
-                        className="text-bold min-w-4/12 capitalize"
-                    >
-                        {creatingACoupon && 'Creating coupon...'}
-                        {!creatingACoupon && !productValue && 'Criar cupom'}
-                        {updatingCouponLoading && 'Updating coupon...'}
-                        {productValue && !updatingCouponLoading && 'Update coupon'}
-                    </Button>
+                    {productValue && (
+                        <Button
+                            type="submit"
+                            disabled={updatingCouponLoading}
+                            primary
+                            className="text-bold min-w-4/12 capitalize"
+                        >
+                            {updatingCouponLoading ? 'Updating coupon...' : 'Update coupon'}
+                        </Button>
+                    )}
+                    {!productValue && (
+                        <Button
+                            type="submit"
+                            disabled={creatingACouponLoading}
+                            primary
+                            className="text-bold min-w-4/12 capitalize"
+                        >
+                            {creatingACouponLoading ? 'Creating coupon...' : 'Criar cupom'}
+                        </Button>
+                    )}
                 </div>
             </form>
         </ModalLayout>

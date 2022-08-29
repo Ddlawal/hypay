@@ -30,11 +30,13 @@ function Discount() {
         deActivatingCouponLoading,
         deletingCouponLoading,
         couponList,
+        updatingCouponLoading,
         deleteACoupon,
         setCouponList,
         createACouponFunc,
         changeCouponStatus,
         updateACouponFunc,
+        creatingACouponLoading,
     } = useCoupon()
     const { products: listOfproducts } = useProducts()
 
@@ -217,8 +219,12 @@ function Discount() {
                                     return (
                                         <MobileCouponCard
                                             handleDeleteCoupon={handleDeleteCoupon}
+                                            changeCouponStatus={changeCouponStatus}
                                             coupon={coupon}
                                             key={index}
+                                            activatingCouponLoading={activatingCouponLoading}
+                                            deActivatingCouponLoading={deActivatingCouponLoading}
+                                            deletingCouponLoading={deletingCouponLoading}
                                         />
                                     )
                                 })}
@@ -271,9 +277,17 @@ function Discount() {
                     ) : null}
                 </section>
             </div>
-            {modal.modalType === ADD_COUPON_MODAL && <AddCouponDIscountModal createACouponFunc={createACouponFunc} />}
+            {modal.modalType === ADD_COUPON_MODAL && (
+                <AddCouponDIscountModal
+                    createACouponFunc={createACouponFunc}
+                    creatingACouponLoading={creatingACouponLoading}
+                />
+            )}
             {modal.modalType === UPDATE_COUPON_MODAL && (
-                <AddCouponDIscountModal updateACouponFunc={updateACouponFunc} />
+                <AddCouponDIscountModal
+                    updateACouponFunc={updateACouponFunc}
+                    updatingCouponLoading={updatingCouponLoading}
+                />
             )}
             {modal.modalType === ABOUT_COUPON_MODAL && <AboutCouponModal />}
         </PrimaryLayout>
