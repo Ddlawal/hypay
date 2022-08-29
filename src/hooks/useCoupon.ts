@@ -17,7 +17,7 @@ export const useCoupon = function () {
     const [fetchCouponData, { isLoading: loadingCoupon }] = useLazyFetchMyCouponsQuery()
     const [removeCoupon, { isLoading: deletingCouponLoading }] = useLazyRemoveCouponQuery()
     const [generateCoupon, { isLoading: loadingGeneratingCoupon }] = useLazyGenerateCouponQuery()
-    const [addACoupon, { isLoading: creatingACoupon }] = useAddCouponMutation()
+    const [addACoupon, { isLoading: creatingACouponLoading }] = useAddCouponMutation()
     const [activateCoupon, { isLoading: activatingCouponLoading }] = useActivateCouponMutation()
     const [deActivateCoupon, { isLoading: deActivatingCouponLoading }] = useDeActivateCouponMutation()
     const [updateACoupon, { isLoading: updatingCouponLoading }] = useUpdateCouponMutation()
@@ -39,6 +39,7 @@ export const useCoupon = function () {
             const {
                 coupons: { data },
             } = await updateACoupon(updateACouponPayload).unwrap()
+            console.log(data, 'after updating a coupon')
             showSuccessSnackbar('Coupon updated succesfully')
             return setCouponList(data)
         } catch (error: any) {
@@ -88,7 +89,7 @@ export const useCoupon = function () {
         loadingCoupon,
         deletingCouponLoading,
         loadingGeneratingCoupon,
-        creatingACoupon,
+        creatingACouponLoading,
         activatingCouponLoading,
         deActivatingCouponLoading,
         fetchCouponData,

@@ -7,7 +7,11 @@ import { BagIcon, CameraIcon, CloseIcon, LoaderIcon } from '../Icons'
 import { useForm } from 'react-hook-form'
 import { SecondInput } from '../form'
 import { Card } from '../Card'
-import { useAddAProductMutation, useEditProductMutation } from '../../store/services/products'
+import {
+    useAddAProductMutation,
+    useEditProductMutation,
+    useGetProductDetailsQuery,
+} from '../../store/services/products'
 import { AddProductType, ProductsType } from '../../interfaces/products'
 import { useSnackbar } from '../../hooks/useSnackbar'
 import { copyTextToClipboard } from '../../lib/helper'
@@ -88,6 +92,7 @@ interface AddProductProps<T> {
     product?: ProductsType
     onSuccess?: (params: T) => void
     setTabIndex?: (value: React.SetStateAction<number>) => void
+    categories?: null
 }
 
 function toDataUrl(url: string, callback: (res: File) => void) {
@@ -120,6 +125,7 @@ export const AddAProduct = <T,>({ product, onSuccess, setTabIndex }: AddProductP
     const [productImage, setProductImage] = useState<File>()
     const [isLoading, setIsLoading] = useState(false)
     const { showErrorSnackbar, showSuccessSnackbar } = useSnackbar()
+    const { data: productCategories, isLoading: productCategoriesLoading } = useGetProductDetailsQuery('')
 
     const host = window.location.origin
 
@@ -137,6 +143,8 @@ export const AddAProduct = <T,>({ product, onSuccess, setTabIndex }: AddProductP
             setImages(dt)
         }
     }, [product])
+
+    console.log(productCategories?.categories, 'getting product categgories', productCategoriesLoading)
 
     const {
         register,
@@ -503,9 +511,21 @@ export const AddAProduct = <T,>({ product, onSuccess, setTabIndex }: AddProductP
                                 <p className="text-xs">Escolha aqui qual categoria seu produto se encaixa</p>
                             </div>
                         </div>
-                        <Button className="rounded-md border-[1px] border-hypay-pink bg-white px-1 text-hypay-pink outline-none">
-                            Adicionar categoria
-                        </Button>
+                        {productCategoriesLoading ? (
+                            <span>Loading Categories...</span>
+                        ) : (
+                            <select
+                                {...register('category_id')}
+                                className="text-md rounded-md border border-hypay-pink bg-white py-1.5 px-2 leading-6 text-hypay-pink"
+                            >
+                                <option value="">Adicionar Categorias</option>
+                                {productCategories?.categories.map((cat) => (
+                                    <option key={cat.id} value={cat.id}>
+                                        {cat.categoryname}
+                                    </option>
+                                ))}
+                            </select>
+                        )}
                     </Card>
                     <Card
                         rounded

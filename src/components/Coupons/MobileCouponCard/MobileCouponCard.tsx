@@ -1,5 +1,4 @@
 import React from 'react'
-import { useCoupon } from '../../../hooks/useCoupon'
 import { useProducts } from '../../../hooks/useProducts'
 import { useAppDispatch } from '../../../hooks/useStoreHooks'
 import { ISingleCouponResponse } from '../../../interfaces/coupons'
@@ -12,12 +11,21 @@ import { EditIcon, TrashCanIcon } from '../../Icons'
 interface IMobileCouponCard {
     coupon: ISingleCouponResponse
     handleDeleteCoupon: (id: number) => Promise<void>
+    changeCouponStatus: ({ status, couponID }: { couponID: number; status: string }) => Promise<void>
+    activatingCouponLoading: boolean
+    deActivatingCouponLoading: boolean
+    deletingCouponLoading: boolean
 }
 
-export const MobileCouponCard = ({ coupon, handleDeleteCoupon }: IMobileCouponCard) => {
+export const MobileCouponCard = ({
+    coupon,
+    handleDeleteCoupon,
+    activatingCouponLoading,
+    deActivatingCouponLoading,
+    deletingCouponLoading,
+    changeCouponStatus,
+}: IMobileCouponCard) => {
     const dispatch = useAppDispatch()
-    const { changeCouponStatus, activatingCouponLoading, deActivatingCouponLoading, deletingCouponLoading } =
-        useCoupon()
     const { products: listOfproducts } = useProducts()
     const { coupon_name, status, end_date, coupon_limit, id, coupon_discount, products } = coupon
 

@@ -75,3 +75,14 @@ export type SearchProductType = LazyQueryTrigger<
         'productsApi'
     >
 >
+
+export interface IsingleCategory {
+    id: number
+    categoryname: string
+    created_at?: Date | null
+    updated_at?: Date | null
+}
+
+export interface IproductCategory {
+    categories: IsingleCategory[]
+}
