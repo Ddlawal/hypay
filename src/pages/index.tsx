@@ -17,7 +17,7 @@ import { Timeline, TimelineEvent } from '../components/Timeline'
 import { useMediaQuery } from '../hooks/useMediaQuery'
 import { COLORS } from '../lib/constants/colors'
 import Head from 'next/head'
-import { LandingPageFooter } from '../components/Headers/LandingPageFooter'
+import { LandingPageFooter } from '../components/Footer/LandingPageFooter'
 
 type ContentProps = {
     title: string
