@@ -9,6 +9,8 @@ import { productApi } from '../services/products'
 import { requestApi } from '../services/requests'
 import { merchantApi } from '../services/merchant'
 import { messageApi } from '../services/messages'
+import { onlineTheme } from '../services/onlineStore'
+import { notificationSettings } from '../services/settings/notificationSettings'
 
 const persistConfig = {
     storage,
@@ -23,6 +25,8 @@ export const rootStore = combineReducers({
     [requestApi.reducerPath]: requestApi.reducer,
     [merchantApi.reducerPath]: merchantApi.reducer,
     [messageApi.reducerPath]: messageApi.reducer,
+    [onlineTheme.reducerPath]: onlineTheme.reducer,
+    [notificationSettings.reducerPath]: notificationSettings.reducer,
     auth,
     ui,
     temporaryDataSlice,
