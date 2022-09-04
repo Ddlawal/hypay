@@ -1,3 +1,5 @@
+import validator from 'validator'
+
 import { UserInfo } from '../store/reducers/auth'
 
 export const copyTextToClipboard = (text: string) => {
@@ -37,3 +39,18 @@ export const removeCookie = (name: string) => {
 }
 
 export const USER_PENDING_2FA_AUTH = 'user_2fa'
+
+export const checkPhoneNumber = (phoneNumber: string, locale: validator.MobilePhoneLocale = 'pt-PT') => {
+    if (!phoneNumber) {
+        return true
+    }
+    return validator.isMobilePhone(phoneNumber, locale)
+}
+
+export const formatPhoneNumber = (phoneNumber: string, locale: validator.MobilePhoneLocale = 'pt-PT') => {
+    if (locale === 'pt-PT') {
+        return Number(phoneNumber)
+    } else {
+        return phoneNumber.startsWith('234') ? Number(phoneNumber) : Number('234' + Number(phoneNumber))
+    }
+}

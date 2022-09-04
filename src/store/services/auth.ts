@@ -11,21 +11,20 @@ import {
     ResetPasswordData,
     ResetPasswordResponse,
     ResetPasswordConfirmData,
+    SignupAuth,
 } from '../../interfaces/auth'
 import { Token } from '../reducers/auth'
 
 const authApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
-        registration: builder.mutation({
-            query: (data: any) => ({
-                url: '/register',
-                method: 'POST',
-                body: {
-                    ...data,
-                    accountType: 'Merchant',
-                    referral_code: '',
-                },
-            }),
+        registration: builder.mutation<UserAuth, SignupAuth>({
+            query: (data: SignupAuth) => {
+                return {
+                    url: '/register',
+                    method: 'POST',
+                    body: data,
+                }
+            },
         }),
         login: builder.mutation<UserAuth, { email: string; password: string }>({
             query: (data) => ({

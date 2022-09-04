@@ -48,7 +48,7 @@ const Login: NextPage = () => {
             dispatch(loginUser(payload))
             removeCookie(USER_PENDING_2FA_AUTH)
             showSuccessSnackbar('Login Successful')
-            push('/dashboard/home')
+            payload.userInfo.usertype === 'Buyer' ? push('/store') : push('/dashboard/home')
         }
     }
 

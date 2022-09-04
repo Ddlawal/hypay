@@ -18,7 +18,7 @@ const ProtectedRoute: FC = ({ children }) => {
         }
     } else {
         if (notAvailableWhileLogedInRoute.includes(pathname) && typeof window !== 'undefined') {
-            router.push('/dashboard/home')
+            user.usertype === 'Buyer' ? router.push('/store') : router.push('/dashboard/home')
             return (
                 <div className="flex h-screen w-full flex-col items-center justify-center">
                     <LoaderIcon />
