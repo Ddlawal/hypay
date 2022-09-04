@@ -53,3 +53,18 @@ export type ResetPasswordByEmailResponse = {
 export type LogoutResponse = { mmessage: string; status: string }
 
 export type LogoutError = { message: string }
+
+export type AccountType = 'Both' | 'Buyer' | 'Merchant'
+
+export type AccountTypeValue = { label: AccountType; value: AccountType }
+
+export type SignupAuth<T = AccountType> = {
+    name: string
+    accountType: T
+    email: string
+    phone: number | null
+    password: string
+    referral_code: string
+}
+
+export type SignupFormData = SignupAuth<AccountTypeValue | AccountType>
