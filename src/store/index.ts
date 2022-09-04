@@ -8,6 +8,8 @@ import { productApi } from './services/products'
 import { requestApi } from './services/requests'
 import { merchantApi } from './services/merchant'
 import { messageApi } from './services/messages'
+import { onlineTheme } from './services/onlineStore'
+import { notificationSettings } from './services/settings/notificationSettings'
 
 export const store = configureStore({
     reducer: persistedReducer,
@@ -22,7 +24,9 @@ export const store = configureStore({
             productApi.middleware,
             requestApi.middleware,
             merchantApi.middleware,
-            messageApi.middleware
+            messageApi.middleware,
+            onlineTheme.middleware,
+            notificationSettings.middleware
         ),
 
     devTools: process.env.NODE_ENV !== 'production',

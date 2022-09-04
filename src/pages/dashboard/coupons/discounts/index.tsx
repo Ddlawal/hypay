@@ -117,7 +117,7 @@ function Discount() {
                     {loadingCoupon && (
                         <div className="flex h-[30vh] w-full flex-col items-center justify-center">
                             <LoaderIcon />
-                            <p className="font-b0ld text-center text-base">Loading</p>
+                            <p className="font-b0ld text-center text-base">Loading coupons...</p>
                         </div>
                     )}
 
