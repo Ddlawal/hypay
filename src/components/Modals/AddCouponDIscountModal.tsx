@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
-import { useSnackbar } from '../../hooks/useSnackbar'
 import { useAppDispatch, useAppSelector } from '../../hooks/useStoreHooks'
-import { copyTextToClipboard } from '../../lib/helper'
+import { copyTextToClipboard, showErrorSnackbar, showSuccessSnackbar } from '../../lib/helper'
 import { hideModal } from '../../store/reducers/ui'
 import { Button } from '../Button'
 import { SecondInput } from '../form'
@@ -49,7 +48,6 @@ export const AddCouponDIscountModal = ({
     const {
         modalProps: { products, coupon: hasCouponToUpdate },
     } = useAppSelector((state) => state.ui)
-    const { showSuccessSnackbar, showErrorSnackbar } = useSnackbar()
     const { generateCoupon, loadingGeneratingCoupon } = useCoupon()
 
     console.log(updatingCouponLoading, creatingACouponLoading, 'updatingCouponLoading')

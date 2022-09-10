@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { ICreateCoupon, ISingleCouponResponse, IUpdateCoupon } from '../interfaces/coupons'
+import { showSuccessSnackbar, showErrorSnackbar } from '../lib/helper'
 import {
     useActivateCouponMutation,
     useAddCouponMutation,
@@ -9,11 +10,9 @@ import {
     useLazyRemoveCouponQuery,
     useUpdateCouponMutation,
 } from '../store/services/coupon'
-import { useSnackbar } from './useSnackbar'
 
 export const useCoupon = function () {
     const [couponList, setCouponList] = useState<Array<ISingleCouponResponse>>([])
-    const { showSuccessSnackbar, showErrorSnackbar } = useSnackbar()
     const [fetchCouponData, { isLoading: loadingCoupon }] = useLazyFetchMyCouponsQuery()
     const [removeCoupon, { isLoading: deletingCouponLoading }] = useLazyRemoveCouponQuery()
     const [generateCoupon, { isLoading: loadingGeneratingCoupon }] = useLazyGenerateCouponQuery()

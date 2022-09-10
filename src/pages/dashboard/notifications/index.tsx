@@ -5,10 +5,10 @@ import { Card } from '../../../components/Card'
 import { StarIcon, TrashCanIcon } from '../../../components/Icons'
 import { PrimaryLayout } from '../../../components/Layout'
 import { useMessages } from '../../../hooks/useMessages'
-import { useSnackbar } from '../../../hooks/useSnackbar'
 import { NotificationData } from '../../../interfaces/messages'
 import { COLORS } from '../../../lib/constants/colors'
 import { getDate, getDateFromDaysAgo, isDateSame } from '../../../lib/dateFns'
+import { showSuccessSnackbar, showErrorSnackbar } from '../../../lib/helper'
 
 type NotificationsByDate = {
     [K: string]: Array<NotificationData>
@@ -48,8 +48,6 @@ const NotificationPage: NextPage = () => {
     const [notificationsByDate, setNotificationsByDate] = useState<NotificationsByDate>()
     const { deleteNotification, getAllNotifications, isDeletingNotification, isLoadingNotifications } = useMessages()
     const [ids, setIds] = useState<Array<number>>([])
-
-    const { showErrorSnackbar, showSuccessSnackbar } = useSnackbar()
 
     const notificationRefs: MutableRefObject<Record<number, HTMLInputElement>> = useRef({})
 

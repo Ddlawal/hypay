@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react'
 import { ISingleTheme, IUserProfile } from '../interfaces/onlineStore'
+import { showSuccessSnackbar, showErrorSnackbar } from '../lib/helper'
 import { useFetchThemeQuery, useLazyGetProfileInfoQuery, useSetThemeMutation } from '../store/services/onlineStore'
-import { useSnackbar } from './useSnackbar'
 
 function useTheme() {
-    const { showSuccessSnackbar, showErrorSnackbar } = useSnackbar()
     const { data: themeData, isLoading: loadingTheme } = useFetchThemeQuery('onlineTheme')
     const [profileInfo, { isLoading: profileLoading }] = useLazyGetProfileInfoQuery()
     const [setThemeFunc, { isLoading: setThemeLoading }] = useSetThemeMutation()

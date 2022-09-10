@@ -1,14 +1,13 @@
 import { useRouter } from 'next/router'
+import { showSuccessSnackbar, showErrorSnackbar } from '../lib/helper'
 import {
     useLazyDeleteAProductQuery,
     useGetAllProductsQuery,
     useSearchMerchantProductsQuery,
     useLazySearchMerchantProductsQuery,
 } from '../store/services/products'
-import { useSnackbar } from './useSnackbar'
 
 export const useProducts = (productId?: string) => {
-    const { showSuccessSnackbar, showErrorSnackbar } = useSnackbar()
     const router = useRouter()
     const { data, isLoading, isFetching, refetch } = useGetAllProductsQuery(undefined, {
         refetchOnMountOrArgChange: true,

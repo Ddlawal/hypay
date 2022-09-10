@@ -17,7 +17,7 @@ import { PhotographBox } from '../../../components/CreateAStore/AddAProduct'
 import { useLazyVerifyEmailQuery } from '../../../store/services/auth'
 import { useAppSelector } from '../../../hooks/useStoreHooks'
 import { loginUserData } from '../../../store/reducers/auth'
-import { useSnackbar } from '../../../hooks/useSnackbar'
+import { showErrorSnackbar, showSuccessSnackbar } from '../../../lib/helper'
 
 interface ActiveBrowser {
     icon: StaticImageData
@@ -35,7 +35,6 @@ function AccountManagement() {
     const { push } = useRouter()
     const [tryVerifyEmail, { isLoading }] = useLazyVerifyEmailQuery()
     const user = useAppSelector(loginUserData)
-    const { showSuccessSnackbar, showErrorSnackbar } = useSnackbar()
     const handleVerifyEmail = async () => {
         const res = await tryVerifyEmail('email')
         const { message } = (await res.data) as { message: string }

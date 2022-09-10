@@ -14,18 +14,16 @@ import { Button } from '../../../../../components/Button'
 import { useTwoFA } from '../../../../../hooks/useTwoFA'
 import { COLORS } from '../../../../../lib/constants/colors'
 import { QRCode } from '../../../../../components/CodeGenerator'
-import { useSnackbar } from '../../../../../hooks/useSnackbar'
 import { useAppDispatch, useAppSelector } from '../../../../../hooks/useStoreHooks'
 import { updateUserLoggedInData, UserInfo } from '../../../../../store/reducers/auth'
 import { Modal, ModalHeading } from '../../../../../components/Modal'
-import { updateUserInLocalStorage } from '../../../../../lib/helper'
+import { showErrorSnackbar, showSuccessSnackbar, updateUserInLocalStorage } from '../../../../../lib/helper'
 import { AuthFormInputData, GeneratedTwoFASecret } from '../../../../../interfaces/auth'
 
 const AuthViaApp: NextPage = () => {
     const dispatch = useAppDispatch()
     const user = useAppSelector((state) => state.auth.user as UserInfo)
     const { back } = useRouter()
-    const { showErrorSnackbar, showSuccessSnackbar } = useSnackbar()
     const {
         formState: { errors },
         handleSubmit,

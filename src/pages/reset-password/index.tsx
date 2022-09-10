@@ -11,7 +11,7 @@ import { useForm } from 'react-hook-form'
 import { ResetPasswordConfirmData } from '../../interfaces/auth'
 import { useLazyResetPasswordConfirmationQuery } from '../../store/services/auth'
 import { useRouter } from 'next/router'
-import { useSnackbar } from '../../hooks/useSnackbar'
+import { showErrorSnackbar, showSuccessSnackbar } from '../../lib/helper'
 
 const ResetPassword: NextPage<{ token: string }> = () => {
     const {
@@ -20,7 +20,6 @@ const ResetPassword: NextPage<{ token: string }> = () => {
         register,
     } = useForm<Omit<ResetPasswordConfirmData, 'token'>>()
     const { push, query } = useRouter()
-    const { showSuccessSnackbar, showErrorSnackbar } = useSnackbar()
     const [resetPassword, { isFetching, isLoading }] = useLazyResetPasswordConfirmationQuery({
         refetchOnFocus: false,
         refetchOnReconnect: false,

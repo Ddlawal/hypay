@@ -11,8 +11,8 @@ import { LoaderIcon } from '../../components/Icons'
 import { useForm } from 'react-hook-form'
 import { ResetPasswordRequestData } from '../../interfaces/auth'
 import { useLazyResetPasswordByEmailQuery } from '../../store/services/auth'
-import { useSnackbar } from '../../hooks/useSnackbar'
 import { EMAIL_PATTERN } from '../../lib/data'
+import { showSuccessSnackbar, showErrorSnackbar } from '../../lib/helper'
 
 const ResetPasswordRequest: NextPage = () => {
     const {
@@ -22,7 +22,6 @@ const ResetPasswordRequest: NextPage = () => {
         reset,
     } = useForm<ResetPasswordRequestData>()
     const [emailSent, setEmailSent] = useState(false)
-    const { showSuccessSnackbar, showErrorSnackbar } = useSnackbar()
     const [resetPasswordByEmail, { isFetching, isLoading }] = useLazyResetPasswordByEmailQuery({
         refetchOnFocus: false,
         refetchOnReconnect: false,

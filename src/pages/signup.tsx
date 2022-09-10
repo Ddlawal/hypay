@@ -17,9 +17,8 @@ import { EMAIL_PATTERN } from '../lib/data'
 import { useDispatch } from 'react-redux'
 import PasswordInput from '../components/form/PasswordInput'
 import { login as loginUser } from '../store/reducers/auth'
-import { useSnackbar } from '../hooks/useSnackbar'
 import { AccountTypeValue, SignupAuth, SignupFormData, UserAuth } from '../interfaces/auth'
-import { checkPhoneNumber, formatPhoneNumber } from '../lib/helper'
+import { checkPhoneNumber, formatPhoneNumber, showErrorSnackbar, showSuccessSnackbar } from '../lib/helper'
 import { SelectField } from '../components/Select'
 
 const SignUp: NextPage = () => {
@@ -30,7 +29,6 @@ const SignUp: NextPage = () => {
     const dispatch = useDispatch()
     const [miniRegister, { isLoading }] = useRegistrationMutation()
     const [loginWithGoogle] = useLoginWithGoogleMutation()
-    const { showSuccessSnackbar, showErrorSnackbar } = useSnackbar()
 
     const {
         control,

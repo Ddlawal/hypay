@@ -13,8 +13,7 @@ import {
     useGetProductDetailsQuery,
 } from '../../store/services/products'
 import { AddProductType, ProductsType } from '../../interfaces/products'
-import { useSnackbar } from '../../hooks/useSnackbar'
-import { copyTextToClipboard } from '../../lib/helper'
+import { copyTextToClipboard, showErrorSnackbar, showSuccessSnackbar } from '../../lib/helper'
 
 interface PhotographBoxProps {
     src?: string
@@ -124,7 +123,6 @@ export const AddAProduct = <T,>({ product, onSuccess, setTabIndex }: AddProductP
     const [images, setImages] = useState<DataTransfer>()
     const [productImage, setProductImage] = useState<File>()
     const [isLoading, setIsLoading] = useState(false)
-    const { showErrorSnackbar, showSuccessSnackbar } = useSnackbar()
     const { data: productCategories, isLoading: productCategoriesLoading } = useGetProductDetailsQuery('')
 
     const host = window.location.origin
