@@ -13,8 +13,13 @@ import { useTwoFA } from '../../hooks/useTwoFA'
 import { LoaderIcon } from '../../components/Icons'
 import { login } from '../../store/reducers/auth'
 import { useAppDispatch } from '../../hooks/useStoreHooks'
-import { readCokie, removeCookie, USER_PENDING_2FA_AUTH } from '../../lib/helper'
-import { useSnackbar } from '../../hooks/useSnackbar'
+import {
+    readCokie,
+    removeCookie,
+    showErrorSnackbar,
+    showSuccessSnackbar,
+    USER_PENDING_2FA_AUTH,
+} from '../../lib/helper'
 
 const TwoFAAuth: NextPage = () => {
     const {
@@ -25,7 +30,6 @@ const TwoFAAuth: NextPage = () => {
 
     const dispatch = useAppDispatch()
     const { push } = useRouter()
-    const { showSuccessSnackbar, showErrorSnackbar } = useSnackbar()
     const { authenticateTwoFA, isAuthenticating } = useTwoFA()
 
     const onSubmit = async ({ code }: AuthFormInputData) => {

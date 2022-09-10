@@ -3,8 +3,8 @@ import { useRouter } from 'next/router'
 import { AddAProduct } from '../../../../components/CreateAStore/AddAProduct'
 import { PrimaryLayout } from '../../../../components/Layout'
 import { useProducts } from '../../../../hooks/useProducts'
-import { useSnackbar } from '../../../../hooks/useSnackbar'
 import { ProductsType } from '../../../../interfaces/products'
+import { showSuccessSnackbar } from '../../../../lib/helper'
 
 type OnSuccessType = { products: { data: Array<ProductsType> } }
 
@@ -19,7 +19,6 @@ export const getServerSideProps: GetServerSideProps<Record<string, unknown>, { i
 const EditProduct: NextPage<{ productId: string }> = ({ productId }) => {
     const router = useRouter()
     const { product, isLoading } = useProducts(productId)
-    const { showSuccessSnackbar } = useSnackbar()
 
     const props: { product?: ProductsType } = {}
 

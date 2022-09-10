@@ -7,7 +7,7 @@ import { Button } from '../../../components/Button'
 import { useLazyGetProfileInfoQuery } from '../../../store/services/onlineStore'
 import { IUserProfile, INotificationSettings, INotificationSettingsNumber } from '../../../interfaces/onlineStore'
 import { useChangeNotificationStatusMutation } from '../../../store/services/settings/notificationSettings'
-import { useSnackbar } from '../../../hooks/useSnackbar'
+import { showSuccessSnackbar, showErrorSnackbar } from '../../../lib/helper'
 
 export interface singleNotif {
     [v: string]: boolean
@@ -17,7 +17,7 @@ const Notification: NextPage = () => {
     const [toggleNotifications, setToggleNotifications] = useState(false)
     const [profileInfo, { isFetching }] = useLazyGetProfileInfoQuery()
     const [changeNotifSettings, { isLoading: changingNotifStatus }] = useChangeNotificationStatusMutation()
-    const { showSuccessSnackbar, showErrorSnackbar } = useSnackbar()
+
     const [formFields, setFormFields] = useState<INotificationSettings>({
         notification_enabled: false,
         notify_bank_payment_via_email: false,

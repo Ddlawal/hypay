@@ -23,8 +23,8 @@ import { useAppSelector } from '../../../hooks/useStoreHooks'
 import { COLORS } from '../../../lib/constants/colors'
 import { loginUserData } from '../../../store/reducers/auth'
 import { useLazyVerifyEmailQuery } from '../../../store/services/auth'
-import { useSnackbar } from '../../../hooks/useSnackbar'
 import { NextLink } from '../../../components/Links'
+import { showErrorSnackbar, showSuccessSnackbar } from '../../../lib/helper'
 
 const quickGuides = [
     {
@@ -81,7 +81,6 @@ export const EmailVerified = () => {
 const WelcomeToHypay: FC = () => {
     const [tryVerifyEmail, { isLoading }] = useLazyVerifyEmailQuery()
     const { email_verified } = useAppSelector(loginUserData)
-    const { showSuccessSnackbar, showErrorSnackbar } = useSnackbar()
     const handleVerifyEmail = async () => {
         const res = await tryVerifyEmail('email')
         const { message } = (await res.data) as { message: string }

@@ -15,12 +15,11 @@ import AboutCouponModal from '../../../../components/Modals/AboutCouponModal'
 import { useCoupon } from '../../../../hooks/useCoupon'
 import { ISingleCouponResponse } from '../../../../interfaces/coupons'
 import { useProducts } from '../../../../hooks/useProducts'
-import { useSnackbar } from '../../../../hooks/useSnackbar'
 import { MobileCouponCard } from '../../../../components/Coupons/MobileCouponCard/MobileCouponCard'
+import { showErrorSnackbar } from '../../../../lib/helper'
 
 function Discount() {
     const dispatch = useAppDispatch()
-    const { showErrorSnackbar } = useSnackbar()
     const modal = useAppSelector((state) => state.ui)
     const [tableDropDown, setTableDropDown] = useState<number | null>(null)
     const {

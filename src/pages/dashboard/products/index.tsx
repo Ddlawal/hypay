@@ -14,8 +14,7 @@ import { Card } from '../../../components/Card'
 import { useMediaQuery } from '../../../hooks/useMediaQuery'
 import { NextLink } from '../../../components/Links'
 import { ProductsType, SearchProductType } from '../../../interfaces/products'
-import { copyTextToClipboard } from '../../../lib/helper'
-import { useSnackbar } from '../../../hooks/useSnackbar'
+import { copyTextToClipboard, showSuccessSnackbar } from '../../../lib/helper'
 import { useSearch } from '../../../hooks/useSearch'
 
 const productActionSelectItems = [
@@ -98,7 +97,6 @@ export const ProductList = ({
 
     const itemRefs = useRef({})
     const [productId, setProductId] = useState<string>('')
-    const { showSuccessSnackbar } = useSnackbar()
     const gotoEditProduct = () => push(`/dashboard/products/editProduct/${productId}`)
 
     const host = window.location.origin

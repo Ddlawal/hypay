@@ -15,12 +15,11 @@ import { login as loginUser } from '../store/reducers/auth'
 import { SecondInput } from '../components/form'
 import { EMAIL_PATTERN } from '../lib/data'
 import PasswordInput from '../components/form/PasswordInput'
-import { useSnackbar } from '../hooks/useSnackbar'
 import { useAppDispatch } from '../hooks/useStoreHooks'
 import { LoaderIcon } from '../components/Icons'
 import { LoadingPage } from '../components/Layout/LoadingPage'
 import { GoogleLoginData, UserAuth } from '../interfaces/auth'
-import { removeCookie, setCookie, USER_PENDING_2FA_AUTH } from '../lib/helper'
+import { removeCookie, setCookie, showErrorSnackbar, showSuccessSnackbar, USER_PENDING_2FA_AUTH } from '../lib/helper'
 
 type FormData = { email: string; password: string }
 
@@ -30,7 +29,6 @@ const Login: NextPage = () => {
     const { push } = useRouter()
     const dispatch = useAppDispatch()
     const { data: Session, status } = useSession()
-    const { showSuccessSnackbar, showErrorSnackbar } = useSnackbar()
     const [isSocialLoading, setIsSocialLoading] = useState(false)
 
     useLayoutEffect(() => {
