@@ -13,14 +13,13 @@ import { showModal } from '../../../../store/reducers/ui'
 import AddWhatsappNoModal from '../../../../components/Modals/AddWhatsappNoModal'
 import { useLazyGetWhatsAppNumberQuery } from '../../../../store/services/settings/notificationSettings'
 import { IUpdatewhatsappNumber, IwhatsappAccounts } from '../../../../interfaces/onlineStore'
-import { useSnackbar } from '../../../../hooks/useSnackbar'
+import { showErrorSnackbar } from '../../../../lib/helper'
 
 const ADD_WHATSAPP_NO_MODAL = 'ADD_WHATSAPP_NUMBER_MODAL'
 const UPDATE_WHATSAPP_NO_MODAL = 'UPDATE_WHATSAPP_NUMBER_MODAL'
 
 const Communication: NextPage = () => {
     const [getUserWhatsappNumber, { isLoading }] = useLazyGetWhatsAppNumberQuery()
-    const { showErrorSnackbar } = useSnackbar()
     const [AllwhatsappAccounts, setAllWhatsappAccount] = useState<Array<IwhatsappAccounts>>([])
     const { modalType } = useAppSelector((state) => state.ui)
     const dispatch = useAppDispatch()
