@@ -9,12 +9,12 @@ import { Button } from '../Button'
 import { SecondInput } from '../form'
 import { CloseIcon } from '../Icons'
 import ModalLayout from '../Layout/ModalLayout'
+import { useSnackbar } from '../../hooks/useSnackbar'
 import {
     useAddWhatsAppNumberMutation,
     useUpdateWhatsAppNumberMutation,
 } from '../../store/services/settings/notificationSettings'
 import { IwhatsappAccounts, IwhatsappNumber } from '../../interfaces/onlineStore'
-import { useSnackbar } from '../../hooks/useSnackbar'
 
 function AddWhatsappNoModal({ updatedNumbers }: { updatedNumbers?: (arr: Array<IwhatsappAccounts>) => void }) {
     const [addWhatsAppNumber, { isLoading }] = useAddWhatsAppNumberMutation()
