@@ -9,7 +9,7 @@ import { Button } from '../Button'
 import { SecondInput } from '../form'
 import { CloseIcon } from '../Icons'
 import ModalLayout from '../Layout/ModalLayout'
-import { useSnackbar } from '../../hooks/useSnackbar'
+import { showSuccessSnackbar, showErrorSnackbar } from '../../lib/helper'
 import {
     useAddWhatsAppNumberMutation,
     useUpdateWhatsAppNumberMutation,
@@ -19,7 +19,6 @@ import { IwhatsappAccounts, IwhatsappNumber } from '../../interfaces/onlineStore
 function AddWhatsappNoModal({ updatedNumbers }: { updatedNumbers?: (arr: Array<IwhatsappAccounts>) => void }) {
     const [addWhatsAppNumber, { isLoading }] = useAddWhatsAppNumberMutation()
     const [updateWhatsAppNumber, { isLoading: updateNUmberLoading }] = useUpdateWhatsAppNumberMutation()
-    const { showSuccessSnackbar, showErrorSnackbar } = useSnackbar()
     const { phone: hasPhoneNoToUpdate } = useAppSelector((state) => state.ui.modalProps)
     const dispatch = useAppDispatch()
     const { register, handleSubmit, setValue } = useForm<IwhatsappNumber>()
