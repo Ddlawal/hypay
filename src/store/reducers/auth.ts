@@ -1,5 +1,6 @@
 import { RootState } from '../index'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { AccountType } from '../../interfaces/auth'
 
 export interface Token {
     access_token: string
@@ -35,7 +36,7 @@ export interface UserInfo {
     firstName: string
     lastName: string
     businessname: string
-    usertype: string
+    usertype: AccountType
     merchantCode: string
     deliveryAddress: Array<DeliveryAddress>
     phone?: any

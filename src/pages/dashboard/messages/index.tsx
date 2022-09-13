@@ -8,12 +8,12 @@ import { LoaderIcon, StarIcon, TrashCanIcon } from '../../../components/Icons'
 import { PrimaryLayout } from '../../../components/Layout'
 import { RichText } from '../../../components/RichText'
 import { useMessages } from '../../../hooks/useMessages'
-import { useSnackbar } from '../../../hooks/useSnackbar'
 import { MessageData, MessageThread } from '../../../interfaces/messages'
 import { COLORS } from '../../../lib/constants/colors'
 import { useMediaQuery } from '../../../hooks/useMediaQuery'
 import { ArrowLeftIcon } from '../../../components/Icons/ArrowLeftIcon'
 import { NextPage } from 'next'
+import { showSuccessSnackbar, showErrorSnackbar } from '../../../lib/helper'
 
 type messageCardProps = {
     active: boolean
@@ -91,7 +91,6 @@ const ThreadMessages = ({ thread_id }: ThreadMessagesProps) => {
     const [isSendingMessage, setIsSendingMessage] = useState(false)
 
     const { getThread, isLoadingOne: isLoading, sendMessage } = useMessages()
-    const { showErrorSnackbar, showSuccessSnackbar } = useSnackbar()
 
     useEffect(() => {
         const fetchData = async () => {

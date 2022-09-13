@@ -2,14 +2,13 @@ import React, { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { AddAProduct } from '../../../components/CreateAStore/AddAProduct'
 import { PrimaryLayout } from '../../../components/Layout'
-import { useSnackbar } from '../../../hooks/useSnackbar'
 import { ProductsType } from '../../../interfaces/products'
+import { showSuccessSnackbar } from '../../../lib/helper'
 
 type OnSuccessType = { products: { data: Array<ProductsType> } }
 
 const AddProducts: NextPage = () => {
     const router = useRouter()
-    const { showSuccessSnackbar } = useSnackbar()
 
     const onSuccess = (res: OnSuccessType) => {
         showSuccessSnackbar(`${res.products.data[0].productName} added successfully!`)

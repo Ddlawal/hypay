@@ -1,23 +1,27 @@
 import React, { useCallback, useEffect, useState } from 'react'
+import { NextPage } from 'next'
+import Head from 'next/head'
 import Image from 'next/image'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { signIn, useSession } from 'next-auth/react'
+import { useForm, SubmitHandler, Controller, ControllerRenderProps, FieldError } from 'react-hook-form'
+
 import AuthLayout from '../components/AuthLayout/AuthLayout'
 import { Button } from '../components/Button'
 import { COLORS } from '../lib/constants/colors'
-import { useRouter } from 'next/router'
-import { useForm, SubmitHandler } from 'react-hook-form'
 import { SecondInput } from '../components/form'
 import { useLoginWithGoogleMutation, useRegistrationMutation } from '../store/services/auth'
 import { login } from '../store/reducers/auth'
-import Link from 'next/link'
 import { EMAIL_PATTERN } from '../lib/data'
 import { useDispatch } from 'react-redux'
 import PasswordInput from '../components/form/PasswordInput'
-import Head from 'next/head'
 import { login as loginUser } from '../store/reducers/auth'
-import { useSnackbar } from '../hooks/useSnackbar'
+import { AccountTypeValue, SignupAuth, SignupFormData, UserAuth } from '../interfaces/auth'
+import { checkPhoneNumber, formatPhoneNumber, showErrorSnackbar, showSuccessSnackbar } from '../lib/helper'
+import { SelectField } from '../components/Select'
 
-function SignUp() {
+const SignUp: NextPage = () => {
     const [index, setIndex] = useState(0)
 
     const { data: Session } = useSession()
@@ -25,13 +29,13 @@ function SignUp() {
     const dispatch = useDispatch()
     const [miniRegister, { isLoading }] = useRegistrationMutation()
     const [loginWithGoogle] = useLoginWithGoogleMutation()
-    const { showSuccessSnackbar, showErrorSnackbar } = useSnackbar()
 
     const {
+        control,
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm<any>()
+    } = useForm<SignupFormData>()
 
     const tryGoogleLogin = useCallback(async () => {
         try {
@@ -47,7 +51,7 @@ function SignUp() {
 
                 loginWithGoogle(googleData)
                     .unwrap()
-                    .then((payload: any) => {
+                    .then((payload: UserAuth) => {
                         showSuccessSnackbar('Login Successful')
                         localStorage.setItem('user', JSON.stringify(payload))
                         dispatch(loginUser(payload))
@@ -62,26 +66,31 @@ function SignUp() {
             showErrorSnackbar('There was an error while trying to log in')
             console.log(error, 'there was an error while trying to log in')
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [Session, dispatch, push, loginWithGoogle])
 
     useEffect(() => {
         tryGoogleLogin()
     }, [Session, tryGoogleLogin])
 
-    const onSubmit: SubmitHandler<any> = async (data) => {
+    const onSubmit: SubmitHandler<SignupFormData> = async (data) => {
         if (isLoading) {
             return
         }
+
+        data.phone = data.phone ? formatPhoneNumber(`${data.phone}`) : null
+        data.accountType = (data.accountType as AccountTypeValue).value
+
         try {
-            miniRegister(data)
+            miniRegister(data as SignupAuth)
                 .unwrap()
                 .then((payload) => {
                     showSuccessSnackbar('Login Successful')
                     localStorage.setItem('user', JSON.stringify(payload))
                     dispatch(login(payload))
-                    push('/createstore')
+                    payload.userInfo.usertype === 'Buyer' ? push('/store') : push('/createstore')
                 })
-                .catch((error: any) => {
+                .catch((error) => {
                     if (error.status == 400) {
                         console.error('rejected it got here', error.data.message.email[0])
                         showErrorSnackbar(error.data.message.email)
@@ -142,6 +151,7 @@ function SignUp() {
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <SecondInput
                             name="name"
+                            className="h-16"
                             errors={errors}
                             label="Full Name"
                             register={register}
@@ -149,8 +159,51 @@ function SignUp() {
                             placeholder="Rafael Caduso"
                             type="text"
                         />
+
+                        <Controller
+                            name="accountType"
+                            control={control}
+                            rules={{ required: 'This field is required' }}
+                            render={({ field }) => (
+                                <>
+                                    <SelectField<string | null, ControllerRenderProps<SignupFormData, 'accountType'>>
+                                        field={field}
+                                        options={[
+                                            { label: 'Both', value: 'Both' },
+                                            { label: 'Buyer', value: 'Buyer' },
+                                            { label: 'Merchant', value: 'Merchant' },
+                                        ]}
+                                        name="accountType"
+                                        label="Account Type"
+                                        labelClassName="text-sm"
+                                        placeholder="Buyer, Merchant or Both"
+                                        value={null}
+                                        onChange={(v) => console.log(v)}
+                                    />
+                                    <p className="text-sm text-red-600">
+                                        {(errors.accountType as FieldError)?.message}
+                                    </p>
+                                </>
+                            )}
+                        />
+
+                        <SecondInput
+                            className="h-16"
+                            name="phone"
+                            errors={errors}
+                            label="Phone Number"
+                            register={register}
+                            validation={{
+                                required: false,
+                                validate: (value: string) => checkPhoneNumber(value, 'en-NG'),
+                            }}
+                            placeholder="2348012345678"
+                            type="tel"
+                        />
+
                         <SecondInput
                             name="email"
+                            className="h-16"
                             errors={errors}
                             label="Email"
                             register={register}
@@ -164,16 +217,29 @@ function SignUp() {
                             placeholder="cardoso.rafael@anymail.com "
                             type="email"
                         />
-                        {/* password input field */}
+
                         <PasswordInput
+                            className="h-16"
                             errors={errors}
                             register={register}
                             validation={{ required: true, minLength: 6 }}
                         />
+
+                        <SecondInput
+                            className="h-16"
+                            name="referral_code"
+                            errors={errors}
+                            label="Referral Code"
+                            register={register}
+                            placeholder="a123b12c"
+                            type="text"
+                        />
+
                         <p className="my-3 text-center text-sm text-hypay-gray">
                             By continuing, you agree to the
                             <span className="cursor-pointer pl-1 text-blue-500">Terms and conditions</span>
                         </p>
+
                         <div className="mt-2 flex items-center justify-center font-semibold">
                             <Button className={`${COLORS.PINK} ${isLoading && 'opacity-7'} w-full md:w-[80%] `} primary>
                                 {isLoading ? 'Registering...' : 'Register'}

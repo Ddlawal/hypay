@@ -1,3 +1,11 @@
+import validator from 'validator'
+import { CSSProperties } from 'react'
+import toast, { Renderable, ToastPosition } from 'react-hot-toast'
+import { WarningIcon, RoundedCheckIcon } from '../components/Icons'
+import { COLORS } from '../lib/constants/colors'
+
+type ToastOption = { position: ToastPosition; style: CSSProperties; icon: Renderable }
+
 import { UserInfo } from '../store/reducers/auth'
 
 export const copyTextToClipboard = (text: string) => {
@@ -37,3 +45,36 @@ export const removeCookie = (name: string) => {
 }
 
 export const USER_PENDING_2FA_AUTH = 'user_2fa'
+
+export const checkPhoneNumber = (phoneNumber: string, locale: validator.MobilePhoneLocale = 'pt-PT') => {
+    if (!phoneNumber) {
+        return true
+    }
+    return validator.isMobilePhone(phoneNumber, locale)
+}
+
+export const formatPhoneNumber = (phoneNumber: string, locale: validator.MobilePhoneLocale = 'pt-PT') => {
+    if (locale === 'pt-PT') {
+        return Number(phoneNumber)
+    } else {
+        return phoneNumber.startsWith('234') ? Number(phoneNumber) : Number('234' + Number(phoneNumber))
+    }
+}
+
+export const showSuccessSnackbar = (message: string, options?: ToastOption) => {
+    toast.error(message, {
+        position: options?.position || 'bottom-center',
+        style: { color: COLORS.WHITE, backgroundColor: COLORS.GREEN },
+        icon: RoundedCheckIcon({ color: 'white' }),
+        duration: 4000,
+    })
+}
+
+export const showErrorSnackbar = (message: string, options?: ToastOption) => {
+    toast.error(message, {
+        position: options?.position || 'bottom-center',
+        style: { color: COLORS.WHITE, backgroundColor: COLORS.RED },
+        icon: WarningIcon({ color: 'white' }),
+        duration: 4000,
+    })
+}

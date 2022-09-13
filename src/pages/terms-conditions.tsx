@@ -2,7 +2,7 @@ import React, { FC } from 'react'
 import { NextPage } from 'next'
 import cx from 'classnames'
 import { PoliciesHeader } from '../components/Headers/PoliciesHeader'
-import { PoliciesFooter } from '../components/Headers/PoliciesFooter'
+import { PoliciesFooter } from '../components/Footer/PoliciesFooter'
 import { NextLink } from '../components/Links'
 
 const P: FC<{ className?: string }> = ({ children, className }) => <p className={cx(className, 'my-2')}>{children}</p>
