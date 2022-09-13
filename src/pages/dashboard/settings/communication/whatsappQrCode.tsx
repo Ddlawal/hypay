@@ -6,12 +6,11 @@ import { Card } from '../../../../components/Card'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useConnectWhatsAppNumberMutation } from '../../../../store/services/settings/notificationSettings'
-import { useSnackbar } from '../../../../hooks/useSnackbar'
+import { showSuccessSnackbar, showErrorSnackbar } from '../../../../lib/helper'
 
 const Communication: NextPage = () => {
     const { push } = useRouter()
     const [addWhatsAppNumber] = useConnectWhatsAppNumberMutation()
-    const { showSuccessSnackbar, showErrorSnackbar } = useSnackbar()
     const {
         query: { qrcode, phone },
     } = useRouter()
