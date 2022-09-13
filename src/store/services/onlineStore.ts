@@ -33,4 +33,5 @@ export const onlineTheme = createApi({
     }),
 })
 
-export const { useFetchThemeQuery, useLazyGetProfileInfoQuery, useSetThemeMutation } = onlineTheme
+export const { useFetchThemeQuery, useLazyGetProfileInfoQuery, useGetProfileInfoQuery, useSetThemeMutation } =
+    onlineTheme
