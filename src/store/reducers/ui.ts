@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { ISingleCouponResponse } from '../../interfaces/coupons'
+import { IUpdatewhatsappNumber } from '../../interfaces/onlineStore'
 import { ProductsType } from '../../interfaces/products'
 
 export interface initialUiStateInterface {
@@ -8,6 +9,7 @@ export interface initialUiStateInterface {
     modalProps: {
         products?: ProductsType[]
         coupon?: ISingleCouponResponse
+        phone?: IUpdatewhatsappNumber
     }
 }
 

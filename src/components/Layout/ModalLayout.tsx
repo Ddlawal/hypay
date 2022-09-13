@@ -9,7 +9,7 @@ const ModalLayout = ({ children, width = 'md:w-4/12' }: IModalLayout) => {
             <Card
                 rounded
                 padding="p-4"
-                className={`mx-auto mt-[6rem] max-h-[80vh] w-11/12 items-center overflow-y-auto  rounded md:ml-[23%] md:mt-[7%] md:max-h-[80vh] ${width}`}
+                className={`mx-auto mt-[6rem] max-h-[80vh] w-11/12 items-center overflow-y-auto  rounded md:ml-[15%] md:mt-[7%] md:max-h-[80vh] ${width}`}
             >
                 {children}
             </Card>
