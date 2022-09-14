@@ -1,13 +1,16 @@
-import React, { useState } from 'react'
-import { NextPage } from 'next'
+import React, { useEffect, useState } from 'react'
+import { GetServerSideProps, NextPage } from 'next'
 import Image from 'next/image'
+
 import { NextLink } from '../../components/Links'
 import { useMediaQuery } from '../../hooks/useMediaQuery'
 import { BuyerLayout } from '../../components/Layout'
-// import { useProducts } from '../../hooks/useProducts'
+import { showErrorSnackbar } from '../../lib/helper'
+import { ProductsType } from '../../interfaces/products'
+import { useLazyGetMerchantStoreQuery } from '../../store/services/products'
 
-const newProducts = ['/images/jean-jacket.png', '/images/ladies-vests.png', '/images/mens-coat.png']
-const mostViewedProducts = ['/images/folded-t-shirt.png', '/images/long-sleeve.png', '/images/white-hoodie.png']
+const merchantDisplayImage = ''
+const mostViewed: Array<ProductsType> = []
 
 const Footer = () => {
     return (
@@ -48,12 +51,12 @@ const Footer = () => {
  * @param images Array of image urls
  * @returns JSX Element
  */
-const Carousel = ({ images }: { images: Array<string> }) => {
+const Carousel = ({ products, merchantCode }: { products: Array<ProductsType>; merchantCode?: string }) => {
     return (
         <div className="hsb mt-3 flex h-full gap-x-5 overflow-x-auto shadow-inner">
-            {images.map((image_url, i) => (
+            {products.map(({ id, image_url }, i) => (
                 <div key={`product_${i}`}>
-                    <NextLink href="/store/products/477">
+                    <NextLink href={`/store/products/${merchantCode}/${id}`}>
                         <div className="relative h-44 w-60 bg-black">
                             <Image src={image_url} layout="fill" objectFit="cover" quality={100} />
                         </div>
@@ -68,13 +71,28 @@ const Carousel = ({ images }: { images: Array<string> }) => {
     )
 }
 
-const Store: NextPage = () => {
+const Store: NextPage<{ merchantCode: string }> = ({ merchantCode }) => {
     const isDesktop = useMediaQuery('md')
-    const [loadingData] = useState(false)
-    // const { products } = useProducts()
+
+    const [getMerchantStore, { isFetching, isLoading }] = useLazyGetMerchantStoreQuery()
+    const [storeProducts, setStoreProducts] = useState<Array<ProductsType>>([])
+
+    useEffect(() => {
+        ;(async () => {
+            try {
+                const products = await getMerchantStore(merchantCode).unwrap()
+
+                setStoreProducts(products)
+            } catch (error) {
+                showErrorSnackbar('Error fetching merchant store!')
+                console.log(error)
+            }
+        })()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [merchantCode])
 
     return (
-        <BuyerLayout isLoading={loadingData}>
+        <BuyerLayout isLoading={isLoading || isFetching}>
             <div className="relative h-full md:px-28">
                 <Image
                     src="/images/buyers-banner.png"
@@ -107,22 +125,26 @@ const Store: NextPage = () => {
                     </div>
                 </div>
             </div>
-            <div className="mt-4 overflow-hidden px-4 md:px-[20%]">
-                <strong className="text-xl">New</strong>
-                <Carousel images={newProducts} />
-            </div>
-            <div className="my-8 h-full md:px-[20%]">
-                <Image
-                    src="/images/mens-wear.png"
-                    layout="responsive"
-                    height={250}
-                    width={isDesktop ? 700 : 500}
-                    quality={100}
-                />
-            </div>
-            <div className="mt-4 overflow-hidden px-4 md:px-[20%]">
-                <strong className="text-xl">Most Viewed</strong>
-                <Carousel images={mostViewedProducts} />
+            <div className="min-h-[25rem]">
+                <div className="mt-4 overflow-hidden px-4 md:px-[20%]">
+                    <strong className="text-xl">New</strong>
+                    <Carousel products={storeProducts} merchantCode={merchantCode} />
+                </div>
+                <div className="my-8 h-full md:px-[20%]">
+                    {merchantDisplayImage ? (
+                        <Image
+                            src={merchantDisplayImage}
+                            layout="responsive"
+                            height={250}
+                            width={isDesktop ? 700 : 500}
+                            quality={100}
+                        />
+                    ) : null}
+                </div>
+                <div className="mt-4 overflow-hidden px-4 md:px-[20%]">
+                    {mostViewed.length ? <strong className="text-xl">Most Viewed</strong> : null}
+                    <Carousel products={mostViewed} merchantCode={merchantCode} />
+                </div>
             </div>
             <Footer />
         </BuyerLayout>
@@ -130,3 +152,13 @@ const Store: NextPage = () => {
 }
 
 export default Store
+
+export const getServerSideProps: GetServerSideProps<Record<string, unknown>, { merchantCode: string }> = async ({
+    params,
+}) => {
+    return {
+        props: {
+            merchantCode: params?.merchantCode,
+        },
+    }
+}

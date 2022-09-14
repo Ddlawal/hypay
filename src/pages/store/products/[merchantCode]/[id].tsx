@@ -1,10 +1,10 @@
-import { useState } from 'react'
-import React, { NextPage } from 'next'
+import { useEffect, useState } from 'react'
+import React, { GetServerSideProps, NextPage } from 'next'
 import Image from 'next/image'
 import cx from 'classnames'
 
-import { Button } from '../../../components/Button'
-import { Card } from '../../../components/Card'
+import { Button } from '../../../../components/Button'
+import { Card } from '../../../../components/Card'
 import {
     DownArrowIcon,
     FacebookIcon,
@@ -16,11 +16,15 @@ import {
     StarIcon,
     TwitterIcon,
     WhatsAppIcon,
-} from '../../../components/Icons'
-import { BuyerLayout } from '../../../components/Layout'
-import { COLORS } from '../../../lib/constants/colors'
-import { useMediaQuery } from '../../../hooks/useMediaQuery'
+} from '../../../../components/Icons'
+import { BuyerLayout } from '../../../../components/Layout'
+import { COLORS } from '../../../../lib/constants/colors'
+import { useMediaQuery } from '../../../../hooks/useMediaQuery'
 import { useRouter } from 'next/router'
+import { useProducts } from '../../../../hooks/useProducts'
+import { useLazyGetMerchantStoreQuery, useLazySearchMerchantProductsQuery } from '../../../../store/services/products'
+import { ProductsType } from '../../../../interfaces/products'
+import { showErrorSnackbar } from '../../../../lib/helper'
 
 const images = ['/images/jean-jacket.png', '/images/mens-wear.png']
 
@@ -37,20 +41,39 @@ const ProductDescription = () => {
     )
 }
 
-const ProductView: NextPage = () => {
-    const [currentImage, setCurrentImage] = useState(images[0])
+const ProductView: NextPage<{ productId: string; merchantCode: string }> = ({ productId, merchantCode }) => {
     const isLargeScreen = useMediaQuery('md')
+    const [product, setProduct] = useState<ProductsType | undefined>()
+    const [currentImage, setCurrentImage] = useState(images[0])
+    const [getMerchantStore, { isFetching, isLoading }] = useLazyGetMerchantStoreQuery()
+
     const { push } = useRouter()
-
     const gotoCheckout = () => push('/store/checkout')
-    // const { product } = useProducts(id)
 
-    // if (isLoading) {
-    //     return <LoadingPage />
-    // }
+    const imageLinks = product?.other_images_url ? product?.other_images_url.map((img) => img.image_link) : []
+    const productImages = product?.image_url ? [product?.image_url, ...imageLinks] : imageLinks
+
+    useEffect(() => {
+        const fetchProduct = async () => {
+            try {
+                const products = await getMerchantStore(merchantCode).unwrap()
+
+                const prod = products.find((item) => item.id === Number(productId))
+                setProduct(prod)
+                if (prod?.image_url) {
+                    setCurrentImage(prod.image_url)
+                }
+            } catch (error) {
+                showErrorSnackbar('Error fetching product!')
+                console.log(error)
+            }
+        }
+
+        fetchProduct()
+    }, [getMerchantStore, merchantCode, productId])
 
     return (
-        <BuyerLayout>
+        <BuyerLayout isLoading={isLoading || isFetching}>
             <div className="mb-16 md:mb-0 md:px-[20%] md:pt-12">
                 <Card
                     rounded
@@ -64,19 +87,25 @@ const ProductView: NextPage = () => {
                             {isLargeScreen ? (
                                 <>
                                     <div className="my-8 flex items-center justify-between gap-x-3">
-                                        <LeftArrowIcon />
+                                        <LeftArrowIcon
+                                            color={
+                                                productImages?.length && productImages?.length > 5
+                                                    ? COLORS.BLACK
+                                                    : COLORS.DISABLED
+                                            }
+                                        />
                                         <div className="flex grow cursor-pointer gap-x-3">
-                                            {images.map((image, i) => (
+                                            {productImages?.map((image_link, i) => (
                                                 <button
                                                     key={`${i}_img`}
-                                                    onClick={() => setCurrentImage(image)}
+                                                    onClick={() => setCurrentImage(image_link)}
                                                     className={cx(
-                                                        image === currentImage && 'opacity-100',
+                                                        image_link === currentImage && 'opacity-100',
                                                         'w-28 opacity-50 hover:scale-105 hover:opacity-70'
                                                     )}
                                                 >
                                                     <Image
-                                                        src={image}
+                                                        src={image_link}
                                                         layout="responsive"
                                                         height={60}
                                                         width={100}
@@ -85,7 +114,13 @@ const ProductView: NextPage = () => {
                                                 </button>
                                             ))}
                                         </div>
-                                        <RightArrowIcon />
+                                        <RightArrowIcon
+                                            color={
+                                                productImages?.length && productImages?.length > 5
+                                                    ? COLORS.BLACK
+                                                    : COLORS.DISABLED
+                                            }
+                                        />
                                     </div>
                                     <div className="mt-12 flex gap-x-6 pl-8">
                                         <ShareIcon color={COLORS.BLACK} size={26} />
@@ -191,3 +226,17 @@ const ProductView: NextPage = () => {
 }
 
 export default ProductView
+
+export const getServerSideProps: GetServerSideProps<
+    Record<string, unknown>,
+    { id: string; merchantCode: string }
+> = async ({ params }) => {
+    console.log(params, '=============')
+
+    return {
+        props: {
+            productId: params?.id,
+            merchantCode: params?.merchantCode,
+        },
+    }
+}
