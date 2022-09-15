@@ -11,15 +11,19 @@ import { COLORS } from '../../../../lib/constants/colors'
 import { useAppDispatch, useAppSelector } from '../../../../hooks/useStoreHooks'
 import { showModal } from '../../../../store/reducers/ui'
 import AddWhatsappNoModal from '../../../../components/Modals/AddWhatsappNoModal'
-import { useLazyGetWhatsAppNumberQuery } from '../../../../store/services/settings/notificationSettings'
+import {
+    useDeleteWhatsAppNumberMutation,
+    useLazyGetWhatsAppNumberQuery,
+} from '../../../../store/services/settings/notificationSettings'
 import { IUpdatewhatsappNumber, IwhatsappAccounts } from '../../../../interfaces/onlineStore'
-import { showErrorSnackbar } from '../../../../lib/helper'
+import { showErrorSnackbar, showSuccessSnackbar } from '../../../../lib/helper'
 
 const ADD_WHATSAPP_NO_MODAL = 'ADD_WHATSAPP_NUMBER_MODAL'
 const UPDATE_WHATSAPP_NO_MODAL = 'UPDATE_WHATSAPP_NUMBER_MODAL'
 
 const Communication: NextPage = () => {
     const [getUserWhatsappNumber, { isLoading }] = useLazyGetWhatsAppNumberQuery()
+    const [deleteUserWhatsappNumber, { isLoading: deletingNumberLoading }] = useDeleteWhatsAppNumberMutation()
     const [AllwhatsappAccounts, setAllWhatsappAccount] = useState<Array<IwhatsappAccounts>>([])
     const { modalType } = useAppSelector((state) => state.ui)
     const dispatch = useAppDispatch()
@@ -31,6 +35,18 @@ const Communication: NextPage = () => {
             showModal({ showModal: true, modalType: UPDATE_WHATSAPP_NO_MODAL, modalProps: { phone: phoneToUpdate } })
         )
     }
+    const handleDeleteWhatsappNumber = async (account_id: number) => {
+        try {
+            const { whatsappAccounts } = await deleteUserWhatsappNumber({ account_id: account_id }).unwrap()
+            showSuccessSnackbar('Whatsapp Number deleted successfully')
+            return setAllWhatsappAccount(whatsappAccounts)
+        } catch (error) {
+            console.log(error)
+            showErrorSnackbar('An error occurred while deleting your number')
+        }
+    }
+
+    console.log(AllwhatsappAccounts, 'how many times')
 
     useEffect(() => {
         const fetchNumbers = async () => {
@@ -48,10 +64,12 @@ const Communication: NextPage = () => {
     return (
         <PrimaryLayout currentTabIndex={1} menuItemList={SettingsMenuItemList} isPrimary={false}>
             <div>
-                {isLoading ? (
+                {isLoading || deletingNumberLoading ? (
                     <div className="flex h-[30vh] w-full flex-col items-center justify-center">
                         <LoaderIcon />
-                        <p className="font-b0ld text-center text-base">loading Whatsapp Number...</p>
+                        <p className="font-b0ld text-center text-base">
+                            {isLoading ? 'loading' : 'Deleting'} Whatsapp Number...
+                        </p>
                     </div>
                 ) : (
                     <header className="">
@@ -59,7 +77,7 @@ const Communication: NextPage = () => {
                             Auxilie seus clientes de maneira fácil
                         </h1>
                         <div className="mb-4 flex flex-wrap items-center justify-center gap-3 md:justify-between md:p-8 lg:justify-start">
-                            {AllwhatsappAccounts.length
+                            {AllwhatsappAccounts.length > 0
                                 ? AllwhatsappAccounts.map((number) => (
                                       <Card
                                           key={number.id}
@@ -91,7 +109,7 @@ const Communication: NextPage = () => {
                                                   </button>
                                                   <button
                                                       onClick={() => {
-                                                          alert('This endpoint isnt available yet')
+                                                          handleDeleteWhatsappNumber(number.id)
                                                       }}
                                                       className="cursor-pointer border-0 text-sm text-hypay-pink outline-none"
                                                   >

@@ -47,6 +47,13 @@ export const notificationSettings = createApi({
                 body: whatsAppDetails,
             }),
         }),
+        deleteWhatsAppNumber: builder.mutation({
+            query: (whatsAppDetails: { account_id: number }) => ({
+                url: '/userAccount/deleteWhatsappAccount',
+                method: 'POST',
+                body: whatsAppDetails,
+            }),
+        }),
     }),
 })
 
@@ -56,4 +63,5 @@ export const {
     useUpdateWhatsAppNumberMutation,
     useLazyGetWhatsAppNumberQuery,
     useConnectWhatsAppNumberMutation,
+    useDeleteWhatsAppNumberMutation,
 } = notificationSettings
