@@ -24,6 +24,9 @@ import { useRouter } from 'next/router'
 import { useLazyGetMerchantStoreQuery } from '../../../../store/services/products'
 import { ProductsType } from '../../../../interfaces/products'
 import { showErrorSnackbar } from '../../../../lib/helper'
+import { MinusIcon } from '../../../../components/Icons/MinusIcon'
+import { Divider } from '../../../../components/Divider'
+import { PlusIcon } from '../../../../components/Icons/PlusIcon'
 
 const images = ['/images/jean-jacket.png', '/images/mens-wear.png']
 
@@ -43,6 +46,8 @@ const ProductDescription = () => {
 const ProductView: NextPage<{ productId: string; merchantCode: string }> = ({ productId, merchantCode }) => {
     const isLargeScreen = useMediaQuery('md')
     const [product, setProduct] = useState<ProductsType | undefined>()
+    const [qty, setQty] = useState(1)
+    // TODO: const [cart, setCart] = useState([])
     const [currentImage, setCurrentImage] = useState(images[0])
     const [getMerchantStore, { isFetching, isLoading }] = useLazyGetMerchantStoreQuery()
 
@@ -144,7 +149,21 @@ const ProductView: NextPage<{ productId: string; merchantCode: string }> = ({ pr
                                 <ProductDescription />
                             )}
                             <div className="mt-10 flex items-center gap-x-3 rounded-lg border border-black bg-white px-3 py-2 md:mt-2 md:bg-[#FFFBFB] md:py-1">
-                                Quantidade: 1<RightArrowIcon color={COLORS.BLACK} />
+                                Quantidade:
+                                <div className="flex w-full items-center justify-center gap-x-2">
+                                    <Button disabled={qty === 1} onClick={() => setQty(qty - 1)}>
+                                        <MinusIcon size={12} color={qty === 1 ? COLORS.GREY : COLORS.BLACK} />
+                                    </Button>
+                                    <Divider orientation="vertical" />
+                                    <span className="text-base">{qty}</span>
+                                    <Divider orientation="vertical" />
+                                    <Button disabled={product?.quantity === qty} onClick={() => setQty(qty + 1)}>
+                                        <PlusIcon
+                                            size={12}
+                                            color={product?.quantity === qty ? COLORS.GREY : COLORS.BLACK}
+                                        />
+                                    </Button>
+                                </div>
                             </div>
                             {isLargeScreen ? (
                                 <>

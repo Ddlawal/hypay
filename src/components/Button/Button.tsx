@@ -24,6 +24,7 @@ export const Button: FC<ButtonProps> = ({
     preventDefault,
     onClick,
     type,
+    disabled,
 }) => {
     return (
         <button
@@ -44,6 +45,7 @@ export const Button: FC<ButtonProps> = ({
                 `rounded-md leading-6 text-${size}`
             )}
             type={type}
+            disabled={disabled}
         >
             {children}
         </button>

@@ -1,0 +1,11 @@
+import * as React from 'react'
+import { IconProps } from '../../interfaces/icons'
+import { COLORS } from '../../lib/constants/colors'
+
+export const MinusIcon = ({ size = 18, color = COLORS.BLACK }: IconProps): JSX.Element => {
+    return (
+        <svg width={size} height={size} viewBox="0 0 15 2" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M1.64062 1H13.3073" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+    )
+}
