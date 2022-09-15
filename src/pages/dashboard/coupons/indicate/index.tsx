@@ -1,21 +1,25 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { PrimaryLayout } from '../../../../components/Layout'
 import { SecondInput } from '../../../../components/form'
 import { useForm } from 'react-hook-form'
 import { Card } from '../../../../components/Card'
 import { indicateData, IndicateDataType } from '../../../../lib/data'
-import { IUserProfile } from '../../../../interfaces/onlineStore'
-import { useGetProfileInfoQuery, useLazyGetProfileInfoQuery } from '../../../../store/services/onlineStore'
+import { useGetProfileInfoQuery } from '../../../../store/services/onlineStore'
+import { copyTextToClipboard, showSuccessSnackbar } from '../../../../lib/helper'
 
 function Indicate() {
-    const [userProfile, setUserProfile] = useState<IUserProfile | undefined>()
     const { data, isLoading: loadingTheme } = useGetProfileInfoQuery()
     const {
         register,
         formState: { errors },
     } = useForm<any>()
 
-    console.log(data, loadingTheme, 'check the profile and see')
+    const copyReferalCode = (code: string) => {
+        copyTextToClipboard(code)
+        showSuccessSnackbar('Referal code copied successfully')
+    }
+
+    console.log(data?.userProfile?.referral_code, loadingTheme, 'check the profile and see')
     return (
         <PrimaryLayout currentTabIndex={6} dropDownIndex={1}>
             <div className="px-8 py-4 md:px-12">
@@ -36,7 +40,7 @@ function Indicate() {
                             errors={errors}
                             label="Link"
                             register={register}
-                            defaultValue={'https://hypay.vercel.app/'}
+                            defaultValue={`https://hypay.vercel.app/?referal_code=${data?.userProfile?.referral_code}`}
                             validation={{
                                 required: true,
                             }}
@@ -44,7 +48,15 @@ function Indicate() {
                             placeholder="www.hypay.com.br/abc123def4563def4"
                             type="text"
                         />
-                        <button className="mb-4 h-8 w-44 rounded-lg bg-hypay-orange md:my-6 md:mb-1">
+                        <button
+                            onClick={() =>
+                                data &&
+                                copyReferalCode(
+                                    `https://hypay.vercel.app/?referal_code=${data?.userProfile?.referral_code}`
+                                )
+                            }
+                            className="mb-4 h-8 w-44 rounded-lg bg-hypay-orange md:my-6 md:mb-1"
+                        >
                             Copiar link
                         </button>
                     </div>
