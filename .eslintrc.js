@@ -15,6 +15,7 @@ module.exports = {
         'plugin:testing-library/react',
         'plugin:prettier/recommended',
         'plugin:storybook/recommended',
+        'next/core-web-vitals',
     ],
     settings: {
         react: {
