@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { NextPage } from 'next'
 import { useRouter } from 'next/router'
-import Image from 'next/image'
 import { FieldError, useForm, UseFormHandleSubmit, UseFormRegister } from 'react-hook-form'
 
+import { NextImage as Image } from '../../../components/Image'
 import { Button } from '../../../components/Button'
 import { SecondInput } from '../../../components/form'
 import { LockIcon } from '../../../components/Icons'

@@ -10,6 +10,8 @@ import {
 export type ProductsType = {
     id: number
     productName: string
+    productCode: string
+    productSlug: string
     productDescription: string
     merchant_email: string
     date: string

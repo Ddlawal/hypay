@@ -83,7 +83,7 @@ const CardComponent = function ({ setPlanStage }: ComponentChangeState) {
     return (
         <section className="flex  w-full items-start justify-between gap-x-10">
             <div className="md:w-8/12">
-                <form onClick={(e: any) => e.preventDefault()}>
+                <form onClick={(e) => e.preventDefault()}>
                     <div>
                         <SecondInput name="name" label="Nome impresso no cartão*" type="text" register={register} />
                     </div>
@@ -199,7 +199,7 @@ const CardComponent = function ({ setPlanStage }: ComponentChangeState) {
 // const
 
 const TicketComponent = function ({ setPlanStage }: ComponentChangeState) {
-    const [generatedTicket, setGeneratedTicket] = useState(CARD)
+    // const [generatedTicket, setGeneratedTicket] = useState(CARD)
     const { register } = useForm()
     return (
         <section className="flex  w-full items-start justify-between gap-x-10">

@@ -1,6 +1,7 @@
 import { NextPage } from 'next'
-import Image from 'next/image'
 import React, { MutableRefObject, useEffect, useRef, useState } from 'react'
+
+import { NextImage as Image } from '../../../components/Image'
 import { Card } from '../../../components/Card'
 import { StarIcon, TrashCanIcon } from '../../../components/Icons'
 import { PrimaryLayout } from '../../../components/Layout'

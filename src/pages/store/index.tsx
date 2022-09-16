@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { NextPage } from 'next'
-import Image from 'next/image'
+
+import { NextImage as Image } from '../../components/Image'
 import { NextLink } from '../../components/Links'
 import { useMediaQuery } from '../../hooks/useMediaQuery'
 import { BuyerLayout } from '../../components/Layout'
@@ -55,7 +56,7 @@ const Carousel = ({ images }: { images: Array<string> }) => {
                 <div key={`product_${i}`}>
                     <NextLink href="/store/products/477">
                         <div className="relative h-44 w-60 bg-black">
-                            <Image src={image_url} layout="fill" objectFit="cover" quality={100} />
+                            <Image src={image_url} layout="fill" objectFit="cover" quality={100} alt="product-pic" />
                         </div>
                     </NextLink>
                     <div className="my-2">
@@ -82,6 +83,7 @@ const Store: NextPage = () => {
                     height={250}
                     width={isDesktop ? 700 : 500}
                     quality={100}
+                    alt="buyers-banner"
                 />
                 <div className="absolute top-0 z-10 ml-4 flex h-full flex-col justify-center md:ml-20">
                     <div className="mb-2 block text-xl text-white md:hidden">
@@ -118,6 +120,7 @@ const Store: NextPage = () => {
                     height={250}
                     width={isDesktop ? 700 : 500}
                     quality={100}
+                    alt="mens-wear"
                 />
             </div>
             <div className="mt-4 overflow-hidden px-4 md:px-[20%]">
