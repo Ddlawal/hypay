@@ -1,5 +1,5 @@
 import React from 'react'
-import Image from 'next/image'
+import { NextImage as Image } from '../Image'
 
 import { GeneratedTwoFASecret } from '../../interfaces/auth'
 

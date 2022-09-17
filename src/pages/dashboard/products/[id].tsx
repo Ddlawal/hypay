@@ -1,47 +1,68 @@
-import React, { GetServerSideProps, NextPage } from 'next'
-import Image from 'next/image'
+import React, { NextPage } from 'next'
+
+import { NextImage as Image } from '../../../components/Image'
 import { useRouter } from 'next/router'
 import { Button } from '../../../components/Button'
 import { Card } from '../../../components/Card'
 import { PrimaryLayout } from '../../../components/Layout'
 import { useMediaQuery } from '../../../hooks/useMediaQuery'
 import { useProducts } from '../../../hooks/useProducts'
+import { useEffect, useState } from 'react'
+import { useLazyGetSingleProductQuery } from '../../../store/services/products'
+import { ProductsType } from '../../../interfaces/products'
 
-export const getServerSideProps: GetServerSideProps<Record<string, unknown>, { id: string }> = async ({ params }) => {
-    return {
-        props: {
-            productId: params?.id,
-        },
-    }
-}
-
-const ProductDetails: NextPage<{ productId: string }> = ({ productId }) => {
+const ProductDetails: NextPage = () => {
     const isDesktop = useMediaQuery('md')
-    const router = useRouter()
+    const [product, setProduct] = useState<ProductsType>()
+    const [loding, setLoading] = useState(true)
+    const {
+        query: { id },
+        isReady,
+        push,
+        replace,
+    } = useRouter()
+
+    const [getProduct, { isFetching, isLoading }] = useLazyGetSingleProductQuery()
+    useEffect(() => {
+        const performFetch = async () => {
+            if (isReady) {
+                const res = await getProduct(id as string).unwrap()
+
+                setProduct(res)
+                setLoading(isFetching || isLoading)
+            }
+        }
+
+        performFetch()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isReady])
 
     if (isDesktop) {
-        router.replace('/dashboard/products')
+        replace('/dashboard/products')
     }
 
-    const gotoEditProduct = () => router.push(`/dashboard/products/editProduct/${productId}`)
+    const gotoEditProduct = () => push(`/dashboard/products/editProduct/${product?.id}`)
 
     const {
-        product,
-        isLoading,
         deleteProduct: { onDelete },
-    } = useProducts(productId)
+    } = useProducts()
 
-    const deleteProduct = () => onDelete(productId, '/dashboard/products')
+    const deleteProduct = () => onDelete(String(product?.id || ''), '/dashboard/products')
 
     return (
-        <PrimaryLayout currentTabIndex={1} isLoading={isLoading} isNavBack navHeader="Detalhes do produto">
+        <PrimaryLayout currentTabIndex={1} isLoading={loding} isNavBack navHeader="Detalhes do produto">
             <div className="px-4 pb-4 pt-2">
                 <div className="py-3">Detalhes do produto</div>
                 <Card rounded padding="p-0">
                     <div className="py-4 px-6">
                         <div className="flex items-start justify-between">
                             <div className="relative h-44 w-[40%] rounded-lg border border-gray-100 sm:h-60">
-                                <Image src={product?.image_url as string} layout="fill" objectFit="cover" />
+                                <Image
+                                    src={product?.image_url as string}
+                                    layout="fill"
+                                    objectFit="cover"
+                                    alt="product-pic"
+                                />
                             </div>
                             <Button
                                 size="sm"

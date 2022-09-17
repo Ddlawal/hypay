@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import React, { NextPage } from 'next'
-import Image from 'next/image'
 import cx from 'classnames'
 
+import { NextImage as Image } from '../../../components/Image'
 import { Button } from '../../../components/Button'
 import { Card } from '../../../components/Card'
 import {
@@ -60,7 +60,14 @@ const ProductView: NextPage = () => {
                 >
                     <div className="relative grid grid-cols-12 md:gap-x-2">
                         <div className="col-span-12 rounded-lg md:col-span-8 md:pr-4">
-                            <Image src={currentImage} layout="responsive" height={80} width="100%" quality={100} />
+                            <Image
+                                src={currentImage}
+                                layout="responsive"
+                                height={80}
+                                width="100%"
+                                quality={100}
+                                alt="produt-view"
+                            />
                             {isLargeScreen ? (
                                 <>
                                     <div className="my-8 flex items-center justify-between gap-x-3">
@@ -81,6 +88,7 @@ const ProductView: NextPage = () => {
                                                         height={60}
                                                         width={100}
                                                         quality={100}
+                                                        alt="product-pics"
                                                     />
                                                 </button>
                                             ))}

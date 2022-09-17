@@ -1,4 +1,4 @@
-import React, { GetServerSideProps, NextPage } from 'next'
+import React, { NextPage } from 'next'
 import { Button } from '../../../components/Button'
 import { Card } from '../../../components/Card'
 import { Input } from '../../../components/form'
@@ -34,18 +34,10 @@ const timelineLabels = [
     'Pedido entregue',
 ]
 
-export const getServerSideProps: GetServerSideProps<Record<string, unknown>, { id: string }> = async ({ params }) => {
-    return {
-        props: {
-            requestId: params?.id,
-        },
-    }
-}
-
-const RequestDetails: NextPage<{ requestId: string }> = ({ requestId }) => {
+const RequestDetails: NextPage = () => {
     const isDesktop = useMediaQuery('md')
 
-    const { request, isLoading, activeStatusIndex } = useRequests(requestId)
+    const { request, isLoading, activeStatusIndex } = useRequests('single')
 
     const amt = Number(request?.cost ?? 0) + Number(request?.cost_of_frieght ?? 0)
     const total: string = 'R$ ' + amt + '.00'

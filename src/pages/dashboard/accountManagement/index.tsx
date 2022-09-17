@@ -1,5 +1,5 @@
 import React from 'react'
-import Image from 'next/image'
+import { NextImage as Image } from '../../../components/Image'
 import { useForm } from 'react-hook-form'
 import { useRouter } from 'next/router'
 

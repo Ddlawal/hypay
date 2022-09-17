@@ -1,10 +1,11 @@
 import React from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
+
+import { NextImage as Image } from '../../../../components/Image'
 import { LeftArrowIcon } from '../../../../components/Icons'
 import { PrimaryLayout } from '../../../../components/Layout'
 import { Card } from '../../../../components/Card'
-import Image from 'next/image'
 import phoneAuth from '../../../../../public/images/phoneAuth.png'
 import smsAuth from '../../../../../public/images/smsAuth.png'
 

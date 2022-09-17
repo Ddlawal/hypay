@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { NextPage } from 'next'
-import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
 import cx from 'classnames'
 
+import { NextImage as Image } from '../../../../../components/Image'
 import { PrimaryLayout } from '../../../../../components/Layout'
 import { LeftArrowIcon, LoaderIcon } from '../../../../../components/Icons'
 import { Card } from '../../../../../components/Card'

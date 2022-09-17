@@ -1,6 +1,7 @@
-import { NextPage } from 'next'
-import Image from 'next/image'
 import React from 'react'
+import { NextPage } from 'next'
+
+import { NextImage as Image } from '../../../../components/Image'
 import { Button } from '../../../../components/Button'
 import { Card } from '../../../../components/Card'
 import { SessionIcon, CoinsIcon, TagIcon, CartIcon } from '../../../../components/Icons'

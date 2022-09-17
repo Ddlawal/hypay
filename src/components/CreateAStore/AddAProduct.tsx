@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import Image from 'next/image'
+import { NextImage as Image } from '../Image'
 import { useRouter } from 'next/router'
 import { COLORS } from '../../lib/constants/colors'
 import { Button } from '../Button'

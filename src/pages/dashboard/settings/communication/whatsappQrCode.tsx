@@ -1,10 +1,11 @@
 import React from 'react'
 import { NextPage } from 'next'
+import { useRouter } from 'next/router'
+
+import { NextImage as Image } from '../../../../components/Image'
 import { PrimaryLayout } from '../../../../components/Layout'
 import { SettingsMenuItemList } from '../../../../lib/data'
 import { Card } from '../../../../components/Card'
-import Image from 'next/image'
-import { useRouter } from 'next/router'
 import { useConnectWhatsAppNumberMutation } from '../../../../store/services/settings/notificationSettings'
 import { showSuccessSnackbar, showErrorSnackbar } from '../../../../lib/helper'
 

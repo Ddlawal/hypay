@@ -1,8 +1,8 @@
 import React from 'react'
 import cx from 'classnames'
-import { Path, UseFormRegister } from 'react-hook-form'
+import { FieldValues, Path, UseFormRegister } from 'react-hook-form'
 
-type RadioProps<T> = {
+type RadioProps<T extends FieldValues> = {
     name: Path<T>
     value: string
     checkedValue: string
@@ -12,7 +12,15 @@ type RadioProps<T> = {
     register: UseFormRegister<T>
 }
 
-export function Radio<T = unknown>({ name, label, value, className, checkedValue, onChange, register }: RadioProps<T>) {
+export function Radio<T extends FieldValues>({
+    name,
+    label,
+    value,
+    className,
+    checkedValue,
+    onChange,
+    register,
+}: RadioProps<T>) {
     return (
         <div className="flex items-center">
             <input
