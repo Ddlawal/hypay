@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "export": "npm run build && next export -o build",
     "start": "next start",
     "lint": "next lint",
     "storybook": "start-storybook -p 6006 -s public",
@@ -28,7 +29,7 @@
     "react-redux": "^7.2.6",
     "react-responsive": "^9.0.0-beta.6",
     "react-select": "^5.2.2",
-    "recharts": "^2.1.9",
+    "recharts": "2.1.9",
     "redux-logger": "^3.0.6",
     "redux-persist": "^6.0.0",
     "validator": "^13.7.0"

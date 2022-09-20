@@ -1,5 +1,5 @@
 import React from 'react'
-import Image from 'next/image'
+import { NextImage as Image } from '../Image'
 import cx from 'classnames'
 
 import { Card } from '../Card'
@@ -25,7 +25,14 @@ export const PurchaseSummary = ({ onSubmit, isSideSummary }: PurchaseSummaryProp
                 )}
             >
                 <div className={cx(isMobileScreen || isSideSummary ? 'w-full' : 'md:w-56')}>
-                    <Image src="/images/jean-jacket.png" layout="responsive" height={100} width={100} quality={100} />
+                    <Image
+                        src="/images/jean-jacket.png"
+                        layout="responsive"
+                        height={100}
+                        width={100}
+                        quality={100}
+                        alt="purchase-summary-product"
+                    />
                 </div>
                 <div>
                     <div

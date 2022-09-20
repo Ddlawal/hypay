@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React from 'react'
+
 import { plans } from '../../../lib/data'
-import Plans from '../../../pages/dashboard/settings/plans'
 import { Button } from '../../Button'
 import PlanCard from '../PlanCard'
 

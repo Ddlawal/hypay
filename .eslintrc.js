@@ -15,6 +15,7 @@ module.exports = {
         'plugin:testing-library/react',
         'plugin:prettier/recommended',
         'plugin:storybook/recommended',
+        'next/core-web-vitals',
     ],
     settings: {
         react: {
@@ -30,6 +31,7 @@ module.exports = {
             },
         ],
         '@typescript-eslint/explicit-function-return-type': 'off',
+        '@typescript-eslint/no-unused-vars': 'error',
         '@typescript-eslint/no-empty-interface': [
             'error',
             {

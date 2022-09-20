@@ -133,3 +133,31 @@ export interface ISetThemeResponse {
         theme: ISingleTheme
     }
 }
+
+export interface IwhatsappNumber {
+    phone: string
+}
+export interface IUpdatewhatsappNumber {
+    phone: string
+    account_id: string
+}
+export interface INumberAndQrcode {
+    phone?: string | string[]
+    qrcode?: string | string[]
+}
+
+export interface IConnectWhatsappNumberResponse {
+    qrcode: string
+}
+
+export interface IGetWhatsappNumberResponse {
+    whatsappAccounts: IwhatsappAccounts[] | []
+}
+
+export interface IwhatsappAccounts {
+    id: number
+    phone: string
+    qrcode: string
+    created_at: Date
+    updated_at: Date
+}

@@ -1,8 +1,8 @@
 import React, { Dispatch, useRef, useState } from 'react'
 import { NextPage } from 'next'
-import Image from 'next/image'
 import { useRouter } from 'next/router'
 
+import { NextImage as Image } from '../../../components/Image'
 import { PrimaryLayout } from '../../../components/Layout'
 import { Button } from '../../../components/Button'
 import { CircularPlusIcon } from '../../../components/Icons/CircularPlusIcon'
@@ -16,6 +16,7 @@ import { NextLink } from '../../../components/Links'
 import { ProductsType, SearchProductType } from '../../../interfaces/products'
 import { copyTextToClipboard, showSuccessSnackbar } from '../../../lib/helper'
 import { useSearch } from '../../../hooks/useSearch'
+import { useLazyGetSingleProductQuery } from '../../../store/services/products'
 
 const productActionSelectItems = [
     {
@@ -84,7 +85,6 @@ const ProductsHeader = ({ isDesktop, gotoAddProducts }: { isDesktop: boolean; go
 export const ProductList = ({
     products,
     onDelete,
-    searchProduct,
     setIds = () => null,
 }: {
     products: Array<ProductsType>
@@ -95,9 +95,11 @@ export const ProductList = ({
     const isDesktop = useMediaQuery('md')
     const { push } = useRouter()
 
+    const [getProduct] = useLazyGetSingleProductQuery()
+
     const itemRefs = useRef({})
-    const [productId, setProductId] = useState<string>('')
-    const gotoEditProduct = () => push(`/dashboard/products/editProduct/${productId}`)
+    const [productCode, setProductCode] = useState<string>('')
+    const gotoEditProduct = () => push(`/dashboard/products/editProduct/${productCode}`)
 
     const host = window.location.origin
 
@@ -107,11 +109,11 @@ export const ProductList = ({
     }
 
     const deleteProduct = async () => {
-        const { data } = await searchProduct(productId)
-        const productName = data && data[0] ? data[0].productName : 'this product'
+        const product = await getProduct(productCode).unwrap()
+        const productName = product.productName || 'this product'
         const proceed = confirm(`Are you sure you want to delete ${productName}?`)
         if (proceed) {
-            onDelete(productId, '/dashboard/products')
+            onDelete(String(product.id), '/dashboard/products')
         }
     }
 
@@ -135,9 +137,9 @@ export const ProductList = ({
         <>
             {isDesktop ? (
                 <Table<ProductsType>
-                    uniqueKey="id"
+                    uniqueKey="productCode"
                     refs={itemRefs}
-                    setId={setProductId}
+                    setId={setProductCode}
                     onSelect={onSelect}
                     onSelectAll={onSelectAll}
                     headers={['', 'Product', 'Inventory', 'Price', 'Discount', 'Variants', 'Actions']}
@@ -146,7 +148,7 @@ export const ProductList = ({
                     selectable
                 >
                     <div className="flex flex-col items-start text-[11px] leading-4 text-hypay-pink">
-                        <button className="hover:font-bold" onClick={() => copyProductLink(productId)}>
+                        <button className="hover:font-bold" onClick={() => copyProductLink(productCode)}>
                             Copy link
                         </button>
                         <button className="hover:font-bold" onClick={gotoEditProduct}>
@@ -159,12 +161,12 @@ export const ProductList = ({
                 </Table>
             ) : (
                 <div className="mx-4 grid grid-cols-2 gap-y-2 gap-x-4">
-                    {products.map(({ id, productName, image_url }) => {
+                    {products.map(({ id, productName, image_url, productCode }) => {
                         return (
-                            <NextLink href={`/dashboard/products/${id}`} key={id}>
+                            <NextLink href={`/dashboard/products/${productCode}`} key={id}>
                                 <Card rounded padding="p-3">
                                     <div className="relative h-36 w-full rounded-lg border border-gray-100 sm:h-48">
-                                        <Image src={image_url} layout="fill" objectFit="cover" />
+                                        <Image src={image_url} layout="fill" objectFit="cover" alt="product-card-pic" />
                                     </div>
                                     <div>{productName}</div>
                                 </Card>

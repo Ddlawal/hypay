@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { NextPage } from 'next'
 import Head from 'next/head'
-import Image from 'next/image'
+import { NextImage as Image } from '../components/Image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { signIn, useSession } from 'next-auth/react'

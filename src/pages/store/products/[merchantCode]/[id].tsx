@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
-import React, { GetServerSideProps, NextPage } from 'next'
-import Image from 'next/image'
+import React, { NextPage } from 'next'
 import cx from 'classnames'
 
+import { NextImage as Image } from '../../../../components/Image'
 import { Button } from '../../../../components/Button'
 import { Card } from '../../../../components/Card'
 import {
@@ -43,13 +43,21 @@ const ProductDescription = () => {
     )
 }
 
-const ProductView: NextPage<{ productId: string; merchantCode: string }> = ({ productId, merchantCode }) => {
+const ProductView: NextPage = () => {
     const isLargeScreen = useMediaQuery('md')
     const [product, setProduct] = useState<ProductsType | undefined>()
     const [qty, setQty] = useState(1)
     // TODO: const [cart, setCart] = useState([])
     const [currentImage, setCurrentImage] = useState(images[0])
     const [getMerchantStore, { isFetching, isLoading }] = useLazyGetMerchantStoreQuery()
+
+    // const [merchantCode, setMerchantCode] = useState('')
+    // const [productId, setProductId] = useState('')
+
+    const {
+        query: { merchantCode, id: productId },
+        isReady,
+    } = useRouter()
 
     const { push } = useRouter()
     const gotoCheckout = () => push('/store/checkout')
@@ -60,7 +68,7 @@ const ProductView: NextPage<{ productId: string; merchantCode: string }> = ({ pr
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const products = await getMerchantStore(merchantCode).unwrap()
+                const products = await getMerchantStore(merchantCode as string).unwrap()
 
                 const prod = products.find((item) => item.id === Number(productId))
                 setProduct(prod)
@@ -73,8 +81,11 @@ const ProductView: NextPage<{ productId: string; merchantCode: string }> = ({ pr
             }
         }
 
-        fetchProduct()
-    }, [getMerchantStore, merchantCode, productId])
+        if (isReady) {
+            fetchProduct()
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isReady])
 
     return (
         <BuyerLayout isLoading={isLoading || isFetching}>
@@ -87,7 +98,14 @@ const ProductView: NextPage<{ productId: string; merchantCode: string }> = ({ pr
                 >
                     <div className="relative grid grid-cols-12 md:gap-x-2">
                         <div className="col-span-12 rounded-lg md:col-span-8 md:pr-4">
-                            <Image src={currentImage} layout="responsive" height={80} width="100%" quality={100} />
+                            <Image
+                                src={currentImage}
+                                layout="responsive"
+                                height={80}
+                                width="100%"
+                                quality={100}
+                                alt="produt-view"
+                            />
                             {isLargeScreen ? (
                                 <>
                                     <div className="my-8 flex items-center justify-between gap-x-3">
@@ -114,6 +132,7 @@ const ProductView: NextPage<{ productId: string; merchantCode: string }> = ({ pr
                                                         height={60}
                                                         width={100}
                                                         quality={100}
+                                                        alt="product-pics"
                                                     />
                                                 </button>
                                             ))}
@@ -244,17 +263,3 @@ const ProductView: NextPage<{ productId: string; merchantCode: string }> = ({ pr
 }
 
 export default ProductView
-
-export const getServerSideProps: GetServerSideProps<
-    Record<string, unknown>,
-    { id: string; merchantCode: string }
-> = async ({ params }) => {
-    console.log(params, '=============')
-
-    return {
-        props: {
-            productId: params?.id,
-            merchantCode: params?.merchantCode,
-        },
-    }
-}

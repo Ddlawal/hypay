@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react'
-import Image from 'next/image'
+import { NextImage as Image } from '../components/Image'
 import { NextPage } from 'next'
 import { signIn, useSession } from 'next-auth/react'
 import Head from 'next/head'
@@ -92,7 +92,10 @@ const Login: NextPage = () => {
 
             authenticateUser(payload)
         } catch (error: any) {
-            console.log(error)
+            console.log(error, error.status)
+            if (error?.status == 'FETCH_ERROR') {
+                return showErrorSnackbar('Something is wrong with your network connection. Please try again')
+            }
             showErrorSnackbar(error?.data?.error || 'There was an error while trying to log in, please try again')
         }
     }

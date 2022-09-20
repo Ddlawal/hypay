@@ -27,6 +27,13 @@ export const productApi = createApi({
             }),
             transformResponse: (res: { products: { data: Array<ProductsType> } }) => res.products.data,
         }),
+        getSingleProduct: builder.query<ProductsType, string>({
+            query: (data: string) => ({
+                url: `/product/single/${data}`,
+                method: 'GET',
+            }),
+            transformResponse: (res: { product: ProductsType }) => res.product,
+        }),
         deleteAProduct: builder.query<{ products: { data: Array<ProductsType> } }, string>({
             query: (id: string) => ({
                 url: `/product/remove?productID=${id}`,
@@ -74,4 +81,5 @@ export const {
     useLazySearchMerchantProductsQuery,
     useGetProductDetailsQuery,
     useLazyGetMerchantStoreQuery,
+    useLazyGetSingleProductQuery,
 } = productApi

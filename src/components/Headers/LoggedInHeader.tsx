@@ -1,6 +1,6 @@
 import React, { ReactNode, useState } from 'react'
 import cx from 'classnames'
-import Image from 'next/image'
+import { NextImage as Image } from '../Image'
 import { useOnClickOutside } from '../../hooks/useOnClickOutSide'
 import { COLORS } from '../../lib/constants/colors'
 import { Input } from '../form'

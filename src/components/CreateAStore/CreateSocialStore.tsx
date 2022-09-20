@@ -1,5 +1,5 @@
-import Image from 'next/image'
-import React, { useState } from 'react'
+import { NextImage as Image } from '../Image'
+import React, { FC, useState } from 'react'
 import { COLORS } from '../../lib/constants/colors'
 import { generateRandomImage } from '../../lib/data'
 import { Button } from '../Button'
@@ -8,7 +8,7 @@ import { FacebookSvgIcon } from '../Icons/FacebookSvgIcon'
 import { InstagramSvgIcon } from '../Icons/InstagramSvgIcon'
 import { useRouter } from 'next/router'
 
-function CreateSocialStore({ setTabIndex }: { setTabIndex: (value: React.SetStateAction<number>) => void }) {
+const CreateSocialStore: FC<{ setTabIndex: (value: React.SetStateAction<number>) => void }> = () => {
     const [socialsIcon, setSocialIcon] = useState('')
     const { push } = useRouter()
     return (
@@ -43,7 +43,7 @@ function CreateSocialStore({ setTabIndex }: { setTabIndex: (value: React.SetStat
                     </Card>
                     <p className="font-bold">Escolha um canal de compartilhamento</p>
                 </section>
-                <form onSubmit={(e: any) => e.preventDefault()} className="mx-auto mt-4 w-10/12">
+                <form onSubmit={(e) => e.preventDefault()} className="mx-auto mt-4 w-10/12">
                     {/* Social Icons */}
                     <div className="mx-auto my-3 flex w-10/12 justify-evenly gap-x-8 text-center md:w-4/12 md:justify-center ">
                         <InstagramSvgIcon

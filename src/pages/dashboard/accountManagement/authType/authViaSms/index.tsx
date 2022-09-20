@@ -1,12 +1,12 @@
 import React from 'react'
 import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
+
 import { PrimaryLayout } from '../../../../../components/Layout'
 import { LeftArrowIcon } from '../../../../../components/Icons'
 import { Card } from '../../../../../components/Card'
-import Image from 'next/image'
+import { NextImage as Image } from '../../../../../components/Image'
 import smsAuth from '../../../../../../public/images/smsAuth.png'
-import qrCode from '../../../../../../public/images/qr-code.png'
 import { SecondInput } from '../../../../../components/form'
 import { Button } from '../../../../../components/Button'
 
