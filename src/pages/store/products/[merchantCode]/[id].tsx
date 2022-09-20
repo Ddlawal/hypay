@@ -47,12 +47,10 @@ const ProductView: NextPage = () => {
     const isLargeScreen = useMediaQuery('md')
     const [product, setProduct] = useState<ProductsType | undefined>()
     const [qty, setQty] = useState(1)
-    // TODO: const [cart, setCart] = useState([]) implement cart
     const [currentImage, setCurrentImage] = useState(images[0])
     const [getMerchantStore, { isFetching, isLoading }] = useLazyGetMerchantStoreQuery()
 
-    // const [merchantCode, setMerchantCode] = useState('')
-    // const [productId, setProductId] = useState('')
+    // const { cart, cartCount } = useCart()
 
     const {
         query: { merchantCode, id: productId },
