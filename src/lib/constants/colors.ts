@@ -13,4 +13,5 @@ export const COLORS = {
     SECONDARY: '#8021FF',
     WHITE: '#FFFFFF',
     YELLOW: '#FFB119',
+    DISABLED: '#EBEBE4',
 } as const

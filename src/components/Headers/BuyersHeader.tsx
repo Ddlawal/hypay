@@ -3,14 +3,17 @@ import cx from 'classnames'
 import { useOnClickOutside } from '../../hooks/useOnClickOutSide'
 import { COLORS } from '../../lib/constants/colors'
 import { Input } from '../form'
-import { MenuIcon, SearchIcon } from '../Icons'
+import { CartIcon, MenuIcon, SearchIcon } from '../Icons'
 import { BUYER_SIDE_NAV_WIDTH } from '../../lib/constants/elements'
 import { NextLink } from '../Links'
 import { Logo } from '../Logo'
+import { Button } from '../Button'
+import { useCart } from '../../hooks/useCart'
 
 export const BuyersHeader = () => {
     const [open, setOpen] = useState(false)
     const { ref } = useOnClickOutside<HTMLDivElement>(() => setOpen(false))
+    const { cartCount } = useCart()
 
     const width = BUYER_SIDE_NAV_WIDTH + 'px'
 
@@ -56,6 +59,17 @@ export const BuyersHeader = () => {
                 <NextLink href="/store/support">Atendimento</NextLink>
             </div>
             <div className="flex items-center justify-end gap-x-2 md:gap-x-0">
+                <button className="block rounded-lg p-2 transition duration-200 ease-in-out hover:scale-105 hover:shadow-md md:hidden">
+                    <SearchIcon size={22} />
+                </button>
+                <Button className="relative md:mr-4">
+                    {cartCount ? (
+                        <span className="absolute -top-1 -right-2 flex h-5 w-5 items-center justify-center rounded-[50%] bg-hypay-pink text-[0.6rem] text-white">
+                            {cartCount}
+                        </span>
+                    ) : null}
+                    <CartIcon color={COLORS.BLACK} size={22} />
+                </Button>
                 <Input
                     placeholder="Search"
                     autoFocus
@@ -64,9 +78,6 @@ export const BuyersHeader = () => {
                     icon={<SearchIcon color={COLORS.PLACEHOLDER} />}
                     type="search"
                 />
-                <button className="block rounded-lg p-2 transition duration-200 ease-in-out hover:scale-105 hover:shadow-md md:hidden">
-                    <SearchIcon size={26} />
-                </button>
                 <button className="p-2 md:hidden" onClick={() => setOpen(true)}>
                     <MenuIcon size={26} color={COLORS.ICON_GRAY} />
                 </button>

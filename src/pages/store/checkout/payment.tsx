@@ -126,7 +126,14 @@ const CreditCardList = ({ onAddCard }: { onAddCard: () => void }) => {
             <Card className="my-16 flex items-center justify-between">
                 <div className="flex items-center">
                     <div className="mr-2 w-24 lg:mr-4">
-                        <Image src="/images/master-card.png" layout="responsive" height={35} width={65} quality={100} />
+                        <Image
+                            src="/images/master-card.png"
+                            layout="responsive"
+                            height={35}
+                            width={65}
+                            quality={100}
+                            alt="master-card"
+                        />
                     </div>
                     <div>Bank********7777</div>
                 </div>
@@ -302,7 +309,14 @@ const CheckoutPayment: NextPage = () => {
                                         </ol>
                                         <div className="my-4 flex flex-row items-center gap-x-3 md:my-0 md:flex-col md:items-start">
                                             <div className="flex w-full justify-center md:my-12">
-                                                <img src="/images/qrcode.png" />
+                                                <Image
+                                                    src="/images/qrcode.png"
+                                                    layout="responsive"
+                                                    height={35}
+                                                    width={65}
+                                                    quality={100}
+                                                    alt="qr-code"
+                                                />
                                             </div>
                                             <div>
                                                 <div className="my-2 text-sm font-bold md:text-lg">

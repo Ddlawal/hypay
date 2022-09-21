@@ -1,10 +1,10 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import React, { NextPage } from 'next'
 import cx from 'classnames'
 
-import { NextImage as Image } from '../../../components/Image'
-import { Button } from '../../../components/Button'
-import { Card } from '../../../components/Card'
+import { NextImage as Image } from '../../../../components/Image'
+import { Button } from '../../../../components/Button'
+import { Card } from '../../../../components/Card'
 import {
     DownArrowIcon,
     FacebookIcon,
@@ -16,11 +16,18 @@ import {
     StarIcon,
     TwitterIcon,
     WhatsAppIcon,
-} from '../../../components/Icons'
-import { BuyerLayout } from '../../../components/Layout'
-import { COLORS } from '../../../lib/constants/colors'
-import { useMediaQuery } from '../../../hooks/useMediaQuery'
+} from '../../../../components/Icons'
+import { BuyerLayout } from '../../../../components/Layout'
+import { COLORS } from '../../../../lib/constants/colors'
+import { useMediaQuery } from '../../../../hooks/useMediaQuery'
 import { useRouter } from 'next/router'
+import { useLazyGetMerchantStoreQuery } from '../../../../store/services/products'
+import { ProductsType } from '../../../../interfaces/products'
+import { showErrorSnackbar, showSuccessSnackbar } from '../../../../lib/helper'
+import { MinusIcon } from '../../../../components/Icons/MinusIcon'
+import { Divider } from '../../../../components/Divider'
+import { PlusIcon } from '../../../../components/Icons/PlusIcon'
+import { useAddToCartMutation } from '../../../../store/services/cart'
 
 const images = ['/images/jean-jacket.png', '/images/mens-wear.png']
 
@@ -38,19 +45,60 @@ const ProductDescription = () => {
 }
 
 const ProductView: NextPage = () => {
-    const [currentImage, setCurrentImage] = useState(images[0])
     const isLargeScreen = useMediaQuery('md')
+    const [product, setProduct] = useState<ProductsType | undefined>()
+    const [qty, setQty] = useState(1)
+    const [currentImage, setCurrentImage] = useState(images[0])
+    const [getMerchantStore, { isFetching, isLoading }] = useLazyGetMerchantStoreQuery()
+    const [addItemToCart, { isLoading: isAddingToCart }] = useAddToCartMutation()
+
+    const {
+        query: { merchantCode, id: productId },
+        isReady,
+    } = useRouter()
+
     const { push } = useRouter()
-
     const gotoCheckout = () => push('/store/checkout')
-    // const { product } = useProducts(id)
 
-    // if (isLoading) {
-    //     return <LoadingPage />
-    // }
+    const imageLinks = product?.other_images_url ? product?.other_images_url.map((img) => img.image_link) : []
+    const productImages = product?.image_url ? [product?.image_url, ...imageLinks] : imageLinks
+
+    useEffect(() => {
+        const fetchProduct = async () => {
+            try {
+                const products = await getMerchantStore(merchantCode as string).unwrap()
+
+                const prod = products.find((item) => item.id === Number(productId))
+                setProduct(prod)
+                if (prod?.image_url) {
+                    setCurrentImage(prod.image_url)
+                }
+            } catch (error) {
+                showErrorSnackbar('Error fetching product!')
+                console.log(error)
+            }
+        }
+
+        if (isReady) {
+            fetchProduct()
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isReady])
+
+    const handleAddToCart = async () => {
+        if (isAddingToCart) {
+            return
+        }
+        try {
+            await addItemToCart({ productID: Number(productId as string), quantity: qty }).unwrap()
+            showSuccessSnackbar('Item added successfully')
+        } catch (error) {
+            showErrorSnackbar('Error! Unable to add item to cart')
+        }
+    }
 
     return (
-        <BuyerLayout>
+        <BuyerLayout isLoading={isLoading || isFetching}>
             <div className="mb-16 md:mb-0 md:px-[20%] md:pt-12">
                 <Card
                     rounded
@@ -71,19 +119,25 @@ const ProductView: NextPage = () => {
                             {isLargeScreen ? (
                                 <>
                                     <div className="my-8 flex items-center justify-between gap-x-3">
-                                        <LeftArrowIcon />
+                                        <LeftArrowIcon
+                                            color={
+                                                productImages?.length && productImages?.length > 5
+                                                    ? COLORS.BLACK
+                                                    : COLORS.DISABLED
+                                            }
+                                        />
                                         <div className="flex grow cursor-pointer gap-x-3">
-                                            {images.map((image, i) => (
+                                            {productImages?.map((image_link, i) => (
                                                 <button
                                                     key={`${i}_img`}
-                                                    onClick={() => setCurrentImage(image)}
+                                                    onClick={() => setCurrentImage(image_link)}
                                                     className={cx(
-                                                        image === currentImage && 'opacity-100',
+                                                        image_link === currentImage && 'opacity-100',
                                                         'w-28 opacity-50 hover:scale-105 hover:opacity-70'
                                                     )}
                                                 >
                                                     <Image
-                                                        src={image}
+                                                        src={image_link}
                                                         layout="responsive"
                                                         height={60}
                                                         width={100}
@@ -93,7 +147,13 @@ const ProductView: NextPage = () => {
                                                 </button>
                                             ))}
                                         </div>
-                                        <RightArrowIcon />
+                                        <RightArrowIcon
+                                            color={
+                                                productImages?.length && productImages?.length > 5
+                                                    ? COLORS.BLACK
+                                                    : COLORS.DISABLED
+                                            }
+                                        />
                                     </div>
                                     <div className="mt-12 flex gap-x-6 pl-8">
                                         <ShareIcon color={COLORS.BLACK} size={26} />
@@ -118,7 +178,21 @@ const ProductView: NextPage = () => {
                                 <ProductDescription />
                             )}
                             <div className="mt-10 flex items-center gap-x-3 rounded-lg border border-black bg-white px-3 py-2 md:mt-2 md:bg-[#FFFBFB] md:py-1">
-                                Quantidade: 1<RightArrowIcon color={COLORS.BLACK} />
+                                Quantidade:
+                                <div className="flex w-full items-center justify-center gap-x-2">
+                                    <Button disabled={qty === 1} onClick={() => setQty(qty - 1)}>
+                                        <MinusIcon size={12} color={qty === 1 ? COLORS.GREY : COLORS.BLACK} />
+                                    </Button>
+                                    <Divider orientation="vertical" />
+                                    <span className="text-base">{qty}</span>
+                                    <Divider orientation="vertical" />
+                                    <Button disabled={product?.quantity === qty} onClick={() => setQty(qty + 1)}>
+                                        <PlusIcon
+                                            size={12}
+                                            color={product?.quantity === qty ? COLORS.GREY : COLORS.BLACK}
+                                        />
+                                    </Button>
+                                </div>
                             </div>
                             {isLargeScreen ? (
                                 <>
@@ -138,6 +212,10 @@ const ProductView: NextPage = () => {
                                     <Button
                                         className="mt-2 block w-full border border-black text-[1rem]"
                                         padding="py-2"
+                                        onClick={handleAddToCart}
+                                        loading={isAddingToCart}
+                                        loaderColor="BLACK"
+                                        loaderSize={24}
                                     >
                                         Add to cart
                                     </Button>

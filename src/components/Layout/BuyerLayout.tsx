@@ -9,7 +9,7 @@ type BuyerLayoutProps = {
 
 export const BuyerLayout: FC<BuyerLayoutProps> = ({ children, isLoading }) => {
     return (
-        <div className="pb-8">
+        <div>
             <BuyersHeader />
             <div>{isLoading ? <LoadingPage /> : children}</div>
         </div>

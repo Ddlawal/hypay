@@ -60,6 +60,13 @@ export const productApi = createApi({
                 method: 'GET',
             }),
         }),
+        getMerchantStore: builder.query<Array<ProductsType>, string>({
+            query: (merchantCode: string) => ({
+                url: `/product/merchantStore?merchantCode=${merchantCode}`,
+                method: 'GET',
+            }),
+            transformResponse: (res: { products: { data: Array<ProductsType> } }) => res.products.data,
+        }),
     }),
 })
 
@@ -73,5 +80,6 @@ export const {
     useLazyGetAllProductsQuery,
     useLazySearchMerchantProductsQuery,
     useGetProductDetailsQuery,
+    useLazyGetMerchantStoreQuery,
     useLazyGetSingleProductQuery,
 } = productApi
