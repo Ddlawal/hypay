@@ -14,7 +14,7 @@ import { ProductsType } from '../../../interfaces/products'
 const ProductDetails: NextPage = () => {
     const isDesktop = useMediaQuery('md')
     const [product, setProduct] = useState<ProductsType>()
-    const [loding, setLoading] = useState(true)
+    const [loading, setLoading] = useState(true)
     const {
         query: { id },
         isReady,
@@ -50,7 +50,7 @@ const ProductDetails: NextPage = () => {
     const deleteProduct = () => onDelete(String(product?.id || ''), '/dashboard/products')
 
     return (
-        <PrimaryLayout currentTabIndex={1} isLoading={loding} isNavBack navHeader="Detalhes do produto">
+        <PrimaryLayout currentTabIndex={1} isLoading={loading} isNavBack navHeader="Detalhes do produto">
             <div className="px-4 pb-4 pt-2">
                 <div className="py-3">Detalhes do produto</div>
                 <Card rounded padding="p-0">

@@ -12,7 +12,7 @@ type OnSuccessType = { products: { data: Array<ProductsType> } }
 
 const EditProduct: NextPage = () => {
     const [product, setProduct] = useState<ProductsType>()
-    const [loding, setLoading] = useState(true)
+    const [lodaing, setLoading] = useState(true)
     const {
         query: { id },
         isReady,
@@ -39,7 +39,7 @@ const EditProduct: NextPage = () => {
         showSuccessSnackbar(`Product updated successfully!`)
     }
     return (
-        <PrimaryLayout currentTabIndex={1} isLoading={loding} isNavBack navHeader="Editar produto">
+        <PrimaryLayout currentTabIndex={1} isLoading={lodaing} isNavBack navHeader="Editar produto">
             <div className="pt-1">
                 <AddAProduct<OnSuccessType> onSuccess={onSuccess} product={product} />
             </div>

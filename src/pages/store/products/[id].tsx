@@ -1,10 +1,22 @@
-import { useEffect, useState } from 'react'
-import React, { NextPage } from 'next'
 import cx from 'classnames'
+import React, { NextPage } from 'next'
 
-import { NextImage as Image } from '../../../../components/Image'
-import { Button } from '../../../../components/Button'
-import { Card } from '../../../../components/Card'
+import { Button } from '../../../components/Button'
+import { BuyerLayout } from '../../../components/Layout'
+import { Card } from '../../../components/Card'
+import { COLORS } from '../../../lib/constants/colors'
+import { Divider } from '../../../components/Divider'
+import { MinusIcon } from '../../../components/Icons/MinusIcon'
+import { NextImage as Image } from '../../../components/Image'
+import { PlusIcon } from '../../../components/Icons/PlusIcon'
+import { ProductsType } from '../../../interfaces/products'
+import { showErrorSnackbar, showSuccessSnackbar } from '../../../lib/helper'
+import { useAddToCartMutation } from '../../../store/services/cart'
+import { useEffect, useState } from 'react'
+import { useLazyGetSingleProductQuery } from '../../../store/services/products'
+import { useMediaQuery } from '../../../hooks/useMediaQuery'
+import { useRouter } from 'next/router'
+
 import {
     DownArrowIcon,
     FacebookIcon,
@@ -16,18 +28,7 @@ import {
     StarIcon,
     TwitterIcon,
     WhatsAppIcon,
-} from '../../../../components/Icons'
-import { BuyerLayout } from '../../../../components/Layout'
-import { COLORS } from '../../../../lib/constants/colors'
-import { useMediaQuery } from '../../../../hooks/useMediaQuery'
-import { useRouter } from 'next/router'
-import { useLazyGetMerchantStoreQuery } from '../../../../store/services/products'
-import { ProductsType } from '../../../../interfaces/products'
-import { showErrorSnackbar, showSuccessSnackbar } from '../../../../lib/helper'
-import { MinusIcon } from '../../../../components/Icons/MinusIcon'
-import { Divider } from '../../../../components/Divider'
-import { PlusIcon } from '../../../../components/Icons/PlusIcon'
-import { useAddToCartMutation } from '../../../../store/services/cart'
+} from '../../../components/Icons'
 
 const images = ['/images/jean-jacket.png', '/images/mens-wear.png']
 
@@ -49,11 +50,10 @@ const ProductView: NextPage = () => {
     const [product, setProduct] = useState<ProductsType | undefined>()
     const [qty, setQty] = useState(1)
     const [currentImage, setCurrentImage] = useState(images[0])
-    const [getMerchantStore, { isFetching, isLoading }] = useLazyGetMerchantStoreQuery()
     const [addItemToCart, { isLoading: isAddingToCart }] = useAddToCartMutation()
 
     const {
-        query: { merchantCode, id: productId },
+        query: { id: productId },
         isReady,
     } = useRouter()
 
@@ -63,13 +63,15 @@ const ProductView: NextPage = () => {
     const imageLinks = product?.other_images_url ? product?.other_images_url.map((img) => img.image_link) : []
     const productImages = product?.image_url ? [product?.image_url, ...imageLinks] : imageLinks
 
+    const [getProduct, { isFetching, isLoading }] = useLazyGetSingleProductQuery()
+
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const products = await getMerchantStore(merchantCode as string).unwrap()
+                const prod = await getProduct(productId as string).unwrap()
 
-                const prod = products.find((item) => item.id === Number(productId))
                 setProduct(prod)
+
                 if (prod?.image_url) {
                     setCurrentImage(prod.image_url)
                 }
@@ -98,7 +100,7 @@ const ProductView: NextPage = () => {
     }
 
     return (
-        <BuyerLayout isLoading={isLoading || isFetching}>
+        <BuyerLayout isLoading={isLoading || isFetching || !isReady}>
             <div className="mb-16 md:mb-0 md:px-[20%] md:pt-12">
                 <Card
                     rounded
