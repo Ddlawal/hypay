@@ -3,13 +3,13 @@ import { setupListeners } from '@reduxjs/toolkit/query'
 import { FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist'
 import persistedReducer from './reducers'
 import baseApi from './services'
-import logger from 'redux-logger'
 import { productApi } from './services/products'
 import { requestApi } from './services/requests'
 import { merchantApi } from './services/merchant'
 import { messageApi } from './services/messages'
 import { onlineTheme } from './services/onlineStore'
 import { notificationSettings } from './services/settings/notificationSettings'
+import { cartApi } from './services/cart'
 
 export const store = configureStore({
     reducer: persistedReducer,
@@ -21,6 +21,7 @@ export const store = configureStore({
             },
         }).concat(
             baseApi.middleware,
+            cartApi.middleware,
             productApi.middleware,
             requestApi.middleware,
             merchantApi.middleware,

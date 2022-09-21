@@ -23,10 +23,11 @@ import { useMediaQuery } from '../../../../hooks/useMediaQuery'
 import { useRouter } from 'next/router'
 import { useLazyGetMerchantStoreQuery } from '../../../../store/services/products'
 import { ProductsType } from '../../../../interfaces/products'
-import { showErrorSnackbar } from '../../../../lib/helper'
+import { showErrorSnackbar, showSuccessSnackbar } from '../../../../lib/helper'
 import { MinusIcon } from '../../../../components/Icons/MinusIcon'
 import { Divider } from '../../../../components/Divider'
 import { PlusIcon } from '../../../../components/Icons/PlusIcon'
+import { useAddToCartMutation } from '../../../../store/services/cart'
 
 const images = ['/images/jean-jacket.png', '/images/mens-wear.png']
 
@@ -49,8 +50,7 @@ const ProductView: NextPage = () => {
     const [qty, setQty] = useState(1)
     const [currentImage, setCurrentImage] = useState(images[0])
     const [getMerchantStore, { isFetching, isLoading }] = useLazyGetMerchantStoreQuery()
-
-    // const { cart, cartCount } = useCart()
+    const [addItemToCart, { isLoading: isAddingToCart }] = useAddToCartMutation()
 
     const {
         query: { merchantCode, id: productId },
@@ -84,6 +84,18 @@ const ProductView: NextPage = () => {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isReady])
+
+    const handleAddToCart = async () => {
+        if (isAddingToCart) {
+            return
+        }
+        try {
+            await addItemToCart({ productID: Number(productId as string), quantity: qty }).unwrap()
+            showSuccessSnackbar('Item added successfully')
+        } catch (error) {
+            showErrorSnackbar('Error! Unable to add item to cart')
+        }
+    }
 
     return (
         <BuyerLayout isLoading={isLoading || isFetching}>
@@ -200,6 +212,10 @@ const ProductView: NextPage = () => {
                                     <Button
                                         className="mt-2 block w-full border border-black text-[1rem]"
                                         padding="py-2"
+                                        onClick={handleAddToCart}
+                                        loading={isAddingToCart}
+                                        loaderColor="BLACK"
+                                        loaderSize={24}
                                     >
                                         Add to cart
                                     </Button>

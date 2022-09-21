@@ -8,14 +8,12 @@ import { BUYER_SIDE_NAV_WIDTH } from '../../lib/constants/elements'
 import { NextLink } from '../Links'
 import { Logo } from '../Logo'
 import { Button } from '../Button'
+import { useCart } from '../../hooks/useCart'
 
-type BuyersHeaderProps = {
-    cartCount?: number
-}
-
-export const BuyersHeader = ({ cartCount }: BuyersHeaderProps) => {
+export const BuyersHeader = () => {
     const [open, setOpen] = useState(false)
     const { ref } = useOnClickOutside<HTMLDivElement>(() => setOpen(false))
+    const { cartCount } = useCart()
 
     const width = BUYER_SIDE_NAV_WIDTH + 'px'
 
