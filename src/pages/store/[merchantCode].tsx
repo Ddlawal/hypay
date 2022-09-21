@@ -52,12 +52,12 @@ const Footer = () => {
  * @param images Array of image urls
  * @returns JSX Element
  */
-const Carousel = ({ products, merchantCode }: { products: Array<ProductsType>; merchantCode?: string }) => {
+const Carousel = ({ products }: { products: Array<ProductsType> }) => {
     return (
         <div className="hsb mt-3 flex h-full gap-x-5 overflow-x-auto shadow-inner">
             {products.map(({ id, image_url }, i) => (
                 <div key={`product_${i}`}>
-                    <NextLink href={`/store/products/${merchantCode}/${id}`}>
+                    <NextLink href={`/store/products/${id}`}>
                         <div className="relative h-44 w-60 bg-black">
                             <Image src={image_url} layout="fill" objectFit="cover" quality={100} alt="product-pic" />
                         </div>
@@ -77,7 +77,6 @@ const Store: NextPage = () => {
 
     const [getMerchantStore, { isFetching, isLoading }] = useLazyGetMerchantStoreQuery()
     const [storeProducts, setStoreProducts] = useState<Array<ProductsType>>([])
-    // const [merchantCode, setMerchantCode] = useState('')
 
     const {
         query: { merchantCode },
@@ -85,7 +84,6 @@ const Store: NextPage = () => {
     } = useRouter()
 
     useEffect(() => {
-        // setMerchantCode(id as string)
         if (isReady) {
             ;(async () => {
                 try {
@@ -103,7 +101,7 @@ const Store: NextPage = () => {
     }, [isReady])
 
     return (
-        <BuyerLayout isLoading={isLoading || isFetching}>
+        <BuyerLayout isLoading={isLoading || isFetching || !isReady}>
             <div className="relative h-full md:px-28">
                 <Image
                     src="/images/buyers-banner.png"
@@ -140,7 +138,7 @@ const Store: NextPage = () => {
             <div className="min-h-[25rem]">
                 <div className="mt-4 overflow-hidden px-4 md:px-[20%]">
                     <strong className="text-xl">New</strong>
-                    <Carousel products={storeProducts} merchantCode={merchantCode as string} />
+                    <Carousel products={storeProducts} />
                 </div>
                 <div className="my-8 h-full md:px-[20%]">
                     {merchantDisplayImage ? (
@@ -156,7 +154,7 @@ const Store: NextPage = () => {
                 </div>
                 <div className="mt-4 overflow-hidden px-4 md:px-[20%]">
                     {mostViewed.length ? <strong className="text-xl">Most Viewed</strong> : null}
-                    <Carousel products={mostViewed} merchantCode={merchantCode as string} />
+                    <Carousel products={mostViewed} />
                 </div>
             </div>
             <Footer />

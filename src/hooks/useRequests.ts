@@ -68,7 +68,7 @@ export const useRequests = (requestType: 'all' | 'single' = 'all') => {
     return {
         request,
         requests: requests ?? [],
-        isLoading: isLoading || isFetching || isFetchingOne || isLoadingOne,
+        isLoading: isLoading || isFetching || isFetchingOne || isLoadingOne || !isReady,
         activeStatusIndex,
         error,
     }
