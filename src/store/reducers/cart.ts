@@ -1,29 +1,43 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
-import { CartItemsType, CartType } from '../../interfaces/cart'
+import { CartType } from '../../interfaces/cart'
 import { RootState } from '..'
 import { cartApi } from '../services/cart'
 
 interface CartState {
     cartItems: CartType['items']
     cartCount: CartType['items_count']
+    shipping: CartType['shipping']
+    totalPrice: CartType['totalprice']
+    totalSum: CartType['total_sum']
+    charges: CartType['pepperestfees']
 }
 
-const initialState = { cartItems: [], cartCount: 0 } as CartState
+const initialState = { cartItems: [], cartCount: 0, charges: 0, shipping: 0, totalPrice: 0, totalSum: 0 } as CartState
 
 const cartSlice = createSlice({
     name: 'cart',
     initialState,
     reducers: {
-        addToCart(state, action: PayloadAction<CartItemsType>) {
+        addToCart(state, action: PayloadAction<CartType>) {
             return {
-                cartItems: [action.payload, ...state.cartItems],
-                cartCount: state.cartCount + 1,
+                cartItems: action.payload.items,
+                cartCount: action.payload.items_count,
+                charges: action.payload.pepperestfees,
+                shipping: action.payload.shipping,
+                totalPrice: action.payload.totalprice,
+                totalSum: action.payload.total_sum,
             }
         },
-        removeFromCart(state, action: PayloadAction<number>) {
-            state.cartItems.filter((item) => item.id !== action.payload)
-            return state
+        removeFromCart(state, action: PayloadAction<CartType>) {
+            return {
+                cartItems: action.payload.items,
+                cartCount: action.payload.items_count,
+                charges: action.payload.pepperestfees,
+                shipping: action.payload.shipping,
+                totalPrice: action.payload.totalprice,
+                totalSum: action.payload.total_sum,
+            }
         },
         clearCart() {
             return initialState
@@ -35,17 +49,34 @@ const cartSlice = createSlice({
                 if (!payload) {
                     return state
                 }
-                const { items, items_count } = payload
+
+                const { items, items_count, pepperestfees, shipping, totalprice, total_sum } = payload
+
                 // Add cart from db to the state array
-                state.cartItems.concat(items)
-                state.cartCount = items_count
+                state = {
+                    cartItems: items,
+                    cartCount: items_count,
+                    charges: pepperestfees,
+                    shipping,
+                    totalPrice: totalprice,
+                    totalSum: total_sum,
+                }
+
+                return state
             })
             .addMatcher(cartApi.endpoints.addToCart.matchFulfilled, (state, { payload }) => {
-                const { items, items_count } = payload
+                const { items, items_count, pepperestfees, total_sum, totalprice, shipping } = payload
 
-                const item = items[items_count - 1]
-                state.cartItems.push(item)
-                state.cartCount = items_count
+                state = {
+                    cartItems: items,
+                    cartCount: items_count,
+                    charges: pepperestfees,
+                    shipping,
+                    totalPrice: totalprice,
+                    totalSum: total_sum,
+                }
+
+                return state
             })
     },
 })

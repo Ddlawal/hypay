@@ -100,7 +100,7 @@ export const Modal: FC<ModalProps> = ({
         <>
             {isOpen ? (
                 <div className="fixed inset-0 z-50 flex max-h-full min-h-screen items-center justify-center overflow-auto bg-black bg-opacity-50 backdrop-blur backdrop-brightness-100">
-                    <div ref={ref}>
+                    <div className="w-max" ref={ref}>
                         <Card
                             className={cx(
                                 'relative w-full rounded bg-white',
@@ -112,6 +112,7 @@ export const Modal: FC<ModalProps> = ({
                                 withoutPadding ? '' : 'p-3 sm:p-4 md:p-5 lg:p-6',
                                 modalClass
                             )}
+                            padding="none"
                             rounded
                             elevation="xl"
                             aria-labelledby={labelledby}

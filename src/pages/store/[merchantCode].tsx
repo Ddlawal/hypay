@@ -1,14 +1,18 @@
-import React, { useEffect, useState } from 'react'
+import cx from 'classnames'
 import { NextPage } from 'next'
+import React, { useEffect, useState } from 'react'
 
 import { NextImage as Image } from '../../components/Image'
 import { NextLink } from '../../components/Links'
 import { useMediaQuery } from '../../hooks/useMediaQuery'
 import { BuyerLayout } from '../../components/Layout'
-import { showErrorSnackbar } from '../../lib/helper'
+import { formatAmount, showErrorSnackbar } from '../../lib/helper'
 import { ProductsType } from '../../interfaces/products'
 import { useLazyGetMerchantStoreQuery } from '../../store/services/products'
 import { useRouter } from 'next/router'
+import { Button } from '../../components/Button'
+import { AddToCartIcon } from '../../components/Icons'
+import { useCart } from '../../hooks/useCart'
 
 const merchantDisplayImage = ''
 const mostViewed: Array<ProductsType> = []
@@ -46,6 +50,45 @@ const Footer = () => {
     )
 }
 
+const CarouselItem = ({ amount, id, image_url, productCode, productName, quantity }: ProductsType) => {
+    const [showAddToCart, setShowAddToCart] = useState(false)
+    const { handleAddToCart } = useCart()
+
+    return (
+        <div>
+            <NextLink
+                href={`/store/products/${productCode}`}
+                onMouseEnter={() => setShowAddToCart(true)}
+                onMouseLeave={() => setShowAddToCart(false)}
+            >
+                <div className="relative h-44 w-60">
+                    <div
+                        className={cx(
+                            showAddToCart ? 'opacity-100' : 'opacity-0',
+                            'absolute z-10 h-10 w-16 bg-hover-cart from-white via-slate-100 transition-opacity duration-500 ease-in-out'
+                        )}
+                    >
+                        <Button preventDefault onClick={() => handleAddToCart(id, 1)}>
+                            <AddToCartIcon />
+                        </Button>
+                    </div>
+                    <Image src={image_url} layout="fill" objectFit="cover" quality={100} alt="product-pic" />
+                </div>
+            </NextLink>
+            <div className="my-2">
+                <div className="flex justify-between">
+                    <div className="text-xs font-light">{productName}</div>
+                    <div>
+                        <span className="text-xs font-light text-hypay-pink">In stock:</span>{' '}
+                        <span className="text-xs">{quantity}</span>
+                    </div>
+                </div>
+                <strong>{formatAmount(Number(amount))}</strong>
+            </div>
+        </div>
+    )
+}
+
 /**
  * Carousel NOT implemented
  *
@@ -55,18 +98,8 @@ const Footer = () => {
 const Carousel = ({ products }: { products: Array<ProductsType> }) => {
     return (
         <div className="hsb mt-3 flex h-full gap-x-5 overflow-x-auto shadow-inner">
-            {products.map(({ id, image_url }, i) => (
-                <div key={`product_${i}`}>
-                    <NextLink href={`/store/products/${id}`}>
-                        <div className="relative h-44 w-60 bg-black">
-                            <Image src={image_url} layout="fill" objectFit="cover" quality={100} alt="product-pic" />
-                        </div>
-                    </NextLink>
-                    <div className="my-2">
-                        <div className="text-xs font-light">Lorem ipsum dolor sit amet</div>
-                        <strong>R$30</strong>
-                    </div>
-                </div>
+            {products.map((product, i) => (
+                <CarouselItem key={`product_${i}`} {...product} />
             ))}
         </div>
     )

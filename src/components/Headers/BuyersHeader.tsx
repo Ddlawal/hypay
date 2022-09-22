@@ -9,13 +9,23 @@ import { NextLink } from '../Links'
 import { Logo } from '../Logo'
 import { Button } from '../Button'
 import { useCart } from '../../hooks/useCart'
+// import { useRouter } from 'next/router'
+import { Modal, ModalHeading } from '../Modal'
+import { Divider } from '../Divider'
+import { Cart } from '../Cart'
 
 export const BuyersHeader = () => {
     const [open, setOpen] = useState(false)
     const { ref } = useOnClickOutside<HTMLDivElement>(() => setOpen(false))
-    const { cartCount } = useCart()
-
+    const {
+        cart: { cartCount, cartItems },
+    } = useCart()
+    const [showModal, setShowModal] = useState(false)
+    // const { push } = useRouter()
+    console.log(cartItems)
     const width = BUYER_SIDE_NAV_WIDTH + 'px'
+
+    // const goToCheckout = () => push('/store/checkout')
 
     return (
         <div className="flex w-screen items-center justify-between overflow-hidden bg-white py-4 px-2 md:justify-end md:px-16 lg:px-28">
@@ -62,7 +72,7 @@ export const BuyersHeader = () => {
                 <button className="block rounded-lg p-2 transition duration-200 ease-in-out hover:scale-105 hover:shadow-md md:hidden">
                     <SearchIcon size={22} />
                 </button>
-                <Button className="relative md:mr-4">
+                <Button className="relative md:mr-4" onClick={() => setShowModal(true)}>
                     {cartCount ? (
                         <span className="absolute -top-1 -right-2 flex h-5 w-5 items-center justify-center rounded-[50%] bg-hypay-pink text-[0.6rem] text-white">
                             {cartCount}
@@ -82,6 +92,22 @@ export const BuyersHeader = () => {
                     <MenuIcon size={26} color={COLORS.ICON_GRAY} />
                 </button>
             </div>
+
+            {showModal ? (
+                <Modal
+                    isOpen={showModal}
+                    dismissable
+                    showDismissButton
+                    onDismiss={() => setShowModal(false)}
+                    withoutPadding
+                    size="lg"
+                >
+                    <ModalHeading className="mb-0 py-6 pl-5">Resumo da Compra</ModalHeading>
+                    <Divider />
+
+                    <Cart />
+                </Modal>
+            ) : null}
         </div>
     )
 }

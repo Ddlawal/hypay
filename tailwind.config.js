@@ -28,6 +28,9 @@ module.exports = {
             boxShadow: {
                 '3xl': '35px 35px 60px -15px rgba(0, 0, 0, 0.3)',
             },
+            backgroundImage: {
+                'hover-cart': 'linear-gradient(to bottom right, var(--tw-gradient-stops))',
+            },
         },
         backgroundImage: {
             'login-cloth': "url('/images/login-cloth.png')",

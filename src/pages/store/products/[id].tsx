@@ -10,8 +10,7 @@ import { MinusIcon } from '../../../components/Icons/MinusIcon'
 import { NextImage as Image } from '../../../components/Image'
 import { PlusIcon } from '../../../components/Icons/PlusIcon'
 import { ProductsType } from '../../../interfaces/products'
-import { showErrorSnackbar, showSuccessSnackbar } from '../../../lib/helper'
-import { useAddToCartMutation } from '../../../store/services/cart'
+import { showErrorSnackbar } from '../../../lib/helper'
 import { useEffect, useState } from 'react'
 import { useLazyGetSingleProductQuery } from '../../../store/services/products'
 import { useMediaQuery } from '../../../hooks/useMediaQuery'
@@ -29,6 +28,7 @@ import {
     TwitterIcon,
     WhatsAppIcon,
 } from '../../../components/Icons'
+import { useCart } from '../../../hooks/useCart'
 
 const images = ['/images/jean-jacket.png', '/images/mens-wear.png']
 
@@ -50,10 +50,10 @@ const ProductView: NextPage = () => {
     const [product, setProduct] = useState<ProductsType | undefined>()
     const [qty, setQty] = useState(1)
     const [currentImage, setCurrentImage] = useState(images[0])
-    const [addItemToCart, { isLoading: isAddingToCart }] = useAddToCartMutation()
+    const { handleAddToCart, isAddingToCart } = useCart()
 
     const {
-        query: { id: productId },
+        query: { id: productCode },
         isReady,
     } = useRouter()
 
@@ -68,7 +68,7 @@ const ProductView: NextPage = () => {
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const prod = await getProduct(productId as string).unwrap()
+                const prod = await getProduct(productCode as string).unwrap()
 
                 setProduct(prod)
 
@@ -86,18 +86,6 @@ const ProductView: NextPage = () => {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isReady])
-
-    const handleAddToCart = async () => {
-        if (isAddingToCart) {
-            return
-        }
-        try {
-            await addItemToCart({ productID: Number(productId as string), quantity: qty }).unwrap()
-            showSuccessSnackbar('Item added successfully')
-        } catch (error) {
-            showErrorSnackbar('Error! Unable to add item to cart')
-        }
-    }
 
     return (
         <BuyerLayout isLoading={isLoading || isFetching || !isReady}>
@@ -214,7 +202,7 @@ const ProductView: NextPage = () => {
                                     <Button
                                         className="mt-2 block w-full border border-black text-[1rem]"
                                         padding="py-2"
-                                        onClick={handleAddToCart}
+                                        onClick={() => (product ? handleAddToCart(product?.id, qty) : null)}
                                         loading={isAddingToCart}
                                         loaderColor="BLACK"
                                         loaderSize={24}

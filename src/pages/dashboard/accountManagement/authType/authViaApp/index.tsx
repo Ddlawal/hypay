@@ -189,7 +189,7 @@ const AuthViaApp: NextPage = () => {
                             label="Digite sua senha para desativar a autenticação de dois fatores"
                             placeholder="Digite sua senha"
                             value={password}
-                            type="text"
+                            type="password"
                             onChange={(val) => setPassword(val)}
                         />
                     </div>
