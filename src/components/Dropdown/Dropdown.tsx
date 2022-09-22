@@ -27,7 +27,7 @@ type DropdownButtonProps = {
 const DropdownItems: FC<DropdownButtonProps> = ({ items, className }) => {
     const dispatch = useAppDispatch()
     const [logoutMutation] = useLogoutMutation()
-    const token = useAppSelector((state) => state.auth.token)
+    const { token, user } = useAppSelector((state) => state.auth)
     const { push } = useRouter()
 
     const logOut = async () => {
@@ -50,15 +50,20 @@ const DropdownItems: FC<DropdownButtonProps> = ({ items, className }) => {
     }
     return (
         <ul className={cx(className)}>
-            {items.map(({ title, href, onClick }, id) => (
-                <li
-                    key={id}
-                    onClick={() => (href ? push(href) : onClick)}
-                    className="w-full capitalize transition-transform hover:scale-105"
-                >
-                    {title}
-                </li>
-            ))}
+            {items.map(({ title, href, onClick }, id) => {
+                if (href === '/store') {
+                    href = `${href}/${user?.merchantCode}`
+                }
+                return (
+                    <li
+                        key={id}
+                        onClick={() => (href ? push(href) : onClick)}
+                        className="w-full capitalize transition-transform hover:scale-105"
+                    >
+                        {title}
+                    </li>
+                )
+            })}
             <li
                 className="w-full transition-transform hover:scale-105"
                 onClick={() => {

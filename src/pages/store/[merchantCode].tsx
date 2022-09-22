@@ -120,7 +120,6 @@ const Store: NextPage = () => {
         if (isReady) {
             ;(async () => {
                 try {
-                    console.log(merchantCode)
                     const products = await getMerchantStore(merchantCode as string).unwrap()
 
                     setStoreProducts(products)
@@ -143,6 +142,7 @@ const Store: NextPage = () => {
                     width={isDesktop ? 700 : 500}
                     quality={100}
                     alt="buyers-banner"
+                    priority
                 />
                 <div className="absolute top-0 z-10 ml-4 flex h-full flex-col justify-center md:ml-20">
                     <div className="mb-2 block text-xl text-white md:hidden">

@@ -18,11 +18,10 @@ export const BuyersHeader = () => {
     const [open, setOpen] = useState(false)
     const { ref } = useOnClickOutside<HTMLDivElement>(() => setOpen(false))
     const {
-        cart: { cartCount, cartItems },
+        cart: { cartCount },
     } = useCart()
     const [showModal, setShowModal] = useState(false)
     // const { push } = useRouter()
-    console.log(cartItems)
     const width = BUYER_SIDE_NAV_WIDTH + 'px'
 
     // const goToCheckout = () => push('/store/checkout')

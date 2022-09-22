@@ -1,6 +1,6 @@
 import { CloseIcon, LoaderIcon } from '../Icons'
 
-import React, { FC, ReactNode } from 'react'
+import React, { FC, ReactNode, useEffect } from 'react'
 import cx from 'classnames'
 
 import { Card } from '../Card'
@@ -95,6 +95,25 @@ export const Modal: FC<ModalProps> = ({
     onProceed,
 }): JSX.Element => {
     const { ref } = useOnClickOutside<HTMLDivElement>(dismissable ? onDismiss : () => null)
+
+    useEffect(() => {
+        const body = document.querySelector('body')
+
+        if (!body) {
+            return
+        }
+        if (isOpen) {
+            // Disable scroll
+            body.style.overflow = 'hidden'
+        } else {
+            // Enable scroll
+            body.style.overflow = 'auto'
+        }
+
+        return () => {
+            body.style.overflow = 'auto'
+        }
+    }, [isOpen])
 
     return (
         <>

@@ -8,7 +8,7 @@ import { CartIcon, CloseIcon } from '../Icons'
 import { NextImage } from '../Image'
 
 const CostValue = ({ amount, amountClassName, title }: { amount: number; amountClassName?: string; title: string }) => (
-    <div className="mb-2 flex justify-between">
+    <div className="mb-1 flex justify-between">
         <div>{title}</div>
         <div className={amountClassName}>{formatAmount(amount)}</div>
     </div>
@@ -22,7 +22,7 @@ const CartItem = ({
     removeItem: (args: RemoveFromCartType) => Promise<void>
 }) => {
     return (
-        <>
+        <div className="mr-2">
             <div className="mb-4 mt-2 grid grid-cols-12 gap-4">
                 <div className="col-span-3 w-full">
                     <NextImage src={image_url} width="100%" height="100%" alt="product-preview" layout="responsive" />
@@ -44,7 +44,7 @@ const CartItem = ({
                 </div>
             </div>
             <Divider />
-        </>
+        </div>
     )
 }
 
@@ -75,10 +75,16 @@ export const Cart = () => {
     }
 
     return (
-        <div className="mb-0 w-[90vw] min-w-[30rem] px-8 pb-6 sm:w-[70vw] md:w-[30rem]">
-            {cartItems.map((item) => (
-                <CartItem key={`item-${item.id}`} item={item} removeItem={handleRemoveFromCart} />
-            ))}
+        <div className="mb-0 w-[90vw] min-w-[30rem] pl-8 pr-6 pb-6 sm:w-[70vw] md:w-[30rem]">
+            <div className="mb-2 text-sm font-extralight">
+                <span className="text-hypay-gray">Cart Items: </span>
+                {cartCount}
+            </div>
+            <div className="mb-6 h-[45vh] overflow-x-hidden overflow-y-scroll">
+                {cartItems.map((item) => (
+                    <CartItem key={`item-${item.id}`} item={item} removeItem={handleRemoveFromCart} />
+                ))}
+            </div>
             <CostValue title="Subtotal" amount={totalPrice} />
             <CostValue title="Shipping" amount={shipping} />
             <CostValue title="Charges" amount={charges} />

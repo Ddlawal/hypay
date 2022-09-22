@@ -19,7 +19,10 @@ const cartSlice = createSlice({
     name: 'cart',
     initialState,
     reducers: {
-        addToCart(state, action: PayloadAction<CartType>) {
+        updateCart(state, action: PayloadAction<CartType>) {
+            if (!action.payload) {
+                return initialState
+            }
             return {
                 cartItems: action.payload.items,
                 cartCount: action.payload.items_count,
@@ -28,19 +31,6 @@ const cartSlice = createSlice({
                 totalPrice: action.payload.totalprice,
                 totalSum: action.payload.total_sum,
             }
-        },
-        removeFromCart(state, action: PayloadAction<CartType>) {
-            return {
-                cartItems: action.payload.items,
-                cartCount: action.payload.items_count,
-                charges: action.payload.pepperestfees,
-                shipping: action.payload.shipping,
-                totalPrice: action.payload.totalprice,
-                totalSum: action.payload.total_sum,
-            }
-        },
-        clearCart() {
-            return initialState
         },
     },
     extraReducers: (builder) => {
@@ -81,6 +71,6 @@ const cartSlice = createSlice({
     },
 })
 
-export const { addToCart, removeFromCart, clearCart } = cartSlice.actions
+export const { updateCart } = cartSlice.actions
 export const getUserCart = (state: RootState) => state.cart
 export default cartSlice.reducer
