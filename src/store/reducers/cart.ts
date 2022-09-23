@@ -15,72 +15,51 @@ interface CartState {
 
 const initialState = { cartItems: [], cartCount: 0, charges: 0, shipping: 0, totalPrice: 0, totalSum: 0 } as CartState
 
+const callback = (state: CartState, { payload }: PayloadAction<CartType | undefined>) => {
+    if (!payload) {
+        return state
+    }
+
+    const { items, items_count, pepperestfees, total_sum, totalprice, shipping } = payload
+
+    state = {
+        cartItems: items,
+        cartCount: items_count,
+        charges: pepperestfees,
+        shipping,
+        totalPrice: totalprice,
+        totalSum: total_sum,
+    }
+
+    return state
+}
+
 const cartSlice = createSlice({
     name: 'cart',
     initialState,
     reducers: {
-        addToCart(state, action: PayloadAction<CartType>) {
-            return {
-                cartItems: action.payload.items,
-                cartCount: action.payload.items_count,
-                charges: action.payload.pepperestfees,
-                shipping: action.payload.shipping,
-                totalPrice: action.payload.totalprice,
-                totalSum: action.payload.total_sum,
+        updateCart(_, { payload }: PayloadAction<CartType>) {
+            if (!payload) {
+                return initialState
             }
-        },
-        removeFromCart(state, action: PayloadAction<CartType>) {
             return {
-                cartItems: action.payload.items,
-                cartCount: action.payload.items_count,
-                charges: action.payload.pepperestfees,
-                shipping: action.payload.shipping,
-                totalPrice: action.payload.totalprice,
-                totalSum: action.payload.total_sum,
+                cartItems: payload.items,
+                cartCount: payload.items_count,
+                charges: payload.pepperestfees,
+                shipping: payload.shipping,
+                totalPrice: payload.totalprice,
+                totalSum: payload.total_sum,
             }
-        },
-        clearCart() {
-            return initialState
         },
     },
     extraReducers: (builder) => {
         builder
-            .addMatcher(cartApi.endpoints.getBuyerCart.matchFulfilled, (state, { payload }) => {
-                if (!payload) {
-                    return state
-                }
-
-                const { items, items_count, pepperestfees, shipping, totalprice, total_sum } = payload
-
-                // Add cart from db to the state array
-                state = {
-                    cartItems: items,
-                    cartCount: items_count,
-                    charges: pepperestfees,
-                    shipping,
-                    totalPrice: totalprice,
-                    totalSum: total_sum,
-                }
-
-                return state
-            })
-            .addMatcher(cartApi.endpoints.addToCart.matchFulfilled, (state, { payload }) => {
-                const { items, items_count, pepperestfees, total_sum, totalprice, shipping } = payload
-
-                state = {
-                    cartItems: items,
-                    cartCount: items_count,
-                    charges: pepperestfees,
-                    shipping,
-                    totalPrice: totalprice,
-                    totalSum: total_sum,
-                }
-
-                return state
-            })
+            .addMatcher(cartApi.endpoints.getBuyerCart.matchFulfilled, callback)
+            .addMatcher(cartApi.endpoints.addToCart.matchFulfilled, callback)
+            .addMatcher(cartApi.endpoints.removeFromCart.matchFulfilled, callback)
     },
 })
 
-export const { addToCart, removeFromCart, clearCart } = cartSlice.actions
+export const { updateCart } = cartSlice.actions
 export const getUserCart = (state: RootState) => state.cart
 export default cartSlice.reducer

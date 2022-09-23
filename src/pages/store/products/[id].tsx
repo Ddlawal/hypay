@@ -202,7 +202,9 @@ const ProductView: NextPage = () => {
                                     <Button
                                         className="mt-2 block w-full border border-black text-[1rem]"
                                         padding="py-2"
-                                        onClick={() => (product ? handleAddToCart(product?.id, qty) : null)}
+                                        onClick={() =>
+                                            product ? handleAddToCart({ productID: product?.id, quantity: qty }) : null
+                                        }
                                         loading={isAddingToCart}
                                         loaderColor="BLACK"
                                         loaderSize={24}

@@ -68,7 +68,7 @@ const CarouselItem = ({ amount, id, image_url, productCode, productName, quantit
                             'absolute z-10 h-10 w-16 bg-hover-cart from-white via-slate-100 transition-opacity duration-500 ease-in-out'
                         )}
                     >
-                        <Button preventDefault onClick={() => handleAddToCart(id, 1)}>
+                        <Button preventDefault onClick={() => handleAddToCart({ productID: id, quantity: 1 })}>
                             <AddToCartIcon />
                         </Button>
                     </div>
@@ -120,7 +120,6 @@ const Store: NextPage = () => {
         if (isReady) {
             ;(async () => {
                 try {
-                    console.log(merchantCode)
                     const products = await getMerchantStore(merchantCode as string).unwrap()
 
                     setStoreProducts(products)
@@ -143,6 +142,7 @@ const Store: NextPage = () => {
                     width={isDesktop ? 700 : 500}
                     quality={100}
                     alt="buyers-banner"
+                    priority
                 />
                 <div className="absolute top-0 z-10 ml-4 flex h-full flex-col justify-center md:ml-20">
                     <div className="mb-2 block text-xl text-white md:hidden">
