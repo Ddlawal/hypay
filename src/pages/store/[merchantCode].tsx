@@ -68,7 +68,7 @@ const CarouselItem = ({ amount, id, image_url, productCode, productName, quantit
                             'absolute z-10 h-10 w-16 bg-hover-cart from-white via-slate-100 transition-opacity duration-500 ease-in-out'
                         )}
                     >
-                        <Button preventDefault onClick={() => handleAddToCart(id, 1)}>
+                        <Button preventDefault onClick={() => handleAddToCart({ productID: id, quantity: 1 })}>
                             <AddToCartIcon />
                         </Button>
                     </div>

@@ -1,11 +1,12 @@
 import { useRouter } from 'next/router'
-import { useCart } from '../../hooks/useCart'
-import { CartItemsType, RemoveFromCartType } from '../../interfaces/cart'
-import { formatAmount } from '../../lib/helper'
+
 import { Button } from '../Button'
 import { Divider } from '../Divider'
-import { CartIcon, CloseIcon } from '../Icons'
+import { useCart } from '../../hooks/useCart'
+import { CartIcon, CloseIcon, LoaderIcon, MinusIcon, PlusIcon } from '../Icons'
 import { NextImage } from '../Image'
+import { CartItemsType } from '../../interfaces/cart'
+import { formatAmount } from '../../lib/helper'
 
 const CostValue = ({ amount, amountClassName, title }: { amount: number; amountClassName?: string; title: string }) => (
     <div className="mb-1 flex justify-between">
@@ -14,13 +15,8 @@ const CostValue = ({ amount, amountClassName, title }: { amount: number; amountC
     </div>
 )
 
-const CartItem = ({
-    item: { productID, image_url, productname, quantity, total_cost },
-    removeItem,
-}: {
-    item: CartItemsType
-    removeItem: (args: RemoveFromCartType) => Promise<void>
-}) => {
+const CartItem = ({ item: { productID, image_url, productname, quantity, total_cost } }: { item: CartItemsType }) => {
+    const { handleAddToCart, handleRemoveFromCart, isAddingToCart, isRemovingFromCart } = useCart()
     return (
         <div className="mr-2">
             <div className="mb-4 mt-2 grid grid-cols-12 gap-4">
@@ -33,12 +29,28 @@ const CartItem = ({
                             {productname} Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores,
                             veritatis!
                         </div>
-                        <Button onClick={() => removeItem({ productID, quantity: null })}>
+                        <Button onClick={() => handleRemoveFromCart({ productID, quantity: null })}>
                             <CloseIcon size={14} />
                         </Button>
                     </div>
                     <div className="flex justify-between">
-                        <div>{quantity}</div>
+                        <div className="flex items-center rounded border border-hypay-gray">
+                            <Button
+                                className="rounded-none border-r border-hypay-gray px-3"
+                                onClick={() => handleRemoveFromCart({ productID, quantity: 1, showMessage: false })}
+                            >
+                                <MinusIcon size={14} />
+                            </Button>
+                            <div className="flex w-12 items-center justify-center">
+                                {isAddingToCart || isRemovingFromCart ? <LoaderIcon size={15} /> : quantity}
+                            </div>
+                            <Button
+                                className="rounded-none border-l border-hypay-gray px-3"
+                                onClick={() => handleAddToCart({ productID, quantity: 1, showMessage: false })}
+                            >
+                                <PlusIcon size={14} />
+                            </Button>
+                        </div>
                         <div>{total_cost}</div>
                     </div>
                 </div>
@@ -61,12 +73,10 @@ const NoItemInCart = () => {
 }
 
 export const Cart = () => {
+    const { push } = useRouter()
     const {
         cart: { cartCount, cartItems, charges, shipping, totalPrice, totalSum },
-        handleRemoveFromCart,
-        isRemovingFromCart,
     } = useCart()
-    const { push } = useRouter()
 
     const goToCheckout = () => push('/store/checkout')
 
@@ -80,16 +90,16 @@ export const Cart = () => {
                 <span className="text-hypay-gray">Cart Items: </span>
                 {cartCount}
             </div>
-            <div className="mb-6 h-[45vh] overflow-x-hidden overflow-y-scroll">
+            <div className="mb-6 max-h-[45vh] overflow-x-hidden overflow-y-scroll">
                 {cartItems.map((item) => (
-                    <CartItem key={`item-${item.id}`} item={item} removeItem={handleRemoveFromCart} />
+                    <CartItem key={`item-${item.id}`} item={item} />
                 ))}
             </div>
             <CostValue title="Subtotal" amount={totalPrice} />
             <CostValue title="Shipping" amount={shipping} />
             <CostValue title="Charges" amount={charges} />
             <CostValue title="Total" amount={totalSum} amountClassName="font-bold" />
-            <Button primary className="mt-8 h-12 w-full" loading={isRemovingFromCart} onClick={goToCheckout}>
+            <Button primary className="mt-8 h-12 w-full" onClick={goToCheckout}>
                 Checkout
             </Button>
         </div>
