@@ -25,7 +25,7 @@ export const useCart = () => {
     }
 
     const handleRemoveFromCart = async ({ productID, quantity, showMessage = true }: RemoveFromCartType) => {
-        if (isAddingToCart) {
+        if (isRemovingFromCart) {
             return
         }
         try {
