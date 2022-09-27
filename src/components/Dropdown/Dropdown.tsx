@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks/useStoreHooks'
 import { useLogoutMutation } from '../../store/services/auth'
 import { logout as logUserOut } from '../../store/reducers/auth'
 import { useRouter } from 'next/router'
+import { clearLocalStorage } from '../../lib/helper'
 
 type DropdownItemProps = {
     title: string
@@ -34,20 +35,21 @@ const DropdownItems: FC<DropdownButtonProps> = ({ items, className }) => {
         try {
             const { status } = await logoutMutation({ token: token?.access_token as string }).unwrap()
             if (status === 'success') {
-                localStorage.clear()
+                clearLocalStorage()
                 dispatch(logUserOut())
                 push('/login')
                 await signOut({ redirect: false })
             }
         } catch (error: any) {
             if (error?.data?.message === 'Invalid or expired or no token') {
-                localStorage.clear()
+                clearLocalStorage()
                 dispatch(logUserOut())
                 push('/login')
                 await signOut({ redirect: false })
             }
         }
     }
+
     return (
         <ul className={cx(className)}>
             {items.map(({ title, href, onClick }, id) => {

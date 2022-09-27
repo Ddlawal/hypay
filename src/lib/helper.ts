@@ -85,3 +85,11 @@ const formatter = (currency: string) =>
 export const formatAmount = (amount: number, currency = 'BRL') => {
     return formatter(currency).format(amount).replace('R$', 'R$ ')
 }
+
+export const clearLocalStorage = () => {
+    const code = localStorage.getItem('merchantCode')
+    localStorage.clear()
+    if (code) {
+        localStorage.setItem('merchantCode', code)
+    }
+}
