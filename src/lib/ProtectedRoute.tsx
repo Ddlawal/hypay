@@ -13,12 +13,14 @@ const ProtectedRoute: FC = ({ children }) => {
 
     if (!user) {
         if (protectedRoutes.includes(pathname) && typeof window !== 'undefined') {
+            localStorage.clear()
             router.push('/login')
             return <LoadingPage />
         }
     } else {
         if (notAvailableWhileLogedInRoute.includes(pathname) && typeof window !== 'undefined') {
-            user.usertype === 'Buyer' ? router.push('/store') : router.push('/dashboard/home')
+            const merchantCode = localStorage.getItem('merchantCode')
+            user.usertype === 'Buyer' ? router.push(`/store/${merchantCode}`) : router.push('/dashboard/home')
             return (
                 <div className="flex h-screen w-full flex-col items-center justify-center">
                     <LoaderIcon />

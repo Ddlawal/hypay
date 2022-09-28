@@ -13,6 +13,7 @@ import { useRouter } from 'next/router'
 import { Button } from '../../components/Button'
 import { AddToCartIcon } from '../../components/Icons'
 import { useCart } from '../../hooks/useCart'
+import { useSession } from '../../hooks/useSession'
 
 const merchantDisplayImage = ''
 const mostViewed: Array<ProductsType> = []
@@ -50,7 +51,13 @@ const Footer = () => {
     )
 }
 
-const CarouselItem = ({ amount, id, image_url, productCode, productName, quantity }: ProductsType) => {
+const CarouselItem = ({
+    item: { amount, id, image_url, productCode, productName, quantity },
+    showOnHover,
+}: {
+    item: ProductsType
+    showOnHover: boolean
+}) => {
     const [showAddToCart, setShowAddToCart] = useState(false)
     const { handleAddToCart } = useCart()
 
@@ -58,7 +65,7 @@ const CarouselItem = ({ amount, id, image_url, productCode, productName, quantit
         <div>
             <NextLink
                 href={`/store/products/${productCode}`}
-                onMouseEnter={() => setShowAddToCart(true)}
+                onMouseEnter={() => showOnHover && setShowAddToCart(true)}
                 onMouseLeave={() => setShowAddToCart(false)}
             >
                 <div className="relative h-44 w-60">
@@ -95,11 +102,11 @@ const CarouselItem = ({ amount, id, image_url, productCode, productName, quantit
  * @param images Array of image urls
  * @returns JSX Element
  */
-const Carousel = ({ products }: { products: Array<ProductsType> }) => {
+const Carousel = ({ products, showOnHover }: { products: Array<ProductsType>; showOnHover: boolean }) => {
     return (
         <div className="hsb mt-3 flex h-full gap-x-5 overflow-x-auto shadow-inner">
             {products.map((product, i) => (
-                <CarouselItem key={`product_${i}`} {...product} />
+                <CarouselItem key={`product_${i}`} item={product} showOnHover={showOnHover} />
             ))}
         </div>
     )
@@ -110,6 +117,8 @@ const Store: NextPage = () => {
 
     const [getMerchantStore, { isFetching, isLoading }] = useLazyGetMerchantStoreQuery()
     const [storeProducts, setStoreProducts] = useState<Array<ProductsType>>([])
+    const [showAddToCartOnHover, setShowAddToCartOnHover] = useState(false)
+    const { user } = useSession()
 
     const {
         query: { merchantCode },
@@ -118,8 +127,10 @@ const Store: NextPage = () => {
 
     useEffect(() => {
         if (isReady) {
+            setShowAddToCartOnHover(user?.merchantCode !== merchantCode)
             ;(async () => {
                 try {
+                    localStorage.setItem('merchantCode', merchantCode as string)
                     const products = await getMerchantStore(merchantCode as string).unwrap()
 
                     setStoreProducts(products)
@@ -133,7 +144,7 @@ const Store: NextPage = () => {
     }, [isReady])
 
     return (
-        <BuyerLayout isLoading={isLoading || isFetching || !isReady}>
+        <BuyerLayout isLoading={isLoading || isFetching || !isReady} showCart={showAddToCartOnHover}>
             <div className="relative h-full md:px-28">
                 <Image
                     src="/images/buyers-banner.png"
@@ -171,7 +182,7 @@ const Store: NextPage = () => {
             <div className="min-h-[25rem]">
                 <div className="mt-4 overflow-hidden px-4 md:px-[20%]">
                     <strong className="text-xl">New</strong>
-                    <Carousel products={storeProducts} />
+                    <Carousel products={storeProducts} showOnHover={showAddToCartOnHover} />
                 </div>
                 <div className="my-8 h-full md:px-[20%]">
                     {merchantDisplayImage ? (
@@ -187,7 +198,7 @@ const Store: NextPage = () => {
                 </div>
                 <div className="mt-4 overflow-hidden px-4 md:px-[20%]">
                     {mostViewed.length ? <strong className="text-xl">Most Viewed</strong> : null}
-                    <Carousel products={mostViewed} />
+                    <Carousel products={mostViewed} showOnHover={showAddToCartOnHover} />
                 </div>
             </div>
             <Footer />
