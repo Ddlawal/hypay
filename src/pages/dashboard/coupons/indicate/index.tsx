@@ -90,7 +90,7 @@ function Indicate() {
                                 <div className="mb-4 ml-4 flex flex-col lg:w-1/3">
                                     <p className="text-xs">convites</p>
                                     <p className="font-bold text-hypay-secondary">
-                                        {referralStats.sellers_referred} / <span>10</span>
+                                        {referralStats?.sellers_referred} / <span>10</span>
                                     </p>
                                 </div>
                             </div>
