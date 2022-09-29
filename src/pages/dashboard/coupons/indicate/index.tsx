@@ -1,22 +1,29 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { PrimaryLayout } from '../../../../components/Layout'
 import { SecondInput } from '../../../../components/form'
 import { useForm } from 'react-hook-form'
 import { Card } from '../../../../components/Card'
-import { indicateData, IndicateDataType } from '../../../../lib/data'
-import { useGetProfileInfoQuery } from '../../../../store/services/onlineStore'
+import { useGetProfileInfoQuery, useGetReferralLevelsQuery } from '../../../../store/services/onlineStore'
 import { copyTextToClipboard, showSuccessSnackbar } from '../../../../lib/helper'
-import { useGetReferralLevelsQuery, useGetReferralStatsQuery } from '../../../../store/services/coupon'
+import { useGetReferralStatsQuery } from '../../../../store/services/coupon'
+import { RoundedCheckIcon } from '../../../../components/Icons'
+import { ReferralLevel } from '../../../../interfaces/onlineStore'
+import { COLORS } from '../../../../lib/constants/colors'
 
 function Indicate() {
     const { data, isLoading: loadingUserData } = useGetProfileInfoQuery()
-    const { data: referralLevelData, isLoading: referalDataLoading } = useGetReferralLevelsQuery('')
     const { data: referralStats, isLoading: referalStatsLoading } = useGetReferralStatsQuery('')
+    const { data: referralLevels, isLoading: loadingReferalsLevel } = useGetReferralLevelsQuery()
     const {
         register,
         formState: { errors },
         setValue,
-    } = useForm<{ referralCode: string }>()
+    } = useForm<{ referralCode: string }>({ defaultValues: { referralCode: '' } })
+
+    const copyReferalCode = (code: string) => {
+        copyTextToClipboard(code)
+        showSuccessSnackbar('Referal code copied successfully')
+    }
 
     useEffect(() => {
         if (data?.userProfile) {
@@ -24,12 +31,12 @@ function Indicate() {
         }
     }, [setValue, data])
 
-    const copyReferalCode = (code: string) => {
-        copyTextToClipboard(code)
-        showSuccessSnackbar('Referal code copied successfully')
-    }
-
-    console.log(referralLevelData, referalDataLoading, referralStats, referalStatsLoading, 'check the profile and see')
+    console.log(
+        referralLevels,
+        loadingReferalsLevel,
+        `${referralStats?.sellers_referred * 10}%`,
+        'check the profile and see'
+    )
     return (
         <PrimaryLayout currentTabIndex={6} dropDownIndex={1}>
             <div className="px-8 py-4 md:px-12">
@@ -85,45 +92,53 @@ function Indicate() {
                             )}
                             <div className="flex h-11 w-full items-center">
                                 <div className="my-1 h-4 w-11/12 rounded-lg bg-hypay-gray">
-                                    <div className="h-4 w-1/3 rounded-lg bg-hypay-secondary"></div>
+                                    <div
+                                        className={`h-4 w-[${
+                                            parseInt(referralStats?.sellers_referred) * 10
+                                        }%] rounded-lg bg-hypay-secondary`}
+                                    ></div>
                                 </div>
                                 <div className="mb-4 ml-4 flex flex-col lg:w-1/3">
                                     <p className="text-xs">convites</p>
                                     <p className="font-bold text-hypay-secondary">
-                                        {referralStats?.sellers_referred} / <span>10</span>
+                                        {referralStats?.sellers_referred} / <span>100</span>
                                     </p>
                                 </div>
                             </div>
                         </Card>
-                        <Card className="my-4 w-3/5 rounded-lg py-6 text-center md:mr-0 md:w-1/3 xl:w-1/3">
-                            Parabéns! Você já ajudou 09 vendedores à aumentarem suas vendas usando o Hypay.
-                        </Card>
+                        {referralStats?.sellers_referred > 9 && (
+                            <Card className="my-4 w-3/5 rounded-lg py-6 text-center md:mr-0 md:w-1/3 xl:w-1/3">
+                                Parabéns! Você já ajudou 09 vendedores à aumentarem suas vendas usando o Hypay.
+                            </Card>
+                        )}
                     </div>
-                    <div className="flex grid grid-cols-2 flex-wrap items-center justify-between gap-2 text-center sm:grid-cols-4 lg:flex lg:grid-cols-5">
-                        {indicateData.map(({ name, bottomText, status, icon }: IndicateDataType, index) => (
+                    <div className="flex  grid-cols-2 flex-wrap items-center justify-between gap-2 text-center sm:grid sm:grid-cols-4 lg:flex lg:grid-cols-5">
+                        {referralLevels?.map(({ reward, required_invites, level }: ReferralLevel, index: number) => (
                             <div key={index} className="text-center">
                                 <Card
                                     className={`${
-                                        status === 'completed'
+                                        level + index < referralStats?.sellers_referred
                                             ? 'bg-hypay-green text-white'
-                                            : status === 'pending'
+                                            : referralStats?.sellers_referred < level + index
                                             ? 'border border-hypay-secondary text-hypay-secondary'
                                             : 'text-gray-500 text-opacity-50'
                                     } xlg:w-36 my-2 mt-2 flex h-24 w-full flex-col  items-center justify-center rounded-md text-center md:w-36`}
                                 >
-                                    <div className="">{icon}</div>
-                                    <p>{name}</p>
+                                    <div className="">
+                                        <RoundedCheckIcon color={COLORS.WHITE} />
+                                    </div>
+                                    <p>{reward}</p>
                                 </Card>
                                 <p
                                     className={`${
-                                        status === 'completed'
+                                        level + index < referralStats?.sellers_referred
                                             ? 'text-hypay-green'
-                                            : status === 'pending'
+                                            : referralStats?.sellers_referred < level + index
                                             ? 'text-hypay-secondary'
                                             : 'text-gray-500 text-opacity-50'
                                     } w-full sm:w-36 xl:w-36 `}
                                 >
-                                    {bottomText}
+                                    Convite {required_invites} vendedores
                                 </p>
                             </div>
                         ))}
