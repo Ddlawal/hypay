@@ -27,7 +27,7 @@ const tdValue = <T,>({ k, row }: { k: TableKeyType<T>; row: T }) => {
     }
 
     if (k.toString().includes('image') || k.toString().includes('url')) {
-        return <Image src={`${row[k]}`} alt="item-avatar" className="h-12 w-12" />
+        return <Image src={`${row[k]}`} width={50} height={50} alt="item-avatar" className="h-12 w-12" />
     }
 
     return row[k]

@@ -10,6 +10,7 @@ import { useProducts } from '../../../hooks/useProducts'
 import { useEffect, useState } from 'react'
 import { useLazyGetSingleProductQuery } from '../../../store/services/products'
 import { ProductsType } from '../../../interfaces/products'
+import { copyTextToClipboard, showSuccessSnackbar } from '../../../lib/helper'
 
 const ProductDetails: NextPage = () => {
     const isDesktop = useMediaQuery('md')
@@ -49,6 +50,12 @@ const ProductDetails: NextPage = () => {
 
     const deleteProduct = () => onDelete(String(product?.id || ''), '/dashboard/products')
 
+    const host = window.location.origin
+    const copyProductLink = (id: string) => {
+        copyTextToClipboard(`${host}/store/products/${id}`)
+        showSuccessSnackbar('Link copied')
+    }
+
     return (
         <PrimaryLayout currentTabIndex={1} isLoading={loading} isNavBack navHeader="Detalhes do produto">
             <div className="px-4 pb-4 pt-2">
@@ -68,6 +75,7 @@ const ProductDetails: NextPage = () => {
                                 size="sm"
                                 padding="py-0 px-3"
                                 className="border border-hypay-secondary py-2 text-hypay-secondary"
+                                onClick={() => copyProductLink(product?.productCode as string)}
                             >
                                 Copiar Link
                             </Button>
