@@ -149,7 +149,7 @@ export const ProductList = ({
                 >
                     <div className="flex flex-col items-start text-[11px] leading-4 text-hypay-pink">
                         <button className="hover:font-bold" onClick={() => copyProductLink(productCode)}>
-                            Copy link
+                            Copiar Link
                         </button>
                         <button className="hover:font-bold" onClick={gotoEditProduct}>
                             Edit

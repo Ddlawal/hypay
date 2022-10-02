@@ -8,7 +8,7 @@ export const BuyerTimeline = () => {
     const [index] = useState(0)
 
     return (
-        <div className="flex justify-center md:mr-16 md:justify-end">
+        <div className="mt-8 flex justify-center">
             <Timeline
                 thickness={2}
                 gap={isLargeScreen ? 80 : 50}
