@@ -1,6 +1,12 @@
 import { createApi } from '@reduxjs/toolkit/query/react'
 import { baseQuery } from '.'
-import { ISetTheme, ISingleTheme, IUserProfile } from '../../interfaces/onlineStore'
+import {
+    // IReferralsLevelWrapper,
+    ISetTheme,
+    ISingleTheme,
+    IUserProfile,
+    ReferralLevel,
+} from '../../interfaces/onlineStore'
 
 export const onlineTheme = createApi({
     reducerPath: 'onlineTheme',
@@ -30,8 +36,22 @@ export const onlineTheme = createApi({
             },
             transformResponse: (res: { userInfo: { theme: ISingleTheme } }) => res?.userInfo?.theme,
         }),
+        getReferralLevels: builder.query<ReferralLevel[], void>({
+            query: () => {
+                return {
+                    url: '/userAccount/getReferralLevels',
+                    method: 'GET',
+                }
+            },
+            transformResponse: (res: { referral_levels: ReferralLevel[] }) => res.referral_levels,
+        }),
     }),
 })
 
-export const { useFetchThemeQuery, useLazyGetProfileInfoQuery, useGetProfileInfoQuery, useSetThemeMutation } =
-    onlineTheme
+export const {
+    useFetchThemeQuery,
+    useLazyGetProfileInfoQuery,
+    useGetProfileInfoQuery,
+    useSetThemeMutation,
+    useGetReferralLevelsQuery,
+} = onlineTheme

@@ -1,4 +1,3 @@
-import { UserInfo } from './../store/reducers/auth'
 export interface ITheme {
     theme: ISingleTheme[]
 }
@@ -160,4 +159,17 @@ export interface IwhatsappAccounts {
     qrcode: string
     created_at: Date
     updated_at: Date
+}
+
+export interface ReferralLevel {
+    id: number
+    level: number
+    required_invites: number
+    reward: string
+    created_at: Date
+    updated_at: Date
+}
+
+export interface IReferralsLevelWrapper {
+    referral_levels: ReferralLevel[]
 }

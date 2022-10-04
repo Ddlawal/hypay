@@ -1,25 +1,36 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { PrimaryLayout } from '../../../../components/Layout'
 import { SecondInput } from '../../../../components/form'
 import { useForm } from 'react-hook-form'
 import { Card } from '../../../../components/Card'
-import { indicateData, IndicateDataType } from '../../../../lib/data'
-import { useGetProfileInfoQuery } from '../../../../store/services/onlineStore'
+import { useGetProfileInfoQuery, useGetReferralLevelsQuery } from '../../../../store/services/onlineStore'
 import { copyTextToClipboard, showSuccessSnackbar } from '../../../../lib/helper'
+import { useGetReferralStatsQuery } from '../../../../store/services/coupon'
+import { RoundedCheckIcon } from '../../../../components/Icons'
+import { ReferralLevel } from '../../../../interfaces/onlineStore'
+import { COLORS } from '../../../../lib/constants/colors'
 
 function Indicate() {
-    const { data, isLoading: loadingTheme } = useGetProfileInfoQuery()
+    const { data, isLoading: loadingUserData } = useGetProfileInfoQuery()
+    const { data: referralStats } = useGetReferralStatsQuery('')
+    const { data: referralLevels } = useGetReferralLevelsQuery()
     const {
         register,
         formState: { errors },
-    } = useForm<any>()
+        setValue,
+    } = useForm<{ referralCode: string }>({ defaultValues: { referralCode: '' } })
 
     const copyReferalCode = (code: string) => {
         copyTextToClipboard(code)
         showSuccessSnackbar('Referal code copied successfully')
     }
 
-    console.log(data?.userProfile?.referral_code, loadingTheme, 'check the profile and see')
+    useEffect(() => {
+        if (data?.userProfile) {
+            setValue('referralCode', `https://hypay.vercel.app/signup?referal_code=${data?.userProfile?.referral_code}`)
+        }
+    }, [setValue, data])
+
     return (
         <PrimaryLayout currentTabIndex={6} dropDownIndex={1}>
             <div className="px-8 py-4 md:px-12">
@@ -34,25 +45,28 @@ function Indicate() {
                         Saiba mais detalhes sobre como funciona
                     </p>
                     <div className="flex flex-col md:flex-row md:items-end ">
-                        <SecondInput
-                            className="mb-5 mr-8 w-full items-end md:my-0 md:w-2/5"
-                            name="productname"
-                            errors={errors}
-                            label="Link"
-                            register={register}
-                            defaultValue={`https://hypay.vercel.app/?referal_code=${data?.userProfile?.referral_code}`}
-                            validation={{
-                                required: true,
-                            }}
-                            disabled
-                            placeholder="www.hypay.com.br/abc123def4563def4"
-                            type="text"
-                        />
+                        {loadingUserData ? (
+                            <span className="mr-3">Fetching Loading....</span>
+                        ) : (
+                            <SecondInput
+                                className="mb-5 mr-8 w-full items-end md:my-0 md:w-2/5"
+                                name="referralCode"
+                                errors={errors}
+                                label="Link"
+                                register={register}
+                                validation={{
+                                    required: true,
+                                }}
+                                disabled
+                                placeholder="www.hypay.com.br/abc123def4563def4"
+                                type="text"
+                            />
+                        )}
                         <button
                             onClick={() =>
                                 data &&
                                 copyReferalCode(
-                                    `https://hypay.vercel.app/?referal_code=${data?.userProfile?.referral_code}`
+                                    `https://hypay.vercel.app/signup?referal_code=${data?.userProfile?.referral_code}`
                                 )
                             }
                             className="mb-4 h-8 w-44 rounded-lg bg-hypay-orange md:my-6 md:mb-1"
@@ -65,46 +79,60 @@ function Indicate() {
                 <section className="my-4">
                     <div className="flex w-full flex-col items-center justify-between md:flex-row">
                         <Card className="w-4/5 rounded-lg md:h-28 md:w-7/12 lg:w-3/5">
-                            <p>Você está no nível 2</p>
+                            {referralStats?.level_attained ? (
+                                <p>Você está no nível 2</p>
+                            ) : (
+                                <p>Your level hasnt started counting</p>
+                            )}
                             <div className="flex h-11 w-full items-center">
                                 <div className="my-1 h-4 w-11/12 rounded-lg bg-hypay-gray">
-                                    <div className="h-4 w-1/3 rounded-lg bg-hypay-secondary"></div>
+                                    <div
+                                        className={`h-4 w-[${
+                                            parseInt(referralStats?.sellers_referred) * 10
+                                        }%] rounded-lg bg-hypay-secondary`}
+                                    ></div>
                                 </div>
                                 <div className="mb-4 ml-4 flex flex-col lg:w-1/3">
                                     <p className="text-xs">convites</p>
-                                    <p className="font-bold text-hypay-secondary">04/10</p>
+                                    <p className="font-bold text-hypay-secondary">
+                                        {referralStats?.sellers_referred} / <span>100</span>
+                                    </p>
                                 </div>
                             </div>
                         </Card>
-                        <Card className="my-4 w-3/5 rounded-lg py-6 text-center md:mr-0 md:w-1/3 xl:w-1/3">
-                            Parabéns! Você já ajudou 09 vendedores à aumentarem suas vendas usando o Hypay.
-                        </Card>
+                        {referralStats?.sellers_referred > 9 && (
+                            <Card className="my-4 w-3/5 rounded-lg py-6 text-center md:mr-0 md:w-1/3 xl:w-1/3">
+                                Parabéns! Você já ajudou 09 vendedores à aumentarem suas vendas usando o Hypay.
+                            </Card>
+                        )}
                     </div>
-                    <div className="flex grid grid-cols-2 flex-wrap items-center justify-between gap-2 text-center sm:grid-cols-4 lg:flex lg:grid-cols-5">
-                        {indicateData.map(({ name, bottomText, status, icon }: IndicateDataType, index) => (
+                    <div className="flex  grid-cols-2 flex-wrap items-center justify-between gap-2 text-center sm:grid sm:grid-cols-4 lg:flex lg:grid-cols-5">
+                        {referralLevels?.map(({ reward, required_invites, level }: ReferralLevel, index: number) => (
                             <div key={index} className="text-center">
                                 <Card
                                     className={`${
-                                        status === 'completed'
+                                        level + index < referralStats?.sellers_referred
                                             ? 'bg-hypay-green text-white'
-                                            : status === 'pending'
+                                            : referralStats?.sellers_referred < level + index
                                             ? 'border border-hypay-secondary text-hypay-secondary'
                                             : 'text-gray-500 text-opacity-50'
                                     } xlg:w-36 my-2 mt-2 flex h-24 w-full flex-col  items-center justify-center rounded-md text-center md:w-36`}
                                 >
-                                    <div className="">{icon}</div>
-                                    <p>{name}</p>
+                                    <div className="">
+                                        <RoundedCheckIcon color={COLORS.WHITE} />
+                                    </div>
+                                    <p>{reward}</p>
                                 </Card>
                                 <p
                                     className={`${
-                                        status === 'completed'
+                                        level + index < referralStats?.sellers_referred
                                             ? 'text-hypay-green'
-                                            : status === 'pending'
+                                            : referralStats?.sellers_referred < level + index
                                             ? 'text-hypay-secondary'
                                             : 'text-gray-500 text-opacity-50'
                                     } w-full sm:w-36 xl:w-36 `}
                                 >
-                                    {bottomText}
+                                    Convite {required_invites} vendedores
                                 </p>
                             </div>
                         ))}

@@ -25,17 +25,23 @@ const SignUp: NextPage = () => {
     const [index, setIndex] = useState(0)
 
     const { data: Session } = useSession()
-    const { push } = useRouter()
+    const { push, query } = useRouter()
     const dispatch = useDispatch()
     const [miniRegister, { isLoading }] = useRegistrationMutation()
     const [loginWithGoogle] = useLoginWithGoogleMutation()
-
     const {
         control,
         register,
         handleSubmit,
         formState: { errors },
+        setValue,
     } = useForm<SignupFormData>()
+
+    useEffect(() => {
+        if (query['referal_code']) {
+            setValue('referral_code', query['referal_code'] as string)
+        }
+    }, [query, setValue])
 
     const tryGoogleLogin = useCallback(async () => {
         try {
@@ -233,6 +239,7 @@ const SignUp: NextPage = () => {
                             register={register}
                             placeholder="a123b12c"
                             type="text"
+                            disabled
                         />
 
                         <p className="my-3 text-center text-sm text-hypay-gray">

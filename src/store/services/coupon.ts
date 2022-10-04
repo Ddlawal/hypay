@@ -71,6 +71,24 @@ const couponApi = base.injectEndpoints({
                 }
             },
         }),
+        getReferralLevels: builder.query({
+            query: () => {
+                return {
+                    url: `/userAccount/getReferralLevels`,
+                    method: 'GET',
+                    // transformResponse: (res: { data: { coupons: ICoupon } }) => res.data.coupons,
+                }
+            },
+        }),
+        getReferralStats: builder.query({
+            query: () => {
+                return {
+                    url: `/userAccount/getReferralStats`,
+                    method: 'GET',
+                    // transformResponse: (res: { data: { coupons: ICoupon } }) => res.data.coupons,
+                }
+            },
+        }),
     }),
     overrideExisting: true,
 })
@@ -83,4 +101,6 @@ export const {
     useActivateCouponMutation,
     useDeActivateCouponMutation,
     useUpdateCouponMutation,
+    useGetReferralLevelsQuery,
+    useGetReferralStatsQuery,
 } = couponApi
