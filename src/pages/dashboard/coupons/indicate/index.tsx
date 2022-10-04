@@ -12,8 +12,8 @@ import { COLORS } from '../../../../lib/constants/colors'
 
 function Indicate() {
     const { data, isLoading: loadingUserData } = useGetProfileInfoQuery()
-    const { data: referralStats, isLoading: referalStatsLoading } = useGetReferralStatsQuery('')
-    const { data: referralLevels, isLoading: loadingReferalsLevel } = useGetReferralLevelsQuery()
+    const { data: referralStats } = useGetReferralStatsQuery('')
+    const { data: referralLevels } = useGetReferralLevelsQuery()
     const {
         register,
         formState: { errors },
@@ -31,12 +31,6 @@ function Indicate() {
         }
     }, [setValue, data])
 
-    console.log(
-        referralLevels,
-        loadingReferalsLevel,
-        `${referralStats?.sellers_referred * 10}%`,
-        'check the profile and see'
-    )
     return (
         <PrimaryLayout currentTabIndex={6} dropDownIndex={1}>
             <div className="px-8 py-4 md:px-12">
