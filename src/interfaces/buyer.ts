@@ -14,4 +14,12 @@ export type BuyerAddresses = {
     address_id: number
     address: string
     country: string
+    name: string
+    phone: string
+    street_1: string
+    street_2: string
+    city: string
+    state: string
+    postal_code: string
+    country_id: number
 } & AddBuyerAddressType

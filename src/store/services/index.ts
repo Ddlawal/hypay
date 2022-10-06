@@ -30,7 +30,7 @@ const baseApi = createApi({
         }
     },
     endpoints: () => ({}),
-    tagTypes: ['cart', 'user', 'products', 'requests', 'merchant', 'messages', 'onlineTheme'],
+    tagTypes: ['buyer', 'cart', 'user', 'products', 'requests', 'merchant', 'messages', 'onlineTheme'],
     //  cache , The default time is seconds , Default duration 60 second
     keepUnusedDataFor: 5 * 60,
     refetchOnMountOrArgChange: 30 * 60,

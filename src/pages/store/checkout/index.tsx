@@ -7,9 +7,10 @@ import { SecondInput } from '../../../components/form'
 import { useForm } from 'react-hook-form'
 import { SelectField } from '../../../components/Select'
 import { Button } from '../../../components/Button'
-import { checkPhoneNumber } from '../../../lib/helper'
-import { AddBuyerAddressType, BuyerAddresses } from '../../../interfaces/buyer'
+import { checkPhoneNumber, showErrorSnackbar, showSuccessSnackbar } from '../../../lib/helper'
+import { AddBuyerAddressType } from '../../../interfaces/buyer'
 import { useAddBuyerAddressMutation } from '../../../store/services/buyer'
+import { useCheckout } from '../../../hooks/useCheckout'
 
 type SelectOptionType = {
     label: string
@@ -20,6 +21,7 @@ const Checkout: NextPage = () => {
     const {
         register,
         handleSubmit,
+        reset,
         formState: { errors },
     } = useForm<AddBuyerAddressType>()
     const [userCountryCode, setUserCountryCode] = useState('BR')
@@ -27,9 +29,12 @@ const Checkout: NextPage = () => {
     const [userCity, setUserCity] = useState<string | null>(null)
     const [states, setStates] = useState<Array<SelectOptionType>>([])
     const [cities, setCities] = useState<Array<SelectOptionType>>([])
-    const [buyerAddresses, setBuyerAddresses] = useState<Array<BuyerAddresses>>([])
+    const [cityError, setCityError] = useState(false)
+    const [stateError, setStateError] = useState(false)
 
     const [addBuyerAddress, { isLoading: isAddingBuyerAddress }] = useAddBuyerAddressMutation()
+
+    const { addresses: buyerAddresses } = useCheckout()
 
     useEffect(() => {
         const fetchData = async () => {
@@ -65,23 +70,35 @@ const Checkout: NextPage = () => {
         })
 
         setCities(cityList)
+        setStateError(false)
     }
 
     const handleCityChange = (city: string | null) => {
         console.log(city)
         setUserCity(city)
+        setCityError(false)
     }
 
     const onFormSubmit = async (data: AddBuyerAddressType) => {
-        data.state = userState as string
-        data.city = userCity as string
+        if (!userState || !userCity) {
+            !userState && setStateError(true)
+            !userCity && setCityError(true)
+            return
+        }
+
+        data.state = userState
+        data.city = userCity
         data.country_id = 1
 
         try {
-            const buyerAddresses = await addBuyerAddress(data).unwrap()
+            await addBuyerAddress(data).unwrap()
 
-            setBuyerAddresses(buyerAddresses)
+            showSuccessSnackbar('Shipping address added successfully.')
+            setUserState(null)
+            setUserCity(null)
+            reset()
         } catch (error) {
+            showErrorSnackbar('Error! Something went wrong!')
             console.log(error)
         }
     }
@@ -168,8 +185,9 @@ const Checkout: NextPage = () => {
                             label="Estado*"
                             options={states}
                             name="state"
-                            value={null}
+                            value={userState}
                             onChange={handleStateChange}
+                            required={stateError}
                         />
                     </div>
                     <div className="col-span-12 md:col-span-6">
@@ -178,8 +196,9 @@ const Checkout: NextPage = () => {
                             label="Cidade*"
                             options={cities}
                             name="city"
-                            value={null}
+                            value={userCity}
                             onChange={handleCityChange}
+                            required={cityError}
                         />
                     </div>
                 </div>
