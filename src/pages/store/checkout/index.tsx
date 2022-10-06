@@ -31,10 +31,11 @@ const Checkout: NextPage = () => {
     const [cities, setCities] = useState<Array<SelectOptionType>>([])
     const [cityError, setCityError] = useState(false)
     const [stateError, setStateError] = useState(false)
+    const [addMoreAddresses, setAddMoreAddresses] = useState(false)
+    const { addresses: buyerAddresses, isFetchingBuyerAddress } = useCheckout()
+    const [preferredAddressId, setPreferredAddressId] = useState(buyerAddresses[0]?.address_id)
 
     const [addBuyerAddress, { isLoading: isAddingBuyerAddress }] = useAddBuyerAddressMutation()
-
-    const { addresses: buyerAddresses } = useCheckout()
 
     useEffect(() => {
         const fetchData = async () => {
@@ -96,6 +97,7 @@ const Checkout: NextPage = () => {
             showSuccessSnackbar('Shipping address added successfully.')
             setUserState(null)
             setUserCity(null)
+            setAddMoreAddresses(false)
             reset()
         } catch (error) {
             showErrorSnackbar('Error! Something went wrong!')
@@ -104,47 +106,46 @@ const Checkout: NextPage = () => {
     }
 
     return (
-        <CheckoutWrapper>
-            <div className="mt-6 text-lg font-semibold">*Campos obrigatórios</div>
-            <div className="mt-6 text-lg font-semibold">Identificação</div>
-            <ul>
-                {buyerAddresses.map(({ address }, i) => (
-                    <li key={i}>{address}</li>
-                ))}
-            </ul>
-            <form className="my-12" onSubmit={handleSubmit(onFormSubmit)}>
-                <SecondInput
-                    className="my-3 text-gray-800 md:my-0"
-                    name="name"
-                    errors={errors}
-                    label="Nome Completo"
-                    register={register}
-                    validation={{
-                        required: true,
-                    }}
-                    placeholder="Lucian Store"
-                    type="text"
-                />
+        <CheckoutWrapper isLoading={isFetchingBuyerAddress} canProceed={!!preferredAddressId} next="/shipping">
+            <div className="my-6 text-lg font-semibold">*Campos obrigatórios</div>
+            <div className="mb-8 flex items-center justify-between text-lg font-semibold">
+                <div>Identificação</div>
+                <Button onClick={() => setAddMoreAddresses(true)} preventDefault primary padding="px-4 py-1" size="sm">
+                    Add Address
+                </Button>
+            </div>
 
-                <div className="mb-3 grid grid-cols-12 gap-x-2 lg:gap-x-4">
+            {buyerAddresses.length && !addMoreAddresses ? (
+                <ul className="mt-4">
+                    {buyerAddresses.map(({ address_id, address, name, phone }, i) => (
+                        <li
+                            key={i}
+                            className="my-3 flex items-center gap-x-4 rounded border border-hypay-gray px-3 py-2"
+                        >
+                            <div>
+                                <input
+                                    type="radio"
+                                    id={`${address_id}`}
+                                    name="address"
+                                    onChange={(e) => setPreferredAddressId(Number(e.target.id))}
+                                    checked={preferredAddressId === address_id}
+                                />
+                            </div>
+                            <div>
+                                <div>{name}</div>
+                                <div>{address}</div>
+                                <div>{phone}</div>
+                            </div>
+                        </li>
+                    ))}
+                </ul>
+            ) : (
+                <form className="my-12" onSubmit={handleSubmit(onFormSubmit)}>
                     <SecondInput
-                        className="col-span-12 text-gray-800 md:col-span-6 md:my-0"
-                        name="phone"
+                        className="my-3 text-gray-800 md:my-0"
+                        name="name"
                         errors={errors}
-                        label="Telefone"
-                        register={register}
-                        validation={{
-                            required: false,
-                            validate: (value: string) => checkPhoneNumber(value, 'en-NG'),
-                        }}
-                        placeholder="2348012345678"
-                        type="tel"
-                    />
-                    <SecondInput
-                        className="col-span-12 text-gray-800 md:col-span-6 md:my-0"
-                        name="postal_code"
-                        errors={errors}
-                        label="Postal Code"
+                        label="Nome Completo"
                         register={register}
                         validation={{
                             required: true,
@@ -152,66 +153,104 @@ const Checkout: NextPage = () => {
                         placeholder="Lucian Store"
                         type="text"
                     />
-                </div>
-                <SecondInput
-                    className="col-span-12 mb-3 text-gray-800 md:col-span-4"
-                    name="street_1"
-                    errors={errors}
-                    label="Street Address 1"
-                    register={register}
-                    validation={{
-                        required: true,
-                    }}
-                    placeholder="Lucian Store"
-                    type="text"
-                />
-                <SecondInput
-                    className="col-span-12 mb-3 text-gray-800 md:col-span-8"
-                    name="street_2"
-                    errors={errors}
-                    label="Street Address 2"
-                    register={register}
-                    validation={{
-                        required: true,
-                    }}
-                    placeholder="Lucian Store"
-                    type="text"
-                />
 
-                <div className="grid grid-cols-12 gap-x-2 md:mt-5 lg:gap-x-4">
-                    <div className="col-span-12 md:col-span-6">
-                        <SelectField<string | null>
-                            labelClassName="my-3 md:my-2"
-                            label="Estado*"
-                            options={states}
-                            name="state"
-                            value={userState}
-                            onChange={handleStateChange}
-                            required={stateError}
+                    <div className="mb-3 grid grid-cols-12 gap-x-2 lg:gap-x-4">
+                        <SecondInput
+                            className="col-span-12 text-gray-800 md:col-span-6 md:my-0"
+                            name="phone"
+                            errors={errors}
+                            label="Telefone"
+                            register={register}
+                            validation={{
+                                required: false,
+                                validate: (value: string) => checkPhoneNumber(value, 'en-NG'),
+                            }}
+                            placeholder="2348012345678"
+                            type="tel"
+                        />
+                        <SecondInput
+                            className="col-span-12 text-gray-800 md:col-span-6 md:my-0"
+                            name="postal_code"
+                            errors={errors}
+                            label="Postal Code"
+                            register={register}
+                            validation={{
+                                required: true,
+                            }}
+                            placeholder="Lucian Store"
+                            type="text"
                         />
                     </div>
-                    <div className="col-span-12 md:col-span-6">
-                        <SelectField<string | null>
-                            labelClassName="my-3 md:my-2"
-                            label="Cidade*"
-                            options={cities}
-                            name="city"
-                            value={userCity}
-                            onChange={handleCityChange}
-                            required={cityError}
-                        />
+                    <SecondInput
+                        className="col-span-12 mb-3 text-gray-800 md:col-span-4"
+                        name="street_1"
+                        errors={errors}
+                        label="Street Address 1"
+                        register={register}
+                        validation={{
+                            required: true,
+                        }}
+                        placeholder="Lucian Store"
+                        type="text"
+                    />
+                    <SecondInput
+                        className="col-span-12 mb-3 text-gray-800 md:col-span-8"
+                        name="street_2"
+                        errors={errors}
+                        label="Street Address 2"
+                        register={register}
+                        validation={{
+                            required: true,
+                        }}
+                        placeholder="Lucian Store"
+                        type="text"
+                    />
+
+                    <div className="grid grid-cols-12 gap-x-2 md:mt-5 lg:gap-x-4">
+                        <div className="col-span-12 md:col-span-6">
+                            <SelectField<string | null>
+                                labelClassName="my-3 md:my-2"
+                                label="Estado*"
+                                options={states}
+                                name="state"
+                                value={userState}
+                                onChange={handleStateChange}
+                                required={stateError}
+                            />
+                        </div>
+                        <div className="col-span-12 md:col-span-6">
+                            <SelectField<string | null>
+                                labelClassName="my-3 md:my-2"
+                                label="Cidade*"
+                                options={cities}
+                                name="city"
+                                value={userCity}
+                                onChange={handleCityChange}
+                                required={cityError}
+                            />
+                        </div>
                     </div>
-                </div>
-                <div className="mt-10 flex justify-center md:block">
-                    <Button
-                        padding="px-16 py-4 md:py-3"
-                        className="w-full bg-black text-white md:w-fit"
-                        loading={isAddingBuyerAddress}
-                    >
-                        Confirmar
-                    </Button>
-                </div>
-            </form>
+                    <div className="mt-10 flex justify-around gap-4">
+                        {buyerAddresses.length ? (
+                            <Button
+                                padding="px-16 py-4 md:py-3"
+                                className="w-full bg-gray-200 md:w-fit"
+                                preventDefault
+                                onClick={() => setAddMoreAddresses(false)}
+                            >
+                                Cancelar
+                            </Button>
+                        ) : null}
+                        <Button
+                            padding="px-16 py-4 md:py-3"
+                            className="w-full bg-black text-white md:w-fit"
+                            loading={isAddingBuyerAddress}
+                        >
+                            Confirmar
+                        </Button>
+                    </div>
+                </form>
+            )}
         </CheckoutWrapper>
     )
 }

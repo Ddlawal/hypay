@@ -6,6 +6,13 @@ export const buyerApi = createApi({
     reducerPath: 'buyerApi',
     baseQuery: baseQuery,
     endpoints: (builder) => ({
+        getBuyerAddresses: builder.query<Array<BuyerAddresses> | undefined, void>({
+            query: () => ({
+                url: '/order/buyerAddress',
+                method: 'GET',
+            }),
+            transformResponse: (res: { addresses: Array<BuyerAddresses> }) => res.addresses,
+        }),
         addBuyerAddress: builder.mutation<Array<BuyerAddresses>, AddBuyerAddressType>({
             query: (data: AddBuyerAddressType) => ({
                 url: '/order/buyerAddress/add',
@@ -17,4 +24,4 @@ export const buyerApi = createApi({
     }),
 })
 
-export const { useAddBuyerAddressMutation } = buyerApi
+export const { useAddBuyerAddressMutation, useLazyGetBuyerAddressesQuery } = buyerApi

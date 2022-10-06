@@ -25,7 +25,9 @@ const buyerSlice = createSlice({
     initialState,
     reducers: {},
     extraReducers: (builder) => {
-        builder.addMatcher(buyerApi.endpoints.addBuyerAddress.matchFulfilled, callback)
+        builder
+            .addMatcher(buyerApi.endpoints.addBuyerAddress.matchFulfilled, callback)
+            .addMatcher(buyerApi.endpoints.getBuyerAddresses.matchFulfilled, callback)
     },
 })
 
