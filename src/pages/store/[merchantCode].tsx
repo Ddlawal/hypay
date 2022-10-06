@@ -15,8 +15,6 @@ import { AddToCartIcon } from '../../components/Icons'
 import { useCart } from '../../hooks/useCart'
 import { useSession } from '../../hooks/useSession'
 
-const mostViewed: Array<ProductsType> = []
-
 const Footer = ({ isOwner }: { isOwner: boolean }) => {
     return (
         <div className="w-screen bg-white px-4 pb-6 pt-8 md:px-[20%]">
@@ -216,8 +214,8 @@ const Store: NextPage = () => {
                     ) : null}
                 </div>
                 <div className="mt-4 overflow-hidden px-4 md:px-[20%]">
-                    {mostViewed.length ? <strong className="text-xl">Most Viewed</strong> : null}
-                    <Carousel isOwner={isOwner} products={mostViewed} />
+                    {storeProducts.length ? <strong className="text-xl">Most Viewed</strong> : null}
+                    <Carousel isOwner={isOwner} products={[...storeProducts].reverse()} />
                 </div>
             </div>
             <Footer isOwner={isOwner} />
