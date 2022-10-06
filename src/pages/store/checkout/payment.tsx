@@ -15,6 +15,7 @@ import { PurchaseSummary } from '../../../components/Buyer/PurchaseSummary'
 import { Card } from '../../../components/Card'
 import { Barcode } from '../../../components/CodeGenerator'
 import { DeliveryDetails } from '../../../components/Buyer'
+import { TIMELINE_EVENTS } from '../../../lib/data'
 
 type FormFields = {
     payment_type: string
@@ -172,7 +173,7 @@ const CheckoutPayment: NextPage = () => {
         <BuyerLayout>
             <div className="mt-6 grid grid-cols-12 md:gap-x-10 md:px-[10%]">
                 <div className="col-span-12 px-4 md:col-span-8 md:px-0">
-                    <BuyerTimeline />
+                    <BuyerTimeline active={TIMELINE_EVENTS.PAYMENT} />
                     <div className="mt-6 text-lg font-semibold">Checkout</div>
                     <div className="mt-6 text-lg font-semibold">Escolha sua forma de pagamento </div>
                     <div className="item-center my-4 hidden justify-between md:flex">
@@ -230,7 +231,7 @@ const CheckoutPayment: NextPage = () => {
                         </Button>
                     </div>
                     {showItem ? (
-                        <PurchaseSummary onSubmit={goToConfirmation} />
+                        <PurchaseSummary />
                     ) : (
                         <>
                             {paymentType === 'bill' && (
@@ -344,7 +345,7 @@ const CheckoutPayment: NextPage = () => {
                         <LockIcon size={15} /> Compra 100% segura
                     </div>
                     <div className="mt-12 mb-2">Você está comprando</div>
-                    <PurchaseSummary isSideSummary onSubmit={goToConfirmation} />
+                    <PurchaseSummary />
                     <Button
                         padding="py-4 md:py-3"
                         className="col-span-6 mt-6 w-full bg-white"

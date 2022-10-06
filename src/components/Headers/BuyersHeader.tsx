@@ -84,9 +84,9 @@ export const BuyersHeader = ({ isOwner }: { isOwner: boolean }) => {
                                 <NextLink href={`/store/${merchantCode}`} className="block py-2">
                                     Home
                                 </NextLink>
-                                <NextLink href="/store/checkout" className="block py-2">
+                                {/* <NextLink href="/store/checkout" className="block py-2">
                                     Checkout
-                                </NextLink>
+                                </NextLink> */}
                                 <NextLink href="/store/support" className="block py-2">
                                     Atendimento
                                 </NextLink>
@@ -113,7 +113,7 @@ export const BuyersHeader = ({ isOwner }: { isOwner: boolean }) => {
                 ) : (
                     <>
                         <NextLink href={`/store/${merchantCode}`}>Home</NextLink>
-                        <NextLink href="/store/checkout">Checkout</NextLink>
+                        {/* <NextLink href="/store/checkout">Checkout</NextLink> */}
                         <NextLink href="/store/support">Atendimento</NextLink>
                         <NextLink href="#" onClick={logOut}>
                             Logout

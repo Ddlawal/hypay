@@ -17,7 +17,7 @@ export const PurchaseSummary = ({ canProceed, next }: { canProceed?: boolean; ne
     const merchantCode = localStorage.getItem('merchantCode')
     const { push } = useRouter()
 
-    const goToNextPage = () => (next ? push(`/store${next}`) : null)
+    const goToNextPage = () => (next ? push(`/store/checkout/${next}`) : null)
 
     return (
         <>

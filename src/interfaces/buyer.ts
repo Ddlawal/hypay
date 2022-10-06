@@ -23,3 +23,5 @@ export type BuyerAddresses = {
     postal_code: string
     country_id: number
 } & AddBuyerAddressType
+
+export type TimelineEventsType = 'Identification' | 'Shipping' | 'Payment' | 'Confirmation'

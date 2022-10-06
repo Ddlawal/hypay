@@ -19,6 +19,7 @@ import { Card } from '../../../components/Card'
 import { COLORS } from '../../../lib/constants/colors'
 import { DeliveryDetails } from '../../../components/Buyer'
 import { useMediaQuery } from '../../../hooks/useMediaQuery'
+import { TIMELINE_EVENTS } from '../../../lib/data'
 
 type ProductSummaryProps = {
     isSideSummary?: boolean
@@ -81,7 +82,7 @@ const Confirmation: NextPage = () => {
         <BuyerLayout>
             <div className="mt-6 grid grid-cols-12 md:gap-x-10 md:px-[10%]">
                 <div className="col-span-12 px-4 md:col-span-8 md:px-0">
-                    <BuyerTimeline />
+                    <BuyerTimeline active={TIMELINE_EVENTS.CONFIRMATION} />
 
                     <div className="mt-6 text-lg font-semibold">
                         Parabéns, Rafael sua compra foi realizada com sucesso!
