@@ -81,3 +81,35 @@ export interface ISingleCouponResponse {
     end_date: string
     products: string[]
 }
+
+export interface Buyers {
+    total_buyers: number
+    last_month_buyers: number
+    this_month_buyers: number
+    percentChangeInBuyers: number
+    active_today: number
+    last_week_buyers: number
+    this_week_buyers: number
+    percentChangeInBuyersThisWeek: number
+}
+
+export interface MonthlyReport {
+    month: string
+    total_revenue: number
+    total_orders: number
+}
+
+export interface Sales {
+    today_sales: number
+    today_revenue: number
+    monthly_report: MonthlyReport[]
+}
+
+export interface Data {
+    buyers: Buyers
+    sales: Sales
+}
+
+export interface IAnalysisResponse {
+    data: Data
+}

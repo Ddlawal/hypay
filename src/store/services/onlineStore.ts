@@ -1,5 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react'
 import { baseQuery } from '.'
+import { IAnalysisResponse } from '../../interfaces/coupons'
 import {
     // IReferralsLevelWrapper,
     ISetTheme,
@@ -45,6 +46,15 @@ export const onlineTheme = createApi({
             },
             transformResponse: (res: { referral_levels: ReferralLevel[] }) => res.referral_levels,
         }),
+        getAnalysis: builder.query<IAnalysisResponse, void>({
+            query: () => {
+                return {
+                    url: '/statistics/analysis',
+                    method: 'GET',
+                }
+            },
+            transformResponse: (res: IAnalysisResponse) => res,
+        }),
     }),
 })
 
@@ -54,4 +64,5 @@ export const {
     useGetProfileInfoQuery,
     useSetThemeMutation,
     useGetReferralLevelsQuery,
+    useGetAnalysisQuery,
 } = onlineTheme
