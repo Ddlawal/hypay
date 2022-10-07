@@ -80,7 +80,7 @@ export const showErrorSnackbar = (message: string, options?: ToastOption) => {
 }
 
 // Create our number formatter.
-export const formatter = new Intl.NumberFormat('en-US', {
+export const currencyFormatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
     minimumFractionDigits: 0,
@@ -89,4 +89,4 @@ export const formatter = new Intl.NumberFormat('en-US', {
     //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
 })
 
-formatter.format(2500) /* $2,500.00 */
+currencyFormatter.format(2500) /* $2,500.00 */
