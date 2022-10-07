@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { ChangeEvent, useEffect, useState } from 'react'
 import { NextPage } from 'next'
 import { State, City } from 'country-state-city'
 
@@ -8,7 +8,7 @@ import { useForm } from 'react-hook-form'
 import { SelectField } from '../../../components/Select'
 import { Button } from '../../../components/Button'
 import { checkPhoneNumber, showErrorSnackbar, showSuccessSnackbar } from '../../../lib/helper'
-import { AddBuyerAddressType } from '../../../interfaces/buyer'
+import { AddBuyerAddressType, BuyerAddress } from '../../../interfaces/buyer'
 import { useAddBuyerAddressMutation } from '../../../store/services/buyer'
 import { useCheckout } from '../../../hooks/useCheckout'
 
@@ -32,7 +32,7 @@ const Checkout: NextPage = () => {
     const [cityError, setCityError] = useState(false)
     const [stateError, setStateError] = useState(false)
     const [addMoreAddresses, setAddMoreAddresses] = useState(false)
-    const { addresses: buyerAddresses, isFetchingBuyerAddress } = useCheckout()
+    const { addresses: buyerAddresses, isFetchingBuyerAddress, setAddress } = useCheckout('address')
     const [preferredAddressId, setPreferredAddressId] = useState(buyerAddresses[0]?.address_id)
 
     const [addBuyerAddress, { isLoading: isAddingBuyerAddress }] = useAddBuyerAddressMutation()
@@ -80,6 +80,11 @@ const Checkout: NextPage = () => {
         setCityError(false)
     }
 
+    const handleSelectBuyerAddress = (e: ChangeEvent<HTMLInputElement>, data: BuyerAddress) => {
+        setAddress(data)
+        setPreferredAddressId(Number(e.target.id))
+    }
+
     const onFormSubmit = async (data: AddBuyerAddressType) => {
         if (!userState || !userCity) {
             !userState && setStateError(true)
@@ -110,34 +115,45 @@ const Checkout: NextPage = () => {
             <div className="my-6 text-lg font-semibold">*Campos obrigatórios</div>
             <div className="mb-8 flex items-center justify-between text-lg font-semibold">
                 <div>Identificação</div>
-                <Button onClick={() => setAddMoreAddresses(true)} preventDefault primary padding="px-4 py-1" size="sm">
-                    Add Address
-                </Button>
+                {buyerAddresses.length && !addMoreAddresses ? (
+                    <Button
+                        onClick={() => setAddMoreAddresses(true)}
+                        preventDefault
+                        primary
+                        padding="px-4 py-1"
+                        size="sm"
+                    >
+                        Add Address
+                    </Button>
+                ) : null}
             </div>
 
             {buyerAddresses.length && !addMoreAddresses ? (
                 <ul className="mt-4">
-                    {buyerAddresses.map(({ address_id, address, name, phone }, i) => (
-                        <li
-                            key={i}
-                            className="my-3 flex items-center gap-x-4 rounded border border-hypay-gray px-3 py-2"
-                        >
-                            <div>
-                                <input
-                                    type="radio"
-                                    id={`${address_id}`}
-                                    name="address"
-                                    onChange={(e) => setPreferredAddressId(Number(e.target.id))}
-                                    checked={preferredAddressId === address_id}
-                                />
-                            </div>
-                            <div>
-                                <div>{name}</div>
-                                <div>{address}</div>
-                                <div>{phone}</div>
-                            </div>
-                        </li>
-                    ))}
+                    {buyerAddresses.map((buyerAddress, i) => {
+                        const { address_id, address, name, phone } = buyerAddress
+                        return (
+                            <li
+                                key={i}
+                                className="my-3 flex items-center gap-x-4 rounded border border-hypay-gray px-3 py-2"
+                            >
+                                <div>
+                                    <input
+                                        type="radio"
+                                        id={`${address_id}`}
+                                        name="address"
+                                        onChange={(e) => handleSelectBuyerAddress(e, buyerAddress)}
+                                        checked={preferredAddressId === address_id}
+                                    />
+                                </div>
+                                <div>
+                                    <div>{name}</div>
+                                    <div>{address}</div>
+                                    <div>{phone}</div>
+                                </div>
+                            </li>
+                        )
+                    })}
                 </ul>
             ) : (
                 <form className="my-12" onSubmit={handleSubmit(onFormSubmit)}>
@@ -234,7 +250,7 @@ const Checkout: NextPage = () => {
                         {buyerAddresses.length ? (
                             <Button
                                 padding="px-16 py-4 md:py-3"
-                                className="w-full bg-gray-200 md:w-fit"
+                                className="w-full bg-gray-100 md:w-fit"
                                 preventDefault
                                 onClick={() => setAddMoreAddresses(false)}
                             >

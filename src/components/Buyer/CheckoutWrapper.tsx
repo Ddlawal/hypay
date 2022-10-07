@@ -9,7 +9,8 @@ type CheckoutWrapperProps = {
     activeTimelineEvent?: TimelineEventsType
     canProceed?: boolean
     isLoading?: boolean
-    next?: string
+    next: string
+    summaryButtonText?: string
 }
 
 export const CheckoutWrapper: FC<CheckoutWrapperProps> = ({
@@ -18,6 +19,7 @@ export const CheckoutWrapper: FC<CheckoutWrapperProps> = ({
     children,
     isLoading,
     next,
+    summaryButtonText,
 }) => {
     return (
         <BuyerLayout isLoading={isLoading}>
@@ -25,7 +27,7 @@ export const CheckoutWrapper: FC<CheckoutWrapperProps> = ({
             <div className="my-12 flex gap-x-16 px-4 md:px-[5%] lg:px-[17%]">
                 <div className="w-full md:w-3/5">{children}</div>
                 <div className="hidden md:block md:w-2/5">
-                    <PurchaseSummary canProceed={canProceed} next={next} />
+                    <PurchaseSummary canProceed={canProceed} next={next} summaryButtonText={summaryButtonText} />
                 </div>
             </div>
         </BuyerLayout>

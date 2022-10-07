@@ -1,7 +1,8 @@
 // import cx from 'classnames'
 import { useRouter } from 'next/router'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useCart } from '../../hooks/useCart'
+import { useCheckout } from '../../hooks/useCheckout'
 import { Button } from '../Button'
 
 import { Card } from '../Card'
@@ -10,14 +11,30 @@ import { Divider } from '../Divider'
 import { LockIcon } from '../Icons'
 import { NextLink } from '../Links'
 
-export const PurchaseSummary = ({ canProceed, next }: { canProceed?: boolean; next?: string }) => {
+type PurchaseSummaryProps = { canProceed?: boolean; next: string; summaryButtonText?: string }
+
+export const PurchaseSummary = ({ canProceed, next, summaryButtonText }: PurchaseSummaryProps) => {
+    const [total, setTotal] = useState(0)
     const {
-        cart: { cartCount, charges, shipping, totalPrice, totalSum },
+        cart: { cartCount, charges, totalPrice, totalSum },
     } = useCart()
     const merchantCode = localStorage.getItem('merchantCode')
     const { push } = useRouter()
+    const { preferredShipping } = useCheckout()
 
-    const goToNextPage = () => (next ? push(`/store/checkout/${next}`) : null)
+    const goToNextPage = () => {
+        if (next === 'pay') {
+            // Place Order
+            return
+        }
+
+        push(`/store/checkout${next}`)
+    }
+
+    useEffect(() => {
+        const shipping = preferredShipping?.amount ?? 0
+        setTotal(totalSum + shipping)
+    }, [preferredShipping?.amount, totalSum])
 
     return (
         <>
@@ -28,11 +45,11 @@ export const PurchaseSummary = ({ canProceed, next }: { canProceed?: boolean; ne
                     {cartCount}
                 </div>
                 <CostValue title="Subtotal" amount={totalPrice} />
-                <CostValue title="Shipping" amount={shipping} />
+                <CostValue title="Shipping" amount={preferredShipping ? preferredShipping.amount : 0} />
                 <CostValue title="Charges" amount={charges} />
                 <Divider height="h-24" className="mt-4" />
                 <div className="font-bold">
-                    <CostValue title="Total" amount={totalSum} />
+                    <CostValue title="Total" amount={total} />
                 </div>
                 <div className="mt-8 mb-3 text-center text-hypay-pink">
                     <NextLink href={`/store/${merchantCode}`} className="">
@@ -50,8 +67,9 @@ export const PurchaseSummary = ({ canProceed, next }: { canProceed?: boolean; ne
                         padding="py-2"
                         primary
                         preventDefault
+                        // loading={isProcessing}
                     >
-                        Proceed
+                        {summaryButtonText || 'Proceed'}
                     </Button>
                 </div>
             </Card>

@@ -5,6 +5,7 @@ import { RootState } from '..'
 import { cartApi } from '../services/cart'
 
 interface CartState {
+    cartId: CartType['cart_id']
     cartItems: CartType['items']
     cartCount: CartType['items_count']
     shipping: CartType['shipping']
@@ -13,16 +14,25 @@ interface CartState {
     charges: CartType['pepperestfees']
 }
 
-const initialState = { cartItems: [], cartCount: 0, charges: 0, shipping: 0, totalPrice: 0, totalSum: 0 } as CartState
+const initialState = {
+    cartId: 0,
+    cartItems: [],
+    cartCount: 0,
+    charges: 0,
+    shipping: 0,
+    totalPrice: 0,
+    totalSum: 0,
+} as CartState
 
 const callback = (state: CartState, { payload }: PayloadAction<CartType | undefined>) => {
     if (!payload) {
         return state
     }
 
-    const { items, items_count, pepperestfees, total_sum, totalprice, shipping } = payload
+    const { cart_id, items, items_count, pepperestfees, total_sum, totalprice, shipping } = payload
 
     state = {
+        cartId: cart_id,
         cartItems: items,
         cartCount: items_count,
         charges: pepperestfees,
@@ -38,11 +48,12 @@ const cartSlice = createSlice({
     name: 'cart',
     initialState,
     reducers: {
-        updateCart(_, { payload }: PayloadAction<CartType>) {
+        updateCart(state, { payload }: PayloadAction<CartType>) {
             if (!payload) {
-                return initialState
+                return state
             }
             return {
+                cartId: payload.cart_id,
                 cartItems: payload.items,
                 cartCount: payload.items_count,
                 charges: payload.pepperestfees,

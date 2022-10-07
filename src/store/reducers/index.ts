@@ -9,13 +9,13 @@ import cart from './cart'
 import temporaryDataSlice from './temporaryData'
 import { onlineTheme } from '../services/onlineStore'
 import { notificationSettings } from '../services/settings/notificationSettings'
-import { buyerApi, cartApi, merchantApi, messageApi, productApi, requestApi } from './api'
+import { buyerApi, cartApi, messageApi, productApi, requestApi } from './api'
 
 const persistConfig = {
     storage,
     key: 'hypay',
     blacklist: [productApi.reducerPath, requestApi.reducerPath],
-    whitelist: ['ui'],
+    whitelist: ['ui', 'buyer'],
 }
 
 export const rootStore = combineReducers({
@@ -24,7 +24,6 @@ export const rootStore = combineReducers({
     [cartApi.reducerPath]: cartApi.reducer,
     [productApi.reducerPath]: productApi.reducer,
     [requestApi.reducerPath]: requestApi.reducer,
-    [merchantApi.reducerPath]: merchantApi.reducer,
     [messageApi.reducerPath]: messageApi.reducer,
     [onlineTheme.reducerPath]: onlineTheme.reducer,
     [notificationSettings.reducerPath]: notificationSettings.reducer,

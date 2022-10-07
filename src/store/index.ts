@@ -5,11 +5,11 @@ import persistedReducer from './reducers'
 import baseApi from './services'
 import { productApi } from './services/products'
 import { requestApi } from './services/requests'
-import { merchantApi } from './services/merchant'
 import { messageApi } from './services/messages'
 import { onlineTheme } from './services/onlineStore'
 import { notificationSettings } from './services/settings/notificationSettings'
 import { cartApi } from './services/cart'
+import { buyerApi } from './services/buyer'
 
 export const store = configureStore({
     reducer: persistedReducer,
@@ -21,10 +21,10 @@ export const store = configureStore({
             },
         }).concat(
             baseApi.middleware,
+            buyerApi.middleware,
             cartApi.middleware,
             productApi.middleware,
             requestApi.middleware,
-            merchantApi.middleware,
             messageApi.middleware,
             onlineTheme.middleware,
             notificationSettings.middleware

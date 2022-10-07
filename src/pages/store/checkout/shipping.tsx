@@ -1,46 +1,59 @@
 import { NextPage } from 'next'
-import { useState } from 'react'
+import { ChangeEvent, useState } from 'react'
 import { CheckoutWrapper } from '../../../components/Buyer'
+import { Divider } from '../../../components/Divider'
+import { NextImage } from '../../../components/Image'
+import { useCheckout } from '../../../hooks/useCheckout'
+import { ShippingRates } from '../../../interfaces/buyer'
 import { TIMELINE_EVENTS } from '../../../lib/data'
-
-const shippings = [
-    { address_id: 1, address: 'Lagos', name: 'Ikeja store', phone: '08012345678' },
-    { address_id: 2, address: 'Niger', name: 'Minna store', phone: '08012345678' },
-    { address_id: 3, address: 'Abuja', name: 'Gwarimpa store', phone: '08012345678' },
-]
+import { formatAmount } from '../../../lib/helper'
 
 const Shipping: NextPage = () => {
-    const [preferredShippingStoreId, setPreferredShippingStoreId] = useState<number>()
+    const [preferredShippingStoreId, setPreferredShippingStoreId] = useState<string>()
+    const { shippingRates, isFetchingShippingRates, setShipping } = useCheckout('shipping')
+
+    const handleSelectBuyerShipping = (e: ChangeEvent<HTMLInputElement>, data: ShippingRates) => {
+        setShipping(data)
+        setPreferredShippingStoreId(e.target.id)
+    }
 
     return (
         <CheckoutWrapper
             activeTimelineEvent={TIMELINE_EVENTS.SHIPPING}
             canProceed={!!preferredShippingStoreId}
             next="/payment"
+            isLoading={isFetchingShippingRates}
         >
             <div>Shipping</div>
             <ul className="mt-4">
-                {shippings.map(({ address_id, address, name, phone }, i) => (
-                    <li
-                        key={i}
-                        className="border-hypay-lightgray my-3 flex items-center gap-x-4 rounded border bg-slate-100 px-3 py-2"
-                    >
-                        <div>
-                            <input
-                                type="radio"
-                                id={`${address_id}`}
-                                name="address"
-                                onChange={(e) => setPreferredShippingStoreId(Number(e.target.id))}
-                                checked={preferredShippingStoreId === address_id}
-                            />
-                        </div>
-                        <div>
-                            <div>{name}</div>
-                            <div>{address}</div>
-                            <div>{phone}</div>
-                        </div>
-                    </li>
-                ))}
+                {shippingRates.map((buyerShipping, i) => {
+                    const { amount, courier, estimated_days } = buyerShipping
+                    return (
+                        <li
+                            key={i}
+                            className="border-hypay-lightgray my-3 flex items-center gap-x-4 rounded border bg-slate-100 px-3"
+                        >
+                            <div>
+                                <input
+                                    type="radio"
+                                    id={`${courier.id}`}
+                                    name="address"
+                                    onChange={(e) => handleSelectBuyerShipping(e, buyerShipping)}
+                                    checked={preferredShippingStoreId === courier.id}
+                                />
+                            </div>
+                            <Divider orientation="vertical" height="h-[6rem]" />
+                            <div className="flex gap-4 py-3">
+                                <NextImage src={courier.icon} width={100} height={40} alt="shipping-icon" />
+                                <div>
+                                    <strong>{courier.name}</strong>
+                                    <div className="text-sm">{formatAmount(amount)}</div>
+                                    <div className="text-sm">{estimated_days}</div>
+                                </div>
+                            </div>
+                        </li>
+                    )
+                })}
             </ul>
         </CheckoutWrapper>
     )
