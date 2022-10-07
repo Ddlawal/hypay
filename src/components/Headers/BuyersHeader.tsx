@@ -3,16 +3,55 @@ import cx from 'classnames'
 import { useOnClickOutside } from '../../hooks/useOnClickOutSide'
 import { COLORS } from '../../lib/constants/colors'
 import { Input } from '../form'
-import { MenuIcon, SearchIcon } from '../Icons'
+import { CartIcon, MenuIcon, SearchIcon } from '../Icons'
 import { BUYER_SIDE_NAV_WIDTH } from '../../lib/constants/elements'
 import { NextLink } from '../Links'
 import { Logo } from '../Logo'
+import { Button } from '../Button'
+import { useCart } from '../../hooks/useCart'
+import { Modal, ModalHeading } from '../Modal'
+import { Divider } from '../Divider'
+import { Cart } from '../Cart'
+import { useSession } from '../../hooks/useSession'
+import { useAppDispatch } from '../../hooks/useStoreHooks'
+import { useLogoutMutation } from '../../store/services/auth'
+import { useRouter } from 'next/router'
+import { clearLocalStorage } from '../../lib/helper'
+import { logout as logUserOut } from '../../store/reducers/auth'
+import { signOut } from 'next-auth/react'
 
-export const BuyersHeader = () => {
+export const BuyersHeader = ({ showCart }: { showCart: boolean }) => {
     const [open, setOpen] = useState(false)
     const { ref } = useOnClickOutside<HTMLDivElement>(() => setOpen(false))
-
+    const {
+        cart: { cartCount },
+    } = useCart()
+    const { user, token } = useSession()
+    const [showModal, setShowModal] = useState(false)
     const width = BUYER_SIDE_NAV_WIDTH + 'px'
+    const merchantCode = localStorage.getItem('merchantCode')
+    const dispatch = useAppDispatch()
+    const [logoutMutation] = useLogoutMutation()
+    const { push } = useRouter()
+
+    const logOut = async () => {
+        try {
+            const { status } = await logoutMutation({ token: token?.access_token as string }).unwrap()
+            if (status === 'success') {
+                clearLocalStorage()
+                dispatch(logUserOut())
+                push('/login')
+                await signOut({ redirect: false })
+            }
+        } catch (error: any) {
+            if (error?.data?.message === 'Invalid or expired or no token') {
+                clearLocalStorage()
+                dispatch(logUserOut())
+                push('/login')
+                await signOut({ redirect: false })
+            }
+        }
+    }
 
     return (
         <div className="flex w-screen items-center justify-between overflow-hidden bg-white py-4 px-2 md:justify-end md:px-16 lg:px-28">
@@ -36,14 +75,19 @@ export const BuyersHeader = () => {
                     </header>
 
                     <div className="text-bold w-full pl-4 text-xl text-white">
-                        <NextLink href="/store" className="block py-2">
+                        <NextLink href={`/store/${merchantCode}`} className="block py-2">
                             Home
                         </NextLink>
-                        <NextLink href="/store/checkout" className="block py-2">
-                            Checkout
-                        </NextLink>
+                        {user?.merchantCode !== merchantCode ? (
+                            <NextLink href="/store/checkout" className="block py-2">
+                                Checkout
+                            </NextLink>
+                        ) : null}
                         <NextLink href="/store/support" className="block py-2">
                             Atendimento
+                        </NextLink>
+                        <NextLink href="#" onClick={logOut} className="block py-2">
+                            Logout
                         </NextLink>
                     </div>
                 </div>
@@ -51,11 +95,17 @@ export const BuyersHeader = () => {
 
             <Logo size={24} labelled={{ labelPosition: 'right' }} />
             <div className="text-bold hidden w-full pl-4 text-lg md:ml-16 md:flex md:justify-around lg:ml-28">
-                <NextLink href="/store">Home</NextLink>
-                <NextLink href="/store/checkout">Checkout</NextLink>
+                <NextLink href={`/store/${merchantCode}`}>Home</NextLink>
+                {user?.merchantCode !== merchantCode ? <NextLink href="/store/checkout">Checkout</NextLink> : null}
                 <NextLink href="/store/support">Atendimento</NextLink>
+                <NextLink href="#" onClick={logOut}>
+                    Logout
+                </NextLink>
             </div>
             <div className="flex items-center justify-end gap-x-2 md:gap-x-0">
+                <button className="block rounded-lg p-2 transition duration-200 ease-in-out hover:scale-105 hover:shadow-md md:hidden">
+                    <SearchIcon size={22} />
+                </button>
                 <Input
                     placeholder="Search"
                     autoFocus
@@ -64,13 +114,36 @@ export const BuyersHeader = () => {
                     icon={<SearchIcon color={COLORS.PLACEHOLDER} />}
                     type="search"
                 />
-                <button className="block rounded-lg p-2 transition duration-200 ease-in-out hover:scale-105 hover:shadow-md md:hidden">
-                    <SearchIcon size={26} />
-                </button>
+                {showCart ? (
+                    <Button className="relative md:mr-4" onClick={() => setShowModal(true)}>
+                        {cartCount ? (
+                            <span className="absolute -top-1 -right-2 flex h-5 w-5 items-center justify-center rounded-[50%] bg-hypay-pink text-[0.6rem] text-white">
+                                {cartCount}
+                            </span>
+                        ) : null}
+                        <CartIcon color={COLORS.BLACK} size={22} />
+                    </Button>
+                ) : null}
                 <button className="p-2 md:hidden" onClick={() => setOpen(true)}>
                     <MenuIcon size={26} color={COLORS.ICON_GRAY} />
                 </button>
             </div>
+
+            {showModal ? (
+                <Modal
+                    isOpen={showModal}
+                    dismissable
+                    showDismissButton
+                    onDismiss={() => setShowModal(false)}
+                    withoutPadding
+                    size="lg"
+                >
+                    <ModalHeading className="mb-0 py-6 pl-5">Resumo da Compra</ModalHeading>
+                    <Divider />
+
+                    <Cart />
+                </Modal>
+            ) : null}
         </div>
     )
 }

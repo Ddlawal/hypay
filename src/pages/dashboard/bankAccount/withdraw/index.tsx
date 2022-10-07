@@ -1,22 +1,13 @@
-import React, { useState } from 'react'
-import { useRouter } from 'next/router'
-import { useForm } from 'react-hook-form'
+import React from 'react'
+import Link from 'next/link'
+
+import { NextImage as Image } from '../../../../components/Image'
 import { PrimaryLayout } from '../../../../components/Layout'
 import { Card } from '../../../../components/Card'
 import { COLORS } from '../../../../lib/constants/colors'
-import {
-    OpenLinkIcon,
-    SettingsIcon,
-    TransactionRecievedArrow,
-    TransactionSentArrow,
-} from '../../../../components/Icons'
-import Image from 'next/image'
+import { OpenLinkIcon } from '../../../../components/Icons'
 import wallet from '../../../../../public/images/wallet.png'
-import Link from 'next/link'
-import { trxnType } from '../../../../lib/data'
 import { Button } from '../../../../components/Button'
-
-const listOfBankAccount = [{ name: 'Banco Inter' }, { name: 'First Bank' }]
 
 function Index() {
     return (

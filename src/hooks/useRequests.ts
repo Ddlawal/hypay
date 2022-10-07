@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { RequestType } from '../interfaces/requests'
 import { useLazyGetAllRequestsQuery, useLazyGetRequestQuery } from '../store/services/requests'
@@ -10,7 +11,7 @@ export const statusLabelMap: Record<string, number> = {
     'Order Delivered': 5,
 }
 
-export const useRequests = (requestId?: string) => {
+export const useRequests = (requestType: 'all' | 'single' = 'all') => {
     // const [statuses, setStatuses] = useState<string[]>([])
     const [activeStatusIndex, setActiveStatusIndex] = useState(0)
     const [requests, setRequests] = useState<Array<RequestType>>([])
@@ -19,29 +20,36 @@ export const useRequests = (requestId?: string) => {
     const [getAllRequests, { isFetching, isLoading }] = useLazyGetAllRequestsQuery()
     const [getRequest, { isFetching: isFetchingOne, isLoading: isLoadingOne, error }] = useLazyGetRequestQuery()
 
+    const {
+        query: { id },
+        isReady,
+    } = useRouter()
+
     useEffect(() => {
         const fetchData = async () => {
-            if (!requestId) {
-                const result = await getAllRequests().unwrap()
-                setRequests(result ?? [])
-            } else {
-                const res = await getRequest(requestId).unwrap()
+            if (isReady) {
+                if (requestType === 'all') {
+                    const result = await getAllRequests().unwrap()
+                    setRequests(result ?? [])
+                } else {
+                    const res = await getRequest(id as string).unwrap()
 
-                if (res) {
-                    setRequest(res)
+                    if (res) {
+                        setRequest(res)
 
-                    statusLabel.forEach((label) => {
-                        if (label === res?.status) {
-                            return setActiveStatusIndex(statusLabelMap[label])
-                        }
-                    })
+                        statusLabel.forEach((label) => {
+                            if (label === res?.status) {
+                                return setActiveStatusIndex(statusLabelMap[label])
+                            }
+                        })
+                    }
                 }
             }
         }
 
         fetchData()
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [isReady])
 
     // useEffect(() => {
     //     if (req?.includes('getStatuses')) {
@@ -60,7 +68,7 @@ export const useRequests = (requestId?: string) => {
     return {
         request,
         requests: requests ?? [],
-        isLoading: isLoading || isFetching || isFetchingOne || isLoadingOne,
+        isLoading: isLoading || isFetching || isFetchingOne || isLoadingOne || !isReady,
         activeStatusIndex,
         error,
     }

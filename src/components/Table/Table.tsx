@@ -1,5 +1,6 @@
 import React, { MutableRefObject, ReactNode, useRef } from 'react'
 import cx from 'classnames'
+import { NextImage as Image } from '../Image'
 
 type TableKeyType<T> = keyof T | null
 
@@ -26,7 +27,7 @@ const tdValue = <T,>({ k, row }: { k: TableKeyType<T>; row: T }) => {
     }
 
     if (k.toString().includes('image') || k.toString().includes('url')) {
-        return <img src={`${row[k]}`} alt="item-avatar" className="h-12 w-12" />
+        return <Image src={`${row[k]}`} width={50} height={50} alt="item-avatar" className="h-12 w-12" />
     }
 
     return row[k]

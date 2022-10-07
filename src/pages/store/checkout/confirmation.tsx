@@ -1,8 +1,8 @@
 import React from 'react'
 import { NextPage } from 'next'
-import Image from 'next/image'
 import cx from 'classnames'
 
+import { NextImage as Image } from '../../../components/Image'
 import { BuyerLayout } from '../../../components/Layout'
 import { BuyerTimeline } from '../../../components/Timeline'
 import {
@@ -36,6 +36,7 @@ const ProductSummary = ({ isSideSummary, imageUrl = '/images/jean-jacket.png' }:
                     height={isSideSummary ? 120 : 60}
                     width={100}
                     quality={100}
+                    alt="product-summary"
                 />
             </div>
             <div className={cx(isSideSummary && 'col-span-6', 'col-span-12 md:col-span-6')}>

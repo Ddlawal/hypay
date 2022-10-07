@@ -1,39 +1,47 @@
-import React, { GetServerSideProps, NextPage } from 'next'
+import React, { NextPage } from 'next'
 import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
+
 import { AddAProduct } from '../../../../components/CreateAStore/AddAProduct'
 import { PrimaryLayout } from '../../../../components/Layout'
-import { useProducts } from '../../../../hooks/useProducts'
 import { ProductsType } from '../../../../interfaces/products'
 import { showSuccessSnackbar } from '../../../../lib/helper'
+import { useLazyGetSingleProductQuery } from '../../../../store/services/products'
 
 type OnSuccessType = { products: { data: Array<ProductsType> } }
 
-export const getServerSideProps: GetServerSideProps<Record<string, unknown>, { id: string }> = async ({ params }) => {
-    return {
-        props: {
-            productId: params?.id,
-        },
-    }
-}
+const EditProduct: NextPage = () => {
+    const [product, setProduct] = useState<ProductsType>()
+    const [lodaing, setLoading] = useState(true)
+    const {
+        query: { id },
+        isReady,
+        back,
+    } = useRouter()
 
-const EditProduct: NextPage<{ productId: string }> = ({ productId }) => {
-    const router = useRouter()
-    const { product, isLoading } = useProducts(productId)
+    const [getProduct, { isFetching, isLoading }] = useLazyGetSingleProductQuery()
+    useEffect(() => {
+        const performFetch = async () => {
+            if (isReady) {
+                const res = await getProduct(id as string).unwrap()
 
-    const props: { product?: ProductsType } = {}
+                setProduct(res)
+                setLoading(isFetching || isLoading)
+            }
+        }
 
-    if (product) {
-        props.product = product
-    }
+        performFetch()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isReady])
 
-    const onSuccess = (res: OnSuccessType) => {
-        router.back()
+    const onSuccess = () => {
+        back()
         showSuccessSnackbar(`Product updated successfully!`)
     }
     return (
-        <PrimaryLayout currentTabIndex={1} isLoading={isLoading} isNavBack navHeader="Editar produto">
+        <PrimaryLayout currentTabIndex={1} isLoading={lodaing} isNavBack navHeader="Editar produto">
             <div className="pt-1">
-                <AddAProduct<OnSuccessType> onSuccess={onSuccess} {...props} />
+                <AddAProduct<OnSuccessType> onSuccess={onSuccess} product={product} />
             </div>
         </PrimaryLayout>
     )

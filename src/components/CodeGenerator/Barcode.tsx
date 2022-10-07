@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/alt-text */
+/* eslint-disable @next/next/no-img-element */
 import React, { useEffect } from 'react'
 import JsBarcode, { Options } from 'jsbarcode'
 import { useMediaQuery } from '../../hooks/useMediaQuery'

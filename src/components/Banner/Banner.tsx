@@ -1,6 +1,6 @@
 import React, { FC, ReactNode } from 'react'
 import cx from 'classnames'
-import Image from 'next/image'
+import { NextImage as Image } from '../Image'
 
 type BannerProps = {
     src: string

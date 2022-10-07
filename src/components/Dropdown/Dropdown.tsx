@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks/useStoreHooks'
 import { useLogoutMutation } from '../../store/services/auth'
 import { logout as logUserOut } from '../../store/reducers/auth'
 import { useRouter } from 'next/router'
+import { clearLocalStorage } from '../../lib/helper'
 
 type DropdownItemProps = {
     title: string
@@ -27,38 +28,44 @@ type DropdownButtonProps = {
 const DropdownItems: FC<DropdownButtonProps> = ({ items, className }) => {
     const dispatch = useAppDispatch()
     const [logoutMutation] = useLogoutMutation()
-    const token = useAppSelector((state) => state.auth.token)
+    const { token, user } = useAppSelector((state) => state.auth)
     const { push } = useRouter()
 
     const logOut = async () => {
         try {
             const { status } = await logoutMutation({ token: token?.access_token as string }).unwrap()
             if (status === 'success') {
-                localStorage.clear()
+                clearLocalStorage()
                 dispatch(logUserOut())
                 push('/login')
                 await signOut({ redirect: false })
             }
         } catch (error: any) {
             if (error?.data?.message === 'Invalid or expired or no token') {
-                localStorage.clear()
+                clearLocalStorage()
                 dispatch(logUserOut())
                 push('/login')
                 await signOut({ redirect: false })
             }
         }
     }
+
     return (
         <ul className={cx(className)}>
-            {items.map(({ title, href, onClick }, id) => (
-                <li
-                    key={id}
-                    onClick={() => (href ? push(href) : onClick)}
-                    className="w-full capitalize transition-transform hover:scale-105"
-                >
-                    {title}
-                </li>
-            ))}
+            {items.map(({ title, href, onClick }, id) => {
+                if (href === '/store') {
+                    href = `${href}/${user?.merchantCode}`
+                }
+                return (
+                    <li
+                        key={id}
+                        onClick={() => (href ? push(href) : onClick)}
+                        className="w-full capitalize transition-transform hover:scale-105"
+                    >
+                        {title}
+                    </li>
+                )
+            })}
             <li
                 className="w-full transition-transform hover:scale-105"
                 onClick={() => {

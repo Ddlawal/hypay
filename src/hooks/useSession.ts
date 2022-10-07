@@ -1,12 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useCallback, useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '../hooks/useStoreHooks'
-import { logout, UserInfo } from '../store/reducers/auth'
+import { logout, Token, UserInfo } from '../store/reducers/auth'
 
-type SessionProps = { user: UserInfo | null }
+type SessionProps = { user: UserInfo | null; token: Token | null }
 
 export const useSession = (): SessionProps => {
-    const { sessionExpiryTime, user } = useAppSelector((state) => state?.auth)
+    const { sessionExpiryTime, user, token } = useAppSelector((state) => state?.auth)
     const dispatch = useAppDispatch()
 
     const timeToExpiry = sessionExpiryTime - Date.now()
@@ -16,7 +16,6 @@ export const useSession = (): SessionProps => {
         if (sessionExpired) {
             // Show modal then logout
             dispatch(logout())
-            localStorage.clear()
             return { user: null }
         }
     }, [sessionExpired])
@@ -25,5 +24,5 @@ export const useSession = (): SessionProps => {
         verifySession()
     }, [])
 
-    return { user } as SessionProps
+    return { user, token }
 }

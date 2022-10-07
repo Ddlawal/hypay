@@ -1,9 +1,7 @@
 import React from 'react'
-import { useRouter } from 'next/router'
-import Link from 'next/link'
+
 import { PrimaryLayout } from '../../../components/Layout'
 import { Card } from '../../../components/Card'
-import Image from 'next/image'
 import { Input } from '../../../components/form'
 import {
     AnalysisIcon,
@@ -23,7 +21,6 @@ const quickGuides = [
 ]
 
 function Index() {
-    const { back } = useRouter()
     return (
         <PrimaryLayout>
             <div className="px-4 py-4 md:w-10/12 md:px-12">

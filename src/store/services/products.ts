@@ -27,6 +27,13 @@ export const productApi = createApi({
             }),
             transformResponse: (res: { products: { data: Array<ProductsType> } }) => res.products.data,
         }),
+        getSingleProduct: builder.query<ProductsType, string>({
+            query: (data: string) => ({
+                url: `/product/single/${data}`,
+                method: 'GET',
+            }),
+            transformResponse: (res: { product: ProductsType }) => res.product,
+        }),
         deleteAProduct: builder.query<{ products: { data: Array<ProductsType> } }, string>({
             query: (id: string) => ({
                 url: `/product/remove?productID=${id}`,
@@ -53,6 +60,13 @@ export const productApi = createApi({
                 method: 'GET',
             }),
         }),
+        getMerchantStore: builder.query<Array<ProductsType>, string>({
+            query: (merchantCode: string) => ({
+                url: `/product/merchantStore?merchantCode=${merchantCode}`,
+                method: 'GET',
+            }),
+            transformResponse: (res: { products: { data: Array<ProductsType> } }) => res.products.data,
+        }),
     }),
 })
 
@@ -66,4 +80,6 @@ export const {
     useLazyGetAllProductsQuery,
     useLazySearchMerchantProductsQuery,
     useGetProductDetailsQuery,
+    useLazyGetMerchantStoreQuery,
+    useLazyGetSingleProductQuery,
 } = productApi

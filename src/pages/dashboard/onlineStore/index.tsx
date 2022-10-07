@@ -1,12 +1,11 @@
 import React from 'react'
-import { PrimaryLayout } from '../../../components/Layout/PrimaryLayout'
 import { NextPage } from 'next'
+
+import { PrimaryLayout } from '../../../components/Layout/PrimaryLayout'
 import { Card } from '../../../components/Card'
 import { LoaderIcon, PaintIcon, RoundedCheckIcon } from '../../../components/Icons'
 import { COLORS } from '../../../lib/constants/colors'
-import Image from 'next/image'
-import { NextLink } from '../../../components/Links'
-import { ISingleTheme, ITheme } from '../../../interfaces/onlineStore'
+import { ISingleTheme } from '../../../interfaces/onlineStore'
 import useTheme from '../../../hooks/useTheme'
 
 const OnlineStore: NextPage = () => {

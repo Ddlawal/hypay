@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import Image from 'next/image'
+import { NextImage as Image } from '../Image'
 import { useRouter } from 'next/router'
 import { COLORS } from '../../lib/constants/colors'
 import { Button } from '../Button'
@@ -305,7 +305,7 @@ export const AddAProduct = <T,>({ product, onSuccess, setTabIndex }: AddProductP
                         <div>
                             <h4 className="my-3 text-xl font-bold">Link do Produto</h4>
                             <Button
-                                onClick={() => copyProductLink(`${product.id}`)}
+                                onClick={() => copyProductLink(`${product.productCode}`)}
                                 preventDefault
                                 className="rounded-md border-[1px] border-hypay-pink bg-white px-3 text-hypay-pink outline-none"
                             >

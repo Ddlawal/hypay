@@ -1,6 +1,6 @@
 import { CloseIcon, LoaderIcon } from '../Icons'
 
-import React, { FC, ReactNode } from 'react'
+import React, { FC, ReactNode, useEffect } from 'react'
 import cx from 'classnames'
 
 import { Card } from '../Card'
@@ -96,11 +96,30 @@ export const Modal: FC<ModalProps> = ({
 }): JSX.Element => {
     const { ref } = useOnClickOutside<HTMLDivElement>(dismissable ? onDismiss : () => null)
 
+    useEffect(() => {
+        const body = document.querySelector('body')
+
+        if (!body) {
+            return
+        }
+        if (isOpen) {
+            // Disable scroll
+            body.style.overflow = 'hidden'
+        } else {
+            // Enable scroll
+            body.style.overflow = 'auto'
+        }
+
+        return () => {
+            body.style.overflow = 'auto'
+        }
+    }, [isOpen])
+
     return (
         <>
             {isOpen ? (
                 <div className="fixed inset-0 z-50 flex max-h-full min-h-screen items-center justify-center overflow-auto bg-black bg-opacity-50 backdrop-blur backdrop-brightness-100">
-                    <div ref={ref}>
+                    <div className="w-max" ref={ref}>
                         <Card
                             className={cx(
                                 'relative w-full rounded bg-white',
@@ -112,6 +131,7 @@ export const Modal: FC<ModalProps> = ({
                                 withoutPadding ? '' : 'p-3 sm:p-4 md:p-5 lg:p-6',
                                 modalClass
                             )}
+                            padding="none"
                             rounded
                             elevation="xl"
                             aria-labelledby={labelledby}

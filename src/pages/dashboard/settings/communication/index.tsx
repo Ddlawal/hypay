@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { NextPage } from 'next'
+
+import { NextImage as Image } from '../../../../components/Image'
 import { PrimaryLayout } from '../../../../components/Layout'
 import { SettingsMenuItemList } from '../../../../lib/data'
 import { Card } from '../../../../components/Card'
-import Image from 'next/image'
 import { Button } from '../../../../components/Button'
 import { Input } from '../../../../components/form'
 import { CircularPlusIcon, LoaderIcon, WhatsAppIcon } from '../../../../components/Icons'
@@ -53,8 +54,9 @@ const Communication: NextPage = () => {
             try {
                 const { whatsappAccounts } = await getUserWhatsappNumber().unwrap()
                 return setAllWhatsappAccount(whatsappAccounts)
-            } catch (error: any) {
+            } catch (error) {
                 showErrorSnackbar('An error occurred')
+                console.log(error)
             }
         }
         fetchNumbers()

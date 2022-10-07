@@ -1,16 +1,15 @@
 import React, { useState } from 'react'
 import cx from 'classnames'
+
 import { COLORS } from '../../lib/constants/colors'
 import { headerLinks } from '../../lib/data'
 import { Button } from '../Button'
 import { MenuIcon, RightArrowIcon } from '../Icons'
 import { NextLink } from '../Links'
 import { Logo } from '../Logo'
-import { useRouter } from 'next/router'
 import { useOnClickOutside } from '../../hooks/useOnClickOutSide'
 
 const HeaderLinks = () => {
-    const { push } = useRouter()
     return (
         <ul className="flex flex-col justify-between gap-6 sm:gap-7 md:flex-row md:gap-10">
             {headerLinks.map(({ id, title, href }) => {

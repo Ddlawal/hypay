@@ -80,7 +80,7 @@ export const showErrorSnackbar = (message: string, options?: ToastOption) => {
 }
 
 // Create our number formatter.
-export const currencyFormatter = new Intl.NumberFormat('en-US', {
+export const currencyFormforatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
     minimumFractionDigits: 0,
@@ -89,4 +89,17 @@ export const currencyFormatter = new Intl.NumberFormat('en-US', {
     //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
 })
 
-currencyFormatter.format(2500) /* $2,500.00 */
+const formatter = (currency: string) =>
+    new Intl.NumberFormat(['en-US', 'pt-BR', 'pt-PT'], { style: 'currency', currency })
+
+export const formatAmount = (amount: number, currency = 'BRL') => {
+    return formatter(currency).format(amount).replace('R$', 'R$ ')
+}
+
+export const clearLocalStorage = () => {
+    const code = localStorage.getItem('merchantCode')
+    localStorage.clear()
+    if (code) {
+        localStorage.setItem('merchantCode', code)
+    }
+}

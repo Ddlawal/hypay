@@ -5,12 +5,13 @@ import { LoadingPage } from './LoadingPage'
 type BuyerLayoutProps = {
     children: ReactNode
     isLoading?: boolean
+    showCart?: boolean
 }
 
-export const BuyerLayout: FC<BuyerLayoutProps> = ({ children, isLoading }) => {
+export const BuyerLayout: FC<BuyerLayoutProps> = ({ children, isLoading, showCart = false }) => {
     return (
-        <div className="pb-8">
-            <BuyersHeader />
+        <div>
+            <BuyersHeader showCart={showCart} />
             <div>{isLoading ? <LoadingPage /> : children}</div>
         </div>
     )

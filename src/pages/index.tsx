@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import cx from 'classnames'
 import type { NextPage } from 'next'
-import Image from 'next/image'
+import { NextImage as Image } from '../components/Image'
 import { Banner } from '../components/Banner'
 import { Button } from '../components/Button'
 import { LandingPageHeader } from '../components/Headers/LandingPageHeader'

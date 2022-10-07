@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react'
-import Image from 'next/image'
+import { NextImage as Image } from '../components/Image'
 import { NextPage } from 'next'
 import { signIn, useSession } from 'next-auth/react'
 import Head from 'next/head'
@@ -46,7 +46,8 @@ const Login: NextPage = () => {
             dispatch(loginUser(payload))
             removeCookie(USER_PENDING_2FA_AUTH)
             showSuccessSnackbar('Login Successful')
-            payload.userInfo.usertype === 'Buyer' ? push('/store') : push('/dashboard/home')
+            const merchantCode = localStorage.getItem('merchantCode')
+            payload.userInfo.usertype === 'Buyer' ? push(`/store/${merchantCode}`) : push('/dashboard/home')
         }
     }
 
@@ -70,6 +71,7 @@ const Login: NextPage = () => {
             showErrorSnackbar(error?.data?.error || 'There was an error while trying to log in')
             console.log(error, 'there was an error while trying to log in')
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [Session, loginWithGoogle, dispatch, push])
 
     useEffect(() => {

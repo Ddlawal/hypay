@@ -9,7 +9,7 @@ import { SecondInput } from '../../../../components/form'
 import { LockIcon, OpenLinkIcon, QuestionMarkIcon } from '../../../../components/Icons'
 
 const General: NextPage = () => {
-    const [saveEdit, setSaveEdit] = useState([])
+    const [saveEdit] = useState([])
     const { register } = useForm<any>()
     return (
         <PrimaryLayout currentTabIndex={6} menuItemList={SettingsMenuItemList} isPrimary={false}>
@@ -101,7 +101,7 @@ const General: NextPage = () => {
                             </div>
                         </div>
                     </section>
-                    <section className="w-full border-gray-300 px-2 px-2 pb-20 pb-20 md:w-4/5 md:border  ">
+                    <section className="w-full border-gray-300 px-2 pb-20 md:w-4/5 md:border  ">
                         <div>
                             <h2 className="mb-3 text-lg font-bold">Conversões para Google e Facebook</h2>
                             <p className="mb-3 text-lg">
