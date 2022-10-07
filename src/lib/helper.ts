@@ -80,7 +80,7 @@ export const showErrorSnackbar = (message: string, options?: ToastOption) => {
 }
 
 // Create our number formatter.
-export const currencyFormforatter = new Intl.NumberFormat('en-US', {
+export const currencyFormatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
     minimumFractionDigits: 0,
