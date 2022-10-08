@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-import { BuyerAddress, ShippingRates } from '../interfaces/buyer'
-import { getBuyerDetails, setBuyerAddress, setBuyerShipping } from '../store/reducers/buyer'
+import { BuyerAddress, PaymentProviders, ShippingRates } from '../interfaces/buyer'
+import { getBuyerDetails, setBuyerAddress, setBuyerShipping, setPaymentProvider } from '../store/reducers/buyer'
 import { useLazyGetBuyerAddressesQuery, useLazyGetShipmentRatesQuery } from '../store/services/buyer'
 import { useCart } from './useCart'
 import { useAppSelector } from './useStoreHooks'
@@ -15,8 +15,9 @@ export const useCheckout = (type?: RequestData) => {
     const { cart } = useCart()
     const dispatch = useDispatch()
 
-    const setAddress = (address: BuyerAddress) => dispatch(setBuyerAddress(address))
-    const setShipping = (shipping: ShippingRates) => dispatch(setBuyerShipping(shipping))
+    const setAddress = (address: BuyerAddress | null) => dispatch(setBuyerAddress(address))
+    const setShipping = (shipping: ShippingRates | null) => dispatch(setBuyerShipping(shipping))
+    const setProvider = (provider: PaymentProviders | null) => dispatch(setPaymentProvider(provider))
 
     useEffect(() => {
         if (type === 'address') {
@@ -34,5 +35,6 @@ export const useCheckout = (type?: RequestData) => {
         isFetchingShippingRates: isFetchingSR || isLoadingSR,
         setAddress,
         setShipping,
+        setProvider,
     }
 }

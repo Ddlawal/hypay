@@ -1,30 +1,63 @@
-// import cx from 'classnames'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
+
 import { useCart } from '../../hooks/useCart'
 import { useCheckout } from '../../hooks/useCheckout'
 import { Button } from '../Button'
-
 import { Card } from '../Card'
 import { CostValue } from '../Cart'
 import { Divider } from '../Divider'
 import { LockIcon } from '../Icons'
 import { NextLink } from '../Links'
+import { usePlaceOrderMutation } from '../../store/services/buyer'
+import { showErrorSnackbar, showSuccessSnackbar } from '../../lib/helper'
 
 type PurchaseSummaryProps = { canProceed?: boolean; next: string; summaryButtonText?: string }
 
 export const PurchaseSummary = ({ canProceed, next, summaryButtonText }: PurchaseSummaryProps) => {
     const [total, setTotal] = useState(0)
+    const [isProcessingPayment, setIsProcessingPayment] = useState(false)
     const {
-        cart: { cartCount, charges, totalPrice, totalSum },
+        cart: { cartId, cartCount, charges, totalPrice, totalSum },
     } = useCart()
     const merchantCode = localStorage.getItem('merchantCode')
     const { push } = useRouter()
-    const { preferredShipping } = useCheckout()
+    const { paymentProvider, preferredAddress, preferredShipping, setAddress, setProvider, setShipping } = useCheckout()
+    const [placeOrder, { isLoading }] = usePlaceOrderMutation()
 
-    const goToNextPage = () => {
+    const goToNextPage = async () => {
         if (next === 'pay') {
-            // Place Order
+            setIsProcessingPayment(true)
+            if (!preferredAddress || !preferredShipping || !paymentProvider) {
+                return
+            }
+
+            try {
+                const res = await placeOrder({
+                    address_id: String(preferredAddress.address_id),
+                    cart_id: cartId,
+                    charge_amount: preferredShipping.amount,
+                    charge_currency: 'NGN',
+                    currency_id: 574,
+                    delivery_note: preferredShipping.delivery_note || '',
+                    estimated_days: preferredShipping.estimated_days,
+                    rate_id: preferredShipping.id,
+                    paymentProvider,
+                }).unwrap()
+
+                showSuccessSnackbar(`Redirecting to ${paymentProvider.toLocaleUpperCase()}`)
+                setAddress(null)
+                setProvider(null)
+                setShipping(null)
+
+                const redirect = await push(res.paymentUrl)
+                redirect && !isLoading && setIsProcessingPayment(false)
+            } catch (error) {
+                setIsProcessingPayment(false)
+                console.log(error)
+                showErrorSnackbar('Error! Something went wrong!')
+            }
+
             return
         }
 
@@ -38,7 +71,7 @@ export const PurchaseSummary = ({ canProceed, next, summaryButtonText }: Purchas
 
     return (
         <>
-            <div className="mb-2 text-lg font-bold">Resumo da compra</div>
+            <header className="mb-2 text-lg font-bold">Resumo da compra</header>
             <Card rounded>
                 <div className="mb-2 text-sm font-extralight">
                     <span className="text-hypay-gray">Cart Items: </span>
@@ -67,7 +100,7 @@ export const PurchaseSummary = ({ canProceed, next, summaryButtonText }: Purchas
                         padding="py-2"
                         primary
                         preventDefault
-                        // loading={isProcessing}
+                        loading={isProcessingPayment}
                     >
                         {summaryButtonText || 'Proceed'}
                     </Button>

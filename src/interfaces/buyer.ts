@@ -88,3 +88,5 @@ export type PlaceOrderResponse = {
     cart: CartType
     order: OrderType
 }
+
+export type PaymentProviders = 'paystack' | 'seerbit'

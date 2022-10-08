@@ -2,16 +2,23 @@ import { createSlice } from '@reduxjs/toolkit'
 import type { AsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '..'
 import { buyerApi } from '../services/buyer'
-import { BuyerAddress, ShippingRates } from '../../interfaces/buyer'
+import { BuyerAddress, PaymentProviders, ShippingRates } from '../../interfaces/buyer'
 
 interface BuyerState {
     addresses: Array<BuyerAddress>
     shippingRates: Array<ShippingRates>
     preferredAddress: BuyerAddress | null
     preferredShipping: ShippingRates | null
+    paymentProvider: PaymentProviders | null
 }
 
-const initialState: BuyerState = { addresses: [], shippingRates: [], preferredAddress: null, preferredShipping: null }
+const initialState: BuyerState = {
+    addresses: [],
+    shippingRates: [],
+    preferredAddress: null,
+    preferredShipping: null,
+    paymentProvider: null,
+}
 
 const callback = (
     state: BuyerState,
@@ -47,24 +54,31 @@ const buyerSlice = createSlice({
     name: 'buyer',
     initialState,
     reducers: {
-        setBuyerAddress(state, { payload }: PayloadAction<BuyerAddress>) {
-            if (!payload) {
+        setBuyerAddress(state, { payload }: PayloadAction<BuyerAddress | null>) {
+            if (payload === undefined) {
                 return state
             }
-            localStorage.setItem('preferredAddress', JSON.stringify(payload))
             return {
                 ...state,
                 preferredAddress: payload,
             }
         },
-        setBuyerShipping(state, { payload }: PayloadAction<ShippingRates>) {
-            if (!payload) {
+        setBuyerShipping(state, { payload }: PayloadAction<ShippingRates | null>) {
+            if (payload === undefined) {
                 return state
             }
-            localStorage.setItem('preferredShipping', JSON.stringify(payload))
             return {
                 ...state,
                 preferredShipping: payload,
+            }
+        },
+        setPaymentProvider(state, { payload }: PayloadAction<PaymentProviders | null>) {
+            if (payload === undefined) {
+                return state
+            }
+            return {
+                ...state,
+                paymentProvider: payload,
             }
         },
     },
@@ -77,5 +91,5 @@ const buyerSlice = createSlice({
 })
 
 export const getBuyerDetails = (state: RootState) => state.buyer
-export const { setBuyerAddress, setBuyerShipping } = buyerSlice.actions
+export const { setBuyerAddress, setBuyerShipping, setPaymentProvider } = buyerSlice.actions
 export default buyerSlice.reducer

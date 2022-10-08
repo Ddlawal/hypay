@@ -1,5 +1,7 @@
+import cx from 'classnames'
 import { NextPage } from 'next'
-import { ChangeEvent, useState } from 'react'
+import { useState } from 'react'
+
 import { CheckoutWrapper } from '../../../components/Buyer'
 import { Divider } from '../../../components/Divider'
 import { NextImage } from '../../../components/Image'
@@ -12,9 +14,9 @@ const Shipping: NextPage = () => {
     const [preferredShippingStoreId, setPreferredShippingStoreId] = useState<string>()
     const { shippingRates, isFetchingShippingRates, setShipping } = useCheckout('shipping')
 
-    const handleSelectBuyerShipping = (e: ChangeEvent<HTMLInputElement>, data: ShippingRates) => {
+    const handleSelectBuyerShipping = (id: string, data: ShippingRates) => {
         setShipping(data)
-        setPreferredShippingStoreId(e.target.id)
+        setPreferredShippingStoreId(id)
     }
 
     return (
@@ -24,21 +26,24 @@ const Shipping: NextPage = () => {
             next="/payment"
             isLoading={isFetchingShippingRates}
         >
-            <div>Shipping</div>
+            <header className="mb-2 text-lg font-bold">Shipping</header>
             <ul className="mt-4">
                 {shippingRates.map((buyerShipping, i) => {
                     const { amount, courier, estimated_days } = buyerShipping
                     return (
                         <li
                             key={i}
-                            className="border-hypay-lightgray my-3 flex items-center gap-x-4 rounded border bg-slate-100 px-3"
+                            className={cx(
+                                preferredShippingStoreId === courier.id ? 'bg-white' : 'bg-gray-100',
+                                'border-hypay-lightgray my-3 flex items-center gap-x-4 rounded border bg-slate-100 px-3'
+                            )}
+                            onClick={() => handleSelectBuyerShipping(courier.id, buyerShipping)}
                         >
                             <div>
                                 <input
                                     type="radio"
-                                    id={`${courier.id}`}
                                     name="address"
-                                    onChange={(e) => handleSelectBuyerShipping(e, buyerShipping)}
+                                    onChange={() => handleSelectBuyerShipping(courier.id, buyerShipping)}
                                     checked={preferredShippingStoreId === courier.id}
                                 />
                             </div>

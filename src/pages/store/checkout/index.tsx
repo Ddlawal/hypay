@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { NextPage } from 'next'
 import { State, City } from 'country-state-city'
 
@@ -33,7 +33,7 @@ const Checkout: NextPage = () => {
     const [stateError, setStateError] = useState(false)
     const [addMoreAddresses, setAddMoreAddresses] = useState(false)
     const { addresses: buyerAddresses, isFetchingBuyerAddress, setAddress } = useCheckout('address')
-    const [preferredAddressId, setPreferredAddressId] = useState(buyerAddresses[0]?.address_id)
+    const [preferredAddressId, setPreferredAddressId] = useState<number>()
 
     const [addBuyerAddress, { isLoading: isAddingBuyerAddress }] = useAddBuyerAddressMutation()
 
@@ -50,8 +50,11 @@ const Checkout: NextPage = () => {
             setStates(stt)
         }
 
+        setAddress(buyerAddresses[0])
+        setPreferredAddressId(buyerAddresses[0]?.address_id)
         fetchData()
-    }, [])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [buyerAddresses[0]])
 
     const handleStateChange = (stateCode: string | null) => {
         if (!stateCode) {
@@ -80,9 +83,9 @@ const Checkout: NextPage = () => {
         setCityError(false)
     }
 
-    const handleSelectBuyerAddress = (e: ChangeEvent<HTMLInputElement>, data: BuyerAddress) => {
+    const handleSelectBuyerAddress = (id: number, data: BuyerAddress) => {
         setAddress(data)
-        setPreferredAddressId(Number(e.target.id))
+        setPreferredAddressId(id)
     }
 
     const onFormSubmit = async (data: AddBuyerAddressType) => {
@@ -140,9 +143,8 @@ const Checkout: NextPage = () => {
                                 <div>
                                     <input
                                         type="radio"
-                                        id={`${address_id}`}
                                         name="address"
-                                        onChange={(e) => handleSelectBuyerAddress(e, buyerAddress)}
+                                        onChange={() => handleSelectBuyerAddress(address_id, buyerAddress)}
                                         checked={preferredAddressId === address_id}
                                     />
                                 </div>
