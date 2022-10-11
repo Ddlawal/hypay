@@ -15,26 +15,36 @@ import { AddToCartIcon } from '../../components/Icons'
 import { useCart } from '../../hooks/useCart'
 import { useSession } from '../../hooks/useSession'
 
-const merchantDisplayImage = ''
-const mostViewed: Array<ProductsType> = []
-
-const Footer = () => {
+const Footer = ({ isOwner }: { isOwner: boolean }) => {
     return (
         <div className="w-screen bg-white px-4 pb-6 pt-8 md:px-[20%]">
-            <div className="flex items-center justify-between px-[20%] text-xs md:text-sm">
-                <div>
-                    <NextLink href="/store">Home</NextLink>
-                </div>
-                <div>
-                    <NextLink href="/store/checkout" className="block py-2">
-                        Checkout
-                    </NextLink>
-                </div>
-                <div>
-                    <NextLink href="/store/support" className="block py-2">
-                        Atendimento
-                    </NextLink>
-                </div>
+            <div
+                className={cx(
+                    isOwner ? 'justify-center' : 'justify-between',
+                    'flex items-center px-[20%] text-xs md:text-sm'
+                )}
+            >
+                {isOwner ? (
+                    <div>
+                        <NextLink href="/dashboard/home">Back to My Dashboard</NextLink>
+                    </div>
+                ) : (
+                    <>
+                        <div>
+                            <NextLink href="/store">Home</NextLink>
+                        </div>
+                        <div>
+                            <NextLink href="/store/checkout" className="block py-2">
+                                Checkout
+                            </NextLink>
+                        </div>
+                        <div>
+                            <NextLink href="/store/support" className="block py-2">
+                                Atendimento
+                            </NextLink>
+                        </div>
+                    </>
+                )}
             </div>
             <hr className="mt-6 mb-4" />
             <div className="flex items-center justify-between text-xs md:text-sm">
@@ -51,49 +61,69 @@ const Footer = () => {
     )
 }
 
-const CarouselItem = ({
-    item: { amount, id, image_url, productCode, productName, quantity },
-    showOnHover,
-}: {
+type CarouselItemProps = {
+    isOwner: boolean
     item: ProductsType
-    showOnHover: boolean
-}) => {
+}
+
+const CarouselItem = ({
+    isOwner,
+    item: { amount, id, image_url, productCode, productName, quantity },
+}: CarouselItemProps) => {
     const [showAddToCart, setShowAddToCart] = useState(false)
     const { handleAddToCart } = useCart()
 
     return (
         <div>
             <NextLink
-                href={`/store/products/${productCode}`}
-                onMouseEnter={() => showOnHover && setShowAddToCart(true)}
+                href={isOwner ? '#' : `/store/products/${productCode}`}
+                onMouseEnter={() => !isOwner && setShowAddToCart(true)}
                 onMouseLeave={() => setShowAddToCart(false)}
             >
                 <div className="relative h-44 w-60">
                     <div
                         className={cx(
                             showAddToCart ? 'opacity-100' : 'opacity-0',
-                            'absolute z-10 h-10 w-16 bg-hover-cart from-white via-slate-100 transition-opacity duration-500 ease-in-out'
+                            'absolute z-10 h-10 w-16 bg-hover-cart from-white via-slate-100 transition-opacity duration-300 ease-in-out'
                         )}
                     >
                         <Button preventDefault onClick={() => handleAddToCart({ productID: id, quantity: 1 })}>
-                            <AddToCartIcon />
+                            <AddToCartIcon size={20} />
                         </Button>
                     </div>
                     <Image src={image_url} layout="fill" objectFit="cover" quality={100} alt="product-pic" />
                 </div>
             </NextLink>
-            <div className="my-2">
-                <div className="flex justify-between">
+            <div className="my-2 flex flex-col gap-y-2">
+                <div className="flex items-center justify-between">
                     <div className="text-xs font-light">{productName}</div>
                     <div>
                         <span className="text-xs font-light text-hypay-pink">In stock:</span>{' '}
                         <span className="text-xs">{quantity}</span>
                     </div>
                 </div>
-                <strong>{formatAmount(Number(amount))}</strong>
+                <div className="flex items-center justify-between">
+                    <strong className="text-sm md:text-base">{formatAmount(Number(amount))}</strong>
+                    <div className="md:hidden">
+                        <Button
+                            preventDefault
+                            primary
+                            className="text-xs"
+                            padding="py-0 px-3"
+                            onClick={() => handleAddToCart({ productID: id, quantity: 1 })}
+                        >
+                            Add to cart
+                        </Button>
+                    </div>
+                </div>
             </div>
         </div>
     )
+}
+
+type CarouselProps = {
+    isOwner: boolean
+    products: Array<ProductsType>
 }
 
 /**
@@ -102,11 +132,11 @@ const CarouselItem = ({
  * @param images Array of image urls
  * @returns JSX Element
  */
-const Carousel = ({ products, showOnHover }: { products: Array<ProductsType>; showOnHover: boolean }) => {
+const Carousel = ({ isOwner, products }: CarouselProps) => {
     return (
         <div className="hsb mt-3 flex h-full gap-x-5 overflow-x-auto shadow-inner">
             {products.map((product, i) => (
-                <CarouselItem key={`product_${i}`} item={product} showOnHover={showOnHover} />
+                <CarouselItem key={`product_${i}`} isOwner={isOwner} item={product} />
             ))}
         </div>
     )
@@ -117,7 +147,7 @@ const Store: NextPage = () => {
 
     const [getMerchantStore, { isFetching, isLoading }] = useLazyGetMerchantStoreQuery()
     const [storeProducts, setStoreProducts] = useState<Array<ProductsType>>([])
-    const [showAddToCartOnHover, setShowAddToCartOnHover] = useState(false)
+    const [isOwner, setIsOwner] = useState(false)
     const { user } = useSession()
 
     const {
@@ -127,7 +157,7 @@ const Store: NextPage = () => {
 
     useEffect(() => {
         if (isReady) {
-            setShowAddToCartOnHover(user?.merchantCode !== merchantCode)
+            setIsOwner(user?.merchantCode === merchantCode)
             ;(async () => {
                 try {
                     localStorage.setItem('merchantCode', merchantCode as string)
@@ -144,7 +174,7 @@ const Store: NextPage = () => {
     }, [isReady])
 
     return (
-        <BuyerLayout isLoading={isLoading || isFetching || !isReady} showCart={showAddToCartOnHover}>
+        <BuyerLayout isLoading={isLoading || isFetching || !isReady} isOwner={isOwner}>
             <div className="relative h-full md:px-28">
                 <Image
                     src="/images/buyers-banner.png"
@@ -182,12 +212,12 @@ const Store: NextPage = () => {
             <div className="min-h-[25rem]">
                 <div className="mt-4 overflow-hidden px-4 md:px-[20%]">
                     <strong className="text-xl">New</strong>
-                    <Carousel products={storeProducts} showOnHover={showAddToCartOnHover} />
+                    <Carousel isOwner={isOwner} products={storeProducts} />
                 </div>
                 <div className="my-8 h-full md:px-[20%]">
-                    {merchantDisplayImage ? (
+                    {storeProducts.length ? (
                         <Image
-                            src="/images/mens-wear.png"
+                            src={storeProducts[1].image_url}
                             layout="responsive"
                             height={250}
                             width={isDesktop ? 700 : 500}
@@ -197,11 +227,11 @@ const Store: NextPage = () => {
                     ) : null}
                 </div>
                 <div className="mt-4 overflow-hidden px-4 md:px-[20%]">
-                    {mostViewed.length ? <strong className="text-xl">Most Viewed</strong> : null}
-                    <Carousel products={mostViewed} showOnHover={showAddToCartOnHover} />
+                    {storeProducts.length ? <strong className="text-xl">Most Viewed</strong> : null}
+                    <Carousel isOwner={isOwner} products={[...storeProducts].reverse()} />
                 </div>
             </div>
-            <Footer />
+            <Footer isOwner={isOwner} />
         </BuyerLayout>
     )
 }

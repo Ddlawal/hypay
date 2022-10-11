@@ -1,8 +1,9 @@
 import React from 'react'
-import { NextImage as Image } from '../../../components/Image'
-import { useForm } from 'react-hook-form'
+import { StaticImageData } from 'next/image'
 import { useRouter } from 'next/router'
+import { useForm } from 'react-hook-form'
 
+import { NextImage as Image } from '../../../components/Image'
 import { EmailVerified } from '../home'
 import { Button } from '../../../components/Button'
 import { Card } from '../../../components/Card'

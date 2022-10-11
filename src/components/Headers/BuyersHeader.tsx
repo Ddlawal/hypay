@@ -20,13 +20,13 @@ import { clearLocalStorage } from '../../lib/helper'
 import { logout as logUserOut } from '../../store/reducers/auth'
 import { signOut } from 'next-auth/react'
 
-export const BuyersHeader = ({ showCart }: { showCart: boolean }) => {
+export const BuyersHeader = ({ isOwner }: { isOwner: boolean }) => {
     const [open, setOpen] = useState(false)
     const { ref } = useOnClickOutside<HTMLDivElement>(() => setOpen(false))
     const {
         cart: { cartCount },
     } = useCart()
-    const { user, token } = useSession()
+    const { token } = useSession()
     const [showModal, setShowModal] = useState(false)
     const width = BUYER_SIDE_NAV_WIDTH + 'px'
     const merchantCode = localStorage.getItem('merchantCode')
@@ -75,32 +75,51 @@ export const BuyersHeader = ({ showCart }: { showCart: boolean }) => {
                     </header>
 
                     <div className="text-bold w-full pl-4 text-xl text-white">
-                        <NextLink href={`/store/${merchantCode}`} className="block py-2">
-                            Home
-                        </NextLink>
-                        {user?.merchantCode !== merchantCode ? (
-                            <NextLink href="/store/checkout" className="block py-2">
-                                Checkout
+                        {isOwner ? (
+                            <NextLink href="/dashboard/home" className="block py-2">
+                                Dashboard
                             </NextLink>
-                        ) : null}
-                        <NextLink href="/store/support" className="block py-2">
-                            Atendimento
-                        </NextLink>
-                        <NextLink href="#" onClick={logOut} className="block py-2">
-                            Logout
-                        </NextLink>
+                        ) : (
+                            <>
+                                <NextLink href={`/store/${merchantCode}`} className="block py-2">
+                                    Home
+                                </NextLink>
+                                {/* <NextLink href="/store/checkout" className="block py-2">
+                                    Checkout
+                                </NextLink> */}
+                                <NextLink href="/store/support" className="block py-2">
+                                    Atendimento
+                                </NextLink>
+                                <NextLink href="#" onClick={logOut} className="block py-2">
+                                    Logout
+                                </NextLink>
+                            </>
+                        )}
                     </div>
                 </div>
             </div>
 
             <Logo size={24} labelled={{ labelPosition: 'right' }} />
-            <div className="text-bold hidden w-full pl-4 text-lg md:ml-16 md:flex md:justify-around lg:ml-28">
-                <NextLink href={`/store/${merchantCode}`}>Home</NextLink>
-                {user?.merchantCode !== merchantCode ? <NextLink href="/store/checkout">Checkout</NextLink> : null}
-                <NextLink href="/store/support">Atendimento</NextLink>
-                <NextLink href="#" onClick={logOut}>
-                    Logout
-                </NextLink>
+            <div
+                className={cx(
+                    isOwner ? 'md:justify-start' : 'md:justify-around',
+                    'text-bold hidden w-full pl-4 text-lg md:ml-16 md:flex lg:ml-28'
+                )}
+            >
+                {isOwner ? (
+                    <NextLink href="/dashboard/home" className="block py-2">
+                        Dashboard
+                    </NextLink>
+                ) : (
+                    <>
+                        <NextLink href={`/store/${merchantCode}`}>Home</NextLink>
+                        {/* <NextLink href="/store/checkout">Checkout</NextLink> */}
+                        <NextLink href="/store/support">Atendimento</NextLink>
+                        <NextLink href="#" onClick={logOut}>
+                            Logout
+                        </NextLink>
+                    </>
+                )}
             </div>
             <div className="flex items-center justify-end gap-x-2 md:gap-x-0">
                 <button className="block rounded-lg p-2 transition duration-200 ease-in-out hover:scale-105 hover:shadow-md md:hidden">
@@ -114,7 +133,7 @@ export const BuyersHeader = ({ showCart }: { showCart: boolean }) => {
                     icon={<SearchIcon color={COLORS.PLACEHOLDER} />}
                     type="search"
                 />
-                {showCart ? (
+                {!isOwner ? (
                     <Button className="relative md:mr-4" onClick={() => setShowModal(true)}>
                         {cartCount ? (
                             <span className="absolute -top-1 -right-2 flex h-5 w-5 items-center justify-center rounded-[50%] bg-hypay-pink text-[0.6rem] text-white">

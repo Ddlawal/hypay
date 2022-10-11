@@ -82,7 +82,7 @@ export const showErrorSnackbar = (message: string, options?: ToastOption) => {
 const formatter = (currency: string) =>
     new Intl.NumberFormat(['en-US', 'pt-BR', 'pt-PT'], { style: 'currency', currency })
 
-export const formatAmount = (amount: number, currency = 'BRL') => {
+export const formatAmount = (amount: number, currency = 'NGN') => {
     return formatter(currency).format(amount).replace('R$', 'R$ ')
 }
 

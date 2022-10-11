@@ -1,5 +1,5 @@
 import { RootState } from '../index'
-import { createSlice, Slice, SliceCaseReducers } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 
 interface initialTemporaryState {
     userData: any

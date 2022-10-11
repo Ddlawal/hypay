@@ -7,16 +7,27 @@ import { CartIcon, CloseIcon, LoaderIcon, MinusIcon, PlusIcon } from '../Icons'
 import { NextImage } from '../Image'
 import { CartItemsType } from '../../interfaces/cart'
 import { formatAmount } from '../../lib/helper'
+import { useMediaQuery } from '../../hooks/useMediaQuery'
 
-const CostValue = ({ amount, amountClassName, title }: { amount: number; amountClassName?: string; title: string }) => (
-    <div className="mb-1 flex justify-between">
+export const CostValue = ({
+    amount,
+    amountClassName,
+    title,
+}: {
+    amount: number
+    amountClassName?: string
+    title: string
+}) => (
+    <div className="mb-1 flex justify-between text-sm sm:text-base">
         <div>{title}</div>
         <div className={amountClassName}>{formatAmount(amount)}</div>
     </div>
 )
 
 const CartItem = ({ item: { productID, image_url, productname, quantity, total_cost } }: { item: CartItemsType }) => {
+    const isGTSM = useMediaQuery('sm') // screen width greater than 'sm'
     const { handleAddToCart, handleRemoveFromCart, isAddingToCart, isRemovingFromCart } = useCart()
+
     return (
         <div className="mr-2">
             <div className="mb-4 mt-2 grid grid-cols-12 gap-4">
@@ -25,33 +36,34 @@ const CartItem = ({ item: { productID, image_url, productname, quantity, total_c
                 </div>
                 <div className="col-span-9 flex flex-col justify-between">
                     <div className="flex justify-between">
-                        <div className="w-[15rem] truncate">
-                            {productname} Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores,
-                            veritatis!
-                        </div>
+                        <div className="w-[15rem] truncate text-sm sm:text-base">{productname}</div>
                         <Button onClick={() => handleRemoveFromCart({ productID, quantity: null })}>
-                            <CloseIcon size={14} />
+                            <CloseIcon size={isGTSM ? 14 : 10} />
                         </Button>
                     </div>
                     <div className="flex justify-between">
-                        <div className="flex items-center rounded border border-hypay-gray">
+                        <div className="flex w-max items-center rounded border border-hypay-gray">
                             <Button
-                                className="rounded-none border-r border-hypay-gray px-3"
+                                className="rounded-none border-r border-hypay-gray px-2 sm:px-3"
                                 onClick={() => handleRemoveFromCart({ productID, quantity: 1, showMessage: false })}
                             >
-                                <MinusIcon size={14} />
+                                <MinusIcon size={isGTSM ? 14 : 10} />
                             </Button>
-                            <div className="flex w-12 items-center justify-center">
-                                {isAddingToCart || isRemovingFromCart ? <LoaderIcon size={15} /> : quantity}
+                            <div className="flex w-8 items-center justify-center text-sm sm:w-12 sm:text-base">
+                                {isAddingToCart || isRemovingFromCart ? (
+                                    <LoaderIcon size={isGTSM ? 15 : 10} />
+                                ) : (
+                                    quantity
+                                )}
                             </div>
                             <Button
-                                className="rounded-none border-l border-hypay-gray px-3"
+                                className="rounded-none border-l border-hypay-gray px-2 sm:px-3"
                                 onClick={() => handleAddToCart({ productID, quantity: 1, showMessage: false })}
                             >
-                                <PlusIcon size={14} />
+                                <PlusIcon size={isGTSM ? 14 : 10} />
                             </Button>
                         </div>
-                        <div>{total_cost}</div>
+                        <div className="text-sm sm:text-base">{formatAmount(total_cost)}</div>
                     </div>
                 </div>
             </div>
@@ -85,7 +97,7 @@ export const Cart = () => {
     }
 
     return (
-        <div className="mb-0 w-[90vw] min-w-[30rem] pl-8 pr-6 pb-6 sm:w-[70vw] md:w-[30rem]">
+        <div className="mb-0 w-[90vw] min-w-[20rem] pl-8 pr-6 pb-6 sm:w-[70vw] md:w-[30rem]">
             <div className="mb-2 text-sm font-extralight">
                 <span className="text-hypay-gray">Cart Items: </span>
                 {cartCount}
