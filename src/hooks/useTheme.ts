@@ -5,7 +5,7 @@ import { useFetchThemeQuery, useLazyGetProfileInfoQuery, useSetThemeMutation } f
 
 function useTheme() {
     const { data: themeData, isLoading: loadingTheme } = useFetchThemeQuery('onlineTheme')
-    const [profileInfo, { isLoading: profileLoading }] = useLazyGetProfileInfoQuery()
+    const [profileInfo] = useLazyGetProfileInfoQuery()
     const [setThemeFunc, { isLoading: setThemeLoading }] = useSetThemeMutation()
     const [selectedTheme, setSelectedTheme] = useState<ISingleTheme | undefined>()
 

@@ -18,7 +18,7 @@ export default {
     },
 } as ComponentMeta<typeof SideNav>
 
-const Template: ComponentStory<typeof SideNav> = (args) => {
+const Template: ComponentStory<typeof SideNav> = () => {
     const [activeTab, setActivetab] = useState(0)
 
     const changeTab = (i: number) => {
