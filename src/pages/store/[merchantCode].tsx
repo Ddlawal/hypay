@@ -105,7 +105,13 @@ const CarouselItem = ({
                 <div className="flex items-center justify-between">
                     <strong className="text-sm md:text-base">{formatAmount(Number(amount))}</strong>
                     <div className="md:hidden">
-                        <Button preventDefault primary className="text-xs" padding="py-0 px-3">
+                        <Button
+                            preventDefault
+                            primary
+                            className="text-xs"
+                            padding="py-0 px-3"
+                            onClick={() => handleAddToCart({ productID: id, quantity: 1 })}
+                        >
                             Add to cart
                         </Button>
                     </div>
