@@ -1,6 +1,7 @@
 import * as React from 'react'
 import Head from 'next/head'
 import type { AppProps } from 'next/app'
+import type { Session } from 'next-auth'
 import { Provider } from 'react-redux'
 import { store } from '../store'
 import { PersistGate } from 'redux-persist/integration/react'
@@ -12,7 +13,12 @@ import { persistStore } from 'redux-persist'
 
 export const persistor = persistStore(store)
 
-function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
+function MyApp({
+    Component,
+    pageProps: { session, ...pageProps },
+}: AppProps<{
+    session: Session | null
+}>) {
     return (
         <>
             <Head>

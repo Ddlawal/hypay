@@ -48,6 +48,8 @@ export const Button: FC<ButtonProps> = ({
                 primary
                     ? outlined
                         ? 'border border-hypay-pink bg-white text-hypay-pink'
+                        : disabled
+                        ? 'bg-hypay-light-gray text-hypay-gray'
                         : 'bg-hypay-pink text-white'
                     : '',
                 `rounded-md leading-6 text-${size} flex items-center justify-center`

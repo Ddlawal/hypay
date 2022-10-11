@@ -21,6 +21,7 @@ type SelectFieldProps<T, F> = {
     isDisabled?: boolean
     CustomOption?: typeof components.Option
     field?: F | Record<string, unknown>
+    required?: boolean
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -37,6 +38,7 @@ export function SelectField<T = unknown, F = unknown>({
     isDisabled = false,
     CustomOption,
     onChange,
+    required,
 }: SelectFieldProps<T, F>): JSX.Element {
     return (
         <div>
@@ -61,6 +63,8 @@ export function SelectField<T = unknown, F = unknown>({
                 {...field}
                 theme={(theme) => ({ ...theme, colors: { ...theme.colors, primary: COLORS.PINK } })}
             />
+
+            {required ? <p className="text-sm text-red-600">This field is required</p> : null}
         </div>
     )
 }

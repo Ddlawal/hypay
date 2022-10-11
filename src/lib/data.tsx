@@ -343,3 +343,5 @@ export const toturialItemsData: Array<TutorialItemsInterface> = [
         text: 'Nisi, faucibus phasellus et elementum. Placerat a scelerisque pulvinar ut. Aliquam facilisis eget id id volutpat tortor, enim habitasse velit. Libero lectus et tellus sit lacus, tellus risus, faucibus ligula. Laoreet mi purus, pellentesque lacus sagittis, praesent sit hac. Consequat sed magna ac amet, nunc quam fermentum quis. Dui, fusce ac cum blandit massa felis pretium. Laoreet sit magna tortor sed cras risus. Eget faucibus sit egestas tortor sed pulvinar facilisis purus. Amet sapien elementum, ipsum maecenas.',
     },
 ]
+
+export const TIMELINE_EVENTS = { IDENTIFICATION: 'Identification', SHIPPING: 'Shipping', PAYMENT: 'Payment', CONFIRMATION: 'Confirmation'} as const

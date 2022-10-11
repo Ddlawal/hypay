@@ -1,87 +1,111 @@
-import React from 'react'
-import { NextImage as Image } from '../Image'
-import cx from 'classnames'
+import { useRouter } from 'next/router'
+import React, { useEffect, useState } from 'react'
 
-import { Card } from '../Card'
-import { LockIcon } from '../Icons'
+import { useCart } from '../../hooks/useCart'
+import { useCheckout } from '../../hooks/useCheckout'
 import { Button } from '../Button'
-import { useMediaQuery } from '../../hooks/useMediaQuery'
+import { Card } from '../Card'
+import { CostValue } from '../Cart'
+import { Divider } from '../Divider'
+import { LockIcon } from '../Icons'
+import { NextLink } from '../Links'
+import { usePlaceOrderMutation } from '../../store/services/buyer'
+import { showErrorSnackbar, showSuccessSnackbar } from '../../lib/helper'
 
-type PurchaseSummaryProps = {
-    onSubmit: () => void
-    isSideSummary?: boolean
-}
+type PurchaseSummaryProps = { canProceed?: boolean; next: string; summaryButtonText?: string }
 
-export const PurchaseSummary = ({ onSubmit, isSideSummary }: PurchaseSummaryProps) => {
-    const isMobileScreen = !useMediaQuery('md')
+export const PurchaseSummary = ({ canProceed, next, summaryButtonText }: PurchaseSummaryProps) => {
+    const [total, setTotal] = useState(0)
+    const [isProcessingPayment, setIsProcessingPayment] = useState(false)
+    const {
+        cart: { cartId, cartCount, charges, totalPrice, totalSum },
+    } = useCart()
+    const merchantCode = localStorage.getItem('merchantCode')
+    const { push } = useRouter()
+    const { paymentProvider, preferredAddress, preferredShipping, setAddress, setProvider, setShipping } = useCheckout()
+    const [placeOrder, { isLoading }] = usePlaceOrderMutation()
+
+    const goToNextPage = async () => {
+        if (next === 'pay') {
+            setIsProcessingPayment(true)
+            if (!preferredAddress || !preferredShipping || !paymentProvider) {
+                return
+            }
+
+            try {
+                const res = await placeOrder({
+                    address_id: String(preferredAddress.address_id),
+                    cart_id: cartId,
+                    charge_amount: preferredShipping.amount,
+                    charge_currency: 'NGN',
+                    currency_id: 574,
+                    delivery_note: preferredShipping.delivery_note || '',
+                    estimated_days: preferredShipping.estimated_days,
+                    rate_id: preferredShipping.id,
+                    paymentProvider,
+                }).unwrap()
+
+                showSuccessSnackbar(`Redirecting to ${paymentProvider.toLocaleUpperCase()}`)
+                setAddress(null)
+                setProvider(null)
+                setShipping(null)
+
+                const redirect = await push(res.paymentUrl)
+                redirect && !isLoading && setIsProcessingPayment(false)
+            } catch (error) {
+                setIsProcessingPayment(false)
+                console.log(error)
+                showErrorSnackbar('Error! Something went wrong!')
+            }
+
+            return
+        }
+
+        push(`/store/checkout${next}`)
+    }
+
+    useEffect(() => {
+        const shipping = preferredShipping?.amount ?? 0
+        setTotal(totalSum + shipping)
+    }, [preferredShipping?.amount, totalSum])
 
     return (
-        <Card rounded={isSideSummary}>
-            <div className="font-bold">Produto</div>
-            <div
-                className={cx(
-                    isMobileScreen || isSideSummary ? 'flex-col' : 'md:flex-row md:bg-[#F2F2F2] md:px-2',
-                    'my-4 flex gap-x-5 rounded py-4'
-                )}
-            >
-                <div className={cx(isMobileScreen || isSideSummary ? 'w-full' : 'md:w-56')}>
-                    <Image
-                        src="/images/jean-jacket.png"
-                        layout="responsive"
-                        height={100}
-                        width={100}
-                        quality={100}
-                        alt="purchase-summary-product"
-                    />
+        <>
+            <header className="mb-2 text-lg font-bold">Resumo da compra</header>
+            <Card rounded>
+                <div className="mb-2 text-sm font-extralight">
+                    <span className="text-hypay-gray">Cart Items: </span>
+                    {cartCount}
+                </div>
+                <CostValue title="Subtotal" amount={totalPrice} />
+                <CostValue title="Shipping" amount={preferredShipping ? preferredShipping.amount : 0} />
+                <CostValue title="Charges" amount={charges} />
+                <Divider height="h-24" className="mt-4" />
+                <div className="font-bold">
+                    <CostValue title="Total" amount={total} />
+                </div>
+                <div className="mt-8 mb-3 text-center text-hypay-pink">
+                    <NextLink href={`/store/${merchantCode}`} className="">
+                        Escolher mais produtos
+                    </NextLink>
+                </div>
+                <div className="flex items-end justify-center gap-x-1 text-sm font-thin text-gray-600">
+                    <LockIcon size={20} /> Compra 100% segura
                 </div>
                 <div>
-                    <div
-                        className={cx(
-                            isMobileScreen || isSideSummary ? '' : 'md:text-sm',
-                            'my-3 leading-6 tracking-wider text-hypay-gray md:my-0 md:mb-2 md:mt-1 md:leading-4'
-                        )}
-                    >
-                        Jaqueta jeans azul claro com camurça
-                    </div>
-                    <div className="text-xs">
-                        Jaqueta jeans azul claro com camurça feita de lã de carneiro. Possui bolsos e botões na parte da
-                        frente.
-                    </div>
-                </div>
-            </div>
-            <div className="flex flex-col gap-y-8">
-                <div className="flex items-center justify-between">
-                    <div>Quantidade</div>
-                    <div>1</div>
-                </div>
-                <div className="flex items-center justify-between">
-                    <div>Valor</div>
-                    <div>R$30</div>
-                </div>
-                <div className="flex items-center justify-between">
-                    <div>Frete</div>
-                    <div>R$10</div>
-                </div>
-                <div className="flex items-center justify-between">
-                    <div>Total</div>
-                    <div>R$40</div>
-                </div>
-            </div>
-            {isSideSummary ? null : (
-                <>
                     <Button
-                        className="mt-10 block w-full bg-black text-lg font-bold text-white"
-                        padding="py-4"
-                        onClick={onSubmit}
+                        disabled={!canProceed}
+                        onClick={goToNextPage}
+                        className="mb-2 mt-8 w-full"
+                        padding="py-2"
+                        primary
+                        preventDefault
+                        loading={isProcessingPayment}
                     >
-                        Continuar
+                        {summaryButtonText || 'Proceed'}
                     </Button>
-                    <div className="my-8 text-center text-lg font-semibold">Escolher mais produtos</div>
-                    <div className="flex items-end justify-center gap-x-1 text-xl font-semibold">
-                        <LockIcon size={32} /> Compra 100% segura
-                    </div>
-                </>
-            )}
-        </Card>
+                </div>
+            </Card>
+        </>
     )
 }

@@ -30,13 +30,13 @@ export default NextAuth({
                 return baseUrl
             }
         },
-        async jwt({ token, user, account, profile }) {
+        async jwt({ token, user }) {
             const isUserSignedIn = user ? true : false
 
             if (isUserSignedIn) {
                 token.id = user?.id.toString()
             }
-            return { token, account, profile }
+            return token
         },
         async session({ session, token }) {
             if (token) {

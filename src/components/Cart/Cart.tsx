@@ -8,7 +8,15 @@ import { NextImage } from '../Image'
 import { CartItemsType } from '../../interfaces/cart'
 import { formatAmount } from '../../lib/helper'
 
-const CostValue = ({ amount, amountClassName, title }: { amount: number; amountClassName?: string; title: string }) => (
+export const CostValue = ({
+    amount,
+    amountClassName,
+    title,
+}: {
+    amount: number
+    amountClassName?: string
+    title: string
+}) => (
     <div className="mb-1 flex justify-between">
         <div>{title}</div>
         <div className={amountClassName}>{formatAmount(amount)}</div>

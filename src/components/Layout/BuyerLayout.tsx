@@ -5,13 +5,13 @@ import { LoadingPage } from './LoadingPage'
 type BuyerLayoutProps = {
     children: ReactNode
     isLoading?: boolean
-    showCart?: boolean
+    isOwner?: boolean
 }
 
-export const BuyerLayout: FC<BuyerLayoutProps> = ({ children, isLoading, showCart = false }) => {
+export const BuyerLayout: FC<BuyerLayoutProps> = ({ children, isLoading, isOwner = false }) => {
     return (
         <div>
-            <BuyersHeader showCart={showCart} />
+            <BuyersHeader isOwner={isOwner} />
             <div>{isLoading ? <LoadingPage /> : children}</div>
         </div>
     )

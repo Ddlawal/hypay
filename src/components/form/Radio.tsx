@@ -9,7 +9,7 @@ type RadioProps<T extends FieldValues> = {
     label?: string
     className?: string
     onChange: (value: string) => void
-    register: UseFormRegister<T>
+    register?: UseFormRegister<T>
 }
 
 export function Radio<T extends FieldValues>({
@@ -25,10 +25,10 @@ export function Radio<T extends FieldValues>({
         <div className="flex items-center">
             <input
                 type="radio"
-                defaultChecked={checkedValue === value}
+                checked={checkedValue === value}
                 className={cx(className, 'h-6 w-6')}
                 value={value}
-                {...register(name)}
+                {...register?.(name)}
                 onChange={() => onChange(value)}
             />
             {label ? (
