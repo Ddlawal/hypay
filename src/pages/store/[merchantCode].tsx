@@ -84,25 +84,38 @@ const CarouselItem = ({
                     <div
                         className={cx(
                             showAddToCart ? 'opacity-100' : 'opacity-0',
-                            'absolute z-10 h-10 w-16 bg-hover-cart from-white via-slate-100 transition-opacity duration-500 ease-in-out'
+                            'absolute z-10 h-10 w-16 bg-hover-cart from-white via-slate-100 transition-opacity duration-300 ease-in-out'
                         )}
                     >
                         <Button preventDefault onClick={() => handleAddToCart({ productID: id, quantity: 1 })}>
-                            <AddToCartIcon />
+                            <AddToCartIcon size={20} />
                         </Button>
                     </div>
                     <Image src={image_url} layout="fill" objectFit="cover" quality={100} alt="product-pic" />
                 </div>
             </NextLink>
-            <div className="my-2">
-                <div className="flex justify-between">
+            <div className="my-2 flex flex-col gap-y-2">
+                <div className="flex items-center justify-between">
                     <div className="text-xs font-light">{productName}</div>
                     <div>
                         <span className="text-xs font-light text-hypay-pink">In stock:</span>{' '}
                         <span className="text-xs">{quantity}</span>
                     </div>
                 </div>
-                <strong>{formatAmount(Number(amount))}</strong>
+                <div className="flex items-center justify-between">
+                    <strong className="text-sm md:text-base">{formatAmount(Number(amount))}</strong>
+                    <div className="md:hidden">
+                        <Button
+                            preventDefault
+                            primary
+                            className="text-xs"
+                            padding="py-0 px-3"
+                            onClick={() => handleAddToCart({ productID: id, quantity: 1 })}
+                        >
+                            Add to cart
+                        </Button>
+                    </div>
+                </div>
             </div>
         </div>
     )
