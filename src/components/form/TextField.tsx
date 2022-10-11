@@ -42,6 +42,7 @@ export const TextField = ({
                 type={type}
                 icon={inputIcon}
                 padding={padding}
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 onChange={(e: any) => onChange(e.target.value)}
             />
         </div>
