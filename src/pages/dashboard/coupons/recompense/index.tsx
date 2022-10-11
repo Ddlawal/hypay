@@ -1,15 +1,8 @@
 import React from 'react'
 import { PrimaryLayout } from '../../../../components/Layout'
-import { SecondInput } from '../../../../components/form'
-import { useForm } from 'react-hook-form'
 import { recompenseTableHeader, recompenseTableData, RecompenseTableInterface } from '../../../../lib/data'
 
 function Recompense() {
-    const {
-        register,
-        formState: { errors },
-    } = useForm<any>()
-
     return (
         <PrimaryLayout currentTabIndex={6} dropDownIndex={2}>
             <div className="py-4 px-8 md:px-12">
@@ -23,7 +16,7 @@ function Recompense() {
                     <p className="  flex  items-center gap-2 py-2 text-sm text-red-500">
                         Saiba mais detalhes sobre como funciona
                     </p>
-                    <div className="flex flex-col md:flex-row md:items-end ">
+                    {/* <div className="flex flex-col md:flex-row md:items-end ">
                         <SecondInput
                             className="mb-5 mr-8 w-full items-end md:my-0 md:w-2/5"
                             name="productname"
@@ -40,10 +33,10 @@ function Recompense() {
                         <button className="mb-4 h-9 w-44 rounded-lg bg-hypay-orange text-base text-white md:my-6 md:mb-1">
                             Gerar Código
                         </button>
-                    </div>
-                    <p className="h-3 pt-1 text-xs">
+                    </div> */}
+                    {/* <p className="h-3 pt-1 text-xs">
                         Compartilhe esse código com seus compradores para que eles ganhem prêmios
-                    </p>
+                    </p> */}
                 </header>
                 <section className="my-4">
                     {true && (
@@ -71,7 +64,6 @@ function Recompense() {
                                                     email,
                                                     telephone,
                                                     creationDate,
-                                                    indication,
                                                 }: RecompenseTableInterface,
                                                 index: number
                                             ) => (
@@ -84,7 +76,6 @@ function Recompense() {
                                                     <td className="p-4 text-base">{email}</td>
                                                     <td className="p-4 text-base">{telephone}</td>
                                                     <td className="p-4 text-base">{creationDate}</td>
-                                                    <td className="p-4 text-base">{indication}</td>
                                                 </tr>
                                             )
                                         )}

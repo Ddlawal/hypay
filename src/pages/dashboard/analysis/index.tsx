@@ -8,7 +8,7 @@ import { DownArrowIcon, MoreOptionsHIcon, UpArrowIcon } from '../../../component
 import { COLORS } from '../../../lib/constants/colors'
 import { Linechart, Piechart } from '../../../components/Charts'
 import { useGetAnalysisQuery } from '../../../store/services/onlineStore'
-import { currencyFormatter } from '../../../lib/helper'
+import { formatAmount } from '../../../lib/helper'
 
 const dateOptions = [
     {
@@ -45,9 +45,7 @@ const Analysis: NextPage = () => {
                 <Card rounded padding="py-4 px-2 md:px-10" elevation="none">
                     <div className="mb-3 justify-between md:flex">
                         <div>Total</div>
-                        <div className="font-bold text-hypay-green">
-                            R {currencyFormatter.format(Number(totalSales))}
-                        </div>
+                        <div className="font-bold text-hypay-green">{formatAmount(Number(totalSales))}</div>
                     </div>
                     <div className="flex items-center gap-x-8">
                         <Button primary padding="px-3 px-2">

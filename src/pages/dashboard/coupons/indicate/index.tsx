@@ -87,9 +87,8 @@ function Indicate() {
                             <div className="flex h-11 w-full items-center">
                                 <div className="my-1 h-4 w-11/12 rounded-lg bg-hypay-gray">
                                     <div
-                                        className={`h-4 w-[${
-                                            parseInt(referralStats?.sellers_referred) * 10
-                                        }%] rounded-lg bg-hypay-secondary`}
+                                        style={{ width: `${parseInt(referralStats?.sellers_referred) * 10}%` }}
+                                        className={`h-4 rounded-lg bg-hypay-secondary`}
                                     ></div>
                                 </div>
                                 <div className="mb-4 ml-4 flex flex-col lg:w-1/3">
@@ -100,42 +99,44 @@ function Indicate() {
                                 </div>
                             </div>
                         </Card>
-                        {referralStats?.sellers_referred > 9 && (
-                            <Card className="my-4 w-3/5 rounded-lg py-6 text-center md:mr-0 md:w-1/3 xl:w-1/3">
-                                Parabéns! Você já ajudou 09 vendedores à aumentarem suas vendas usando o Hypay.
-                            </Card>
-                        )}
+
+                        <Card className="my-4 w-3/5 rounded-lg py-6 text-center md:mr-0 md:w-1/3 xl:w-1/3">
+                            Parabéns! Você já ajudou {referralStats?.sellers_referred} vendedores à aumentarem suas
+                            vendas usando o Hypay.
+                        </Card>
                     </div>
-                    <div className="flex  grid-cols-2 flex-wrap items-center justify-between gap-2 text-center sm:grid sm:grid-cols-4 lg:flex lg:grid-cols-5">
-                        {referralLevels?.map(({ reward, required_invites, level }: ReferralLevel, index: number) => (
-                            <div key={index} className="text-center">
-                                <Card
-                                    className={`${
-                                        level + index < referralStats?.sellers_referred
-                                            ? 'bg-hypay-green text-white'
-                                            : referralStats?.sellers_referred < level + index
-                                            ? 'border border-hypay-secondary text-hypay-secondary'
-                                            : 'text-gray-500 text-opacity-50'
-                                    } xlg:w-36 my-2 mt-2 flex h-24 w-full flex-col  items-center justify-center rounded-md text-center md:w-36`}
-                                >
-                                    <div className="">
-                                        <RoundedCheckIcon color={COLORS.WHITE} />
-                                    </div>
-                                    <p>{reward}</p>
-                                </Card>
-                                <p
-                                    className={`${
-                                        level + index < referralStats?.sellers_referred
-                                            ? 'text-hypay-green'
-                                            : referralStats?.sellers_referred < level + index
-                                            ? 'text-hypay-secondary'
-                                            : 'text-gray-500 text-opacity-50'
-                                    } w-full sm:w-36 xl:w-36 `}
-                                >
-                                    Convite {required_invites} vendedores
-                                </p>
-                            </div>
-                        ))}
+                    <div className="flex  grid-cols-2 flex-wrap items-end justify-between gap-2 text-center sm:grid sm:grid-cols-4 lg:flex lg:grid-cols-5">
+                        {referralLevels?.map(
+                            ({ reward, required_invites, level, id }: ReferralLevel, index: number) => (
+                                <div key={index} className="text-center">
+                                    <Card
+                                        className={`${
+                                            level + index < referralStats?.sellers_referred
+                                                ? 'bg-hypay-green text-white'
+                                                : referralStats?.sellers_referred < level + index
+                                                ? 'border border-hypay-secondary text-hypay-secondary'
+                                                : 'text-gray-500 text-opacity-50'
+                                        } xlg:w-36 my-2 mt-2 flex h-24 w-full flex-col  items-center justify-center rounded-md text-center md:w-36  `}
+                                    >
+                                        <div className="">
+                                            <RoundedCheckIcon color={COLORS.WHITE} />
+                                        </div>
+                                        <p>{reward}</p>
+                                    </Card>
+                                    <p
+                                        className={`${
+                                            level + index < referralStats?.sellers_referred
+                                                ? 'text-hypay-green'
+                                                : referralStats?.sellers_referred < level + index
+                                                ? 'text-hypay-secondary'
+                                                : 'text-gray-500 text-opacity-50'
+                                        } w-full sm:w-36 xl:w-36  ${id == 5 ? 'text-[0.9rem]' : ''}`}
+                                    >
+                                        Convite {required_invites} vendedores
+                                    </p>
+                                </div>
+                            )
+                        )}
                     </div>
                 </section>
             </div>

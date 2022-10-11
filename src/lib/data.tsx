@@ -282,7 +282,6 @@ export const recompenseTableHeader: Array<string> = [
     'Email',
     'Telefone',
     'Data de criação',
-    'Indicações',
 ]
 
 export interface RecompenseTableInterface {
@@ -292,7 +291,6 @@ export interface RecompenseTableInterface {
     email: string
     telephone: string
     creationDate: string
-    indication: string
 }
 
 export const recompenseTableData: Array<RecompenseTableInterface> = [
@@ -303,7 +301,6 @@ export const recompenseTableData: Array<RecompenseTableInterface> = [
         email: 'Email',
         telephone: '[ddd]00000-0000',
         creationDate: '00/00/00',
-        indication: '00',
     },
 ]
 
