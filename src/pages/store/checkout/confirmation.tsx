@@ -5,11 +5,12 @@ import { useRouter } from 'next/router'
 import { BuyerLayout } from '../../../components/Layout'
 import { Button } from '../../../components/Button'
 import { BuyerTimeline } from '../../../components/Timeline'
-import { SuccessIcon } from '../../../components/Icons'
+import { CloseIcon, SuccessIcon } from '../../../components/Icons'
 import { CostValue } from '../../../components/Cart'
 import { Divider } from '../../../components/Divider'
 import { useLazyPaymentGatewayCallbackQuery } from '../../../store/services/buyer'
 import { showErrorSnackbar } from '../../../lib/helper'
+import { COLORS } from '../../../lib/constants/colors'
 
 const Confirmation: NextPage = () => {
     const merchantCode = localStorage.getItem('merchantCode')
@@ -43,11 +44,21 @@ const Confirmation: NextPage = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isReady])
 
+    const retryPayment = () => {
+        const paymentUrl = localStorage.getItem('paymentUrl')
+
+        if (paymentUrl) {
+            return push(paymentUrl)
+        }
+
+        showErrorSnackbar('Error! Something went wrong')
+    }
+
     return (
         <BuyerLayout isLoading={isFetching || isLoading}>
             <BuyerTimeline active="Confirmation" />
-            {paymentStatus ? (
-                <div className="mt-6 flex justify-center px-[5%] sm:px-[20%] md:px-[30%]">
+            <div className="mt-6 flex justify-center px-[5%] sm:px-[20%] md:px-[30%]">
+                {paymentStatus ? (
                     <div className="flex w-full max-w-[25rem] flex-col items-center gap-y-4">
                         <SuccessIcon size={30} />
                         <div className="font-bold">Pedido feito com sucesso</div>
@@ -70,16 +81,30 @@ const Confirmation: NextPage = () => {
                         <Divider />
                         <Button
                             padding="px-16 py-4 md:py-3"
-                            className="w-full bg-black text-white"
+                            className="mb-12 w-full bg-hypay-pink text-white"
                             onClick={() => push(`/store/${merchantCode}`)}
                         >
                             Retorno para casa
                         </Button>
                     </div>
-                </div>
-            ) : (
-                <div>Failed</div>
-            )}
+                ) : (
+                    <div className="flex w-full max-w-[25rem] flex-col items-center gap-y-4">
+                        <div className="flex h-8 w-8 items-center justify-center rounded-full border-[1.5px] border-hypay-red">
+                            <CloseIcon size={14} color={COLORS.RED} />
+                        </div>
+                        <div className="mb-6 text-center text-hypay-placeholder">
+                            Seu pagamento não foi bem -sucedido
+                        </div>
+                        <Button
+                            padding="px-16 py-4 md:py-3"
+                            className="mb-12 w-full bg-hypay-pink text-white"
+                            onClick={retryPayment}
+                        >
+                            Tente novamente
+                        </Button>
+                    </div>
+                )}
+            </div>
         </BuyerLayout>
     )
 }

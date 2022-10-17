@@ -50,6 +50,8 @@ export const PurchaseSummary = ({ canProceed, next, summaryButtonText }: Purchas
                 setProvider(null)
                 setShipping(null)
 
+                localStorage.setItem('paymentUrl', res.paymentUrl)
+
                 const redirect = await push(res.paymentUrl)
                 redirect && !isLoading && setIsProcessingPayment(false)
             } catch (error) {
