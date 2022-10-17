@@ -19,15 +19,12 @@ jobs:
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v2
         with:
-          node-version: 14.18
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(source ~/.nvm/nvm.sh && yarn cache dir)"
+          node-version: 16.17
       - name: Install dependencies
         run: |
           source ~/.nvm/nvm.sh
-          yarn install --frozen-lockfile
+          npm install --frozen-lockfile
       - name: TypeScript and Lint
         run: |
-          yarn build
-          yarn lint
+          npm run build
+          npm run lint
