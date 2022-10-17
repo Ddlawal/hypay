@@ -11,6 +11,8 @@ import { checkPhoneNumber, showErrorSnackbar, showSuccessSnackbar } from '../../
 import { AddBuyerAddressType, BuyerAddress } from '../../../interfaces/buyer'
 import { useAddBuyerAddressMutation } from '../../../store/services/buyer'
 import { useCheckout } from '../../../hooks/useCheckout'
+import { ArrowLeftIcon } from '../../../components/Icons/ArrowLeftIcon'
+import { useRouter } from 'next/router'
 
 type SelectOptionType = {
     label: string
@@ -34,6 +36,7 @@ const Checkout: NextPage = () => {
     const [addMoreAddresses, setAddMoreAddresses] = useState(false)
     const { addresses: buyerAddresses, isFetchingBuyerAddress, setAddress } = useCheckout('address')
     const [preferredAddressId, setPreferredAddressId] = useState<number>()
+    const { back } = useRouter()
 
     const [addBuyerAddress, { isLoading: isAddingBuyerAddress }] = useAddBuyerAddressMutation()
 
@@ -115,9 +118,13 @@ const Checkout: NextPage = () => {
 
     return (
         <CheckoutWrapper isLoading={isFetchingBuyerAddress} canProceed={!!preferredAddressId} next="/shipping">
-            <div className="my-6 text-lg font-semibold">*Campos obrigatórios</div>
             <div className="mb-8 flex items-center justify-between text-lg font-semibold">
-                <div>Identificação</div>
+                <header className="mb-2 flex items-center gap-x-4 text-lg font-bold">
+                    <Button preventDefault>
+                        <ArrowLeftIcon size={28} onClick={() => back()} />
+                    </Button>{' '}
+                    Identificação
+                </header>
                 {buyerAddresses.length && !addMoreAddresses ? (
                     <Button
                         onClick={() => setAddMoreAddresses(true)}

@@ -3,6 +3,7 @@ import { baseQuery } from '.'
 import {
     AddBuyerAddressType,
     BuyerAddress,
+    PaymentCallbackResponse,
     PlaceOrderArg,
     PlaceOrderResponse,
     ShippingRates,
@@ -45,6 +46,13 @@ export const buyerApi = createApi({
             }),
             transformResponse: (res: PlaceOrderResponse) => res,
         }),
+        paymentGatewayCallback: builder.query<PaymentCallbackResponse, string>({
+            query: (reference: string) => ({
+                url: `/order/payment/callback?reference=${reference}`,
+                method: 'GET',
+            }),
+            transformResponse: (res: PaymentCallbackResponse) => res,
+        }),
     }),
 })
 
@@ -53,4 +61,5 @@ export const {
     useLazyGetBuyerAddressesQuery,
     useLazyGetShipmentRatesQuery,
     usePlaceOrderMutation,
+    useLazyPaymentGatewayCallbackQuery,
 } = buyerApi
