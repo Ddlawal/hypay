@@ -90,3 +90,21 @@ export type PlaceOrderResponse = {
 }
 
 export type PaymentProviders = 'paystack' | 'seerbit'
+
+export type PaymentCallbackResponse = {
+    paymentDetail: {
+        id: number
+        initiated_by: number
+        payment_status: number
+        amount: string
+        currency: string
+        payment_gateway: string
+        payment_type: string
+        reference: string
+        created_at: string
+        updated_at: string
+        payment_settlement_status: number
+        payment_settlement_ref: string | null
+    }
+    paymentStatus: string
+}

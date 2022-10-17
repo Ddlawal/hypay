@@ -1,5 +1,6 @@
 import cx from 'classnames'
 import { NextPage } from 'next'
+import { useRouter } from 'next/router'
 import { useState } from 'react'
 
 import { CheckoutWrapper } from '../../../components/Buyer'
@@ -11,6 +12,8 @@ import defaultLogo from '../../../../public/images/default-image.png'
 import { PaymentProviders } from '../../../interfaces/buyer'
 import { useDispatch } from 'react-redux'
 import { useCheckout } from '../../../hooks/useCheckout'
+import { Button } from '../../../components/Button'
+import { ArrowLeftIcon } from '../../../components/Icons/ArrowLeftIcon'
 
 const paymentProviders: Array<PaymentProviders> = ['paystack', 'seerbit']
 
@@ -18,6 +21,7 @@ const Payment: NextPage = () => {
     const [paymentProvider, setPaymentProvider] = useState<PaymentProviders>()
     const { setProvider } = useCheckout()
     const dispatch = useDispatch()
+    const { back } = useRouter()
 
     const getPaymentLogo = (p: PaymentProviders) => {
         if (p === 'paystack') {
@@ -47,7 +51,12 @@ const Payment: NextPage = () => {
                     : 'Pay'
             }
         >
-            <header className="mb-2 text-lg font-bold">Payment</header>
+            <header className="mb-2 flex items-center gap-x-4 text-lg font-bold">
+                <Button preventDefault>
+                    <ArrowLeftIcon size={28} onClick={() => back()} />
+                </Button>{' '}
+                Pagamento
+            </header>
             <div className="mt-6 font-semibold">Escolha sua forma de pagamento </div>
             <ul className="mt-4">
                 {paymentProviders.map((p, i) => {

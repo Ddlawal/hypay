@@ -1,9 +1,12 @@
 import cx from 'classnames'
 import { NextPage } from 'next'
+import { useRouter } from 'next/router'
 import { useState } from 'react'
+import { Button } from '../../../components/Button'
 
 import { CheckoutWrapper } from '../../../components/Buyer'
 import { Divider } from '../../../components/Divider'
+import { ArrowLeftIcon } from '../../../components/Icons/ArrowLeftIcon'
 import { NextImage } from '../../../components/Image'
 import { useCheckout } from '../../../hooks/useCheckout'
 import { ShippingRates } from '../../../interfaces/buyer'
@@ -13,6 +16,7 @@ import { formatAmount } from '../../../lib/helper'
 const Shipping: NextPage = () => {
     const [preferredShippingStoreId, setPreferredShippingStoreId] = useState<string>()
     const { shippingRates, isFetchingShippingRates, setShipping } = useCheckout('shipping')
+    const { back } = useRouter()
 
     const handleSelectBuyerShipping = (id: string, data: ShippingRates) => {
         setShipping(data)
@@ -26,7 +30,12 @@ const Shipping: NextPage = () => {
             next="/payment"
             isLoading={isFetchingShippingRates}
         >
-            <header className="mb-2 text-lg font-bold">Shipping</header>
+            <header className="mb-2 flex items-center gap-x-4 text-lg font-bold">
+                <Button preventDefault>
+                    <ArrowLeftIcon size={28} onClick={() => back()} />
+                </Button>{' '}
+                Envio
+            </header>
             <ul className="mt-4">
                 {shippingRates.map((buyerShipping, i) => {
                     const { amount, courier, estimated_days } = buyerShipping
