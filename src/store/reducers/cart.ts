@@ -4,7 +4,7 @@ import { CartType } from '../../interfaces/cart'
 import { RootState } from '..'
 import { cartApi } from '../services/cart'
 
-interface CartState {
+export interface CartState {
     cartId: CartType['cart_id']
     cartItems: CartType['items']
     cartCount: CartType['items_count']
@@ -24,9 +24,25 @@ const initialState = {
     totalSum: 0,
 } as CartState
 
+export const LOCAL_CART_KEY = 'localCart'
+
+const initialCart = (): CartState => {
+    try {
+        const serializedCart = localStorage.getItem(LOCAL_CART_KEY)
+        if (!serializedCart) {
+            return initialState
+        }
+
+        const cart = JSON.parse(serializedCart)
+        return cart
+    } catch (error) {
+        return initialState
+    }
+}
+
 const callback = (state: CartState, { payload }: PayloadAction<CartType | undefined>) => {
     if (!payload) {
-        return state
+        return initialState
     }
 
     const { cart_id, items, items_count, pepperestfees, total_sum, totalprice, shipping } = payload
@@ -46,21 +62,71 @@ const callback = (state: CartState, { payload }: PayloadAction<CartType | undefi
 
 const cartSlice = createSlice({
     name: 'cart',
-    initialState,
+    initialState: initialCart(),
     reducers: {
-        updateCart(state, { payload }: PayloadAction<CartType>) {
+        updateCart(
+            state,
+            {
+                payload,
+            }: PayloadAction<{
+                productID: number
+                price: number
+                quantity: number | null
+                image_url?: string
+                productName?: string
+            } | null>
+        ) {
             if (!payload) {
+                return initialState
+            }
+
+            if (payload.quantity === null) {
+                state.cartItems.filter((x) => x.productID !== payload.productID)
+                localStorage.setItem(LOCAL_CART_KEY, JSON.stringify(state))
                 return state
             }
-            return {
-                cartId: payload.cart_id,
-                cartItems: payload.items,
-                cartCount: payload.items_count,
-                charges: payload.pepperestfees,
-                shipping: payload.shipping,
-                totalPrice: payload.totalprice,
-                totalSum: payload.total_sum,
+
+            const itemIndex = state.cartItems.findIndex((x) => x.productID === payload.productID)
+            const alreadyInCart = itemIndex !== -1
+
+            if (alreadyInCart) {
+                state.cartItems[itemIndex] = {
+                    ...state.cartItems[itemIndex],
+                    quantity: state.cartItems[itemIndex].quantity + payload.quantity,
+                    total_cost: state.cartItems[itemIndex].total_cost + payload.price,
+                }
+                state.totalPrice = state.totalPrice + payload.price
+                state.totalSum = state.totalSum + payload.price
+            } else {
+                state = {
+                    ...state,
+                    cartCount: state.cartCount + 1,
+                    cartItems: [
+                        ...state.cartItems,
+                        {
+                            productID: payload.productID,
+                            quantity: payload.quantity,
+                            id: 0,
+                            cart_id: 0,
+                            productname: payload.productName || '',
+                            deliveryperiod: 0,
+                            image_url: payload.image_url || '',
+                            description: '',
+                            currency: 'NGN',
+                            price: payload.price,
+                            total_cost: payload.price,
+                            created_at: '',
+                            updated_at: '',
+                        },
+                    ],
+                    totalPrice: state.totalPrice + payload.price,
+                    totalSum: state.totalSum + payload.price,
+                }
             }
+
+            localStorage.setItem(LOCAL_CART_KEY, JSON.stringify(state))
+
+            return state
         },
     },
     extraReducers: (builder) => {

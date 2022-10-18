@@ -8,6 +8,7 @@ import { NextImage } from '../Image'
 import { CartItemsType } from '../../interfaces/cart'
 import { formatAmount } from '../../lib/helper'
 import { useMediaQuery } from '../../hooks/useMediaQuery'
+import { useSession } from '../../hooks/useSession'
 
 export const CostValue = ({
     amount,
@@ -24,7 +25,8 @@ export const CostValue = ({
     </div>
 )
 
-const CartItem = ({ item: { productID, image_url, productname, quantity, total_cost } }: { item: CartItemsType }) => {
+const CartItem = ({ item }: { item: CartItemsType }) => {
+    const { productID, image_url, productname, quantity, price, total_cost } = item
     const isGTSM = useMediaQuery('sm') // screen width greater than 'sm'
     const { handleAddToCart, handleRemoveFromCart, isAddingToCart, isRemovingFromCart } = useCart()
 
@@ -37,7 +39,7 @@ const CartItem = ({ item: { productID, image_url, productname, quantity, total_c
                 <div className="col-span-9 flex flex-col justify-between">
                     <div className="flex justify-between">
                         <div className="w-[15rem] truncate text-sm sm:text-base">{productname}</div>
-                        <Button onClick={() => handleRemoveFromCart({ productID, quantity: null })}>
+                        <Button onClick={() => handleRemoveFromCart({ productID, quantity: null, price: -price })}>
                             <CloseIcon size={isGTSM ? 14 : 10} />
                         </Button>
                     </div>
@@ -45,7 +47,14 @@ const CartItem = ({ item: { productID, image_url, productname, quantity, total_c
                         <div className="flex w-max items-center rounded border border-hypay-gray">
                             <Button
                                 className="rounded-none border-r border-hypay-gray px-2 sm:px-3"
-                                onClick={() => handleRemoveFromCart({ productID, quantity: 1, showMessage: false })}
+                                onClick={() =>
+                                    handleRemoveFromCart({
+                                        productID,
+                                        quantity: 1,
+                                        price: -price,
+                                        showMessage: false,
+                                    })
+                                }
                             >
                                 <MinusIcon size={isGTSM ? 14 : 10} />
                             </Button>
@@ -58,7 +67,14 @@ const CartItem = ({ item: { productID, image_url, productname, quantity, total_c
                             </div>
                             <Button
                                 className="rounded-none border-l border-hypay-gray px-2 sm:px-3"
-                                onClick={() => handleAddToCart({ productID, quantity: 1, showMessage: false })}
+                                onClick={() =>
+                                    handleAddToCart({
+                                        ...item,
+                                        productName: item.productname,
+                                        quantity: 1,
+                                        showMessage: false,
+                                    })
+                                }
                             >
                                 <PlusIcon size={isGTSM ? 14 : 10} />
                             </Button>
@@ -89,8 +105,9 @@ export const Cart = () => {
     const {
         cart: { cartCount, cartItems, charges, shipping, totalPrice, totalSum },
     } = useCart()
+    const { user } = useSession()
 
-    const goToCheckout = () => push('/store/checkout')
+    const goToCheckout = () => (!user ? push('/login') : push('/store/checkout'))
 
     if (cartCount === 0) {
         return <NoItemInCart />
