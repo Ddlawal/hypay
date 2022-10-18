@@ -26,7 +26,7 @@ export const BuyersHeader = ({ isOwner }: { isOwner: boolean }) => {
     const {
         cart: { cartCount },
     } = useCart()
-    const { token } = useSession()
+    const { user, token } = useSession()
     const [showModal, setShowModal] = useState(false)
     const width = BUYER_SIDE_NAV_WIDTH + 'px'
     const merchantCode = localStorage.getItem('merchantCode')
@@ -90,9 +90,11 @@ export const BuyersHeader = ({ isOwner }: { isOwner: boolean }) => {
                                 <NextLink href="/store/support" className="block py-2">
                                     Atendimento
                                 </NextLink>
-                                <NextLink href="#" onClick={logOut} className="block py-2">
-                                    Logout
-                                </NextLink>
+                                {user ? (
+                                    <NextLink href="#" onClick={logOut} className="block py-2">
+                                        Logout
+                                    </NextLink>
+                                ) : null}
                             </>
                         )}
                     </div>
@@ -115,9 +117,11 @@ export const BuyersHeader = ({ isOwner }: { isOwner: boolean }) => {
                         <NextLink href={`/store/${merchantCode}`}>Home</NextLink>
                         {/* <NextLink href="/store/checkout">Checkout</NextLink> */}
                         <NextLink href="/store/support">Atendimento</NextLink>
-                        <NextLink href="#" onClick={logOut}>
-                            Logout
-                        </NextLink>
+                        {user ? (
+                            <NextLink href="#" onClick={logOut}>
+                                Logout
+                            </NextLink>
+                        ) : null}
                     </>
                 )}
             </div>

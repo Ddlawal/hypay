@@ -7,7 +7,7 @@ import { PrimaryLayout } from '../../../components/Layout'
 import { Button } from '../../../components/Button'
 import { CircularPlusIcon } from '../../../components/Icons/CircularPlusIcon'
 import { Table } from '../../../components/Table'
-import { ImportIcon, MenuIcon } from '../../../components/Icons'
+import { CopyIcon, ImportIcon } from '../../../components/Icons'
 import { SelectField } from '../../../components/Select'
 import { useProducts } from '../../../hooks/useProducts'
 import { Card } from '../../../components/Card'
@@ -17,6 +17,8 @@ import { ProductsType, SearchProductType } from '../../../interfaces/products'
 import { copyTextToClipboard, showSuccessSnackbar } from '../../../lib/helper'
 import { useSearch } from '../../../hooks/useSearch'
 import { useLazyGetSingleProductQuery } from '../../../store/services/products'
+import { COLORS } from '../../../lib/constants/colors'
+import { useSession } from '../../../hooks/useSession'
 
 const productActionSelectItems = [
     {
@@ -37,6 +39,8 @@ const productActionSelectItems = [
     },
 ]
 
+type ProductsHeaderProps = { isDesktop: boolean; gotoAddProducts: () => void }
+
 const NoProducts = ({ gotoAddProducts }: { gotoAddProducts: () => void }) => {
     return (
         <div className="flex h-[80vh] flex-col items-center justify-center  py-4 px-10 leading-5 md:h-full md:items-start md:px-16 lg:px-36">
@@ -52,15 +56,12 @@ const NoProducts = ({ gotoAddProducts }: { gotoAddProducts: () => void }) => {
     )
 }
 
-const ProductsHeader = ({ isDesktop, gotoAddProducts }: { isDesktop: boolean; gotoAddProducts: () => void }) => {
+const ProductsHeader = ({ isDesktop, gotoAddProducts }: ProductsHeaderProps) => {
     return (
         <div className="flex items-center justify-between">
             <div className="p-4 text-lg font-bold text-hypay-black md:p-0">Produtos cadastrados</div>
             {isDesktop ? (
                 <div className="flex items-center gap-x-6">
-                    <div className="flex items-center  gap-x-3">
-                        <MenuIcon /> <span>Product orders</span>
-                    </div>
                     <div className="flex items-center  gap-x-3">
                         <ImportIcon /> <span>Export and Import CSV</span>
                     </div>
@@ -86,11 +87,13 @@ export const ProductList = ({
     products,
     onDelete,
     setIds = () => null,
+    copyProductLink,
 }: {
     products: Array<ProductsType>
     onDelete: (id: string, url: string) => Promise<void>
     searchProduct: SearchProductType
     setIds?: Dispatch<React.SetStateAction<Array<string>>>
+    copyProductLink: (id: string) => void
 }) => {
     const isDesktop = useMediaQuery('md')
     const { push } = useRouter()
@@ -100,13 +103,6 @@ export const ProductList = ({
     const itemRefs = useRef({})
     const [productCode, setProductCode] = useState<string>('')
     const gotoEditProduct = () => push(`/dashboard/products/editProduct/${productCode}`)
-
-    const host = window.location.origin
-
-    const copyProductLink = (id: string) => {
-        copyTextToClipboard(`${host}/store/products/${id}`)
-        showSuccessSnackbar('Link copied')
-    }
 
     const deleteProduct = async () => {
         const product = await getProduct(productCode).unwrap()
@@ -183,6 +179,8 @@ const Products: NextPage = () => {
     const [action, setAction] = useState<string | null>(null)
     const [ids, setIds] = useState<Array<string>>([])
     const isDesktop = useMediaQuery('md')
+    const { user } = useSession()
+    const { push } = useRouter()
     const {
         products,
         isLoading,
@@ -190,8 +188,19 @@ const Products: NextPage = () => {
         searchProduct,
     } = useProducts()
 
+    const host = window.location.origin
+
+    const copyStoreLink = () => {
+        copyTextToClipboard(`${host}/store/${user?.merchantCode}`)
+        showSuccessSnackbar('Store link copied')
+    }
+
+    const copyProductLink = (id: string) => {
+        copyTextToClipboard(`${host}/store/products/${id}?merchantCode=${user?.merchantCode}`)
+        showSuccessSnackbar('Product link copied')
+    }
+
     const { result: searchableProducts, handleInputChange } = useSearch(searchProduct, products)
-    const { push } = useRouter()
 
     const gotoAddProducts = () => push('/dashboard/products/addProducts')
 
@@ -228,10 +237,13 @@ const Products: NextPage = () => {
             desktopSearch={handleInputChange}
         >
             <div className="py-4 md:px-8">
+                <Button className="ml-2 block text-sm text-hypay-pink md:hidden" onClick={copyStoreLink}>
+                    <CopyIcon color={COLORS.PINK} size={14} /> <span className="ml-1">Store Link</span>
+                </Button>
                 <ProductsHeader isDesktop={isDesktop} gotoAddProducts={gotoAddProducts} />
 
                 {isDesktop ? (
-                    <>
+                    <div className="flex items-end justify-between">
                         <div className="mb-3 w-[40%]">
                             <SelectField<string | null>
                                 options={productActionSelectItems}
@@ -243,13 +255,17 @@ const Products: NextPage = () => {
                                 isDisabled={ids.length < 1}
                             />
                         </div>
-                    </>
+                        <Button onClick={copyStoreLink} className="text-hypay-pink">
+                            <CopyIcon color={COLORS.PINK} size={14} /> <span className="ml-1">Store Link</span>
+                        </Button>
+                    </div>
                 ) : null}
                 <ProductList
                     setIds={setIds}
                     products={searchableProducts}
                     onDelete={onDelete}
                     searchProduct={searchProduct}
+                    copyProductLink={copyProductLink}
                 />
             </div>
         </PrimaryLayout>

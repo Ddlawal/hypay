@@ -43,7 +43,11 @@ const Checkout: NextPage = () => {
     useEffect(() => {
         const fetchData = async () => {
             const res = await fetch('http://ip-api.com/json')
-            const locationData = await res.json()
+            let locationData = await res.json()
+
+            if (!locationData) {
+                locationData = 'NG'
+            }
 
             setUserCountryCode(locationData.countryCode)
             const stt: Array<SelectOptionType> = State.getStatesOfCountry(locationData.countryCode).map((s) => ({

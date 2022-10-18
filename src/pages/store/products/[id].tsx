@@ -54,7 +54,7 @@ const ProductView: NextPage = () => {
     const { handleAddToCart, isAddingToCart } = useCart()
 
     const {
-        query: { id: productCode },
+        query: { id: productCode, merchantCode },
         isReady,
     } = useRouter()
 
@@ -85,6 +85,7 @@ const ProductView: NextPage = () => {
 
         if (isReady) {
             fetchProduct()
+            localStorage.setItem('merchantCode', merchantCode as string)
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isReady])
@@ -210,7 +211,12 @@ const ProductView: NextPage = () => {
                                                 padding="py-2"
                                                 onClick={() =>
                                                     product
-                                                        ? handleAddToCart({ productID: product?.id, quantity: qty })
+                                                        ? handleAddToCart({
+                                                              ...product,
+                                                              productID: product?.id,
+                                                              price: Number(product.amount),
+                                                              quantity: qty,
+                                                          })
                                                         : null
                                                 }
                                                 loading={isAddingToCart}

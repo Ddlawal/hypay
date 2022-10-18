@@ -66,12 +66,18 @@ type CarouselItemProps = {
     item: ProductsType
 }
 
-const CarouselItem = ({
-    isOwner,
-    item: { amount, id, image_url, productCode, productName, quantity },
-}: CarouselItemProps) => {
+const CarouselItem = ({ isOwner, item }: CarouselItemProps) => {
+    const { amount, id, image_url, productCode, productName, quantity } = item
     const [showAddToCart, setShowAddToCart] = useState(false)
     const { handleAddToCart } = useCart()
+
+    const addProductToCart = () => {
+        if (quantity < 1) {
+            return showErrorSnackbar(`${productName} is out of stock`)
+        }
+
+        handleAddToCart({ ...item, price: Number(item.amount), productID: id, quantity: 1 })
+    }
 
     return (
         <div>
@@ -87,7 +93,7 @@ const CarouselItem = ({
                             'absolute z-10 h-10 w-16 bg-hover-cart from-white via-slate-100 transition-opacity duration-300 ease-in-out'
                         )}
                     >
-                        <Button preventDefault onClick={() => handleAddToCart({ productID: id, quantity: 1 })}>
+                        <Button preventDefault onClick={addProductToCart}>
                             <AddToCartIcon size={20} />
                         </Button>
                     </div>
@@ -110,7 +116,7 @@ const CarouselItem = ({
                             primary
                             className="text-xs"
                             padding="py-0 px-3"
-                            onClick={() => handleAddToCart({ productID: id, quantity: 1 })}
+                            onClick={addProductToCart}
                         >
                             Add to cart
                         </Button>
@@ -134,7 +140,7 @@ type CarouselProps = {
  */
 const Carousel = ({ isOwner, products }: CarouselProps) => {
     return (
-        <div className="hsb mt-3 flex h-full gap-x-5 overflow-x-auto shadow-inner">
+        <div className="mt-3 flex h-full gap-x-5 overflow-x-auto shadow-inner">
             {products.map((product, i) => (
                 <CarouselItem key={`product_${i}`} isOwner={isOwner} item={product} />
             ))}

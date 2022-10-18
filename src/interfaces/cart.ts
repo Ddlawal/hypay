@@ -32,11 +32,15 @@ export type CartType = {
 export type AddToCartType = {
     productID: number
     quantity: number
+    productName: string
+    image_url: string
+    price: number
     showMessage?: boolean
 }
 
 export type RemoveFromCartType = {
     productID: number
     quantity: number | null
+    price: number
     showMessage?: boolean
 }
