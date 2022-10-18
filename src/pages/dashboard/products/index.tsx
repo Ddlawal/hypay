@@ -87,16 +87,22 @@ export const ProductList = ({
     products,
     onDelete,
     setIds = () => null,
-    copyProductLink,
 }: {
     products: Array<ProductsType>
     onDelete: (id: string, url: string) => Promise<void>
     searchProduct: SearchProductType
     setIds?: Dispatch<React.SetStateAction<Array<string>>>
-    copyProductLink: (id: string) => void
 }) => {
     const isDesktop = useMediaQuery('md')
     const { push } = useRouter()
+    const { user } = useSession()
+
+    const host = window.location.origin
+
+    const copyProductLink = (id: string) => {
+        copyTextToClipboard(`${host}/store/products/${id}?merchantCode=${user?.merchantCode}`)
+        showSuccessSnackbar('Product link copied')
+    }
 
     const [getProduct] = useLazyGetSingleProductQuery()
 
@@ -195,11 +201,6 @@ const Products: NextPage = () => {
         showSuccessSnackbar('Store link copied')
     }
 
-    const copyProductLink = (id: string) => {
-        copyTextToClipboard(`${host}/store/products/${id}?merchantCode=${user?.merchantCode}`)
-        showSuccessSnackbar('Product link copied')
-    }
-
     const { result: searchableProducts, handleInputChange } = useSearch(searchProduct, products)
 
     const gotoAddProducts = () => push('/dashboard/products/addProducts')
@@ -265,7 +266,6 @@ const Products: NextPage = () => {
                     products={searchableProducts}
                     onDelete={onDelete}
                     searchProduct={searchProduct}
-                    copyProductLink={copyProductLink}
                 />
             </div>
         </PrimaryLayout>

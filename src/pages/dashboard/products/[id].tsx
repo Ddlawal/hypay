@@ -11,6 +11,7 @@ import { useEffect, useState } from 'react'
 import { useLazyGetSingleProductQuery } from '../../../store/services/products'
 import { ProductsType } from '../../../interfaces/products'
 import { copyTextToClipboard, showSuccessSnackbar } from '../../../lib/helper'
+import { useSession } from '../../../hooks/useSession'
 
 const ProductDetails: NextPage = () => {
     const isDesktop = useMediaQuery('md')
@@ -50,10 +51,13 @@ const ProductDetails: NextPage = () => {
 
     const deleteProduct = () => onDelete(String(product?.id || ''), '/dashboard/products')
 
+    const { user } = useSession()
+
     const host = window.location.origin
+
     const copyProductLink = (id: string) => {
-        copyTextToClipboard(`${host}/store/products/${id}`)
-        showSuccessSnackbar('Link copied')
+        copyTextToClipboard(`${host}/store/products/${id}?merchantCode=${user?.merchantCode}`)
+        showSuccessSnackbar('Product link copied')
     }
 
     return (
