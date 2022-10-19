@@ -6,11 +6,17 @@ import { Card } from '../../../../components/Card'
 import { useGetProfileInfoQuery, useGetReferralLevelsQuery } from '../../../../store/services/onlineStore'
 import { copyTextToClipboard, showSuccessSnackbar } from '../../../../lib/helper'
 import { useGetReferralStatsQuery } from '../../../../store/services/coupon'
-import { RoundedCheckIcon } from '../../../../components/Icons'
+import { OpenLinkIcon, RoundedCheckIcon } from '../../../../components/Icons'
 import { ReferralLevel } from '../../../../interfaces/onlineStore'
 import { COLORS } from '../../../../lib/constants/colors'
+import { showModal } from '../../../../store/reducers/ui'
+import { ABOUT_COUPON_MODAL } from '../../../../lib/data'
+import AboutCouponModal from '../../../../components/Modals/AboutCouponModal'
+import { useAppDispatch, useAppSelector } from '../../../../hooks/useStoreHooks'
 
 function Indicate() {
+    const dispatch = useAppDispatch()
+    const modal = useAppSelector((state) => state.ui)
     const { data, isLoading: loadingUserData } = useGetProfileInfoQuery()
     const { data: referralStats } = useGetReferralStatsQuery('')
     const { data: referralLevels } = useGetReferralLevelsQuery()
@@ -41,9 +47,18 @@ function Indicate() {
                         entrar para o Hypay pelo link que você enviar, você acumula pontos. Quanto mais pontos você
                         alcançar, mais prêmios você ganha.
                     </p>
-                    <p className="flex items-center gap-2 py-2 text-sm text-red-500 ">
+                    <span
+                        className="inline-flex cursor-pointer items-center gap-2 text-red-500"
+                        onClick={() => {
+                            dispatch(showModal({ showModal: true, modalType: ABOUT_COUPON_MODAL, modalProps: {} }))
+                        }}
+                    >
                         Saiba mais detalhes sobre como funciona
-                    </p>
+                        <OpenLinkIcon color={COLORS.RED} />
+                    </span>
+                    {/* <p className="flex items-center gap-2 py-2 text-sm text-red-500 ">
+                        Saiba mais detalhes sobre como funciona
+                    </p> */}
                     <div className="flex flex-col md:flex-row md:items-end ">
                         {loadingUserData ? (
                             <span className="mr-3">Fetching Loading....</span>
@@ -79,15 +94,15 @@ function Indicate() {
                 <section className="my-4">
                     <div className="flex w-full flex-col items-center justify-between md:flex-row">
                         <Card className="w-4/5 rounded-lg md:h-28 md:w-7/12 lg:w-3/5">
-                            {referralStats?.level_attained ? (
-                                <p>Você está no nível 2</p>
+                            {referralStats?.sellers_referred ? (
+                                <p>Você está no nível {referralStats?.sellers_referred}</p>
                             ) : (
                                 <p>Your level hasnt started counting</p>
                             )}
                             <div className="flex h-11 w-full items-center">
                                 <div className="my-1 h-4 w-11/12 rounded-lg bg-hypay-gray">
                                     <div
-                                        style={{ width: `${parseInt(referralStats?.sellers_referred) * 10}%` }}
+                                        style={{ width: `${parseInt(referralStats?.sellers_referred)}%` }}
                                         className={`h-4 rounded-lg bg-hypay-secondary`}
                                     ></div>
                                 </div>
@@ -105,41 +120,41 @@ function Indicate() {
                             vendas usando o Hypay.
                         </Card>
                     </div>
-                    <div className="flex  grid-cols-2 flex-wrap items-end justify-between gap-2 text-center sm:grid sm:grid-cols-4 lg:flex lg:grid-cols-5">
-                        {referralLevels?.map(
-                            ({ reward, required_invites, level, id }: ReferralLevel, index: number) => (
-                                <div key={index} className="text-center">
-                                    <Card
-                                        className={`${
-                                            level + index < referralStats?.sellers_referred
-                                                ? 'bg-hypay-green text-white'
-                                                : referralStats?.sellers_referred < level + index
-                                                ? 'border border-hypay-secondary text-hypay-secondary'
-                                                : 'text-gray-500 text-opacity-50'
-                                        } xlg:w-36 my-2 mt-2 flex h-24 w-full flex-col  items-center justify-center rounded-md text-center md:w-36  `}
-                                    >
-                                        <div className="">
-                                            <RoundedCheckIcon color={COLORS.WHITE} />
-                                        </div>
-                                        <p>{reward}</p>
-                                    </Card>
-                                    <p
-                                        className={`${
-                                            level + index < referralStats?.sellers_referred
-                                                ? 'text-hypay-green'
-                                                : referralStats?.sellers_referred < level + index
-                                                ? 'text-hypay-secondary'
-                                                : 'text-gray-500 text-opacity-50'
-                                        } w-full sm:w-36 xl:w-36  ${id == 5 ? 'text-[0.9rem]' : ''}`}
-                                    >
-                                        Convite {required_invites} vendedores
-                                    </p>
-                                </div>
-                            )
-                        )}
+                    <div className="flex grid-cols-2 flex-wrap items-end justify-between gap-2 text-center sm:grid sm:grid-cols-4 lg:flex lg:grid-cols-5">
+                        {referralLevels?.map(({ reward, required_invites }: ReferralLevel, index: number) => (
+                            <div key={index} className="text-center">
+                                <Card
+                                    className={`${
+                                        referralStats?.sellers_referred > required_invites
+                                            ? 'bg-hypay-green text-white'
+                                            : referralStats?.sellers_referred < required_invites
+                                            ? 'border border-hypay-secondary text-hypay-secondary'
+                                            : 'text-gray-500 text-opacity-50'
+                                    } xlg:w-36 my-2 mt-2 flex h-24 w-full flex-col  items-center justify-center rounded-md text-center md:w-36  `}
+                                >
+                                    <div className="">
+                                        <RoundedCheckIcon color={COLORS.WHITE} />
+                                    </div>
+                                    <p>{reward}</p>
+                                </Card>
+                                <p
+                                    className={`${
+                                        referralStats?.sellers_referred > required_invites
+                                            ? 'text-hypay-green'
+                                            : referralStats?.sellers_referred < required_invites
+                                            ? 'text-hypay-secondary'
+                                            : 'text-gray-500 text-opacity-50'
+                                    } w-full sm:w-36 xl:w-36 `}
+                                >
+                                    Convite {required_invites} vendedores
+                                </p>
+                            </div>
+                        ))}
                     </div>
                 </section>
             </div>
+
+            {modal.modalType === ABOUT_COUPON_MODAL && <AboutCouponModal />}
         </PrimaryLayout>
     )
 }
