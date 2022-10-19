@@ -21,7 +21,7 @@ import {
     FacebookIcon,
     InstagramIcon,
     LeftArrowIcon,
-    LockIcon,
+    // LockIcon,
     RightArrowIcon,
     ShareIcon,
     StarIcon,
@@ -92,7 +92,7 @@ const ProductView: NextPage = () => {
 
     return (
         <BuyerLayout isLoading={isLoading || isFetching || !isReady}>
-            <div className="mb-16 md:mb-0 md:px-[20%] md:pt-12">
+            <div className="mb-32 md:mb-0 md:px-[20%] md:pt-12">
                 <Card
                     rounded
                     padding="p-0 md:py-10 md:px-6"
@@ -111,7 +111,7 @@ const ProductView: NextPage = () => {
                             />
                             {isLargeScreen ? (
                                 <>
-                                    <div className="my-8 flex items-center justify-between gap-x-3">
+                                    <div className="my-8 flex items-center justify-between gap-x-3 overflow-hidden">
                                         <LeftArrowIcon
                                             color={
                                                 productImages?.length && productImages?.length > 5
@@ -189,48 +189,46 @@ const ProductView: NextPage = () => {
                                     </div>
                                 </div>
                             ) : null}
-                            {isLargeScreen ? (
+                            {user?.email !== product?.merchant_email ? (
                                 <>
-                                    {user?.email !== product?.merchant_email ? (
-                                        <>
-                                            <Button
-                                                className="mt-3 block w-full bg-black text-lg font-bold text-white"
-                                                padding="py-3"
-                                                onClick={() => gotoCheckout()}
-                                            >
-                                                Comprar
-                                            </Button>
-                                            <Button
-                                                className="mt-3 block w-full border border-black text-[1rem]"
-                                                padding="py-2"
-                                            >
-                                                Pergunte ao vendedor
-                                            </Button>
-                                            <Button
-                                                className="mt-2 block w-full border border-black text-[1rem]"
-                                                padding="py-2"
-                                                onClick={() =>
-                                                    product
-                                                        ? handleAddToCart({
-                                                              ...product,
-                                                              productID: product?.id,
-                                                              price: Number(product.amount),
-                                                              quantity: qty,
-                                                          })
-                                                        : null
-                                                }
-                                                loading={isAddingToCart}
-                                                loaderColor="BLACK"
-                                                loaderSize={24}
-                                            >
-                                                Add to cart
-                                            </Button>
-                                        </>
+                                    {isLargeScreen ? (
+                                        <Button
+                                            className="mt-3 block w-full bg-black text-lg font-bold text-white"
+                                            padding="py-3"
+                                            onClick={() => gotoCheckout()}
+                                        >
+                                            Comprar
+                                        </Button>
                                     ) : null}
-                                    <ProductDescription />
+                                    <Button
+                                        className="mt-3 block w-full border border-black text-[1rem]"
+                                        padding="py-2"
+                                    >
+                                        Pergunte ao vendedor
+                                    </Button>
+                                    <Button
+                                        className="mt-2 block w-full border border-black text-[1rem]"
+                                        padding="py-2"
+                                        onClick={() =>
+                                            product
+                                                ? handleAddToCart({
+                                                      ...product,
+                                                      productID: product?.id,
+                                                      price: Number(product.amount),
+                                                      quantity: qty,
+                                                  })
+                                                : null
+                                        }
+                                        loading={isAddingToCart}
+                                        loaderColor="BLACK"
+                                        loaderSize={24}
+                                    >
+                                        Add to cart
+                                    </Button>
                                 </>
                             ) : null}
-                            {user?.email !== product?.merchant_email ? (
+                            {isLargeScreen ? <ProductDescription /> : null}
+                            {/* {user?.email !== product?.merchant_email ? (
                                 <>
                                     <div className="mt-3 md:mt-10">Calcule seu frete</div>
                                     <div className="mt-1 mb-4 flex items-end justify-between rounded-xl border border-black bg-white py-1 pl-4 pr-1 md:bg-[#FFFBFB]">
@@ -245,7 +243,7 @@ const ProductView: NextPage = () => {
                                         </div>
                                     ) : null}
                                 </>
-                            ) : null}
+                            ) : null} */}
                         </div>
                     </div>
                 </Card>
