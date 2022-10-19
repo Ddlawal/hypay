@@ -116,7 +116,10 @@ const Checkout: NextPage = () => {
             <div className="mb-8 flex items-center justify-between text-lg font-semibold">
                 <header className="mb-2 flex items-center gap-x-4 text-lg font-bold">
                     <Button preventDefault>
-                        <ArrowLeftIcon size={28} onClick={() => back()} />
+                        <ArrowLeftIcon
+                            size={28}
+                            onClick={() => (addMoreAddresses ? setAddMoreAddresses(false) : back())}
+                        />
                     </Button>{' '}
                     Identificação
                 </header>
