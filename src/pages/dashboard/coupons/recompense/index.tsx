@@ -1,8 +1,20 @@
 import React from 'react'
+import { OpenLinkIcon } from '../../../../components/Icons'
 import { PrimaryLayout } from '../../../../components/Layout'
-import { recompenseTableHeader, recompenseTableData, RecompenseTableInterface } from '../../../../lib/data'
+import AboutCouponModal from '../../../../components/Modals/AboutCouponModal'
+import { useAppDispatch, useAppSelector } from '../../../../hooks/useStoreHooks'
+import { COLORS } from '../../../../lib/constants/colors'
+import {
+    recompenseTableHeader,
+    recompenseTableData,
+    RecompenseTableInterface,
+    ABOUT_COUPON_MODAL,
+} from '../../../../lib/data'
+import { showModal } from '../../../../store/reducers/ui'
 
 function Recompense() {
+    const dispatch = useAppDispatch()
+    const modal = useAppSelector((state) => state.ui)
     return (
         <PrimaryLayout currentTabIndex={6} dropDownIndex={2}>
             <div className="py-4 px-8 md:px-12">
@@ -13,9 +25,15 @@ function Recompense() {
                         entrar para o Hypay pelo link que você enviar, você acumula pontos. Quanto mais pontos você
                         alcançar, mais prêmios você ganha.
                     </p>
-                    <p className="  flex  items-center gap-2 py-2 text-sm text-red-500">
+                    <span
+                        className="inline-flex cursor-pointer items-center gap-2 text-red-500"
+                        onClick={() => {
+                            dispatch(showModal({ showModal: true, modalType: ABOUT_COUPON_MODAL, modalProps: {} }))
+                        }}
+                    >
                         Saiba mais detalhes sobre como funciona
-                    </p>
+                        <OpenLinkIcon color={COLORS.RED} />
+                    </span>
                     {/* <div className="flex flex-col md:flex-row md:items-end ">
                         <SecondInput
                             className="mb-5 mr-8 w-full items-end md:my-0 md:w-2/5"
@@ -85,6 +103,8 @@ function Recompense() {
                     )}
                 </section>
             </div>
+
+            {modal.modalType === ABOUT_COUPON_MODAL && <AboutCouponModal />}
         </PrimaryLayout>
     )
 }
