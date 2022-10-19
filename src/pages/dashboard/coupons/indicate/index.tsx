@@ -56,9 +56,6 @@ function Indicate() {
                         Saiba mais detalhes sobre como funciona
                         <OpenLinkIcon color={COLORS.RED} />
                     </span>
-                    {/* <p className="flex items-center gap-2 py-2 text-sm text-red-500 ">
-                        Saiba mais detalhes sobre como funciona
-                    </p> */}
                     <div className="flex flex-col md:flex-row md:items-end ">
                         {loadingUserData ? (
                             <span className="mr-3">Fetching Loading....</span>
