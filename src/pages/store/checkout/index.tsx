@@ -19,6 +19,8 @@ type SelectOptionType = {
     value: string
 }
 
+const userCountryCode = 'NG'
+
 const Checkout: NextPage = () => {
     const {
         register,
@@ -26,7 +28,6 @@ const Checkout: NextPage = () => {
         reset,
         formState: { errors },
     } = useForm<AddBuyerAddressType>()
-    const [userCountryCode, setUserCountryCode] = useState('BR')
     const [userState, setUserState] = useState<string | null>(null)
     const [userCity, setUserCity] = useState<string | null>(null)
     const [states, setStates] = useState<Array<SelectOptionType>>([])
@@ -42,15 +43,7 @@ const Checkout: NextPage = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const res = await fetch('http://ip-api.com/json')
-            let locationData = await res.json()
-
-            if (!locationData) {
-                locationData = 'NG'
-            }
-
-            setUserCountryCode(locationData.countryCode)
-            const stt: Array<SelectOptionType> = State.getStatesOfCountry(locationData.countryCode).map((s) => ({
+            const stt: Array<SelectOptionType> = State.getStatesOfCountry(userCountryCode).map((s) => ({
                 label: s.name,
                 value: s.isoCode,
             }))
@@ -70,7 +63,6 @@ const Checkout: NextPage = () => {
 
         const state = State.getStateByCode(stateCode)
 
-        console.log(state)
         setUserState(state?.name || null)
 
         const cityList: Array<SelectOptionType> = City.getCitiesOfState(userCountryCode, stateCode).map((c) => {
@@ -85,7 +77,6 @@ const Checkout: NextPage = () => {
     }
 
     const handleCityChange = (city: string | null) => {
-        console.log(city)
         setUserCity(city)
         setCityError(false)
     }
@@ -191,7 +182,7 @@ const Checkout: NextPage = () => {
                             label="Telefone"
                             register={register}
                             validation={{
-                                required: false,
+                                required: true,
                                 validate: (value: string) => checkPhoneNumber(value, 'en-NG'),
                             }}
                             placeholder="2348012345678"
@@ -228,9 +219,6 @@ const Checkout: NextPage = () => {
                         errors={errors}
                         label="Street Address 2"
                         register={register}
-                        validation={{
-                            required: true,
-                        }}
                         placeholder="Lucian Store"
                         type="text"
                     />
