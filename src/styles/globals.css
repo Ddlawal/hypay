@@ -32,7 +32,6 @@ a {
 }
 
 *::-webkit-scrollbar-track {
-    background-color: lavender;
     height: 3px;
 }
 *::-webkit-scrollbar-thumb {

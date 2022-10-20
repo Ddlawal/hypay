@@ -19,13 +19,13 @@ export const CostValue = ({
     amountClassName?: string
     title: string
 }) => (
-    <div className="mb-1 flex justify-between text-sm sm:text-base">
+    <div className="mb-1 flex w-full justify-between text-sm sm:text-base">
         <div>{title}</div>
         <div className={amountClassName}>{formatAmount(amount)}</div>
     </div>
 )
 
-const CartItem = ({ item }: { item: CartItemsType }) => {
+export const CartItem = ({ item }: { item: CartItemsType }) => {
     const { productID, image_url, productname, quantity, price, total_cost } = item
     const isGTSM = useMediaQuery('sm') // screen width greater than 'sm'
     const { handleAddToCart, handleRemoveFromCart, isAddingToCart, isRemovingFromCart } = useCart()
