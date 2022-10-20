@@ -11,12 +11,14 @@ import { Divider } from '../../../components/Divider'
 import { useLazyPaymentGatewayCallbackQuery } from '../../../store/services/buyer'
 import { showErrorSnackbar } from '../../../lib/helper'
 import { COLORS } from '../../../lib/constants/colors'
+import { PaymentCallbackResponse } from '../../../interfaces/buyer'
+import { NextImage } from '../../../components/Image'
 
 const Confirmation: NextPage = () => {
     const merchantCode = localStorage.getItem('merchantCode')
     const { push } = useRouter()
     const [paymentStatus, setPaymentStatus] = useState(false)
-    const [amount, setAmount] = useState(0)
+    const [paymentDetails, setPaymentDetails] = useState<PaymentCallbackResponse>()
 
     const [paymentGatewayCallback, { isFetching, isLoading }] = useLazyPaymentGatewayCallbackQuery()
 
@@ -33,7 +35,7 @@ const Confirmation: NextPage = () => {
 
                     if (res.paymentStatus === 'successful') {
                         setPaymentStatus(true)
-                        setAmount(Number(res.paymentDetail.amount))
+                        setPaymentDetails(res)
                     }
                 } catch (error) {
                     showErrorSnackbar('Error confirming payment!')
@@ -65,18 +67,40 @@ const Confirmation: NextPage = () => {
                         <div className="text-center text-hypay-placeholder">
                             Você pode verificar e acompanhar seus pedidos de sua conta
                         </div>
-                        <div className="mb-6 w-full rounded-lg bg-[#F7F7F7] py-2 px-3">
-                            <CostValue title="Shipping" amount={0} />
-                            <CostValue title="Total" amount={amount} amountClassName="font-bold" />
+                        <div className="w-full rounded-lg bg-[#F7F7F7] py-2">
+                            <div className="max-h-[45vh] overflow-x-hidden overflow-y-scroll px-2">
+                                {paymentDetails?.order.order_items.map(
+                                    ({ image, productID, productname, quantity, totalCost }) => (
+                                        <div
+                                            key={`item-${productID}`}
+                                            className="my-2 flex items-center justify-between gap-x-2"
+                                        >
+                                            <NextImage src={image} width={30} height={30} />
+                                            <CostValue title={`${productname} x ${quantity}`} amount={totalCost} />
+                                        </div>
+                                    )
+                                )}
+                            </div>
+                            <Divider />
+                            <div className=" px-3">
+                                <CostValue title="Subtotal" amount={paymentDetails?.order.totalprice ?? 0} />
+                                <CostValue title="Shipping" amount={paymentDetails?.order.shipping ?? 0} />
+                                <CostValue title="Charges" amount={paymentDetails?.order.pepperestfees ?? 0} />
+                                <CostValue
+                                    title="Total"
+                                    amount={Number(paymentDetails?.paymentDetail.amount)}
+                                    amountClassName="font-bold"
+                                />
+                            </div>
                         </div>
                         <div className="w-full">
                             <div className="w-full font-bold">Endereço de entrega</div>
                             <Divider />
-                            <div className="text-hypay-placeholder">123 East North Street, South Bend,</div>
-                            <div className="text-hypay-placeholder">West Coast,</div>
-                            <div className="text-hypay-placeholder">Main City,</div>
-                            <div className="text-hypay-placeholder">Central State,</div>
-                            <div className="w-full font-bold">Phone: (+234-803-1234-567)</div>
+                            <div className="text-hypay-placeholder">{paymentDetails?.order.order_address.street_1}</div>
+                            <div className="text-hypay-placeholder">{paymentDetails?.order.order_address.street_2}</div>
+                            <div className="text-hypay-placeholder">{paymentDetails?.order.order_address.city}</div>
+                            <div className="text-hypay-placeholder">{paymentDetails?.order.order_address.state}</div>
+                            <div className="w-full font-bold">Phone: {paymentDetails?.order.order_address.phone}</div>
                         </div>
                         <Divider />
                         <Button

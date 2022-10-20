@@ -107,4 +107,70 @@ export type PaymentCallbackResponse = {
         payment_settlement_ref: string | null
     }
     paymentStatus: string
+    order: {
+        id: number
+        user_id: number
+        payurl: string
+        paymentRef: string
+        orderRef: string
+        pepperestfees: number
+        maxdeliverydate: string
+        mindeliverydate: string
+        merchant_id: number
+        buyer_id: number
+        address_id: number
+        totalprice: number
+        shipping: number
+        status: number
+        total: number
+        currency_id: number
+        currency: string
+        cart_id: number
+        created_at: string
+        updated_at: string
+        deleted_at: null
+        payment_status: number
+        delivery_confirmation_pin: null
+        delivery_confirmation_pin_expires_at: null
+        disbursement_status: number
+        order_address: {
+            id: number
+            name: string
+            recipient: string
+            street_1: string
+            street_2: string
+            city: string
+            state: string
+            postal_code: string
+            longitude: string
+            latitude: string
+            country_id: number
+            phone: string
+            created_at: string
+            updated_at: string
+            deleted_at: null
+            email: string
+            country: string
+            formatted_address: null
+            address_code: null
+            city_code: null
+            state_code: null
+            country_code: null
+        }
+        order_items: Array<{
+            id: number
+            order_id: number
+            product_id: string
+            productname: string
+            price: number
+            currency_id: number
+            quantity: number
+            totalCost: number
+            image: string
+            created_at: string
+            updated_at: string
+            deleted_at: null
+            productID: number
+        }>
+    }
 }
